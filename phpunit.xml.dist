@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="./test/bootstrap.php"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="false">
+    <testsuites>
+        <testsuite name="TeradataDmcRest Test Suite">
+            <directory>./test</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <blacklist>
+            <directory>vendor</directory>
+            <directory>tools</directory>
+            <directory>tests</directory>
+        </blacklist>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">lib</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="tap" target="/tmp/phpunit-result/seafile-php-sdk-current-tap.txt"/>
+        <log type="coverage-html" target="/tmp/phpunit-result/seafile-php-sdk-current" showUncoveredFiles="true"/>
+    </logging>
+</phpunit>
