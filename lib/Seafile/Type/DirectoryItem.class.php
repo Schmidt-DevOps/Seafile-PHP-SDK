@@ -1,9 +1,12 @@
 <?php
 
-namespace Seafile\Domain;
+namespace Seafile\Type;
+
+use DateTime;
+use stdClass;
 
 /**
- * Handles everything regarding Seafile files.
+ * Directory type class
  *
  * PHP version 5
  *
@@ -14,6 +17,25 @@ namespace Seafile\Domain;
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-class File extends AbstractDomain
+class DirectoryItem extends AbstractType
 {
+    /**
+     * @var string
+     */
+    public $id = "";
+
+    /**
+     * @var string
+     */
+    public $size = "";
+
+    /**
+     * @var string
+     */
+    public $name = "";
+
+    /**
+     * @var string
+     */
+    public $type = "";
 }

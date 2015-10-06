@@ -4,6 +4,18 @@ namespace Seafile\Domain;
 
 use \Seafile\Type\Library as LibraryType;
 
+/**
+ * Handles everything regarding Seafile libraries.
+ *
+ * PHP version 5
+ *
+ * @category  API
+ * @package   Seafile\Domain
+ * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @license   https://opensource.org/licenses/MIT MIT
+ * @link      https://github.com/rene-s/seafile-php-sdk
+ */
 class Library extends AbstractDomain
 {
     /**
@@ -12,18 +24,14 @@ class Library extends AbstractDomain
      */
     public function getAll()
     {
-        $request = $this->client->get(
-            $this->client->getBaseUrl() . '/repos'
-        );
+        $response = $this->client->request('GET', $this->client->getConfig('base_uri') . '/repos');
 
-        $response = $request->send();
-
-        $json = json_decode($response->getBody(true));
+        $json = json_decode($response->getBody());
 
         $libCollection = [];
 
         foreach ($json as $lib) {
-            $libCollection[] = LibraryType::fromJsonResponse($lib);
+            $libCollection[] = LibraryType::fromJson($lib);
         }
 
         return $libCollection;
@@ -36,14 +44,13 @@ class Library extends AbstractDomain
      */
     public function getById($libraryId)
     {
-        $request = $this->client->get(
-            $this->client->getBaseUrl() . '/repos/' . $libraryId
+        $response = $this->client->request(
+            'GET',
+            $this->client->getConfig('base_uri') . '/repos/' . $libraryId
         );
 
-        $response = $request->send();
+        $json = json_decode($response->getBody());
 
-        $json = json_decode($response->getBody(true));
-
-        return LibraryType::fromJsonResponse($json);
+        return LibraryType::fromJson($json);
     }
 }

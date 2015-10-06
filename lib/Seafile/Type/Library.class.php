@@ -5,7 +5,19 @@ namespace Seafile\Type;
 use DateTime;
 use stdClass;
 
-class Library
+/**
+ * Library type class
+ *
+ * PHP version 5
+ *
+ * @category  API
+ * @package   Seafile\Type
+ * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @license   https://opensource.org/licenses/MIT MIT
+ * @link      https://github.com/rene-s/seafile-php-sdk
+ */
+class Library extends AbstractType
 {
     /**
      * @var string
@@ -71,47 +83,4 @@ class Library
      * @var string
      */
     public $sizeFormatted = "";
-
-    /**
-     * Constructor
-     * @param array $fromArray Create from array
-     */
-    public function __construct(array $fromArray = [])
-    {
-        if (is_array($fromArray) && !empty($fromArray)) {
-            $this->fromArray($fromArray);
-        }
-    }
-
-    /**
-     * Populate from array
-     * @param array $fromArray Create from array
-     * @return void
-     */
-    public function fromArray(array $fromArray)
-    {
-        foreach ($fromArray as $key => $value) {
-            $lowerCamelCaseKey = preg_replace('/_(.?)/e', "strtoupper('$1')", $key);
-            if (property_exists($this, $lowerCamelCaseKey)) {
-                switch ($key) {
-                    case 'mtime':
-                        $this->{$lowerCamelCaseKey} = DateTime::createFromFormat("U", $value);
-                        break;
-                    default:
-                        $this->{$lowerCamelCaseKey} = $value;
-                        break;
-                }
-            }
-        }
-    }
-
-    /**
-     * Create from jsonResponse
-     * @param stdClass $jsonResponse
-     * @return Library
-     */
-    public static function fromJsonResponse(stdClass $jsonResponse)
-    {
-        return new Library((array)$jsonResponse);
-    }
 }

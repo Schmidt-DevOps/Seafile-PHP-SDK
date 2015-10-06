@@ -1,31 +1,40 @@
 <?php
 
-namespace Seafile;
+namespace Seafile\Http;
 
-use Guzzle\Common\Collection;
-use Guzzle\Common\Exception\RuntimeException;
-
-class Client extends \Guzzle\Http\Client
+/**
+ * Guzzle wrapper
+ *
+ * PHP version 5
+ *
+ * @category  API
+ * @package   Seafile\Http
+ * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @license   https://opensource.org/licenses/MIT MIT
+ * @link      https://github.com/rene-s/seafile-php-sdk
+ */
+class Client extends \GuzzleHttp\Client
 {
     /**
-     * @param string           $baseUrl Base URL of the web service
-     * @param array|Collection $config  Configuration settings
-     *
-     * @throws RuntimeException if cURL is not installed
+     * Constructor
+     * @param array $config Client configuration settings.
      */
-    public function __construct($baseUrl = '', $config = null)
+    public function __construct(array $config = [])
     {
         if ($config === null) {
             $config = [];
         }
 
-        $baseUrl .= '/api2';
+        if (isset($config['base_uri']) && !preg_match("/\/api2$/", $config['base_uri'])) {
+            $config['base_uri'] .= '/api2';
+        }
 
         $config = array_merge(
             [
+                'http_errors' => false,
                 'request.options' => [
                     'verify' => true,
-                    'exceptions' => false,
                     'headers' => [
                         'Content-type' => 'application/json',
                         'Authorization' => 'Token none'
@@ -35,8 +44,6 @@ class Client extends \Guzzle\Http\Client
             $config
         );
 
-        parent::__construct($baseUrl, $config);
-
-        $this->setUserAgent('seafile-php-sdk/;php');
+        parent::__construct($config);
     }
 }
