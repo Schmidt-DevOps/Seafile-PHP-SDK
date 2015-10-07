@@ -60,12 +60,22 @@ class File extends AbstractDomain
             throw new Exception('File already exists');
         }
 
+        $query = [];
+
+        if ($library->encrypted) {
+            if (empty($library->password)) {
+                throw new Exception('Require password for encrypted library');
+            }
+            $query['password'] = $library->password;
+        }
+
         $downloadUrl = $this->getDownloadUrl($library, $item, $dir, $reuse);
 
         return $this->client->get(
             $downloadUrl,
             [
-                'save_to' => $saveTo
+                'save_to' => $saveTo,
+                'query' => $query
             ]
         );
     }

@@ -22,65 +22,70 @@ class Library extends AbstractType
     /**
      * @var string
      */
-    public $permission = "";
+    public $permission = '';
 
     /**
      * @var string
      */
-    public $encrypted = "";
+    public $encrypted = '';
 
     /**
      * @var string
      */
-    public $mtimeRelative = "";
+    public $mtimeRelative = '';
 
     /**
      * @var string
      */
-    public $mtime = "";
+    public $mtime = '';
 
     /**
      * @var string
      */
-    public $owner = "";
+    public $owner = '';
 
     /**
      * @var string
      */
-    public $root = "";
+    public $root = '';
 
     /**
      * @var string
      */
-    public $id = "";
+    public $id = '';
 
     /**
      * @var string
      */
-    public $size = "";
+    public $size = '';
 
     /**
      * @var string
      */
-    public $name = "";
+    public $name = '';
 
     /**
      * @var string
      */
-    public $type = "";
+    public $type = '';
 
     /**
      * @var string
      */
-    public $virtual = "";
+    public $virtual = '';
 
     /**
      * @var string
      */
-    public $desc = "";
+    public $desc = '';
 
     /**
      * @var string
      */
-    public $sizeFormatted = "";
+    public $sizeFormatted = '';
+
+    /**
+     * @var string
+     */
+    public $password = '';
 }
