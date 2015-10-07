@@ -101,31 +101,30 @@ class File extends AbstractDomain
             throw new Exception('File could not be read or does not exist');
         }
 
-        $uploadLink = $this->getUploadLink($library);
-
-
-        $cmd = sprintf(
-            "curl -H \"Authorization: Token %s\" -F file=@%s -F filename=%s -F parent_dir=%s %s",
-            $this->client->getConfig('headers')['Authorization'],
-            $localFilePath,
-            basename($localFilePath),
-            $dir,
-            $uploadLink
+        return $this->client->post(
+            $this->getUploadLink($library),
+            [
+                'headers' => ['Accept' => '*/*'],
+                'multipart' => [
+                    [
+                        'headers' => ['Content-Type' => 'application/octet-stream'],
+                        'name' => 'file',
+                        'contents' => fopen($localFilePath, 'r')
+                    ],
+                    [
+                        'name' => 'name',
+                        'contents' => basename($localFilePath)
+                    ],
+                    [
+                        'name' => 'parent_dir',
+                        'contents' => $dir
+                    ],
+                    [
+                        'name' => 'filename',
+                        'contents' => basename($localFilePath)
+                    ]
+                ]
+            ]
         );
-
-        system($cmd, $returnCode);
-
-        return $returnCode == 0;
-
-//        return $this->client->request(
-//            'POST',
-//            $uploadLink,
-//            [
-//                'name' => basename($localFilePath),
-//                'contents' => file_get_contents($localFilePath),
-//                'filename' => basename($localFilePath),
-//                'parent_dir' => $dir
-//            ]
-//        );
     }
 }

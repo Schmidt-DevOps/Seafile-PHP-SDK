@@ -36,7 +36,7 @@ class Client extends \GuzzleHttp\Client
                 'request.options' => [
                     'verify' => true,
                     'headers' => [
-                        'Content-type' => 'application/json',
+                        'Content-Type' => 'application/json',
                         'Authorization' => 'Token none'
                     ]
                 ]
