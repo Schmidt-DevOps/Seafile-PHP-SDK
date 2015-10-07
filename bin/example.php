@@ -11,15 +11,17 @@ use GuzzleHttp\MessageFormatter;
 use Monolog\Logger;
 use Seafile\Http\Client;
 
+$logger = new Logger('Logger');
+
 $stack = HandlerStack::create();
 $stack->push(
     Middleware::log(
-        new Logger('Logger'),
+        $logger,
         new MessageFormatter("{hostname} {req_header_Authorization} - {req_header_User-Agent} - [{date_common_log}] \"{method} {host}{target} HTTP/{version}\" {code} {res_header_Content-Length} req_body: {req_body} response_body: {res_body}")
     )
 );
 
-$tokenFile = "/path/to/.seafile-php-sdk/api-token.json";
+$tokenFile = getenv("HOME") . "/.seafile-php-sdk/api-token.json";
 
 if (!is_readable($tokenFile)) {
     throw new Exception($tokenFile . ' is not readable or does not exist.');
@@ -31,7 +33,7 @@ $client = new Client(
     [
         'base_uri' => 'https://example.com',
         'debug' => false,
-        //'handler' => $stack,
+        'handler' => $stack,
         'headers' => [
             'Content-Type' => 'application/json',
             'Authorization' => 'Token ' . $token->token
@@ -42,25 +44,35 @@ $libraryDomain = new Library($client);
 $directoryDomain = new Directory($client);
 $fileDomain = new File($client);
 
+$logger->log(Logger::INFO, 'Getting all libraries');
 $libs = $libraryDomain->getAll();
 
 foreach ($libs as $lib) {
-    printf("Name: %s, ID: %s\n", $lib->name, $lib->id);
+    printf("Name: %s, ID: %s, is encrypted: %s\n", $lib->name, $lib->id, $lib->encrypted ? 'YES' : 'NO');
 }
 
-$lib = $libraryDomain->getById('some id');
+$libId = $libraryDomain->getById('some id');
 
+$logger->log(Logger::INFO, 'Getting lib with ID ' . $libId);
+$lib = $libraryDomain->getById($libId);
+
+$logger->log(Logger::INFO, 'Listing items of that library...');
 $items = $directoryDomain->getAll($lib);
+
+$logger->log(Logger::INFO, sprintf("Got %d items", count($items)));
 
 foreach ($items as $item) {
     printf("%s: %s (%d bytes)\n", $item->type, $item->name, $item->size);
 }
-//$fileDomain = new File($client);
 
+//$lib->password = 'some password'; // library is encrypted and thus we provide a password
+$logger->log(Logger::INFO, 'Downloading file ' . $item->name);
 $downloadResponse = $fileDomain->download($lib, $item, '/', '/tmp/' . $item->name);
 
 system('mv /tmp/' . $item->name . ' /tmp/new-' . $item->name);
 system('date > /tmp/new-' . $item->name);
 
-$fileDomain->upload($lib, '/tmp/new-' . $item->name, '/');
+$newFilename = '/tmp/new-' . $item->name;
+$logger->log(Logger::INFO, 'Uploading file ' . $newFilename);
+$fileDomain->upload($lib, $newFilename, '/');
 
