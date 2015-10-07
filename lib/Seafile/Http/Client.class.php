@@ -32,7 +32,7 @@ class Client extends \GuzzleHttp\Client
 
         $config = array_merge(
             [
-                'http_errors' => false,
+                'http_errors' => true,
                 'request.options' => [
                     'verify' => true,
                     'headers' => [
