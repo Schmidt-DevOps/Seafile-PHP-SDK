@@ -49,6 +49,7 @@ class File extends AbstractDomain
      * @param LibraryType   $library Library instance
      * @param DirectoryItem $item    Item instance
      * @param string        $dir     Dir string
+     * @param string        $saveTo  Save file to path
      * @param int           $reuse   Reuse more than once per hour
      * @return Response
      * @throws Exception

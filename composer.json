@@ -29,5 +29,10 @@
     "psr-4": {
       "Seafile\\": "lib/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Seafile\\Tests\\": "test/lib"
+    }
   }
 }
