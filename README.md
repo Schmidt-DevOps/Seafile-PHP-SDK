@@ -1,12 +1,12 @@
-# German Web Application Developer Available for Hire!
+# Seafile PHP SDK
+
+This is a PHP package for accessing [Seafile Web API](http://example.com).
+
+## German Web Application Developer Available for Hire!
 
 No marketing skills whatsoever, but low rates, nearly 20 years of experience, and german work attitude.
 
 Get in touch now: https://www.reneschmidt.de/blog/impressum/
-
-# Seafile PHP SDK
-
-This is a PHP package for accessing [Seafile Web API](http://example.com).
 
 ## What is Seafile?
 
