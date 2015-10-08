@@ -1,8 +1,8 @@
 {
   "name": "rsd/seafile-php-sdk",
-  "description": "This is a PHP package for accessing [Seafile Web API",
+  "description": "This is a PHP package for accessing Seafile Web API",
   "version": "0.0.3",
-  "homepage": "https://github.com/rene-s/seafile-php-sdk",
+  "homepage": "https://github.com/rene-s/Seafile-PHP-SDK",
   "license": "MIT",
   "keywords": [
     "seafile",
