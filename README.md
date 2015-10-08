@@ -30,6 +30,7 @@ Pull requests are welcome. Please try to adhere to my coding standards, see file
 - http://seafile.com
 - https://www.seafile-server.org/ (Seafile server hosting in Germany)
 - http://manual.seafile.com/develop/web_api.html#seafile-web-api-v2
+- https://reneschmidt.de
 
 ## Obtain API token
 
