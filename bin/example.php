@@ -31,7 +31,7 @@ $token = json_decode(file_get_contents($tokenFile));
 
 $client = new Client(
     [
-        'base_uri' => 'https://example.com',
+        'base_uri' => 'https://reneschmidt.seafile-server.de',
         'debug' => false,
         'handler' => $stack,
         'headers' => [
@@ -51,7 +51,7 @@ foreach ($libs as $lib) {
     printf("Name: %s, ID: %s, is encrypted: %s\n", $lib->name, $lib->id, $lib->encrypted ? 'YES' : 'NO');
 }
 
-$libId = $libraryDomain->getById('some id');
+$libId = 'c80a6868-9099-431e-9c17-c6c9c2551582';
 
 $logger->log(Logger::INFO, 'Getting lib with ID ' . $libId);
 $lib = $libraryDomain->getById($libId);
@@ -65,7 +65,7 @@ foreach ($items as $item) {
     printf("%s: %s (%d bytes)\n", $item->type, $item->name, $item->size);
 }
 
-//$lib->password = 'some password'; // library is encrypted and thus we provide a password
+$lib->password = 'qwertz123'; // library is encrypted and thus we provide a password
 $logger->log(Logger::INFO, 'Downloading file ' . $item->name);
 $downloadResponse = $fileDomain->download($lib, $item, '/', '/tmp/' . $item->name);
 
