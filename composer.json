@@ -5,11 +5,13 @@
   "homepage": "http://example.com",
   "license": "Proprietary",
   "keywords": [
-    "",
-    "",
-    "",
-    "",
-    ""
+    "seafile",
+    "php",
+    "sdk",
+    "collaboration",
+    "cloud",
+    "storage",
+    "encrypted"
   ],
   "require": {
     "php": ">=5.5",
