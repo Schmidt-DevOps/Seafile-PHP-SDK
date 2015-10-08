@@ -129,10 +129,7 @@ $lib->password = 'library encryption password of yours';
 // rest is the same as 'Download unencrypted file', see above
 ```
 
-### Download encrypted file
-
-Downloading a file from an encrypted library without password would
-inevitably fail, so just give the password before attempting:
+### Upload file
 
 ```php
 
