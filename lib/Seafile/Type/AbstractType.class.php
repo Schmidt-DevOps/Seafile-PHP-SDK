@@ -34,7 +34,7 @@ abstract class AbstractType
     /**
      * Populate from array
      * @param array $fromArray Create from array
-     * @return void
+     * @return static
      */
     public function fromArray(array $fromArray)
     {
@@ -51,6 +51,8 @@ abstract class AbstractType
                 }
             }
         }
+
+        return $this;
     }
 
     /**
@@ -58,8 +60,9 @@ abstract class AbstractType
      * @param stdClass $jsonResponse Json response
      * @return static
      */
-    public static function fromJson(stdClass $jsonResponse)
+    public function fromJson(stdClass $jsonResponse)
     {
-        return new static((array)$jsonResponse);
+        $this->fromArray((array)$jsonResponse);
+        return $this;
     }
 }

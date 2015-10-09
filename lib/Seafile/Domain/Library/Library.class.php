@@ -31,7 +31,7 @@ class Library extends AbstractDomain
         $libCollection = [];
 
         foreach ($json as $lib) {
-            $libCollection[] = LibraryType::fromJson($lib);
+            $libCollection[] = (new LibraryType)->fromJson($lib);
         }
 
         return $libCollection;
@@ -51,6 +51,6 @@ class Library extends AbstractDomain
 
         $json = json_decode($response->getBody());
 
-        return LibraryType::fromJson($json);
+        return (new LibraryType)->fromJson($json);
     }
 }

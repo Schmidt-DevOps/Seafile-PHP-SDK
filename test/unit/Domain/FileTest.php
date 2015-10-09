@@ -2,11 +2,11 @@
 
 namespace Seafile\Tests\Domain;
 
+use GuzzleHttp\Psr7\Response;
 use Seafile\Domain\File;
-use Seafile\Tests\Stub\Client;
+use Seafile\Tests\TestCase;
 use Seafile\Type\DirectoryItem;
 use Seafile\Type\Library;
-use Seafile\Tests\Stub;
 
 /**
  * File domain test
@@ -20,19 +20,39 @@ use Seafile\Tests\Stub;
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-class FileTest extends \PHPUnit_Framework_TestCase
+class FileTest extends TestCase
 {
     /**
-     * Test fromArray()
+     * Test getDownloadUrl()
      *
      * @return void
      */
     public function testGetDownloadUrl()
     {
-        $fileDomain = new File(new Client());
+        $fileDomain = new File($this->getMockedClient(
+            new Response(200, ['Content-Type' => 'application/json'], '"https://some.example.com/some/url"')
+        ));
+
         $downloadLink = $fileDomain->getDownloadUrl(new Library(), new DirectoryItem());
 
         // encapsulating quotes must be gone
         $this->assertSame('https://some.example.com/some/url', $downloadLink);
+    }
+
+    /**
+     * Test getUploadUrl()
+     *
+     * @return void
+     */
+    public function testGetUploadLink()
+    {
+        $fileDomain = new File($this->getMockedClient(
+            new Response(200, ['Content-Type' => 'application/json'], '"https://some.example.com/some/url"')
+        ));
+
+        $uploadUrl = $fileDomain->getUploadUrl(new Library());
+
+        // encapsulating quotes must be gone
+        $this->assertSame('https://some.example.com/some/url', $uploadUrl);
     }
 }

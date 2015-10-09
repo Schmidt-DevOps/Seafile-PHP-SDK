@@ -81,11 +81,11 @@ class File extends AbstractDomain
     }
 
     /**
-     * Get upload link
+     * Get upload URL
      * @param LibraryType $library Library instance
      * @return String Upload link
      */
-    public function getUploadLink(LibraryType $library)
+    public function getUploadUrl(LibraryType $library)
     {
         $url = $this->client->getConfig('base_uri')
             . '/repos/'
@@ -113,7 +113,7 @@ class File extends AbstractDomain
         }
 
         return $this->client->post(
-            $this->getUploadLink($library),
+            $this->getUploadUrl($library),
             [
                 'headers' => ['Accept' => '*/*'],
                 'multipart' => [

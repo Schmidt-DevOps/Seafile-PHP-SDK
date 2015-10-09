@@ -26,8 +26,7 @@ class DirectoryItemTest extends \PHPUnit_Framework_TestCase
      */
     public function testFromArray()
     {
-        $lib = new DirectoryItem();
-        $lib->fromArray([
+        $lib = new DirectoryItem([
             'id' => 1,
             'size' => 2,
             'name' => 'my name',

@@ -1,0 +1,13 @@
+{
+  "permission": "rw",
+  "encrypted": false,
+  "mtime": 1400054900,
+  "owner": "user@mail.com",
+  "id": "f158d1dd-cc19-412c-b143-2ac83f352290",
+  "size": 0,
+  "name": "foo",
+  "type": "repo",
+  "virtual": false,
+  "desc": "new library",
+  "root": "0000000000000000000000000000000000000000"
+}

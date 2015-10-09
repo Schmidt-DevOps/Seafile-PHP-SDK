@@ -169,5 +169,5 @@ $client = new Client(
 
 ## License
 
-MIT https://raw.githubusercontent.com/rene-s/seafile-php-sdk/master/LICENSE
+[MIT](https://raw.githubusercontent.com/rene-s/seafile-php-sdk/master/LICENSE) &copy; 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG
 

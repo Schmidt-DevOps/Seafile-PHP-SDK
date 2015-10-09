@@ -38,7 +38,7 @@ class Directory extends AbstractDomain
         $dirItemCollection = [];
 
         foreach ($json as $dirItem) {
-            $dirItemCollection[] = DirectoryItem::fromJson($dirItem);
+            $dirItemCollection[] = (new DirectoryItem)->fromJson($dirItem);
         }
 
         return $dirItemCollection;
