@@ -22,16 +22,22 @@ $stack->push(
 );
 
 $tokenFile = getenv("HOME") . "/.seafile-php-sdk/api-token.json";
+$cfgFile = getenv("HOME") . "/.seafile-php-sdk/cfg.json";
 
 if (!is_readable($tokenFile)) {
     throw new Exception($tokenFile . ' is not readable or does not exist.');
 }
 
+if (!is_readable($cfgFile)) {
+    throw new Exception($cfgFile . ' is not readable or does not exist.');
+}
+
 $token = json_decode(file_get_contents($tokenFile));
+$cfg = json_decode(file_get_contents($cfgFile));
 
 $client = new Client(
     [
-        'base_uri' => 'https://reneschmidt.seafile-server.de',
+        'base_uri' => $cfg->baseUri,
         'debug' => false,
         'handler' => $stack,
         'headers' => [
@@ -51,7 +57,7 @@ foreach ($libs as $lib) {
     printf("Name: %s, ID: %s, is encrypted: %s\n", $lib->name, $lib->id, $lib->encrypted ? 'YES' : 'NO');
 }
 
-$libId = 'c80a6868-9099-431e-9c17-c6c9c2551582';
+$libId = $cfg->testLibId;
 
 $logger->log(Logger::INFO, 'Getting lib with ID ' . $libId);
 $lib = $libraryDomain->getById($libId);
@@ -65,7 +71,7 @@ foreach ($items as $item) {
     printf("%s: %s (%d bytes)\n", $item->type, $item->name, $item->size);
 }
 
-$lib->password = 'qwertz123'; // library is encrypted and thus we provide a password
+$lib->password = $cfg->testLibPassword; // library is encrypted and thus we provide a password
 $logger->log(Logger::INFO, 'Downloading file ' . $item->name);
 $downloadResponse = $fileDomain->download($lib, $item, '/', '/tmp/' . $item->name);
 
