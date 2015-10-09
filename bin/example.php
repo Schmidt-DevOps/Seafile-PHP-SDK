@@ -38,7 +38,7 @@ $cfg = json_decode(file_get_contents($cfgFile));
 $client = new Client(
     [
         'base_uri' => $cfg->baseUri,
-        'debug' => false,
+        'debug' => true,
         'handler' => $stack,
         'headers' => [
             'Content-Type' => 'application/json',
@@ -51,7 +51,7 @@ $directoryDomain = new Directory($client);
 $fileDomain = new File($client);
 
 // get all libraries available
-$logger->log(Logger::INFO, "\nGetting all libraries");
+$logger->log(Logger::INFO, "Getting all libraries");
 $libs = $libraryDomain->getAll();
 
 foreach ($libs as $lib) {
@@ -61,13 +61,20 @@ foreach ($libs as $lib) {
 $libId = $cfg->testLibId;
 
 // get specific library
-$logger->log(Logger::INFO, "\nGetting lib with ID " . $libId);
+$logger->log(Logger::INFO, "Getting lib with ID " . $libId);
 $lib = $libraryDomain->getById($libId);
 
 $lib->password = $cfg->testLibPassword; // library is encrypted and thus we provide a password
 
+if ($lib->encrypted) {
+    $success = $libraryDomain->decrypt($libId, ['query' => ['password' => $cfg->testLibPassword]]);
+    $logger->log(Logger::INFO, "Decrypting library " . $libId . ' was ' . ($success ? '' : 'un') . 'successful');
+} else {
+    $logger->log(Logger::INFO, "Library is not encrypted: " . $libId);
+}
+
 // list library
-$logger->log(Logger::INFO, "\nListing items of that library...");
+$logger->log(Logger::INFO, "Listing items of that library...");
 $items = $directoryDomain->getAll($lib);
 
 $logger->log(Logger::INFO, sprintf("\nGot %d items", count($items)));
@@ -84,7 +91,7 @@ if (count($items) > 0) {
         unlink($saveTo);
     }
 
-    $logger->log(Logger::INFO, "\nDownloading file " . $items[0]->name . ' to ' . $saveTo);
+    $logger->log(Logger::INFO, "Downloading file " . $items[0]->name . ' to ' . $saveTo);
     $downloadResponse = $fileDomain->download($lib, $items[0], '/', $saveTo);
 }
 
@@ -92,11 +99,9 @@ if (count($items) > 0) {
 $newFilename = tempnam('.', 'Seafile-PHP-SDK_Test_Upload_');
 rename($newFilename, $newFilename . '.txt');
 $newFilename .= '.txt';
-file_put_contents($newFilename, 'Hello World');
-$logger->log(Logger::INFO, "\nUploading file " . $newFilename);
+file_put_contents($newFilename, 'Hello World: ' . date('Y-m-d H:i:s'));
+$logger->log(Logger::INFO, "Uploading file " . $newFilename);
 $fileDomain->upload($lib, $newFilename, '/');
 $result = unlink($newFilename);
-
-var_dump($result);
 
 print(PHP_EOL . 'Done' . PHP_EOL);

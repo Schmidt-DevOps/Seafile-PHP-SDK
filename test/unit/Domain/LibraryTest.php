@@ -61,4 +61,74 @@ class LibraryTest extends TestCase
 
         $this->assertInstanceOf('Seafile\Type\Library', $libraryDomain->getById('some_id'));
     }
+
+    /**
+     * Try to decrypt without query parameters. Must fail of course.
+     * @return void
+     * @throws \Exception
+     */
+    public function testDecryptMissingQuery()
+    {
+        $library = new \Seafile\Domain\Library($this->getMockedClient(new Response));
+        $this->setExpectedException('Exception');
+        $library->decrypt('some id', []);
+    }
+
+    /**
+     * Try to decrypt without password. Must fail of course.
+     * @return void
+     * @throws \Exception
+     */
+    public function testDecryptMissingPassword()
+    {
+        $library = new \Seafile\Domain\Library($this->getMockedClient(new Response));
+        $this->setExpectedException('Exception');
+        $library->decrypt('some id', ['query' => []]);
+    }
+
+    /**
+     * Decryption fails
+     * @return void
+     * @throws \Exception
+     */
+    public function testDecryptUnsuccessfully()
+    {
+        $library = new \Seafile\Domain\Library($this->getMockedClient(
+            new Response(
+                400,
+                ['Content-Type' => 'application/json'],
+                ''
+            )
+        ));
+
+        $this->assertFalse(
+            $library->decrypt(
+                'some id',
+                ['query' => ['password' => 'some password']]
+            )
+        );
+    }
+
+    /**
+     * Decryption succeeds
+     * @return void
+     * @throws \Exception
+     */
+    public function testDecryptSuccessfully()
+    {
+        $library = new \Seafile\Domain\Library($this->getMockedClient(
+            new Response(
+                200,
+                ['Content-Type' => 'application/json'],
+                '"success"'
+            )
+        ));
+
+        $this->assertTrue(
+            $library->decrypt(
+                'some id',
+                ['query' => ['password' => 'some password']]
+            )
+        );
+    }
 }

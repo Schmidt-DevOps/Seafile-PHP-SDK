@@ -55,4 +55,38 @@ class FileTest extends TestCase
         // encapsulating quotes must be gone
         $this->assertSame('https://some.example.com/some/url', $uploadUrl);
     }
+
+    /**
+     * Download a file, local destination path is already occupied
+     * @return void
+     * @throws \Exception
+     */
+    public function testDownloadFileExists()
+    {
+        $newFilename = tempnam(sys_get_temp_dir(), uniqid());
+        $fileDomain = new File($this->getMockedClient(new Response()));
+
+        try {
+            $this->setExpectedException('Exception');
+            $fileDomain->download(new Library(), new DirectoryItem(), '/', $newFilename);
+            $this->fail('Exception expected');
+        } finally {
+            unlink($newFilename);
+        }
+    }
+
+    /**
+     * Try to upload a non-existant local file
+     * @return void
+     * @throws \Exception
+     */
+    public function testUploadDoesNotExist()
+    {
+        $filename = uniqid();
+        $fileDomain = new File($this->getMockedClient(new Response()));
+
+        $this->setExpectedException('Exception');
+        $fileDomain->upload(new Library(), $filename);
+        $this->fail('Exception expected');
+    }
 }

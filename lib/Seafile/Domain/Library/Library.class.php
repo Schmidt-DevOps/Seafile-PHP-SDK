@@ -24,7 +24,7 @@ class Library extends AbstractDomain
      */
     public function getAll()
     {
-        $response = $this->client->request('GET', $this->client->getConfig('base_uri') . '/repos');
+        $response = $this->client->request('GET', $this->client->getConfig('base_uri') . '/repos/');
 
         $json = json_decode($response->getBody());
 
@@ -46,11 +46,36 @@ class Library extends AbstractDomain
     {
         $response = $this->client->request(
             'GET',
-            $this->client->getConfig('base_uri') . '/repos/' . $libraryId
+            $this->client->getConfig('base_uri') . '/repos/' . $libraryId . '/'
         );
 
         $json = json_decode($response->getBody());
 
         return (new LibraryType)->fromJson($json);
+    }
+
+    /**
+     * Decrypt library
+     * @param String $libraryId Library ID
+     * @param array  $options   Options
+     * @return Bool Decryption succes
+     * @throws \Exception
+     */
+    public function decrypt($libraryId, array $options)
+    {
+        $hasQueryParams = array_key_exists('query', $options);
+        $hasPassword = $hasQueryParams && array_key_exists('password', $options['query']);
+
+        if (!$hasQueryParams || !$hasPassword) {
+            throw new \Exception('Password query parameter is required to decrypt library');
+        }
+
+        $response = $this->client->request(
+            'POST',
+            $this->client->getConfig('base_uri') . '/repos/' . $libraryId . '/',
+            $options
+        );
+
+        return json_decode($response->getBody()) === 'success';
     }
 }
