@@ -109,7 +109,7 @@ class File extends AbstractDomain
     public function upload(LibraryType $library, $localFilePath, $dir = '/')
     {
         if (!is_readable($localFilePath)) {
-            throw new Exception('File could not be read or does not exist');
+            throw new Exception('File ' . $localFilePath . ' could not be read or does not exist');
         }
 
         return $this->client->post(

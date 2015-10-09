@@ -50,7 +50,8 @@ $libraryDomain = new Library($client);
 $directoryDomain = new Directory($client);
 $fileDomain = new File($client);
 
-$logger->log(Logger::INFO, 'Getting all libraries');
+// get all libraries available
+$logger->log(Logger::INFO, "\nGetting all libraries");
 $libs = $libraryDomain->getAll();
 
 foreach ($libs as $lib) {
@@ -59,26 +60,37 @@ foreach ($libs as $lib) {
 
 $libId = $cfg->testLibId;
 
-$logger->log(Logger::INFO, 'Getting lib with ID ' . $libId);
+// get specific library
+$logger->log(Logger::INFO, "\nGetting lib with ID " . $libId);
 $lib = $libraryDomain->getById($libId);
 
-$logger->log(Logger::INFO, 'Listing items of that library...');
+// upload a Hello World file and random file name
+$lib->password = $cfg->testLibPassword; // library is encrypted and thus we provide a password
+
+$newFilename = tempnam(__DIR__, 'Seafile-PHP-SDK_Test_Upload_') . '.txt';
+file_put_contents($newFilename, 'Hello World');
+$logger->log(Logger::INFO, "\nUploading file " . $newFilename);
+$fileDomain->upload($lib, $newFilename, '/');
+unlink($newFilename);
+
+// list library
+$logger->log(Logger::INFO, "\nListing items of that library...");
 $items = $directoryDomain->getAll($lib);
 
-$logger->log(Logger::INFO, sprintf("Got %d items", count($items)));
+$logger->log(Logger::INFO, sprintf("\nGot %d items", count($items)));
 
 foreach ($items as $item) {
-    printf("%s: %s (%d bytes)\n", $item->type, $item->name, $item->size);
+    printf("%s: %s (%d bytes)\n\n", $item->type, $item->name, $item->size);
 }
 
-$lib->password = $cfg->testLibPassword; // library is encrypted and thus we provide a password
-$logger->log(Logger::INFO, 'Downloading file ' . $item->name);
-$downloadResponse = $fileDomain->download($lib, $item, '/', '/tmp/' . $item->name);
+// download first file
+$saveTo = './downloaded_' . $items[0]->name;
 
-system('mv /tmp/' . $item->name . ' /tmp/new-' . $item->name);
-system('date > /tmp/new-' . $item->name);
+if (file_exists($saveTo)) {
+    unlink($saveTo);
+}
 
-$newFilename = '/tmp/new-' . $item->name;
-$logger->log(Logger::INFO, 'Uploading file ' . $newFilename);
-$fileDomain->upload($lib, $newFilename, '/');
+$logger->log(Logger::INFO, "\nDownloading file " . $items[0]->name . ' to ' . $saveTo);
+$downloadResponse = $fileDomain->download($lib, $items[0], '/', $saveTo);
 
+print(PHP_EOL . 'Done' . PHP_EOL);

@@ -41,6 +41,8 @@ mkdir ~/.seafile-php-sdk
 curl -d "username=you@example.com&password=123456" https://your.seafile-server.com/api2/auth-token/ > ~/.seafile-php-sdk/api-token.json
 ```
 
+Hint: if user name contains a "+" char, replace the char with "%2B" (hex ascii for "+"). Just so you know.
+
 ## Installing Seafile-PHP-SDK
 
 The recommended way to install seafile-php-sdk is through
