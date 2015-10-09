@@ -64,14 +64,7 @@ $libId = $cfg->testLibId;
 $logger->log(Logger::INFO, "\nGetting lib with ID " . $libId);
 $lib = $libraryDomain->getById($libId);
 
-// upload a Hello World file and random file name
 $lib->password = $cfg->testLibPassword; // library is encrypted and thus we provide a password
-
-$newFilename = tempnam(__DIR__, 'Seafile-PHP-SDK_Test_Upload_') . '.txt';
-file_put_contents($newFilename, 'Hello World');
-$logger->log(Logger::INFO, "\nUploading file " . $newFilename);
-$fileDomain->upload($lib, $newFilename, '/');
-unlink($newFilename);
 
 // list library
 $logger->log(Logger::INFO, "\nListing items of that library...");
@@ -83,14 +76,27 @@ foreach ($items as $item) {
     printf("%s: %s (%d bytes)\n\n", $item->type, $item->name, $item->size);
 }
 
-// download first file
-$saveTo = './downloaded_' . $items[0]->name;
+if (count($items) > 0) {
+    // download first file
+    $saveTo = './downloaded_' . $items[0]->name;
 
-if (file_exists($saveTo)) {
-    unlink($saveTo);
+    if (file_exists($saveTo)) {
+        unlink($saveTo);
+    }
+
+    $logger->log(Logger::INFO, "\nDownloading file " . $items[0]->name . ' to ' . $saveTo);
+    $downloadResponse = $fileDomain->download($lib, $items[0], '/', $saveTo);
 }
 
-$logger->log(Logger::INFO, "\nDownloading file " . $items[0]->name . ' to ' . $saveTo);
-$downloadResponse = $fileDomain->download($lib, $items[0], '/', $saveTo);
+// upload a Hello World file and random file name (note: this seems not to work at this time when you are not logged into the Seafile web frontend).
+$newFilename = tempnam('.', 'Seafile-PHP-SDK_Test_Upload_');
+rename($newFilename, $newFilename . '.txt');
+$newFilename .= '.txt';
+file_put_contents($newFilename, 'Hello World');
+$logger->log(Logger::INFO, "\nUploading file " . $newFilename);
+$fileDomain->upload($lib, $newFilename, '/');
+$result = unlink($newFilename);
+
+var_dump($result);
 
 print(PHP_EOL . 'Done' . PHP_EOL);

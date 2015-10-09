@@ -171,6 +171,10 @@ $client = new Client(
 );
 ```
 
+## Issues
+
+- Interacting with encrypted libraries seems not to work when you are not being logged into the Seafile webbrowser frontend at the same time. I am still trying to figure out what the issue is there.
+
 ## License
 
 [MIT](https://raw.githubusercontent.com/rene-s/seafile-php-sdk/master/LICENSE) &copy; 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG
