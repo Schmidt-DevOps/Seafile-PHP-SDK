@@ -3,6 +3,7 @@
 namespace Seafile\Type;
 
 use DateTime;
+use Doctrine\Common\Inflector\Inflector;
 use stdClass;
 
 /**
@@ -39,7 +40,7 @@ abstract class AbstractType
     public function fromArray(array $fromArray)
     {
         foreach ($fromArray as $key => $value) {
-            $lowerCamelCaseKey = preg_replace('/_(.?)/e', "strtoupper('$1')", $key);
+            $lowerCamelCaseKey = Inflector::camelize($key);
             if (property_exists($this, $lowerCamelCaseKey)) {
                 switch ($key) {
                     case 'mtime':
