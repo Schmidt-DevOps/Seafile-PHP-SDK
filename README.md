@@ -8,6 +8,8 @@ No marketing skills whatsoever, but low rates, nearly 20 years of experience, an
 
 Get in touch now: https://www.reneschmidt.de/blog/impressum/
 
+[![Build Status](https://api.travis-ci.org/rene-s/Seafile-PHP-SDK.svg)](https://travis-ci.org/rene-s/Seafile-PHP-SDK)
+
 ## What is Seafile?
 
 - Open Source Cloud Storage for your teams and organizations
