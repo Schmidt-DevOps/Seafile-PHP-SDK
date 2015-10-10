@@ -25,7 +25,7 @@ Get in touch now: https://www.reneschmidt.de/blog/impressum/
 
 Please note that this package still is in its infancy. Only a small part of the API has been implemented so far.
 
-Pull requests are welcome. Please try to adhere to my coding standards, see file bin/run_tests.sh and https://github.com/rene-s/psr-2-rsd/blob/master/psr-2-rsd_ruleset.xml for more info.
+Pull requests are welcome.
 
 ## Links
 
@@ -121,13 +121,13 @@ foreach ($items as $item) {
 $dir = '/'; // dir in the library
 $saveTo = '/tmp/'. $item->name; // save file to this local path
 $fileDomain = new File($client);
-$downloadResponse = $fileDomain->download($lib, $item, $dir, $saveTo);
+$downloadResponse = $fileDomain->download($lib, $item, $saveTo, $dir);
 ```
 
 ### Download encrypted file
 
 Downloading a file from an encrypted library without password would
-inevitably fail, so just "decrypt" (ie unlock) the library before attempting:
+inevitably fail, so just "decrypt" (i.e. unlock) the library before attempting:
 
 ```php
 $success = $libraryDomain->decrypt($libId, ['query' => ['password' => $password]]);
@@ -178,4 +178,3 @@ $client = new Client(
 ## License
 
 [MIT](https://raw.githubusercontent.com/rene-s/seafile-php-sdk/master/LICENSE) &copy; 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG
-
