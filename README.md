@@ -127,10 +127,10 @@ $downloadResponse = $fileDomain->download($lib, $item, $dir, $saveTo);
 ### Download encrypted file
 
 Downloading a file from an encrypted library without password would
-inevitably fail, so just give the password before attempting:
+inevitably fail, so just "decrypt" (ie unlock) the library before attempting:
 
 ```php
-$lib->password = 'library encryption password of yours';
+$success = $libraryDomain->decrypt($libId, ['query' => ['password' => $password]]);
 // rest is the same as 'Download unencrypted file', see above
 ```
 

@@ -21,7 +21,20 @@ $stack->push(
     )
 );
 
+/**
+ * Example:
+ * {"token": "your_token"}
+ */
 $tokenFile = getenv("HOME") . "/.seafile-php-sdk/api-token.json";
+
+/**
+ * Example:
+ * {
+ *   "baseUri": "https://your.seafile-server.example.com",
+ *   "testLibId": "ID of an encrypted library",
+ *   "testLibPassword": "Password of that encrypted library"
+ * }
+ */
 $cfgFile = getenv("HOME") . "/.seafile-php-sdk/cfg.json";
 
 if (!is_readable($tokenFile)) {
