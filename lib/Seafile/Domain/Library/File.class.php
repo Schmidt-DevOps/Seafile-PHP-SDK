@@ -46,23 +46,23 @@ class File extends AbstractDomain
 
     /**
      * Get download URL of a file
-     * @param LibraryType   $library Library instance
-     * @param DirectoryItem $item    Item instance
-     * @param string        $dir     Dir string
-     * @param string        $saveTo  Save file to path
-     * @param int           $reuse   Reuse more than once per hour
+     * @param LibraryType   $library       Library instance
+     * @param DirectoryItem $item          Item instance
+     * @param string        $localFilePath Save file to path
+     * @param string        $dir           Dir string
+     * @param int           $reuse         Reuse more than once per hour
      * @return Response
      * @throws Exception
      */
-    public function download(LibraryType $library, DirectoryItem $item, $dir, $saveTo, $reuse = 1)
+    public function download(LibraryType $library, DirectoryItem $item, $localFilePath, $dir, $reuse = 1)
     {
-        if (is_readable($saveTo)) {
+        if (is_readable($localFilePath)) {
             throw new Exception('File already exists');
         }
 
         $downloadUrl = $this->getDownloadUrl($library, $item, $dir, $reuse);
 
-        return $this->client->get($downloadUrl, ['save_to' => $saveTo]);
+        return $this->client->request('GET', $downloadUrl, ['save_to' => $localFilePath]);
     }
 
     /**
@@ -97,7 +97,8 @@ class File extends AbstractDomain
             throw new Exception('File ' . $localFilePath . ' could not be read or does not exist');
         }
 
-        return $this->client->post(
+        return $this->client->request(
+            'POST',
             $this->getUploadUrl($library),
             [
                 'headers' => ['Accept' => '*/*'],

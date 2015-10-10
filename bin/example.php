@@ -105,7 +105,7 @@ if (count($items) > 0) {
     }
 
     $logger->log(Logger::INFO, "Downloading file " . $items[0]->name . ' to ' . $saveTo);
-    $downloadResponse = $fileDomain->download($lib, $items[0], '/', $saveTo);
+    $downloadResponse = $fileDomain->download($lib, $items[0], $saveTo, '/');
 }
 
 // upload a Hello World file and random file name (note: this seems not to work at this time when you are not logged into the Seafile web frontend).

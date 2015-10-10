@@ -4,6 +4,7 @@ namespace Seafile\Tests\Domain;
 
 use GuzzleHttp\Psr7\Response;
 use Seafile\Domain\File;
+use Seafile\Tests\FileDomainStub;
 use Seafile\Tests\TestCase;
 use Seafile\Type\DirectoryItem;
 use Seafile\Type\Library;
@@ -68,7 +69,7 @@ class FileTest extends TestCase
 
         try {
             $this->setExpectedException('Exception');
-            $fileDomain->download(new Library(), new DirectoryItem(), '/', $newFilename);
+            $fileDomain->download(new Library(), new DirectoryItem(), $newFilename, '/');
             $this->fail('Exception expected');
         } finally {
             unlink($newFilename);
@@ -88,5 +89,31 @@ class FileTest extends TestCase
         $this->setExpectedException('Exception');
         $fileDomain->upload(new Library(), $filename);
         $this->fail('Exception expected');
+    }
+
+    /**
+     * Test download()
+     * @return void
+     * @throws \Exception
+     */
+    public function testDownload()
+    {
+        $fileDomain = new FileDomainStub($this->getMockedClient(new Response()));
+        $response = $fileDomain->download(new Library(), new DirectoryItem(), '/some/path', '/', 1);
+
+        $this->assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
+    }
+
+    /**
+     * Test upload()
+     * @return void
+     * @throws \Exception
+     */
+    public function testUpload()
+    {
+        $fileDomain = new FileDomainStub($this->getMockedClient(new Response()));
+        $response = $fileDomain->upload(new Library(), sys_get_temp_dir(), '/');
+
+        $this->assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
     }
 }
