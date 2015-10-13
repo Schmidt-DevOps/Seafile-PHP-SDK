@@ -38,4 +38,9 @@ class DirectoryItem extends AbstractType
      * @var string
      */
     public $type = "";
+
+    /**
+     * @var DateTime
+     */
+    public $mtime;
 }

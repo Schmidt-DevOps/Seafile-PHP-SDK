@@ -64,7 +64,7 @@ $directoryDomain = new Directory($client);
 $fileDomain = new File($client);
 
 // get all libraries available
-$logger->log(Logger::INFO, "Getting all libraries");
+$logger->log(Logger::INFO, "#################### Getting all libraries");
 $libs = $libraryDomain->getAll();
 
 foreach ($libs as $lib) {
@@ -74,20 +74,20 @@ foreach ($libs as $lib) {
 $libId = $cfg->testLibId;
 
 // get specific library
-$logger->log(Logger::INFO, "Getting lib with ID " . $libId);
+$logger->log(Logger::INFO, "#################### Getting lib with ID " . $libId);
 $lib = $libraryDomain->getById($libId);
 
 $lib->password = $cfg->testLibPassword; // library is encrypted and thus we provide a password
 
 if ($lib->encrypted) {
     $success = $libraryDomain->decrypt($libId, ['query' => ['password' => $cfg->testLibPassword]]);
-    $logger->log(Logger::INFO, "Decrypting library " . $libId . ' was ' . ($success ? '' : 'un') . 'successful');
+    $logger->log(Logger::INFO, "#################### Decrypting library " . $libId . ' was ' . ($success ? '' : 'un') . 'successful');
 } else {
-    $logger->log(Logger::INFO, "Library is not encrypted: " . $libId);
+    $logger->log(Logger::INFO, "#################### Library is not encrypted: " . $libId);
 }
 
 // list library
-$logger->log(Logger::INFO, "Listing items of that library...");
+$logger->log(Logger::INFO, "#################### Listing items of that library...");
 $items = $directoryDomain->getAll($lib);
 
 $logger->log(Logger::INFO, sprintf("\nGot %d items", count($items)));
@@ -113,8 +113,19 @@ $newFilename = tempnam('.', 'Seafile-PHP-SDK_Test_Upload_');
 rename($newFilename, $newFilename . '.txt');
 $newFilename .= '.txt';
 file_put_contents($newFilename, 'Hello World: ' . date('Y-m-d H:i:s'));
-$logger->log(Logger::INFO, "Uploading file " . $newFilename);
-$fileDomain->upload($lib, $newFilename, '/');
+$logger->log(Logger::INFO, "#################### Uploading file " . $newFilename);
+$response = $fileDomain->upload($lib, $newFilename, '/');
+
+// get file info
+$logger->log(Logger::INFO, "#################### Getting file details on " . $newFilename);
+$result = $fileDomain->getFileDetail($lib, '/' . basename($newFilename));
+
+// Update file
+$logger->log(Logger::INFO, "#################### Power napping 10s before updating the file...");
+sleep(10);
+file_put_contents($newFilename, ' - UPDATED!', FILE_APPEND);
+$response = $fileDomain->update($lib, $newFilename, '/');
+
 $result = unlink($newFilename);
 
 print(PHP_EOL . 'Done' . PHP_EOL);

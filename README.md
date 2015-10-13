@@ -41,7 +41,7 @@ mkdir ~/.seafile-php-sdk
 curl -d "username=you@example.com&password=123456" https://your.seafile-server.com/api2/auth-token/ > ~/.seafile-php-sdk/api-token.json
 ```
 
-Hint: if user name contains a "+" char, replace the char with "%2B" (hex ascii for "+"). Just so you know.
+Hint: if user name contains a "+" char, replace the char with "%2B" (hex ascii for "+") or ```urlencode()``` the user name altogether. Just so you know.
 
 ## Installing Seafile-PHP-SDK
 
@@ -115,7 +115,7 @@ foreach ($items as $item) {
     printf("%s: %s (%d bytes)\n", $item->type, $item->name, $item->size);
 }
 ```
-### Download unencrypted file
+### Download file from unencrypted library
 
 ```php
 $dir = '/'; // dir in the library
@@ -124,14 +124,14 @@ $fileDomain = new File($client);
 $downloadResponse = $fileDomain->download($lib, $item, $saveTo, $dir);
 ```
 
-### Download encrypted file
+### Download file from encrypted library
 
-Downloading a file from an encrypted library without password would
-inevitably fail, so just "decrypt" (i.e. unlock) the library before attempting:
+Trying to download a file from an encrypted library without unlocking it first would
+inevitably fail, so just unlock (API docs say "decrypt") the library before attempting:
 
 ```php
 $success = $libraryDomain->decrypt($libId, ['query' => ['password' => $password]]);
-// rest is the same as 'Download unencrypted file', see above
+// rest is the same as 'Download file from unencrypted library', see above
 ```
 
 ### Upload file
@@ -140,7 +140,21 @@ $success = $libraryDomain->decrypt($libId, ['query' => ['password' => $password]
 
 $fileToUpload = '/path/to/file/to/be/uploaded.zip';
 $dir = '/'; // directory in the library to save the file in
-$uploadResponse = $fileDomain->upload($lib, $fileToUpload, $dir);
+$response = $fileDomain->upload($lib, $fileToUpload, $dir);
+$uploadedFileId = json_decode((string)$response->getBody());
+```
+
+### Update file
+
+```php
+$response = $fileDomain->update($lib, $newFilename, '/');
+$updatedFileId = json_decode((string)$response->getBody());
+```
+
+### Get file details
+
+```php
+$directoryItem = $fileDomain->getFileDetail($lib, '/' . basename($fullFilePath));
 ```
 
 ### Debugging and how to enable logging of requests and responses

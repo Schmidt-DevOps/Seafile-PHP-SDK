@@ -66,16 +66,30 @@ class File extends AbstractDomain
     }
 
     /**
+     * Update file
+     * @param LibraryType $library       Library instance
+     * @param String      $localFilePath Local file path
+     * @param string      $dir           Library dir
+     * @return Response
+     * @throws Exception
+     */
+    public function update(LibraryType $library, $localFilePath, $dir = '/')
+    {
+        return $this->upload($library, $localFilePath, $dir, false);
+    }
+
+    /**
      * Get upload URL
      * @param LibraryType $library Library instance
+     * @param Bool        $newFile Is new file (=upload) or not (=update)
      * @return String Upload link
      */
-    public function getUploadUrl(LibraryType $library)
+    public function getUploadUrl(LibraryType $library, $newFile = true)
     {
         $url = $this->client->getConfig('base_uri')
             . '/repos/'
             . $library->id
-            . '/upload-link/';
+            . '/' . ($newFile ? 'upload' : 'update') . '-link/';
 
         $response = $this->client->request('GET', $url);
         $uploadLink = (string)$response->getBody();
@@ -84,14 +98,57 @@ class File extends AbstractDomain
     }
 
     /**
+     * Get multipart params for uploading/updating file
+     * @param String $localFilePath Local file path
+     * @param string $dir           Library dir
+     * @param Bool   $newFile       Is new file (=upload) or not (=update)
+     * @return array
+     */
+    public function getMultiPartParams($localFilePath, $dir, $newFile = true)
+    {
+        $fileBaseName = basename($localFilePath);
+
+        $multiPartParams = [
+            [
+                'headers' => ['Content-Type' => 'application/octet-stream'],
+                'name' => 'file',
+                'contents' => fopen($localFilePath, 'r')
+            ],
+            [
+                'name' => 'name',
+                'contents' => $fileBaseName
+            ],
+            [
+                'name' => 'filename',
+                'contents' => $fileBaseName
+            ]
+        ];
+
+        if ($newFile) {
+            $multiPartParams[] = [
+                'name' => 'parent_dir',
+                'contents' => $dir
+            ];
+        } else {
+            $multiPartParams[] = [
+                'name' => 'target_file',
+                'contents' => $dir . $fileBaseName
+            ];
+        }
+
+        return $multiPartParams;
+    }
+
+    /**
      * Upload file
      * @param LibraryType $library       Library instance
      * @param String      $localFilePath Local file path
      * @param string      $dir           Library dir
-     * @return bool Success
+     * @param Bool        $newFile       Is new file (=upload) or not (=update)
+     * @return Response
      * @throws Exception
      */
-    public function upload(LibraryType $library, $localFilePath, $dir = '/')
+    public function upload(LibraryType $library, $localFilePath, $dir = '/', $newFile = true)
     {
         if (!is_readable($localFilePath)) {
             throw new Exception('File ' . $localFilePath . ' could not be read or does not exist');
@@ -99,29 +156,32 @@ class File extends AbstractDomain
 
         return $this->client->request(
             'POST',
-            $this->getUploadUrl($library),
+            $this->getUploadUrl($library, $newFile),
             [
                 'headers' => ['Accept' => '*/*'],
-                'multipart' => [
-                    [
-                        'headers' => ['Content-Type' => 'application/octet-stream'],
-                        'name' => 'file',
-                        'contents' => fopen($localFilePath, 'r')
-                    ],
-                    [
-                        'name' => 'name',
-                        'contents' => basename($localFilePath)
-                    ],
-                    [
-                        'name' => 'parent_dir',
-                        'contents' => $dir
-                    ],
-                    [
-                        'name' => 'filename',
-                        'contents' => basename($localFilePath)
-                    ]
-                ]
+                'multipart' => $this->getMultiPartParams($localFilePath, $dir, $newFile)
             ]
         );
+    }
+
+    /**
+     * Get file detail
+     * @param LibraryType $library        Library instance
+     * @param String      $remoteFilePath Remote file path
+     * @return DirectoryItem
+     */
+    public function getFileDetail(LibraryType $library, $remoteFilePath)
+    {
+        $url = $this->client->getConfig('base_uri')
+            . '/repos/'
+            . $library->id
+            . '/file/detail/'
+            . '?p=' . $remoteFilePath;
+
+        $response = $this->client->request('GET', $url);
+
+        $json = json_decode((string)$response->getBody());
+
+        return (new DirectoryItem)->fromJson($json);
     }
 }

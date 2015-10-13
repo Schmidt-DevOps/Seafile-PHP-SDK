@@ -35,9 +35,9 @@ class Library extends AbstractType
     public $mtimeRelative = '';
 
     /**
-     * @var string
+     * @var DateTime
      */
-    public $mtime = '';
+    public $mtime;
 
     /**
      * @var string
