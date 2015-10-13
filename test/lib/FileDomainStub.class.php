@@ -36,9 +36,10 @@ class FileDomainStub extends File
     /**
      * Get upload URL
      * @param LibraryType $library Library instance
+     * @param Bool        $newFile Is new file (=upload) or not (=update)
      * @return String Upload link
      */
-    public function getUploadUrl(LibraryType $library)
+    public function getUploadUrl(LibraryType $library, $newFile = true)
     {
         return 'http://upload.example.com/';
     }
