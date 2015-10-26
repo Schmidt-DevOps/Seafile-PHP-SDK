@@ -3,8 +3,7 @@
 namespace Seafile\Tests;
 
 use GuzzleHttp\Psr7\Response;
-use Seafile\Domain\Library;
-use Seafile\Tests\TestCase;
+use Seafile\Resource\Library;
 
 /**
  * Library domain test
@@ -12,7 +11,7 @@ use Seafile\Tests\TestCase;
  * PHP version 5
  *
  * @category  API
- * @package   Seafile\Domain
+ * @package   Seafile\Resource
  * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
  * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
@@ -27,7 +26,7 @@ class LibraryTest extends TestCase
      */
     public function testGetAll()
     {
-        $libraryDomain = new Library($this->getMockedClient(
+        $libraryResource = new Library($this->getMockedClient(
             new Response(
                 200,
                 ['Content-Type' => 'application/json'],
@@ -35,7 +34,7 @@ class LibraryTest extends TestCase
             )
         ));
 
-        $libs = $libraryDomain->getAll();
+        $libs = $libraryResource->getAll();
 
         $this->assertInternalType('array', $libs);
 
@@ -51,7 +50,7 @@ class LibraryTest extends TestCase
      */
     public function testGetById()
     {
-        $libraryDomain = new Library($this->getMockedClient(
+        $libraryResource = new Library($this->getMockedClient(
             new Response(
                 200,
                 ['Content-Type' => 'application/json'],
@@ -59,7 +58,7 @@ class LibraryTest extends TestCase
             )
         ));
 
-        $this->assertInstanceOf('Seafile\Type\Library', $libraryDomain->getById('some_id'));
+        $this->assertInstanceOf('Seafile\Type\Library', $libraryResource->getById('some_id'));
     }
 
     /**
@@ -69,7 +68,7 @@ class LibraryTest extends TestCase
      */
     public function testDecryptMissingQuery()
     {
-        $library = new \Seafile\Domain\Library($this->getMockedClient(new Response));
+        $library = new \Seafile\Resource\Library($this->getMockedClient(new Response));
         $this->setExpectedException('Exception');
         $library->decrypt('some id', []);
     }
@@ -81,7 +80,7 @@ class LibraryTest extends TestCase
      */
     public function testDecryptMissingPassword()
     {
-        $library = new \Seafile\Domain\Library($this->getMockedClient(new Response));
+        $library = new \Seafile\Resource\Library($this->getMockedClient(new Response));
         $this->setExpectedException('Exception');
         $library->decrypt('some id', ['query' => []]);
     }
@@ -93,7 +92,7 @@ class LibraryTest extends TestCase
      */
     public function testDecryptUnsuccessfully()
     {
-        $library = new \Seafile\Domain\Library($this->getMockedClient(
+        $library = new \Seafile\Resource\Library($this->getMockedClient(
             new Response(
                 400,
                 ['Content-Type' => 'application/json'],
@@ -116,7 +115,7 @@ class LibraryTest extends TestCase
      */
     public function testDecryptSuccessfully()
     {
-        $library = new \Seafile\Domain\Library($this->getMockedClient(
+        $library = new \Seafile\Resource\Library($this->getMockedClient(
             new Response(
                 200,
                 ['Content-Type' => 'application/json'],

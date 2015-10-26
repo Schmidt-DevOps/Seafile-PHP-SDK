@@ -3,8 +3,8 @@
 namespace Seafile\Tests;
 
 use GuzzleHttp\Psr7\Response;
-use Seafile\Domain\Directory;
-use Seafile\Domain\Library;
+use Seafile\Resource\Directory;
+use Seafile\Resource\Library;
 use Seafile\Tests\TestCase;
 
 /**
@@ -13,7 +13,7 @@ use Seafile\Tests\TestCase;
  * PHP version 5
  *
  * @category  API
- * @package   Seafile\Domain
+ * @package   Seafile\Resource
  * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
  * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
@@ -28,7 +28,7 @@ class DirectoryTest extends TestCase
      */
     public function testGetAll()
     {
-        $directoryDomain = new Directory($this->getMockedClient(
+        $directoryResource = new Directory($this->getMockedClient(
             new Response(
                 200,
                 ['Content-Type' => 'application/json'],
@@ -36,7 +36,7 @@ class DirectoryTest extends TestCase
             )
         ));
 
-        $directoryItems = $directoryDomain->getAll(new \Seafile\Type\Library());
+        $directoryItems = $directoryResource->getAll(new \Seafile\Type\Library());
 
         $this->assertInternalType('array', $directoryItems);
 

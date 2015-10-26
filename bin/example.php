@@ -2,9 +2,9 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Seafile\Domain\Directory;
-use Seafile\Domain\File;
-use Seafile\Domain\Library;
+use Seafile\Resource\Directory;
+use Seafile\Resource\File;
+use Seafile\Resource\Library;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\MessageFormatter;
@@ -59,13 +59,13 @@ $client = new Client(
         ]
     ]
 );
-$libraryDomain = new Library($client);
-$directoryDomain = new Directory($client);
-$fileDomain = new File($client);
+$libraryResource = new Library($client);
+$directoryResource = new Directory($client);
+$fileResource = new File($client);
 
 // get all libraries available
 $logger->log(Logger::INFO, "#################### Getting all libraries");
-$libs = $libraryDomain->getAll();
+$libs = $libraryResource->getAll();
 
 foreach ($libs as $lib) {
     printf("Name: %s, ID: %s, is encrypted: %s\n", $lib->name, $lib->id, $lib->encrypted ? 'YES' : 'NO');
@@ -75,12 +75,12 @@ $libId = $cfg->testLibId;
 
 // get specific library
 $logger->log(Logger::INFO, "#################### Getting lib with ID " . $libId);
-$lib = $libraryDomain->getById($libId);
+$lib = $libraryResource->getById($libId);
 
 $lib->password = $cfg->testLibPassword; // library is encrypted and thus we provide a password
 
 if ($lib->encrypted) {
-    $success = $libraryDomain->decrypt($libId, ['query' => ['password' => $cfg->testLibPassword]]);
+    $success = $libraryResource->decrypt($libId, ['query' => ['password' => $cfg->testLibPassword]]);
     $logger->log(Logger::INFO, "#################### Decrypting library " . $libId . ' was ' . ($success ? '' : 'un') . 'successful');
 } else {
     $logger->log(Logger::INFO, "#################### Library is not encrypted: " . $libId);
@@ -88,7 +88,7 @@ if ($lib->encrypted) {
 
 // list library
 $logger->log(Logger::INFO, "#################### Listing items of that library...");
-$items = $directoryDomain->getAll($lib);
+$items = $directoryResource->getAll($lib);
 
 $logger->log(Logger::INFO, sprintf("\nGot %d items", count($items)));
 
@@ -105,7 +105,7 @@ if (count($items) > 0) {
     }
 
     $logger->log(Logger::INFO, "Downloading file " . $items[0]->name . ' to ' . $saveTo);
-    $downloadResponse = $fileDomain->download($lib, $items[0], $saveTo, '/');
+    $downloadResponse = $fileResource->download($lib, $items[0], $saveTo, '/');
 }
 
 // upload a Hello World file and random file name (note: this seems not to work at this time when you are not logged into the Seafile web frontend).
@@ -114,17 +114,17 @@ rename($newFilename, $newFilename . '.txt');
 $newFilename .= '.txt';
 file_put_contents($newFilename, 'Hello World: ' . date('Y-m-d H:i:s'));
 $logger->log(Logger::INFO, "#################### Uploading file " . $newFilename);
-$response = $fileDomain->upload($lib, $newFilename, '/');
+$response = $fileResource->upload($lib, $newFilename, '/');
 
 // get file info
 $logger->log(Logger::INFO, "#################### Getting file details on " . $newFilename);
-$result = $fileDomain->getFileDetail($lib, '/' . basename($newFilename));
+$result = $fileResource->getFileDetail($lib, '/' . basename($newFilename));
 
 // Update file
 $logger->log(Logger::INFO, "#################### Power napping 10s before updating the file...");
 sleep(10);
 file_put_contents($newFilename, ' - UPDATED!', FILE_APPEND);
-$response = $fileDomain->update($lib, $newFilename, '/');
+$response = $fileResource->update($lib, $newFilename, '/');
 
 $result = unlink($newFilename);
 

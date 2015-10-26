@@ -3,7 +3,6 @@
 namespace Seafile\Type;
 
 use DateTime;
-use stdClass;
 
 /**
  * Library type class

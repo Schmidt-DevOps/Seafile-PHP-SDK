@@ -2,7 +2,7 @@
 
 namespace Seafile\Tests;
 
-use Seafile\Domain\File;
+use Seafile\Resource\File;
 use Seafile\Type\Library as LibraryType;
 use Seafile\Type\DirectoryItem;
 

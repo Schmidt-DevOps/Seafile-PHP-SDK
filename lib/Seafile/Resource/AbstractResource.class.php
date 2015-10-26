@@ -1,6 +1,6 @@
 <?php
 
-namespace Seafile\Domain;
+namespace Seafile\Resource;
 
 use Seafile\Http\Client;
 
@@ -10,13 +10,13 @@ use Seafile\Http\Client;
  * PHP version 5
  *
  * @category  API
- * @package   Seafile\Domain
+ * @package   Seafile\Resource
  * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
  * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-abstract class AbstractDomain
+abstract class AbstractResource
 {
     /**
      * @var Client
