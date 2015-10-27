@@ -49,7 +49,7 @@ The file ```~/.seafile-php-sdk/api-token.json``` will look something like this:
 {"token": "your_api_token"}
 ```
 
-The example script will assume a config file ```.seafile-php-sdk/cfg.json``` that looks like this:
+The example script will assume a config file ```~/.seafile-php-sdk/cfg.json``` that looks like this:
 
 ```javascript
 {
