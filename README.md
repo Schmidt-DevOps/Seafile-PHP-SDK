@@ -43,6 +43,22 @@ curl -d "username=you@example.com&password=123456" https://your.seafile-server.c
 
 Hint: if user name contains a "+" char, replace the char with "%2B" (hex ascii for "+") or ```urlencode()``` the user name altogether. Just so you know.
 
+The file ```~/.seafile-php-sdk/api-token.json``` will look something like this:
+
+```javascript
+{"token": "your_api_token"}
+```
+
+The example script will assume a config file ```.seafile-php-sdk/cfg.json``` that looks like this:
+
+```javascript
+{
+        "baseUri": "https://your-seafile-server.example.com",
+        "testLibId": "test-library-id",
+        "testLibPassword": "test-library-password"
+}
+```
+
 ## Installing Seafile-PHP-SDK
 
 The recommended way to install seafile-php-sdk is through
