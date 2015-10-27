@@ -121,7 +121,7 @@ foreach ($items as $item) {
 $dir = '/'; // dir in the library
 $saveTo = '/tmp/'. $item->name; // save file to this local path
 $fileDomain = new File($client);
-$downloadResponse = $fileDomain->download($lib, $item, $saveTo, $dir);
+$downloadResponse = $fileResource->download($lib, $item, $saveTo, $dir);
 ```
 
 ### Download file from encrypted library
@@ -130,7 +130,7 @@ Trying to download a file from an encrypted library without unlocking it first w
 inevitably fail, so just unlock (API docs say "decrypt") the library before attempting:
 
 ```php
-$success = $libraryDomain->decrypt($libId, ['query' => ['password' => $password]]);
+$success = $libraryResource->decrypt($libId, ['query' => ['password' => $password]]);
 // rest is the same as 'Download file from unencrypted library', see above
 ```
 
@@ -140,21 +140,21 @@ $success = $libraryDomain->decrypt($libId, ['query' => ['password' => $password]
 
 $fileToUpload = '/path/to/file/to/be/uploaded.zip';
 $dir = '/'; // directory in the library to save the file in
-$response = $fileDomain->upload($lib, $fileToUpload, $dir);
+$response = $fileResource->upload($lib, $fileToUpload, $dir);
 $uploadedFileId = json_decode((string)$response->getBody());
 ```
 
 ### Update file
 
 ```php
-$response = $fileDomain->update($lib, $newFilename, '/');
+$response = $fileResource->update($lib, $newFilename, '/');
 $updatedFileId = json_decode((string)$response->getBody());
 ```
 
 ### Get file details
 
 ```php
-$directoryItem = $fileDomain->getFileDetail($lib, '/' . basename($fullFilePath));
+$directoryItem = $fileResource->getFileDetail($lib, '/' . basename($fullFilePath));
 ```
 
 ### Debugging and how to enable logging of requests and responses
