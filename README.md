@@ -96,8 +96,8 @@ $client = new Client(
 ### List available libraries
 
 ```php
-$libraryDomain = new Library($client);
-$libs = $libraryDomain->getAll();
+$libraryResource = new Library($client);
+$libs = $libraryResource->getAll();
 
 foreach ($libs as $lib) {
     printf("Name: %s, ID: %s, is encrypted: %s\n", $lib->name, $lib->id, $lib->encrypted ? 'YES' : 'NO');
@@ -107,9 +107,9 @@ foreach ($libs as $lib) {
 ### List files and directories of a library
 
 ```php
-$directoryDomain = new Directory($client);
-$lib = $libraryDomain->getById('some library ID of yours');
-$items = $directoryDomain->getAll($lib);
+$directoryResource = new Directory($client);
+$lib = $libraryResource->getById('some library ID of yours');
+$items = $directoryResource->getAll($lib);
 
 foreach ($items as $item) {
     printf("%s: %s (%d bytes)\n", $item->type, $item->name, $item->size);
@@ -120,7 +120,7 @@ foreach ($items as $item) {
 ```php
 $dir = '/'; // dir in the library
 $saveTo = '/tmp/'. $item->name; // save file to this local path
-$fileDomain = new File($client);
+$fileResource = new File($client);
 $downloadResponse = $fileResource->download($lib, $item, $saveTo, $dir);
 ```
 
