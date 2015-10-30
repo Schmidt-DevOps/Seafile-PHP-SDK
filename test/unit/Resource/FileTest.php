@@ -4,7 +4,7 @@ namespace Seafile\Tests\Domain;
 
 use GuzzleHttp\Psr7\Response;
 use Seafile\Resource\File;
-use Seafile\Tests\FileDomainStub;
+use Seafile\Tests\FileResourceStub;
 use Seafile\Tests\TestCase;
 use Seafile\Type\DirectoryItem;
 use Seafile\Type\Library;
@@ -98,7 +98,7 @@ class FileTest extends TestCase
      */
     public function testDownload()
     {
-        $fileResource = new FileDomainStub($this->getMockedClient(new Response()));
+        $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
         $response = $fileResource->download(new Library(), new DirectoryItem(), '/some/path', '/', 1);
 
         $this->assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
@@ -111,7 +111,7 @@ class FileTest extends TestCase
      */
     public function testUpload()
     {
-        $fileResource = new FileDomainStub($this->getMockedClient(new Response()));
+        $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
         $response = $fileResource->upload(new Library(), sys_get_temp_dir(), '/');
 
         $this->assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
@@ -124,7 +124,7 @@ class FileTest extends TestCase
      */
     public function testUpdate()
     {
-        $fileResource = new FileDomainStub($this->getMockedClient(new Response()));
+        $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
         $response = $fileResource->update(new Library(), sys_get_temp_dir(), '/');
 
         $this->assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
@@ -165,7 +165,7 @@ class FileTest extends TestCase
 
         try {
             $dir = '/';
-            $fileResource = new FileDomainStub($this->getMockedClient(new Response()));
+            $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
             $this->assertContains(
                 [
                     'name' => 'parent_dir',
@@ -199,7 +199,7 @@ class FileTest extends TestCase
 
         try {
             $dir = '/';
-            $fileResource = new FileDomainStub($this->getMockedClient(new Response()));
+            $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
             $this->assertNotContains(
                 [
                     'name' => 'parent_dir',

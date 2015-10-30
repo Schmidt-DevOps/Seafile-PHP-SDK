@@ -18,7 +18,7 @@ use Seafile\Type\DirectoryItem;
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-class FileDomainStub extends File
+class FileResourceStub extends File
 {
     /**
      * Get download URL of a file

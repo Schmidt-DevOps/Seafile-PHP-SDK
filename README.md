@@ -34,6 +34,15 @@ Pull requests are welcome.
 - http://manual.seafile.com/develop/web_api.html#seafile-web-api-v2
 - https://reneschmidt.de
 
+## How to get Started
+
+To get started with Seafile PHP SDK, you may either set up your own private Seafile server (```https://www.seafile.com/en/product/private_server/```) or create an account for the Seacloud
+(```https://seacloud.cc```). Because the SDK is in its infancy it's highly recommended to set up a test server or create a test account.
+
+It's not advisable to use your real server/account if you already got one.
+
+After you created your test account continue to the next step.
+
 ## Obtain API token
 
 ```bash
