@@ -16,32 +16,14 @@ Get in touch now: https://www.reneschmidt.de/blog/impressum/
 - Built in File Encryption, better Protecting your Privacy
 - Collaboration around Files, file locking and other features make collaboration easy.
 
-## Dependencies
-
-- PHP >=5.5
-- Guzzle 6
-
-## Contributing
-
-Please note that this package still is in its infancy. Only a small part of the API has been implemented so far.
-
-Pull requests are welcome.
-
-## Links
-
-- http://seafile.com
-- https://www.seafile-server.org/ (Seafile server hosting in Germany)
-- http://manual.seafile.com/develop/web_api.html#seafile-web-api-v2
-- https://reneschmidt.de
-
 ## How to get Started
 
-To get started with Seafile PHP SDK, you may either set up your own private Seafile server (```https://www.seafile.com/en/product/private_server/```) or create an account for the Seacloud
-(```https://seacloud.cc```). Because the SDK is in its infancy it's highly recommended to set up a test server or create a test account.
+To get started with Seafile PHP SDK, you may either set up your own private Seafile server (see [https://www.seafile.com/en/product/private_server/](https://www.seafile.com/en/product/private_server/)) or obtain seacloud.cc account
+[https://seacloud.cc](https://seacloud.cc). Because the SDK is in its infancy it's highly recommended to set up a test server or create a test account.
 
-It's not advisable to use your real server/account if you already got one.
+It's not advisable yet to use your real server/account if you already got one.
 
-After you created your test account continue to the next step.
+After you have created your test account continue to the next step.
 
 ## Obtain API token
 
@@ -50,7 +32,7 @@ mkdir ~/.seafile-php-sdk
 curl -d "username=you@example.com&password=123456" https://your.seafile-server.com/api2/auth-token/ > ~/.seafile-php-sdk/api-token.json
 ```
 
-Hint: if user name contains a "+" char, replace the char with "%2B" (hex ascii for "+") or ```urlencode()``` the user name altogether. Just so you know.
+Insert your test user name and test user password. Hint: if user name contains a "+" char, replace the char with "%2B" (hex ascii for "+") or ```urlencode()``` the user name altogether. Just so you know.
 
 The file ```~/.seafile-php-sdk/api-token.json``` will look something like this:
 
@@ -94,9 +76,12 @@ You can then later update seafile-php-sdk using composer:
 
  ```bash
 composer.phar update
+composer.phar dump-autoload -o
  ```
 
 ## Using Seafile PHP SDK
+
+Hint: Have a look at ```bin/example.php``` -- everything this SDK can do is covered there!
 
 ### Connecting to Seafile
 
@@ -213,6 +198,24 @@ $client = new Client(
 ## Issues
 
 - Please let me know of issues.
+
+## Dependencies
+
+- PHP >=5.5
+- Guzzle 6
+
+## Contributing
+
+Please note that this package still is in its infancy. Only a small part of the API has been implemented so far.
+
+Pull requests are welcome.
+
+## Links
+
+- http://seafile.com
+- https://www.seafile-server.org/ (Seafile server hosting in Germany)
+- http://manual.seafile.com/develop/web_api.html#seafile-web-api-v2
+- https://reneschmidt.de
 
 ## License
 

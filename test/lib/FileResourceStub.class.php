@@ -7,7 +7,7 @@ use Seafile\Type\Library as LibraryType;
 use Seafile\Type\DirectoryItem;
 
 /**
- * File domain stub
+ * File resource stub
  *
  * PHP version 5
  *

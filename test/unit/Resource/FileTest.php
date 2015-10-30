@@ -10,7 +10,7 @@ use Seafile\Type\DirectoryItem;
 use Seafile\Type\Library;
 
 /**
- * File domain test
+ * File resource test
  *
  * PHP version 5
  *
