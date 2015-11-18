@@ -30,7 +30,9 @@ class Directory extends AbstractResource
         $response = $this->client->request(
             'GET',
             $this->client->getConfig('base_uri') . '/repos/' . $library->id . '/dir/',
-            ['p' => $dir]
+            [
+                'query' => ['p' => $dir]
+            ]
         );
 
         $json = json_decode((string)$response->getBody());
