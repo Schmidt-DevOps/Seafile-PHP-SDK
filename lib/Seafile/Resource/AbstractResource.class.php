@@ -31,4 +31,14 @@ abstract class AbstractResource
     {
         $this->client = $client;
     }
+
+    /**
+     * Clip tailing slash
+     * @param String $uri URI string
+     * @return mixed|string
+     */
+    public function clipUri($uri)
+    {
+        return preg_replace("/\/$/", '', $uri);
+    }
 }

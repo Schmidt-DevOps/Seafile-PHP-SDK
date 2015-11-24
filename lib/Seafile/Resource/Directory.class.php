@@ -27,9 +27,11 @@ class Directory extends AbstractResource
      */
     public function getAll(LibraryType $library, $dir = '/')
     {
+        $clippedBaseUri = $this->clipUri($this->client->getConfig('base_uri'));
+
         $response = $this->client->request(
             'GET',
-            $this->client->getConfig('base_uri') . '/repos/' . $library->id . '/dir/',
+            $clippedBaseUri . '/repos/' . $library->id . '/dir/',
             [
                 'query' => ['p' => $dir]
             ]
