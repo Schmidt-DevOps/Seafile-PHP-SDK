@@ -47,4 +47,61 @@ class Directory extends AbstractResource
 
         return $dirItemCollection;
     }
+	
+	public function exists(LibraryType $library, $dirname, $parent_dir = '/') {
+		$directories = $this->getAll($library, $parent_dir);
+		
+		$found = false;
+		
+		foreach($directories as $dir) {
+			if($dir->name == $dirname) {
+				$found = true;
+				break;
+			}
+		}
+
+		return $found;				
+	}
+	public function mkdir(LibraryType $library, $dirname, $parent_dir = '/', $recursive = false) {
+
+		if($recursive === true) {
+			$fileResource = new File($this->client);
+			$parts = explode('/', trim($parent_dir, '/'));
+
+			$tmp = array();
+			foreach($parts as $part) {
+				$parentPath = '/'.implode('/', $tmp);
+				$tmp[] = $part;
+
+				if($this->exists($library, $part, $parentPath) == false) {
+					$this->mkdir($library, $part, $parentPath);
+				}
+			}
+		}
+
+		if(empty($dirname)) {
+			return;
+		}
+        if($this->exists($library, $dirname, $parent_dir) == true) {
+			
+			return false;
+			
+		}
+		
+		$response = $this->client->request(
+            'POST',
+            $this->client->getConfig('base_uri') . '/repos/' . $library->id . '/dir/?p='.rtrim($parent_dir, '/').'/'.$dirname,
+			[
+                'headers' => ['Accept' => 'application/json'],
+                'multipart' => [
+                    [
+                        'name' => 'operation',
+                        'contents' => 'mkdir'
+                    ],
+                ],
+            ]
+        );
+
+        return $response;
+	}	
 }

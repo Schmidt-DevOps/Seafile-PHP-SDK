@@ -34,3 +34,4 @@
 
 # Composer PHAR
 /composer.*
+/.idea
