@@ -47,8 +47,16 @@ class Directory extends AbstractResource
 
         return $dirItemCollection;
     }
-	
-	public function exists(LibraryType $library, $dirname, $parent_dir = '/') {
+
+    /**
+     * check if directoryname exists within parent_dir
+     * @param LibraryType $library
+     * @param $dirname
+     * @param string $parent_dir
+     * @return bool
+     */
+	public function exists(LibraryType $library, $dirname, $parent_dir = '/')
+    {
 		$directories = $this->getAll($library, $parent_dir);
 		
 		$found = false;
@@ -62,10 +70,19 @@ class Directory extends AbstractResource
 
 		return $found;				
 	}
-	public function mkdir(LibraryType $library, $dirname, $parent_dir = '/', $recursive = false) {
+
+    /**
+     * create Directory inside parent_dir
+     * @param LibraryType $library
+     * @param string $dirname
+     * @param string $parent_dir
+     * @param bool|false $recursive
+     * @return mixed
+     */
+	public function mkdir(LibraryType $library, $dirname, $parent_dir = '/', $recursive = false)
+    {
 
 		if($recursive === true) {
-			$fileResource = new File($this->client);
 			$parts = explode('/', trim($parent_dir, '/'));
 
 			$tmp = array();
@@ -79,9 +96,12 @@ class Directory extends AbstractResource
 			}
 		}
 
+        // only create folder, which is not empty to prevent wrong implementation
 		if(empty($dirname)) {
-			return;
+			return false;
 		}
+
+        // don't create folders, which already exists
         if($this->exists($library, $dirname, $parent_dir) == true) {
 			
 			return false;
