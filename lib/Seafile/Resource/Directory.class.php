@@ -55,7 +55,7 @@ class Directory extends AbstractResource
      * @param string $parent_dir
      * @return bool
      */
-	public function exists(LibraryType $library, $dirname, $parent_dir = '/')
+    public function exists(LibraryType $library, $dirname, $parent_dir = '/')
     {
 		$directories = $this->getAll($library, $parent_dir);
 		
@@ -79,7 +79,7 @@ class Directory extends AbstractResource
      * @param bool|false $recursive
      * @return mixed
      */
-	public function mkdir(LibraryType $library, $dirname, $parent_dir = '/', $recursive = false)
+    public function mkdir(LibraryType $library, $dirname, $parent_dir = '/', $recursive = false)
     {
 
 		if($recursive === true) {
