@@ -77,8 +77,8 @@ class Directory extends AbstractResource
      * @param LibraryType $library   Library instance
      * @param String      $dirName   Directory name
      * @param String      $parentDir Parent directory
-     * @param bool|false  $recursive Recursive create
-     * @return mixed
+     * @param bool        $recursive Recursive create
+     * @return bool Success
      */
     public function mkdir(LibraryType $library, $dirName, $parentDir = '/', $recursive = false)
     {
@@ -109,7 +109,7 @@ class Directory extends AbstractResource
 
         $uri = sprintf(
             '%s/repos/%s/dir/?p=%s/%s',
-            $this->client->getConfig('base_uri'),
+            $this->clipUri($this->client->getConfig('base_uri')),
             $library->id,
             rtrim($parentDir, '/'),
             $dirName
@@ -129,6 +129,6 @@ class Directory extends AbstractResource
             ]
         );
 
-        return $response;
+        return $response->getStatusCode() === 201;
     }
 }
