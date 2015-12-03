@@ -125,6 +125,26 @@ foreach ($items as $item) {
     printf("%s: %s (%d bytes)\n", $item->type, $item->name, $item->size);
 }
 ```
+
+### Check if Directory exists
+
+```php
+$parent_dir = '/'; // Directory must exist within this folder
+$directory = 'DirectoryName';
+if($directoryResource->exists($lib, $directory, $parent_dir) === false) {
+ //  directory do not exists
+}
+```
+Because Seafile Web API don't provide a function to do this check, the library load all child items of $parent_dir and checks manually.
+
+### Create Directory
+```php
+$parent_dir = '/'; // create Directory within this folder
+$directory = 'DirectoryName'; // name of the new Directory
+$recursive = false; // recursive will create parent_dir if not already existing
+$directoryResource->mkdir($lib, $directory, $parent_dir, $recursive);
+```
+
 ### Download file from unencrypted library
 
 ```php
