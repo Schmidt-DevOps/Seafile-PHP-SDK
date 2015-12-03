@@ -3,10 +3,7 @@
 namespace Seafile\Tests;
 
 use GuzzleHttp\Psr7\Response;
-use Seafile\Http\Client;
 use Seafile\Resource\Directory;
-use Seafile\Resource\Library;
-use Seafile\Tests\TestCase;
 
 /**
  * AbstractResource test

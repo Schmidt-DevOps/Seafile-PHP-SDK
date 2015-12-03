@@ -21,8 +21,10 @@ class Directory extends AbstractResource
 {
     /**
      * Get all items of a directory in a library
+     *
      * @param LibraryType $library Library type
      * @param String      $dir     Directory path
+     *
      * @return DirectoryItem[]
      */
     public function getAll(LibraryType $library, $dir = '/')
@@ -49,69 +51,74 @@ class Directory extends AbstractResource
     }
 
     /**
-     * check if directoryname exists within parent_dir
-     * @param LibraryType $library
-     * @param $dirname
-     * @param string $parent_dir
+     * Check if $dirName exists within $parentDir
+     *
+     * @param LibraryType $library   Library instance
+     * @param String      $dirName   Directory name
+     * @param String      $parentDir Parent directory
      * @return bool
      */
-    public function exists(LibraryType $library, $dirname, $parent_dir = '/')
+    public function exists(LibraryType $library, $dirName, $parentDir = '/')
     {
-		$directories = $this->getAll($library, $parent_dir);
-		
-		$found = false;
-		
-		foreach($directories as $dir) {
-			if($dir->name == $dirname) {
-				$found = true;
-				break;
-			}
-		}
+        $directories = $this->getAll($library, $parentDir);
 
-		return $found;				
-	}
+        foreach ($directories as $dir) {
+            if ($dir->name === $dirName) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     /**
-     * create Directory inside parent_dir
-     * @param LibraryType $library
-     * @param string $dirname
-     * @param string $parent_dir
-     * @param bool|false $recursive
+     * Create directory within $parentDir
+     *
+     * @param LibraryType $library   Library instance
+     * @param String      $dirName   Directory name
+     * @param String      $parentDir Parent directory
+     * @param bool|false  $recursive Recursive create
      * @return mixed
      */
-    public function mkdir(LibraryType $library, $dirname, $parent_dir = '/', $recursive = false)
+    public function mkdir(LibraryType $library, $dirName, $parentDir = '/', $recursive = false)
     {
+        if ($recursive) {
+            $parts = explode('/', trim($parentDir, '/'));
 
-		if($recursive === true) {
-			$parts = explode('/', trim($parent_dir, '/'));
+            $tmp = array();
 
-			$tmp = array();
-			foreach($parts as $part) {
-				$parentPath = '/'.implode('/', $tmp);
-				$tmp[] = $part;
+            foreach ($parts as $part) {
+                $parentPath = '/' . implode('/', $tmp);
+                $tmp[] = $part;
 
-				if($this->exists($library, $part, $parentPath) == false) {
-					$this->mkdir($library, $part, $parentPath);
-				}
-			}
-		}
+                if ($this->exists($library, $part, $parentPath) === false) {
+                    $this->mkdir($library, $part, $parentPath);
+                }
+            }
+        }
 
-        // only create folder, which is not empty to prevent wrong implementation
-		if(empty($dirname)) {
-			return false;
-		}
+        // only create folder which is not empty to prevent wrong implementation
+        if (empty($dirName)) {
+            return false;
+        }
 
-        // don't create folders, which already exists
-        if($this->exists($library, $dirname, $parent_dir) == true) {
-			
-			return false;
-			
-		}
-		
-		$response = $this->client->request(
+        // Do not create folders that already exist
+        if ($this->exists($library, $dirName, $parentDir)) {
+            return false;
+        }
+
+        $uri = sprintf(
+            '%s/repos/%s/dir/?p=%s/%s',
+            $this->client->getConfig('base_uri'),
+            $library->id,
+            rtrim($parentDir, '/'),
+            $dirName
+        );
+
+        $response = $this->client->request(
             'POST',
-            $this->client->getConfig('base_uri') . '/repos/' . $library->id . '/dir/?p='.rtrim($parent_dir, '/').'/'.$dirname,
-			[
+            $uri,
+            [
                 'headers' => ['Accept' => 'application/json'],
                 'multipart' => [
                     [
@@ -123,5 +130,5 @@ class Directory extends AbstractResource
         );
 
         return $response;
-	}	
+    }
 }

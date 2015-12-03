@@ -53,7 +53,7 @@ class DirectoryTest extends TestCase
      */
     public function testGetAllWithDir()
     {
-        $dir = '/' . uniqid('test_', true);
+        $rootDir = '/' . uniqid('test_', true);
 
         $response = new Response(
             200,
@@ -70,7 +70,7 @@ class DirectoryTest extends TestCase
             ->with(
                 $this->equalTo('GET'),
                 $this->equalTo('http://example.com/repos/some-crazy-id/dir/'),
-                $this->equalTo(['query' => ['p' => $dir]])
+                $this->equalTo(['query' => ['p' => $rootDir]])
             )->willReturn($response);
 
         /**
@@ -80,6 +80,50 @@ class DirectoryTest extends TestCase
         $lib = new \Seafile\Type\Library();
         $lib->id = 'some-crazy-id';
 
-        $directoryResource->getAll($lib, $dir);
+        $directoryResource->getAll($lib, $rootDir);
+    }
+
+    /**
+     * Test exists()
+     *
+     * @return void
+     */
+    public function testExists()
+    {
+        $rootDir = '/' . uniqid('test_', true);
+
+        $response = new Response(
+            200,
+            ['Content-Type' => 'application/json'],
+            file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
+        );
+
+        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+
+        $mockedClient->method('getConfig')->willReturn('http://example.com/');
+
+        // expect 3 requests...
+        $mockedClient->expects($this->exactly(3))
+            ->method('request')
+            ->with(
+                $this->equalTo('GET'),
+                $this->equalTo('http://example.com/repos/some-crazy-id/dir/'),
+                $this->equalTo(['query' => ['p' => $rootDir]])
+            )->willReturn($response);
+
+        /**
+         * @var Client $mockedClient
+         */
+        $directoryResource = new Directory($mockedClient);
+
+        $lib = new \Seafile\Type\Library();
+        $lib->id = 'some-crazy-id';
+
+        $directoryResource->getAll($lib, $rootDir); // ...first request...
+
+        $this->assertFalse($directoryResource->exists($lib, 'does_not_exist', $rootDir)); // ...2nd request...
+
+        // ...3rd request. For 'test_dir' see mock response json file, it's there
+        $this->assertTrue($directoryResource->exists($lib, 'test_dir', $rootDir));
     }
 }
