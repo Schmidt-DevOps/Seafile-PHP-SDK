@@ -103,7 +103,7 @@ class DirectoryTest extends TestCase
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
         // expect 3 requests...
-        $mockedClient->expects($this->exactly(3))
+        $mockedClient->expects($this->exactly(2))
             ->method('request')
             ->with(
                 $this->equalTo('GET'),
@@ -119,11 +119,13 @@ class DirectoryTest extends TestCase
         $lib = new \Seafile\Type\Library();
         $lib->id = 'some-crazy-id';
 
-        $directoryResource->getAll($lib, $rootDir); // ...first request...
-
         $this->assertFalse($directoryResource->exists($lib, 'does_not_exist', $rootDir)); // ...2nd request...
 
         // ...3rd request. For 'test_dir' see mock response json file, it's there
         $this->assertTrue($directoryResource->exists($lib, 'test_dir', $rootDir));
+    }
+
+    public function testMkdir() {
+
     }
 }
