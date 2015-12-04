@@ -6,7 +6,7 @@ use GuzzleHttp\Psr7\Response;
 use Seafile\Resource\Library;
 
 /**
- * Library domain test
+ * Library resource test
  *
  * PHP version 5
  *

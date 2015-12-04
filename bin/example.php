@@ -96,6 +96,8 @@ foreach ($items as $item) {
     printf("%s: %s (%d bytes)\n\n", $item->type, $item->name, $item->size);
 }
 
+$logger->log(Logger::INFO, "#################### Done listing items of that library.");
+
 if (count($items) > 0) {
     // download first file
     $saveTo = './downloaded_' . $items[0]->name;
@@ -104,8 +106,15 @@ if (count($items) > 0) {
         unlink($saveTo);
     }
 
-    $logger->log(Logger::INFO, "Downloading file " . $items[0]->name . ' to ' . $saveTo);
-    $downloadResponse = $fileResource->download($lib, $items[0], $saveTo, '/');
+    switch ($items[0]->type) {
+        case 'file':
+            $logger->log(Logger::INFO, "#################### Downloading file '" . $items[0]->name . "' to '" . $saveTo);
+            $downloadResponse = $fileResource->download($lib, $items[0], $saveTo, '/');
+            break;
+        default:
+            $logger->log(Logger::INFO, "#################### Not downloading '" . $items[0]->name . "' because it's not a file.");
+            break;
+    }
 }
 
 // upload a Hello World file and random file name (note: this seems not to work at this time when you are not logged into the Seafile web frontend).
