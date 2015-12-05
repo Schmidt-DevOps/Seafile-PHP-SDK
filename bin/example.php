@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Attention: This example script will modify the test library! Do not run this script
+ * unless you are prepared for that.
+ */
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Seafile\Resource\Directory;
@@ -136,5 +141,12 @@ file_put_contents($newFilename, ' - UPDATED!', FILE_APPEND);
 $response = $fileResource->update($lib, $newFilename, '/');
 
 $result = unlink($newFilename);
+
+// Create dir structure
+$logger->log(Logger::INFO, "#################### Recursively create directory structure...");
+$parentDir = '/'; // Create directory within this folder
+$directory = 'a/b/c/d/e/f/g/h/i'; // directory structure
+$recursive = true; // recursive will create parentDir if not already existing
+$success = $directoryResource->mkdir($lib, $directory, $parentDir, $recursive);
 
 print(PHP_EOL . 'Done' . PHP_EOL);

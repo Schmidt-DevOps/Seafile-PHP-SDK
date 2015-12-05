@@ -83,8 +83,8 @@ class Directory extends AbstractResource
     public function mkdir(LibraryType $library, $dirName, $parentDir = '/', $recursive = false)
     {
         if ($recursive) {
-            $parts = explode('/', trim($parentDir, '/'));
-
+            $response = false;
+            $parts = explode('/', trim($dirName, '/'));
             $tmp = array();
 
             foreach ($parts as $part) {
@@ -92,9 +92,11 @@ class Directory extends AbstractResource
                 $tmp[] = $part;
 
                 if ($this->exists($library, $part, $parentPath) === false) {
-                    $this->mkdir($library, $part, $parentPath);
+                    $response = $this->mkdir($library, $part, $parentPath, false);
                 }
             }
+
+            return $response;
         }
 
         // only create folder which is not empty to prevent wrong implementation
