@@ -140,6 +140,11 @@ class Directory extends AbstractResource
      * @return bool
      */
     public function rmdir(LibraryType $library, $directoryPath) {
+        // don't allow empty paths
+        if (empty($directoryPath)) {
+            return false;
+        }
+
         $uri = sprintf(
             '%s/repos/%s/dir/?p=%s',
             $this->clipUri($this->client->getConfig('base_uri')),
