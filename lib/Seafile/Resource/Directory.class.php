@@ -135,8 +135,8 @@ class Directory extends AbstractResource
     /**
      * Remove a directory
      *
-     * @param LibraryType $library Library instance
-     * @param String $directoryPath Directory path
+     * @param LibraryType $library       Library instance
+     * @param String      $directoryPath Directory path
      * @return bool
      */
     public function rmdir(LibraryType $library, $directoryPath) {
@@ -163,6 +163,14 @@ class Directory extends AbstractResource
         return $response->getStatusCode() === 200;
     }
 
+    /**
+     * Rename a directory
+     *
+     * @param LibraryType $library          Library object
+     * @param String      $directoryPath    Directory path
+     * @param String      $newDirectoryName New directory name
+     * @return bool
+     */
     public function ren(LibraryType $library, $directoryPath, $newDirectoryName) {
         // don't allow empty paths
         if (empty($directoryPath) || empty($newDirectoryName)) {
