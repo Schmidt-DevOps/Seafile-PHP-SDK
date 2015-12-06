@@ -131,4 +131,30 @@ class Directory extends AbstractResource
 
         return $response->getStatusCode() === 201;
     }
+
+    /**
+     * Remove a directory
+     *
+     * @param LibraryType $library Library instance
+     * @param String $directoryPath Directory path
+     * @return bool
+     */
+    public function rmdir(LibraryType $library, $directoryPath) {
+        $uri = sprintf(
+            '%s/repos/%s/dir/?p=%s',
+            $this->clipUri($this->client->getConfig('base_uri')),
+            $library->id,
+            rtrim($directoryPath, '/')
+        );
+
+        $response = $this->client->request(
+            'DELETE',
+            $uri,
+            [
+                'headers' => ['Accept' => 'application/json'],
+            ]
+        );
+
+        return $response->getStatusCode() === 200;
+    }
 }
