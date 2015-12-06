@@ -206,4 +206,77 @@ class File extends AbstractResource
 
         return (new DirectoryItem)->fromJson($json);
     }
+
+    /**
+     * Delete a file
+     *
+     * @param LibraryType $library Library object
+     * @param String      $filePath File path
+     * @return bool
+     */
+    public function rm(LibraryType $library, $filePath) {
+        // do not allow empty paths
+        if (empty($filePath)) {
+            return false;
+        }
+
+        $uri = sprintf(
+            '%s/repos/%s/file/?p=%s',
+            $this->clipUri($this->client->getConfig('base_uri')),
+            $library->id,
+            $filePath
+        );
+
+        $response = $this->client->request(
+            'DELETE',
+            $uri,
+            [
+                'headers' => ['Accept' => 'application/json'],
+            ]
+        );
+
+        return $response->getStatusCode() === 200;
+    }
+
+    /**
+     * Rename a file
+     *
+     * @param LibraryType $library     Library object
+     * @param String      $filePath    File path
+     * @param String      $newFilename New file name
+     * @return bool
+     */
+    public function ren(LibraryType $library, $filePath, $newFilename) {
+        // do not allow empty paths
+        if (empty($filePath) || empty($newFilename)) {
+            return false;
+        }
+
+        $uri = sprintf(
+            '%s/repos/%s/file/?p=%s',
+            $this->clipUri($this->client->getConfig('base_uri')),
+            $library->id,
+            $filePath
+        );
+
+        $response = $this->client->request(
+            'POST',
+            $uri,
+            [
+                'headers' => ['Accept' => 'application/json'],
+                'multipart' => [
+                    [
+                        'name' => 'operation',
+                        'contents' => 'rename'
+                    ],
+                    [
+                        'name' => 'newname',
+                        'contents' => $newFilename
+                    ],
+                ],
+            ]
+        );
+
+        return $response->getStatusCode() === 301;
+    }
 }
