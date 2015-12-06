@@ -78,4 +78,106 @@ class Library extends AbstractResource
 
         return json_decode($response->getBody()) === 'success';
     }
+
+	/**
+	 * Check if $name exists
+	 *
+	 * @param String $name Library name
+	 * @return bool
+	 */
+	public function exists($name)
+	{
+		$libraries = $this->getAll();
+
+		foreach ($libraries as $lib) {
+			if ($lib->name === $name) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Create a new library
+	 *
+	 * @param String $name Library name
+	 * @param string $description Library description
+	 * @param mixed $password false means no encryption, any other string is used as password
+	 * @return bool
+	 */
+	public function mklib($name, $description = "new repo", $password = false) {
+		// only create a library which is not empty to prevent wrong implementation
+		if (empty($name)) {
+			return false;
+		}
+
+		// Do not create libraries that already exist
+		if ($this->exists($name)) {
+			return false;
+		}
+
+		$uri = sprintf(
+			'%s/repos/',
+			$this->clipUri($this->client->getConfig('base_uri'))
+		);
+
+		$multipartData = [
+			[
+				'name' => 'name',
+				'contents' => $name,
+			],
+			[
+				'name' => 'desc',
+				'contents' => $description,
+			],
+		];
+
+		if($password !== false) {
+			$multipartData[] = [
+				'name' => 'passwd',
+				'contents' => $password,
+			];
+		}
+
+		$response = $this->client->request(
+			'POST',
+			$uri,
+			[
+				'headers' => ['Accept' => 'application/json'],
+				'multipart' => $multipartData,
+			]
+		);
+
+		return $response->getStatusCode() === 200;
+	}
+
+    /**
+     * Remove a library
+     *
+     * @param String $libraryId Library ID
+     * @return bool
+     */
+	public function rmlib($libraryId) {
+		// do not allow empty id's
+		if (empty($libraryId)) {
+			return false;
+		}
+
+		$uri = sprintf(
+				'%s/repos/%s/',
+				$this->clipUri($this->client->getConfig('base_uri')),
+				$libraryId
+		);
+
+		$response = $this->client->request(
+				'DELETE',
+				$uri,
+				[
+						'headers' => ['Accept' => 'application/json'],
+				]
+		);
+
+		return $response->getStatusCode() === 200;
+	}
 }

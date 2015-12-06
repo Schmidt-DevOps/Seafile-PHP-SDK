@@ -133,4 +133,77 @@ class Directory extends AbstractResource
 
         return $response->getStatusCode() === 201;
     }
+
+    /**
+     * Remove a directory
+     *
+     * @param LibraryType $library       Library instance
+     * @param String      $directoryPath Directory path
+     * @return bool
+     */
+    public function rmdir(LibraryType $library, $directoryPath) {
+        // don't allow empty paths
+        if (empty($directoryPath)) {
+            return false;
+        }
+
+        $uri = sprintf(
+            '%s/repos/%s/dir/?p=%s',
+            $this->clipUri($this->client->getConfig('base_uri')),
+            $library->id,
+            rtrim($directoryPath, '/')
+        );
+
+        $response = $this->client->request(
+            'DELETE',
+            $uri,
+            [
+                'headers' => ['Accept' => 'application/json'],
+            ]
+        );
+
+        return $response->getStatusCode() === 200;
+    }
+
+    /**
+     * Rename a directory
+     *
+     * @param LibraryType $library          Library object
+     * @param String      $directoryPath    Directory path
+     * @param String      $newDirectoryName New directory name
+     * @return bool
+     */
+    public function ren(LibraryType $library, $directoryPath, $newDirectoryName) {
+        // don't allow empty paths
+        if (empty($directoryPath) || empty($newDirectoryName)) {
+            return false;
+        }
+
+        $uri = sprintf(
+            '%s/repos/%s/dir/?p=%s',
+            $this->clipUri($this->client->getConfig('base_uri')),
+            $library->id,
+            rtrim($directoryPath, '/')
+        );
+
+        $response = $this->client->request(
+            'POST',
+            $uri,
+            [
+                'headers' => ['Accept' => 'application/json'],
+                'multipart' => [
+                    [
+                        'name' => 'operation',
+                        'contents' => 'rename'
+                    ],
+                    [
+                        'name' => 'newname',
+                        'contents' => $newDirectoryName
+                    ],
+                ],
+            ]
+        );
+
+        return $response->getStatusCode() === 200;
+    }
 }
