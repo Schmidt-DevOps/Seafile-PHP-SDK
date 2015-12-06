@@ -27,7 +27,8 @@ class Multi extends AbstractResource
      * @param String      $dstDirectoryPath Destination directory Path
      * @return bool
      */
-    public function move(LibraryType $srcLibrary, $srcPaths, LibraryType $dstLibrary, $dstDirectoryPath) {
+    public function move(LibraryType $srcLibrary, $srcPaths, LibraryType $dstLibrary, $dstDirectoryPath)
+    {
         // do not allow empty paths
         if (empty($srcPaths) || empty($dstDirectoryPath)) {
             return false;
@@ -41,11 +42,11 @@ class Multi extends AbstractResource
 
         // check source folders paths
         // and build the file_names string
-        foreach($srcPaths as $srcPath) {
-            if(dirname($srcPath) != $srcFolderPath) {
+        foreach ($srcPaths as $srcPath) {
+            if (dirname($srcPath) != $srcFolderPath) {
                 return false; // all source paths must be the same
             }
-            if($dstFileNames != "") {
+            if ($dstFileNames != "") {
                 $dstFileNames .= ":";
             }
             $dstFileNames .= basename($srcPath);
@@ -94,7 +95,8 @@ class Multi extends AbstractResource
      * @param String      $dstDirectoryPath Destination directory Path
      * @return bool
      */
-    public function copy(LibraryType $srcLibrary, $srcPaths, LibraryType $dstLibrary, $dstDirectoryPath) {
+    public function copy(LibraryType $srcLibrary, $srcPaths, LibraryType $dstLibrary, $dstDirectoryPath)
+    {
         // do not allow empty paths
         if (empty($srcPaths) || empty($dstDirectoryPath)) {
             return false;
@@ -108,11 +110,11 @@ class Multi extends AbstractResource
 
         // check source folders paths
         // and build the file_names string
-        foreach($srcPaths as $srcPath) {
-            if(dirname($srcPath) != $srcFolderPath) {
+        foreach ($srcPaths as $srcPath) {
+            if (dirname($srcPath) != $srcFolderPath) {
                 return false; // all source paths must be the same
             }
-            if($dstFileNames != "") {
+            if ($dstFileNames != "") {
                 $dstFileNames .= ":";
             }
             $dstFileNames .= basename($srcPath);
@@ -159,7 +161,8 @@ class Multi extends AbstractResource
      * @param array       $paths   Array with file and folder paths (they must be in the same folder)
      * @return bool
      */
-    public function delete(LibraryType $library, $paths) {
+    public function delete(LibraryType $library, $paths)
+    {
         // do not allow empty paths
         if (empty($paths)) {
             return false;
@@ -173,11 +176,11 @@ class Multi extends AbstractResource
 
         // check source folders paths
         // and build the file_names string
-        foreach($paths as $path) {
-            if(dirname($path) != $folderPath) {
+        foreach ($paths as $path) {
+            if (dirname($path) != $folderPath) {
                 return false; // all paths must be the same
             }
-            if($fileNames != "") {
+            if ($fileNames != "") {
                 $fileNames .= ":";
             }
             $fileNames .= basename($path);

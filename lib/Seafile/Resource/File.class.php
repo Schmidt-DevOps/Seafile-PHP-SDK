@@ -45,7 +45,8 @@ class File extends AbstractResource
     }
 
     /**
-     * Get download URL of a file
+     * Get download URL of a file from a Directory item
+     *
      * @param LibraryType   $library       Library instance
      * @param DirectoryItem $item          Item instance
      * @param string        $localFilePath Save file to path
@@ -54,7 +55,7 @@ class File extends AbstractResource
      * @return Response
      * @throws Exception
      */
-    public function download(LibraryType $library, DirectoryItem $item, $localFilePath, $dir, $reuse = 1)
+    public function downloadFromDir(LibraryType $library, DirectoryItem $item, $localFilePath, $dir, $reuse = 1)
     {
         if (is_readable($localFilePath)) {
             throw new Exception('File already exists');
@@ -65,19 +66,24 @@ class File extends AbstractResource
         return $this->client->request('GET', $downloadUrl, ['save_to' => $localFilePath]);
     }
 
-    public function downloadFile(LibraryType $library, $filePath, $localFilePath, $reuse = 1)
+    /**
+     * Get download URL of a file
+     *
+     * @param LibraryType $library       Library instance
+     * @param string      $filePath      Save file to path
+     * @param string      $localFilePath Local file path
+     * @param int         $reuse         Reuse more than once per hour
+     * @return Response
+     * @throws Exception
+     */
+    public function download(LibraryType $library, $filePath, $localFilePath, $reuse = 1)
     {
-        if (is_readable($localFilePath)) {
-            throw new Exception('File already exists');
-        }
-
         $item = new DirectoryItem();
         $item->name = basename($filePath);
+
         $dir = str_replace("\\", "/", dirname($filePath)); // compatibility for windows
 
-        $downloadUrl = $this->getDownloadUrl($library, $item, $dir, $reuse);
-
-        return $this->client->request('GET', $downloadUrl, ['save_to' => fopen($localFilePath, "w")]);
+        return $this->downloadFromDir($library, $item, $localFilePath, $dir, $reuse);
     }
 
     /**
@@ -123,7 +129,7 @@ class File extends AbstractResource
      */
     public function getMultiPartParams($localFilePath, $dir, $newFile = true, $newFilename = false)
     {
-        if($newFilename === false) {
+        if ($newFilename === false) {
             $fileBaseName = basename($localFilePath);
         } else {
             $fileBaseName = $newFilename;
@@ -208,13 +214,14 @@ class File extends AbstractResource
     }
 
     /**
-     * Delete a file
+     * Remove a file
      *
-     * @param LibraryType $library Library object
+     * @param LibraryType $library  Library object
      * @param String      $filePath File path
      * @return bool
      */
-    public function rm(LibraryType $library, $filePath) {
+    public function remove(LibraryType $library, $filePath)
+    {
         // do not allow empty paths
         if (empty($filePath)) {
             return false;
@@ -246,7 +253,8 @@ class File extends AbstractResource
      * @param String      $newFilename New file name
      * @return bool
      */
-    public function ren(LibraryType $library, $filePath, $newFilename) {
+    public function rename(LibraryType $library, $filePath, $newFilename)
+    {
         // do not allow empty paths
         if (empty($filePath) || empty($newFilename)) {
             return false;
@@ -289,7 +297,8 @@ class File extends AbstractResource
      * @param String      $dstDirectoryPath Destination directory path
      * @return bool
      */
-    public function copy(LibraryType $srcLibrary, $srcFilePath, LibraryType $dstLibrary, $dstDirectoryPath) {
+    public function copy(LibraryType $srcLibrary, $srcFilePath, LibraryType $dstLibrary, $dstDirectoryPath)
+    {
         // do not allow empty paths
         if (empty($srcFilePath) || empty($dstDirectoryPath)) {
             return false;
@@ -336,7 +345,8 @@ class File extends AbstractResource
      * @param String      $dstDirectoryPath Destination directory path
      * @return bool
      */
-    public function move(LibraryType $srcLibrary, $srcFilePath, LibraryType $dstLibrary, $dstDirectoryPath) {
+    public function move(LibraryType $srcLibrary, $srcFilePath, LibraryType $dstLibrary, $dstDirectoryPath)
+    {
         // do not allow empty paths
         if (empty($srcFilePath) || empty($dstDirectoryPath)) {
             return false;

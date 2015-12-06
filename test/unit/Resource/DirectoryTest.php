@@ -5,6 +5,7 @@ namespace Seafile\Tests;
 use GuzzleHttp\Psr7\Response;
 use Seafile\Http\Client;
 use Seafile\Resource\Directory;
+use Seafile\Type\Library;
 
 /**
  * Directory resource test
@@ -124,23 +125,23 @@ class DirectoryTest extends TestCase
     }
 
     /**
-     * Data provider for testMkdirNonRecursive()
+     * Data provider for testCreateNonRecursive()
      *
      * @return array
      */
-    public function mkdirNonRecursiveDataProvider()
+    public function createNonRecursiveDataProvider()
     {
         return [[201], [500]];
     }
 
     /**
-     * Test mkdir() non-recursively
+     * Test create() non-recursively
      *
-     * @param Int $mkdirResponseCode Expected mkdir request response code
-     * @dataProvider mkdirNonRecursiveDataProvider
+     * @param Int $expectResponseCode Expected mkdir request response code
+     * @dataProvider createNonRecursiveDataProvider
      * @return void
      */
-    public function testMkdirNonRecursive($mkdirResponseCode)
+    public function testCreateNonRecursive($expectResponseCode)
     {
         $getAllResponse = new Response(
             200,
@@ -148,7 +149,7 @@ class DirectoryTest extends TestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        $mkdirResponse = new Response($mkdirResponseCode, ['Content-Type' => 'text/plain']);
+        $mkdirResponse = new Response($expectResponseCode, ['Content-Type' => 'text/plain']);
 
         $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
 
@@ -178,19 +179,19 @@ class DirectoryTest extends TestCase
         $lib = new \Seafile\Type\Library();
         $lib->id = 'some-crazy-id';
 
-        if ($mkdirResponseCode === 201) {
-            $this->assertTrue($directoryResource->mkdir($lib, 'new_dir', '/', false));
+        if ($expectResponseCode === 201) {
+            $this->assertTrue($directoryResource->create($lib, 'new_dir', '/', false));
         } else {
-            $this->assertFalse($directoryResource->mkdir($lib, 'new_dir', '/', false));
+            $this->assertFalse($directoryResource->create($lib, 'new_dir', '/', false));
         }
     }
 
     /**
-     * Test mkdir() non-recursively, directory exists. Must yield boolean false.
+     * Test create() non-recursively, directory exists. Must yield boolean false.
      *
      * @return void
      */
-    public function testMkdirDirectoryExists()
+    public function testCreateDirectoryExists()
     {
         $getAllResponse = new Response(
             200,
@@ -219,30 +220,30 @@ class DirectoryTest extends TestCase
         $lib = new \Seafile\Type\Library();
         $lib->id = 'some-crazy-id';
 
-        $this->assertFalse($directoryResource->mkdir($lib, 'test_dir', '/', false));
+        $this->assertFalse($directoryResource->create($lib, 'test_dir', '/', false));
     }
 
     /**
-     * test mkdir() with empty dirName. Must yield boolean false.
+     * test create() with empty dirName. Must yield boolean false.
      *
      * @return void
      */
-    public function testMkdirEmptyDirName()
+    public function testCreateEmptyDirName()
     {
         $directoryResource = new Directory(new \Seafile\Http\Client());
 
-        $this->assertFalse($directoryResource->mkdir(
+        $this->assertFalse($directoryResource->create(
             new \Seafile\Type\Library(),
             ''
         ));
     }
 
     /**
-     * Test mkdir() recursively
+     * Test create() recursively
      *
      * @return void
      */
-    public function testMkdirRecursive()
+    public function testCreateRecursive()
     {
         $getAllResponse = new Response(
             200,
@@ -281,6 +282,154 @@ class DirectoryTest extends TestCase
         $lib = new \Seafile\Type\Library();
         $lib->id = 'some-crazy-id';
 
-        $this->assertTrue($directoryResource->mkdir($lib, 'a/b', '/', true));
+        $this->assertTrue($directoryResource->create($lib, 'a/b', '/', true));
+    }
+
+    /**
+     * Test rename(), with invalid directory name
+     *
+     * @return void
+     */
+    public function testRenameInvalidDirectoryName()
+    {
+        $lib = new \Seafile\Type\Library();
+        $lib->id = 'some-crazy-id';
+
+        $directoryResource = new Directory(new Client());
+        $this->assertfalse($directoryResource->rename($lib, '', ''));
+    }
+
+    /**
+     * Test rename()
+     *
+     * @return void
+     */
+    public function testRename()
+    {
+        $getAllResponse = new Response(
+            200,
+            ['Content-Type' => 'application/json'],
+            file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
+        );
+
+        $mkdirResponse = new Response(200, ['Content-Type' => 'text/plain']);
+        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient->method('getConfig')->willReturn('http://example.com/');
+
+        $expectUri = 'http://example.com/repos/some-crazy-id/dir/?p=test_dir';
+        $expectParams = [
+            'headers' => ['Accept' => "application/json"],
+            'multipart' => [
+                [
+                    'name' => "operation",
+                    'contents' => "rename"
+                ],
+                [
+                    'name' => "newname",
+                    'contents' => "test_dir_renamed"
+                ]
+            ]
+        ];
+
+        // @todo: Test more thoroughly. For example make sure request() gets called with POST twice (a, then b)
+        $mockedClient->expects($this->any())
+            ->method('request')
+            ->with($this->logicalOr(
+                $this->equalTo('GET'),
+                $this->equalTo('POST')
+            ))
+            // Return what was passed to offsetGet as a new instance
+            ->will($this->returnCallback(
+                function ($method, $uri, $params) use ($getAllResponse, $mkdirResponse, $expectUri, $expectParams) {
+                    if ($method === 'GET') {
+                        return $getAllResponse;
+                    }
+
+                    if ($expectUri === $uri && $expectParams === $params) {
+                        return $mkdirResponse;
+                    }
+
+                    return new Response(500);
+                }
+            ));
+
+        /**
+         * @var Client $mockedClient
+         */
+        $directoryResource = new Directory($mockedClient);
+
+        $lib = new \Seafile\Type\Library();
+        $lib->id = 'some-crazy-id';
+
+        $this->assertTrue($directoryResource->rename($lib, 'test_dir', 'test_dir_renamed'));
+    }
+
+    /**
+     * Test remove(), with invalid directory name
+     *
+     * @return void
+     */
+    public function testRemoveInvalidDirectoryName()
+    {
+        $lib = new \Seafile\Type\Library();
+        $lib->id = 'some-crazy-id';
+
+        $directoryResource = new Directory(new Client());
+        $this->assertfalse($directoryResource->remove($lib, ''));
+    }
+
+    /**
+     * Test remove()
+     *
+     * @return void
+     */
+    public function testRemove()
+    {
+        $getAllResponse = new Response(
+            200,
+            ['Content-Type' => 'application/json'],
+            file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
+        );
+
+        $mkdirResponse = new Response(200, ['Content-Type' => 'text/plain']);
+        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient->method('getConfig')->willReturn('http://example.com/');
+
+        $expectUri = 'http://example.com/repos/some-crazy-id/dir/?p=test_dir';
+        $expectParams = [
+            'headers' => ['Accept' => "application/json"]
+        ];
+
+        // @todo: Test more thoroughly. For example make sure request() gets called with POST twice (a, then b)
+        $mockedClient->expects($this->any())
+            ->method('request')
+            ->with($this->logicalOr(
+                $this->equalTo('GET'),
+                $this->equalTo('DELETE')
+            ))
+            // Return what was passed to offsetGet as a new instance
+            ->will($this->returnCallback(
+                function ($method, $uri, $params) use ($getAllResponse, $mkdirResponse, $expectUri, $expectParams) {
+                    if ($method === 'GET') {
+                        return $getAllResponse;
+                    }
+
+                    if ($expectUri === $uri && $expectParams === $params) {
+                        return $mkdirResponse;
+                    }
+
+                    return new Response(500);
+                }
+            ));
+
+        /**
+         * @var Client $mockedClient
+         */
+        $directoryResource = new Directory($mockedClient);
+
+        $lib = new \Seafile\Type\Library();
+        $lib->id = 'some-crazy-id';
+
+        $this->assertTrue($directoryResource->remove($lib, 'test_dir'));
     }
 }

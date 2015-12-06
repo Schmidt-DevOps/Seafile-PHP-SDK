@@ -64,7 +64,7 @@ Next, run the Composer command to install the latest stable version of seafile-p
 
 ```bash
 composer.phar require rsd/seafile-php-sdk
-composer.phar dump-autoload -o
+composer.phar dump-autoload -o # currently this is necessary
 ```
 
 After installing, you need to require Composer's autoloader:
@@ -77,7 +77,7 @@ You can then later update seafile-php-sdk using composer:
 
  ```bash
 composer.phar update
-composer.phar dump-autoload -o
+composer.phar dump-autoload -o # currently this is necessary
  ```
 
 ## Using Seafile PHP SDK
@@ -143,7 +143,7 @@ Because Seafile Web API don't provide a function to do this check, the library l
 $parentDir = '/'; // Create directory within this folder
 $directory = 'DirectoryName'; // name of the new Directory
 $recursive = false; // recursive will create parentDir if not already existing
-$success = $directoryResource->mkdir($lib, $directory, $parentDir, $recursive);
+$success = $directoryResource->create($lib, $directory, $parentDir, $recursive);
 ```
 
 ### Download file from unencrypted library
@@ -152,7 +152,7 @@ $success = $directoryResource->mkdir($lib, $directory, $parentDir, $recursive);
 $dir = '/'; // dir in the library
 $saveTo = '/tmp/'. $item->name; // save file to this local path
 $fileResource = new File($client);
-$downloadResponse = $fileResource->download($lib, $item, $saveTo, $dir);
+$downloadResponse = $fileResource->downloadFromDir($lib, $item, $saveTo, $dir);
 ```
 
 ### Download file from encrypted library

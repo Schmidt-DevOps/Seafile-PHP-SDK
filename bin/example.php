@@ -114,7 +114,7 @@ if (count($items) > 0) {
     switch ($items[0]->type) {
         case 'file':
             $logger->log(Logger::INFO, "#################### Downloading file '" . $items[0]->name . "' to '" . $saveTo);
-            $downloadResponse = $fileResource->download($lib, $items[0], $saveTo, '/');
+            $downloadResponse = $fileResource->downloadFromDir($lib, $items[0], $saveTo, '/');
             break;
         default:
             $logger->log(Logger::INFO, "#################### Not downloading '" . $items[0]->name . "' because it's not a file.");
@@ -147,6 +147,6 @@ $logger->log(Logger::INFO, "#################### Recursively create directory st
 $parentDir = '/'; // Create directory within this folder
 $directory = 'a/b/c/d/e/f/g/h/i'; // directory structure
 $recursive = true; // recursive will create parentDir if not already existing
-$success = $directoryResource->mkdir($lib, $directory, $parentDir, $recursive);
+$success = $directoryResource->create($lib, $directory, $parentDir, $recursive);
 
 print(PHP_EOL . 'Done' . PHP_EOL);

@@ -62,14 +62,14 @@ class FileTest extends TestCase
      * @return void
      * @throws \Exception
      */
-    public function testDownloadFileExists()
+    public function testDownloadFromDirFileExists()
     {
         $newFilename = tempnam(sys_get_temp_dir(), uniqid());
         $fileResource = new File($this->getMockedClient(new Response()));
 
         try {
             $this->setExpectedException('Exception');
-            $fileResource->download(new Library(), new DirectoryItem(), $newFilename, '/');
+            $fileResource->downloadFromDir(new Library(), new DirectoryItem(), $newFilename, '/');
             $this->fail('Exception expected');
         } finally {
             unlink($newFilename);
@@ -92,14 +92,14 @@ class FileTest extends TestCase
     }
 
     /**
-     * Test download()
+     * Test downloadFromDir()
      * @return void
      * @throws \Exception
      */
-    public function testDownload()
+    public function testDownloadFromDir()
     {
         $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
-        $response = $fileResource->download(new Library(), new DirectoryItem(), '/some/path', '/', 1);
+        $response = $fileResource->downloadFromDir(new Library(), new DirectoryItem(), '/some/path', '/', 1);
 
         $this->assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
     }

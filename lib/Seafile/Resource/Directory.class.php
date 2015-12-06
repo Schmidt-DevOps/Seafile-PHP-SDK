@@ -80,7 +80,7 @@ class Directory extends AbstractResource
      * @param bool        $recursive Recursive create
      * @return bool Success
      */
-    public function mkdir(LibraryType $library, $dirName, $parentDir = '/', $recursive = false)
+    public function create(LibraryType $library, $dirName, $parentDir = '/', $recursive = false)
     {
         if ($recursive) {
             $response = false;
@@ -92,7 +92,7 @@ class Directory extends AbstractResource
                 $tmp[] = $part;
 
                 if ($this->exists($library, $part, $parentPath) === false) {
-                    $response = $this->mkdir($library, $part, $parentPath, false);
+                    $response = $this->create($library, $part, $parentPath, false);
                 }
             }
 
@@ -141,7 +141,8 @@ class Directory extends AbstractResource
      * @param String      $directoryPath Directory path
      * @return bool
      */
-    public function rmdir(LibraryType $library, $directoryPath) {
+    public function remove(LibraryType $library, $directoryPath)
+    {
         // don't allow empty paths
         if (empty($directoryPath)) {
             return false;
@@ -173,7 +174,8 @@ class Directory extends AbstractResource
      * @param String      $newDirectoryName New directory name
      * @return bool
      */
-    public function ren(LibraryType $library, $directoryPath, $newDirectoryName) {
+    public function rename(LibraryType $library, $directoryPath, $newDirectoryName)
+    {
         // don't allow empty paths
         if (empty($directoryPath) || empty($newDirectoryName)) {
             return false;
