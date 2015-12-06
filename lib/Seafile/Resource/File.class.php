@@ -65,17 +65,33 @@ class File extends AbstractResource
         return $this->client->request('GET', $downloadUrl, ['save_to' => $localFilePath]);
     }
 
+    public function downloadFile(LibraryType $library, $filePath, $localFilePath, $reuse = 1)
+    {
+        if (is_readable($localFilePath)) {
+            throw new Exception('File already exists');
+        }
+
+        $item = new DirectoryItem();
+        $item->name = basename($filePath);
+        $dir = str_replace("\\", "/", dirname($filePath)); // compatibility for windows
+
+        $downloadUrl = $this->getDownloadUrl($library, $item, $dir, $reuse);
+
+        return $this->client->request('GET', $downloadUrl, ['save_to' => fopen($localFilePath, "w")]);
+    }
+
     /**
      * Update file
      * @param LibraryType $library       Library instance
      * @param String      $localFilePath Local file path
      * @param string      $dir           Library dir
+     * @param mixed       $filename      File name, or false to use the name from $localFilePath
      * @return Response
      * @throws Exception
      */
-    public function update(LibraryType $library, $localFilePath, $dir = '/')
+    public function update(LibraryType $library, $localFilePath, $dir = '/', $filename = false)
     {
-        return $this->upload($library, $localFilePath, $dir, false);
+        return $this->upload($library, $localFilePath, $dir, $filename, false);
     }
 
     /**
@@ -100,13 +116,18 @@ class File extends AbstractResource
     /**
      * Get multipart params for uploading/updating file
      * @param String $localFilePath Local file path
-     * @param string $dir           Library dir
+     * @param String $dir           Library dir
      * @param Bool   $newFile       Is new file (=upload) or not (=update)
+     * @param mixed  $newFilename   New file name, or false to use the name from $localFilePath
      * @return array
      */
-    public function getMultiPartParams($localFilePath, $dir, $newFile = true)
+    public function getMultiPartParams($localFilePath, $dir, $newFile = true, $newFilename = false)
     {
-        $fileBaseName = basename($localFilePath);
+        if($newFilename === false) {
+            $fileBaseName = basename($localFilePath);
+        } else {
+            $fileBaseName = $newFilename;
+        }
 
         $multiPartParams = [
             [
@@ -132,7 +153,7 @@ class File extends AbstractResource
         } else {
             $multiPartParams[] = [
                 'name' => 'target_file',
-                'contents' => $dir . $fileBaseName
+                'contents' => rtrim($dir, "/") . "/" . $fileBaseName
             ];
         }
 
@@ -144,11 +165,12 @@ class File extends AbstractResource
      * @param LibraryType $library       Library instance
      * @param String      $localFilePath Local file path
      * @param string      $dir           Library dir
+     * @param mixed       $newFilename   New file name, or false to use the name from $localFilePath
      * @param Bool        $newFile       Is new file (=upload) or not (=update)
      * @return Response
      * @throws Exception
      */
-    public function upload(LibraryType $library, $localFilePath, $dir = '/', $newFile = true)
+    public function upload(LibraryType $library, $localFilePath, $dir = '/', $newFilename = false, $newFile = true)
     {
         if (!is_readable($localFilePath)) {
             throw new Exception('File ' . $localFilePath . ' could not be read or does not exist');
@@ -159,7 +181,7 @@ class File extends AbstractResource
             $this->getUploadUrl($library, $newFile),
             [
                 'headers' => ['Accept' => '*/*'],
-                'multipart' => $this->getMultiPartParams($localFilePath, $dir, $newFile)
+                'multipart' => $this->getMultiPartParams($localFilePath, $dir, $newFile, $newFilename)
             ]
         );
     }
