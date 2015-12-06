@@ -279,4 +279,98 @@ class File extends AbstractResource
 
         return $response->getStatusCode() === 301;
     }
+
+    /**
+     * Copy a file
+     *
+     * @param LibraryType $srcLibrary       Source library object
+     * @param String      $srcFilePath      Source file path
+     * @param LibraryType $dstLibrary       Destination library object
+     * @param String      $dstDirectoryPath Destination directory path
+     * @return bool
+     */
+    public function copy(LibraryType $srcLibrary, $srcFilePath, LibraryType $dstLibrary, $dstDirectoryPath) {
+        // do not allow empty paths
+        if (empty($srcFilePath) || empty($dstDirectoryPath)) {
+            return false;
+        }
+
+        $uri = sprintf(
+            '%s/repos/%s/file/?p=%s',
+            $this->clipUri($this->client->getConfig('base_uri')),
+            $srcLibrary->id,
+            $srcFilePath
+        );
+
+        $response = $this->client->request(
+            'POST',
+            $uri,
+            [
+                'headers' => ['Accept' => 'application/json'],
+                'multipart' => [
+                    [
+                        'name' => 'operation',
+                        'contents' => 'copy'
+                    ],
+                    [
+                        'name' => 'dst_repo',
+                        'contents' => $dstLibrary->id
+                    ],
+                    [
+                        'name' => 'dst_dir',
+                        'contents' => $dstDirectoryPath
+                    ],
+                ],
+            ]
+        );
+
+        return $response->getStatusCode() === 200;
+    }
+
+    /**
+     * Move a file
+     *
+     * @param LibraryType $srcLibrary       Source library object
+     * @param String      $srcFilePath      Source file path
+     * @param LibraryType $dstLibrary       Destination library object
+     * @param String      $dstDirectoryPath Destination directory path
+     * @return bool
+     */
+    public function move(LibraryType $srcLibrary, $srcFilePath, LibraryType $dstLibrary, $dstDirectoryPath) {
+        // do not allow empty paths
+        if (empty($srcFilePath) || empty($dstDirectoryPath)) {
+            return false;
+        }
+
+        $uri = sprintf(
+            '%s/repos/%s/file/?p=%s',
+            $this->clipUri($this->client->getConfig('base_uri')),
+            $srcLibrary->id,
+            $srcFilePath
+        );
+
+        $response = $this->client->request(
+            'POST',
+            $uri,
+            [
+                'headers' => ['Accept' => 'application/json'],
+                'multipart' => [
+                    [
+                        'name' => 'operation',
+                        'contents' => 'move'
+                    ],
+                    [
+                        'name' => 'dst_repo',
+                        'contents' => $dstLibrary->id
+                    ],
+                    [
+                        'name' => 'dst_dir',
+                        'contents' => $dstDirectoryPath
+                    ],
+                ],
+            ]
+        );
+
+        return $response->getStatusCode() === 301;
+    }
 }
