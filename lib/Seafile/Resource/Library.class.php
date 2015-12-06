@@ -151,4 +151,33 @@ class Library extends AbstractResource
 
 		return $response->getStatusCode() === 200;
 	}
+
+    /**
+     * Remove a library
+     *
+     * @param String $libraryId Library ID
+     * @return bool
+     */
+	public function rmlib($libraryId) {
+		// do not allow empty id's
+		if (empty($libraryId)) {
+			return false;
+		}
+
+		$uri = sprintf(
+				'%s/repos/%s/',
+				$this->clipUri($this->client->getConfig('base_uri')),
+				$libraryId
+		);
+
+		$response = $this->client->request(
+				'DELETE',
+				$uri,
+				[
+						'headers' => ['Accept' => 'application/json'],
+				]
+		);
+
+		return $response->getStatusCode() === 200;
+	}
 }
