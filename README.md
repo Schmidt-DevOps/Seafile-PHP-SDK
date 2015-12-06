@@ -64,6 +64,7 @@ Next, run the Composer command to install the latest stable version of seafile-p
 
 ```bash
 composer.phar require rsd/seafile-php-sdk
+composer.phar dump-autoload -o
 ```
 
 After installing, you need to require Composer's autoloader:
