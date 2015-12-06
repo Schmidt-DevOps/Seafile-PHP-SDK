@@ -236,4 +236,51 @@ class DirectoryTest extends TestCase
             ''
         ));
     }
+
+    /**
+     * Test mkdir() recursively
+     *
+     * @return void
+     */
+    public function testMkdirRecursive()
+    {
+        $getAllResponse = new Response(
+            200,
+            ['Content-Type' => 'application/json'],
+            file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
+        );
+
+        $mkdirResponse = new Response(201, ['Content-Type' => 'text/plain']);
+
+        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+
+        $mockedClient->method('getConfig')->willReturn('http://example.com/');
+
+        // @todo: Test more thoroughly. For example make sure request() gets called with POST twice (a, then b)
+        $mockedClient->expects($this->any())
+            ->method('request')
+            ->with($this->logicalOr(
+                $this->equalTo('GET'),
+                $this->equalTo('POST')
+            ))
+            // Return what was passed to offsetGet as a new instance
+            ->will($this->returnCallback(
+                function ($method) use ($getAllResponse, $mkdirResponse) {
+                    if ($method === 'GET') {
+                        return $getAllResponse;
+                    }
+                    return $mkdirResponse;
+                }
+            ));
+
+        /**
+         * @var Client $mockedClient
+         */
+        $directoryResource = new Directory($mockedClient);
+
+        $lib = new \Seafile\Type\Library();
+        $lib->id = 'some-crazy-id';
+
+        $this->assertTrue($directoryResource->mkdir($lib, 'a/b', '/', true));
+    }
 }
