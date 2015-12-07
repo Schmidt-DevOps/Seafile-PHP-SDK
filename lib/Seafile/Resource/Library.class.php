@@ -103,11 +103,11 @@ class Library extends AbstractResource
      * Create a new library
      *
      * @param String $name        Library name
-     * @param string $description Library description
-     * @param mixed  $password    false means no encryption, any other string is used as password
+     * @param String $description Library description
+     * @param String  $password    false means no encryption, any other string is used as password
      * @return bool
      */
-    public function create($name, $description = "new repo", $password = false)
+    public function create($name, $description = "new repo", $password = '')
     {
         // only create a library which is not empty to prevent wrong implementation
         if (empty($name)) {
@@ -135,7 +135,7 @@ class Library extends AbstractResource
             ],
         ];
 
-        if ($password !== false) {
+        if ($password !== '') {
             $multipartData[] = [
                 'name' => 'passwd',
                 'contents' => $password,
