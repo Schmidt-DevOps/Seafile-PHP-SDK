@@ -84,7 +84,7 @@ class Share extends AbstractResource
         if($expiration !== false) {
             $multipart[] = [
                 'name' => 'expire',
-                'contents' => $expiration
+                'contents' => "$expiration"
             ];
         }
 
@@ -98,6 +98,45 @@ class Share extends AbstractResource
         );
 
         return $response->getStatusCode() === 201;
+    }
+
+    /**
+     * Delete a shared item
+     *
+     * @param ShareType $item Shared item
+     * @return bool
+     */
+    public function deleteShare(ShareType $item)
+    {
+        $uri = sprintf(
+            '%s/shared-links/?t=%s',
+            $this->clipUri($this->client->getConfig('base_uri')),
+            $item->token
+        );
+
+        $response = $this->client->request(
+            'DELETE',
+            $uri,
+            [
+                'headers' => ['Accept' => 'application/json'],
+            ]
+        );
+
+        return $response->getStatusCode() === 200;
+    }
+
+    /**
+     * Delete a shared item identified by token
+     *
+     * @param string $token The token
+     * @return bool
+     */
+    public function delete($token)
+    {
+        $item = new ShareType();
+        $item->token = $token;
+
+        return $this->deleteShare($item);
     }
 
     /**
