@@ -63,7 +63,7 @@ class File extends AbstractResource
 
         $downloadUrl = $this->getDownloadUrl($library, $item, $dir, $reuse);
 
-        return $this->client->request('GET', $downloadUrl, ['save_to' => $localFilePath]);
+        return $this->client->request('GET', $downloadUrl, ['save_to' => fopen($localFilePath, "w")]);
     }
 
     /**
