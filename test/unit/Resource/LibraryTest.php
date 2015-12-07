@@ -182,6 +182,7 @@ class LibraryTest extends TestCase
      * Test create(), provide invalid parameters, expect failure
      *
      * @dataProvider dataProviderCreateInvalid
+     * @param Array $data Test data
      * @return void
      */
     public function testCreateInvalid(array $data)
@@ -234,6 +235,7 @@ class LibraryTest extends TestCase
      * Test create()
      *
      * @dataProvider dataProviderCreate
+     * @param Array $data Test data
      * @return void
      */
     public function testCreate(array $data)

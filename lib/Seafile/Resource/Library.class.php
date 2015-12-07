@@ -104,7 +104,7 @@ class Library extends AbstractResource
      *
      * @param String $name        Library name
      * @param String $description Library description
-     * @param String  $password    false means no encryption, any other string is used as password
+     * @param String $password    false means no encryption, any other string is used as password
      * @return bool
      */
     public function create($name, $description = "new repo", $password = '')

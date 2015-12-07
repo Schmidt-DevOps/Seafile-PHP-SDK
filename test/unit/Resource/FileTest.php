@@ -3,6 +3,7 @@
 namespace Seafile\Tests\Domain;
 
 use GuzzleHttp\Psr7\Response;
+use Seafile\Http\Client;
 use Seafile\Resource\File;
 use Seafile\Tests\FileResourceStub;
 use Seafile\Tests\TestCase;
@@ -188,6 +189,47 @@ class FileTest extends TestCase
     }
 
     /**
+     * Test getMultiPartParams() with new file name
+     *
+     * @return void
+     */
+    public function testUpdateMultiPartParamsNewFilename()
+    {
+        $dir = '/';
+        $localFilePath = sys_get_temp_dir() . '/' . uniqid('test_', true) . '.txt';
+        $fileResource = new File($this->getMockedClient(new Response()));
+        $newFilename = sys_get_temp_dir() . '/' . uniqid('test_', true) . '.txt';
+        file_put_contents($localFilePath, 'abc');
+
+        $params = $fileResource->getMultiPartParams($localFilePath, $dir, true, $newFilename);
+
+        $params[0]['contents'] = get_resource_type($params[0]['contents']);
+
+        $this->assertEquals(
+            [
+                [
+                    'headers' => ['Content-Type' => 'application/octet-stream'],
+                    'name' => 'file',
+                    'contents' => 'stream'
+                ],
+                [
+                    'name' => 'name',
+                    'contents' => $newFilename
+                ],
+                [
+                    'name' => 'filename',
+                    'contents' => $newFilename
+                ],
+                [
+                    'name' => 'parent_dir',
+                    'contents' => '/'
+                ]
+            ],
+            $params
+        );
+    }
+
+    /**
      * Test getMultiPartParams() for upload
      * @return void
      * @throws \Exception
@@ -219,5 +261,143 @@ class FileTest extends TestCase
                 unlink($localFilePath);
             }
         }
+    }
+
+    /**
+     * Test remove() with invalid file name
+     *
+     * @return void
+     */
+    public function testRemoveInvalidFilename()
+    {
+        /**
+         * @var Client $mockedClient
+         */
+        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $fileResource = new File($mockedClient);
+
+        $lib = new \Seafile\Type\Library();
+        $lib->id = 'some-crazy-id';
+
+        $this->assertFalse($fileResource->remove($lib, ''));
+    }
+
+    /**
+     * Test rename() with invalid file name
+     *
+     * @return void
+     */
+    public function testRenameInvalidFilename()
+    {
+        /**
+         * @var Client $mockedClient
+         */
+        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $fileResource = new File($mockedClient);
+
+        $lib = new \Seafile\Type\Library();
+        $lib->id = 'some-crazy-id';
+
+        $this->assertFalse($fileResource->rename($lib, '', ''));
+        $this->assertFalse($fileResource->rename($lib, 'a', ''));
+        $this->assertFalse($fileResource->rename($lib, '', 'b'));
+    }
+
+    /**
+     * Data provider for testCopyInvalid()
+     *
+     * @return array
+     */
+    public function dataProviderCopyInvalid()
+    {
+        $srcLib = new \Seafile\Type\Library();
+        $srcLib->id = 'some-crazy-id';
+
+        $dstLib = new \Seafile\Type\Library();
+        $dstLib->id = 'some-other-crazy-id';
+
+        return [
+            [[$srcLib, '', $srcLib, 'new_filename', false]], // empty srcFilePath, that's illegal
+            [[$srcLib, '/path/filename', $dstLib, '', false]], // empty dstFilePath, that's illegal
+        ];
+    }
+
+    /**
+     * Test copy() with invalid file name
+     *
+     * @dataProvider dataProviderCopyInvalid
+     * @param Array $data Test data
+     * @return void
+     */
+    public function testCopyInvalid(array $data)
+    {
+        /**
+         * @var Client $mockedClient
+         */
+        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $fileResource = new File($mockedClient);
+
+        $srcLib = $data[0];
+        $srcFilePath = $data[1];
+        $dstLib = $data[2];
+        $dstFilePath = $data[3];
+        $expected = $data[4];
+
+        $this->assertSame($expected, $fileResource->copy($srcLib, $srcFilePath, $dstLib, $dstFilePath));
+    }
+
+    /**
+     * Test remove()
+     *
+     * @return void
+     */
+    public function testRemove()
+    {
+        $getAllResponse = new Response(
+            200,
+            ['Content-Type' => 'application/json'],
+            file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
+        );
+
+        $deleteResponse = new Response(200, ['Content-Type' => 'text/plain']);
+        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient->method('getConfig')->willReturn('http://example.com/');
+
+        $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=test_dir';
+        $expectParams = [
+            'headers' => ['Accept' => "application/json"]
+        ];
+
+        // @todo: Test more thoroughly. For example make sure request() gets called with POST twice (a, then b)
+        $mockedClient->expects($this->any())
+            ->method('request')
+            ->with($this->logicalOr(
+                $this->equalTo('GET'),
+                $this->equalTo('DELETE')
+            ))
+            // Return what was passed to offsetGet as a new instance
+            ->will($this->returnCallback(
+                function ($method, $uri, $params) use ($getAllResponse, $deleteResponse, $expectUri, $expectParams) {
+                    if ($method === 'GET') {
+                        return $getAllResponse;
+                    }
+
+                    if ($expectUri === $uri && $expectParams === $params) {
+                        return $deleteResponse;
+                    }
+
+                    return new Response(500);
+                }
+            ));
+
+        /**
+         * @var Client $mockedClient
+         */
+        $fileResource = new File($mockedClient);
+
+        $lib = new \Seafile\Type\Library();
+        $lib->id = 'some-crazy-id';
+
+        $this->assertTrue($fileResource->remove($lib, 'test_dir'));
     }
 }
