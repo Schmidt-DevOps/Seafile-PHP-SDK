@@ -130,4 +130,38 @@ class LibraryTest extends TestCase
             )
         );
     }
+
+    /**
+     * Data provider for testExists()
+     * @return array
+     */
+    public function existsDataProvider()
+    {
+        return [
+            [['invalid_value', 'invalid_attribute', false]],
+            [['bar', 'name', true]],
+            [["f158d1dd-cc19-412c-b143-2ac83f352290", 'id', true]],
+            [["f158d1dd-cc19-412c-b143-2ac83f35229_", 'id', false]]
+        ];
+    }
+
+    /**
+     * Test exists()
+     *
+     * @dataProvider existsDataProvider
+     * @param Array $data Test data
+     * @return void
+     */
+    public function testExists(array $data)
+    {
+        $libraryResource = new Library($this->getMockedClient(
+            new Response(
+                200,
+                ['Content-Type' => 'application/json'],
+                file_get_contents(__DIR__ . '/../../assets/LibraryTest_getAll.json')
+            )
+        ));
+
+        $this->assertSame($data[2], $libraryResource->exists($data[0], $data[1]));
+    }
 }

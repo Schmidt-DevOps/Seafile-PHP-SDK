@@ -19,7 +19,7 @@
     "owner": "user@mail.com",
     "id": "0536b11a-a5fd-4482-9314-728cb3472f54",
     "size": 0,
-    "name": "foo",
+    "name": "bar",
     "type": "repo",
     "virtual": false,
     "desc": "new library",

@@ -80,17 +80,18 @@ class Library extends AbstractResource
     }
 
     /**
-     * Check if $name exists
+     * Check if library with certain attribute value exists
      *
-     * @param String $name Library name
+     * @param String $value     Library name
+     * @param String $attribute Attribute name of library
      * @return bool
      */
-    public function exists($name)
+    public function exists($value, $attribute = 'name')
     {
         $libraries = $this->getAll();
 
         foreach ($libraries as $lib) {
-            if ($lib->name === $name) {
+            if (isset($lib->{$attribute}) && $lib->{$attribute} === $value) {
                 return true;
             }
         }
