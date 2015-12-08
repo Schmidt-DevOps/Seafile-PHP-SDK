@@ -106,6 +106,20 @@ class FileTest extends TestCase
     }
 
     /**
+     * Test download()
+     * @return void
+     * @throws \Exception
+     */
+    public function testDownload()
+    {
+        $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
+        $response = $fileResource->download(new Library(), '/some/path', '/some/file', 1);
+
+        // @todo Assert request query params
+        $this->assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
+    }
+
+    /**
      * Test upload()
      * @return void
      * @throws \Exception
