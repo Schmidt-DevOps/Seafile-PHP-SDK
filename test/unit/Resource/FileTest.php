@@ -414,4 +414,184 @@ class FileTest extends TestCase
 
         $this->assertTrue($fileResource->remove($lib, 'test_dir'));
     }
+
+    /**
+     * Test rename()
+     *
+     * @return void
+     */
+    public function testRename()
+    {
+        $getAllResponse = new Response(
+            200,
+            ['Content-Type' => 'application/json'],
+            file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
+        );
+
+        $newDirname = 'test_dir_renamed';
+        $renameResponse = new Response(301, ['Content-Type' => 'text/plain']);
+        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient->method('getConfig')->willReturn('http://example.com/');
+
+        $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=test_dir';
+        $expectParams = [
+            'headers' => ['Accept' => "application/json"],
+            'multipart' => [
+                [
+                    'name' => 'operation',
+                    'contents' => 'rename'
+                ],
+                [
+                    'name' => 'newname',
+                    'contents' => $newDirname
+                ],
+            ],
+        ];
+
+        // @todo: Test more thoroughly. For example make sure request() gets called with POST twice (a, then b)
+        $mockedClient->expects($this->any())
+            ->method('request')
+            ->with($this->logicalOr(
+                $this->equalTo('GET'),
+                $this->equalTo('POST')
+            ))
+            // Return what was passed to offsetGet as a new instance
+            ->will($this->returnCallback(
+                function ($method, $uri, $params) use ($getAllResponse, $renameResponse, $expectUri, $expectParams) {
+                    if ($method === 'GET') {
+                        return $getAllResponse;
+                    }
+
+                    if ($expectUri === $uri && $expectParams === $params) {
+                        return $renameResponse;
+                    }
+
+                    return new Response(500);
+                }
+            ));
+
+        /**
+         * @var Client $mockedClient
+         */
+        $fileResource = new File($mockedClient);
+
+        $lib = new \Seafile\Type\Library();
+        $lib->id = 'some-crazy-id';
+
+        $this->assertTrue($fileResource->rename($lib, 'test_dir', $newDirname));
+    }
+
+    /**
+     * Data provider for testCopy() and testMove()
+     *
+     * @return array
+     */
+    public function dataProviderCopyMove()
+    {
+        return [
+            [['operation' => 'copy', 'responseCode' => 200]],
+            [['operation' => 'move', 'responseCode' => 301]]
+        ];
+    }
+
+    /**
+     * Test copy()
+     *
+     * @dataProvider dataProviderCopyMove
+     * @param Array $data Data provided
+     * @return void
+     */
+    public function testCopyMove(array $data)
+    {
+        $sourceLib = new \Seafile\Type\Library();
+        $sourceLib->id = 'some-crazy-id';
+
+        $destLib = new \Seafile\Type\Library();
+        $destLib->id = 'some-other-crazy-id';
+
+        $getAllResponse = new Response(
+            200,
+            ['Content-Type' => 'application/json'],
+            file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
+        );
+
+        $srcPath = '/src/file/path';
+        $dstPath = '/target/file/path';
+
+        $response = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
+        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient->method('getConfig')->willReturn('http://example.com/');
+
+        $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=' . $srcPath;
+        $expectParams = [
+            'headers' => ['Accept' => 'application/json'],
+            'multipart' => [
+                [
+                    'name' => 'operation',
+                    'contents' => $data['operation']
+                ],
+                [
+                    'name' => 'dst_repo',
+                    'contents' => $destLib->id
+                ],
+                [
+                    'name' => 'dst_dir',
+                    'contents' => $dstPath
+                ],
+            ],
+        ];
+
+        // @todo: Test more thoroughly. For example make sure request() gets called with POST twice (a, then b)
+        $mockedClient->expects($this->any())
+            ->method('request')
+            ->with($this->logicalOr(
+                $this->equalTo('GET'),
+                $this->equalTo('POST')
+            ))
+            // Return what was passed to offsetGet as a new instance
+            ->will($this->returnCallback(
+                function ($method, $uri, $params) use ($getAllResponse, $response, $expectUri, $expectParams) {
+                    if ($method === 'GET') {
+                        return $getAllResponse;
+                    }
+
+                    if ($expectUri === $uri && $expectParams === $params) {
+                        return $response;
+                    }
+
+                    return new Response(500);
+                }
+            ));
+
+        /**
+         * @var Client $mockedClient
+         */
+        $fileResource = new File($mockedClient);
+
+        $this->assertTrue($fileResource->{$data['operation']}($sourceLib, $srcPath, $destLib, $dstPath));
+    }
+
+    /**
+     * Test move() with invalid destination dir
+     *
+     * @return void
+     */
+    public function testMoveInvalidDestination()
+    {
+        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+
+        /**
+         * @var Client $mockedClient
+         */
+        $fileResource = new File($mockedClient);
+
+        $this->assertFalse(
+            $fileResource->move(
+                new \Seafile\Type\Library(),
+                '',
+                new \Seafile\Type\Library(),
+                ''
+            )
+        );
+    }
 }
