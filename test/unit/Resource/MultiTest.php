@@ -81,7 +81,6 @@ class MultiTest extends TestCase
                 'responseCode' => 200,
                 'assert' => true
             ]],
-
             [[
                 'fileNames' => [
                     'some_file_1',
@@ -185,7 +184,6 @@ class MultiTest extends TestCase
                 'responseCode' => 200,
                 'assert' => true
             ]],
-
             [[
                 'operation' => 'copy',
                 'fileNames' => [
