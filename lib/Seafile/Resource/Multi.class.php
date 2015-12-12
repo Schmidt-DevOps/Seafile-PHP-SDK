@@ -27,29 +27,21 @@ class Multi extends AbstractResource
      * @param String      $dstDirectoryPath Destination directory Path
      * @return bool
      */
-    public function move(LibraryType $srcLibrary, $srcPaths, LibraryType $dstLibrary, $dstDirectoryPath)
+    public function move(LibraryType $srcLibrary, array $srcPaths, LibraryType $dstLibrary, $dstDirectoryPath)
     {
         // do not allow empty paths
         if (empty($srcPaths) || empty($dstDirectoryPath)) {
             return false;
         }
 
-        $dstFileNames = "";
-
         // get the source folder path
         // this path must be the same for all files!
         $srcFolderPath = dirname($srcPaths[0]);
 
-        // check source folders paths
-        // and build the file_names string
-        foreach ($srcPaths as $srcPath) {
-            if (dirname($srcPath) != $srcFolderPath) {
-                return false; // all source paths must be the same
-            }
-            if ($dstFileNames != "") {
-                $dstFileNames .= ":";
-            }
-            $dstFileNames .= basename($srcPath);
+        $dstFileNames = $this->preparePaths($srcFolderPath, $srcPaths);
+
+        if (empty($dstFileNames)) {
+            return false;
         }
 
         $srcFolderPath = str_replace("\\", "/", $srcFolderPath); // windows compatibility
@@ -95,29 +87,21 @@ class Multi extends AbstractResource
      * @param String      $dstDirectoryPath Destination directory Path
      * @return bool
      */
-    public function copy(LibraryType $srcLibrary, $srcPaths, LibraryType $dstLibrary, $dstDirectoryPath)
+    public function copy(LibraryType $srcLibrary, array $srcPaths, LibraryType $dstLibrary, $dstDirectoryPath)
     {
         // do not allow empty paths
         if (empty($srcPaths) || empty($dstDirectoryPath)) {
             return false;
         }
 
-        $dstFileNames = "";
-
         // get the source folder path
         // this path must be the same for all files!
         $srcFolderPath = dirname($srcPaths[0]);
 
-        // check source folders paths
-        // and build the file_names string
-        foreach ($srcPaths as $srcPath) {
-            if (dirname($srcPath) != $srcFolderPath) {
-                return false; // all source paths must be the same
-            }
-            if ($dstFileNames != "") {
-                $dstFileNames .= ":";
-            }
-            $dstFileNames .= basename($srcPath);
+        $dstFileNames = $this->preparePaths($srcFolderPath, $srcPaths);
+
+        if (empty($dstFileNames)) {
+            return false;
         }
 
         $srcFolderPath = str_replace("\\", "/", $srcFolderPath); // windows compatibility
@@ -155,35 +139,50 @@ class Multi extends AbstractResource
     }
 
     /**
+     * check source folders paths and build the file_names string
+     *
+     * @param string $folder    Folder path
+     * @param array  $paths     Paths of files
+     * @param string $fileNames Optional file names
+     * @return string
+     */
+    protected function preparePaths($folder, array $paths, $fileNames = '')
+    {
+        foreach ($paths as $path) {
+            if (dirname($path) != $folder) {
+                return ''; // all source paths must be the same
+            }
+            if ($fileNames != '') {
+                $fileNames .= ':';
+            }
+            $fileNames .= basename($path);
+        }
+
+        return $fileNames;
+    }
+
+    /**
      * Delete multiple files or folders
      *
      * @param LibraryType $library Library object
      * @param array       $paths   Array with file and folder paths (they must be in the same folder)
      * @return bool
      */
-    public function delete(LibraryType $library, $paths)
+    public function delete(LibraryType $library, array $paths)
     {
         // do not allow empty paths
         if (empty($paths)) {
             return false;
         }
 
-        $fileNames = "";
-
         // get the folder path
         // this path must be the same for all files!
         $folderPath = dirname($paths[0]);
 
-        // check source folders paths
-        // and build the file_names string
-        foreach ($paths as $path) {
-            if (dirname($path) != $folderPath) {
-                return false; // all paths must be the same
-            }
-            if ($fileNames != "") {
-                $fileNames .= ":";
-            }
-            $fileNames .= basename($path);
+        $fileNames = $this->preparePaths($folderPath, $paths);
+
+        if (empty($fileNames)) {
+            return false;
         }
 
         $folderPath = str_replace("\\", "/", $folderPath); // windows compatibility
