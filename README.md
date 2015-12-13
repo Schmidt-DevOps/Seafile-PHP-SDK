@@ -9,6 +9,7 @@ No marketing skills whatsoever, but low rates, nearly 20 years of experience, an
 Get in touch now: https://www.reneschmidt.de/blog/impressum/
 
 [![Build Status](https://api.travis-ci.org/rene-s/Seafile-PHP-SDK.svg)](https://travis-ci.org/rene-s/Seafile-PHP-SDK)
+[![Code Climate](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/badges/gpa.svg)](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK)
 
 ## What is Seafile?
 
@@ -72,7 +73,7 @@ Next, run the Composer command to install the latest stable version of seafile-p
 
 ```bash
 composer.phar require rsd/seafile-php-sdk
-composer.phar dump-autoload -o # currently this is necessary
+# composer.phar dump-autoload -o # not required anymore
 ```
 
 After installing, you need to require Composer's autoloader:
@@ -85,7 +86,7 @@ You can then later update seafile-php-sdk using composer:
 
  ```bash
 composer.phar update
-composer.phar dump-autoload -o # currently this is necessary
+# composer.phar dump-autoload -o # not required anymore
  ```
 
 ## Using Seafile PHP SDK
