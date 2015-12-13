@@ -22,6 +22,16 @@ use \Seafile\Client\Type\Library as LibraryType;
 class File extends AbstractResource
 {
     /**
+     * Mode of operation: copy
+     */
+    const OPERATION_COPY = 1;
+
+    /**
+     * Mode of operation: move
+     */
+    const OPERATION_MOVE = 2;
+
+    /**
      * Get download URL of a file
      * @param LibraryType   $library Library instance
      * @param DirectoryItem $item    Item instance
@@ -295,13 +305,27 @@ class File extends AbstractResource
      * @param String      $srcFilePath      Source file path
      * @param LibraryType $dstLibrary       Destination library object
      * @param String      $dstDirectoryPath Destination directory path
+     * @param Int         $operation        Operation mode
      * @return bool
      */
-    public function copy(LibraryType $srcLibrary, $srcFilePath, LibraryType $dstLibrary, $dstDirectoryPath)
-    {
+    public function copy(
+        LibraryType $srcLibrary,
+        $srcFilePath,
+        LibraryType $dstLibrary,
+        $dstDirectoryPath,
+        $operation = self::OPERATION_COPY
+    ) {
         // do not allow empty paths
         if (empty($srcFilePath) || empty($dstDirectoryPath)) {
             return false;
+        }
+
+        $operationMode = 'copy';
+        $returnCode = 200;
+
+        if ($operation === self::OPERATION_MOVE) {
+            $operationMode = 'move';
+            $returnCode = 301;
         }
 
         $uri = sprintf(
@@ -319,7 +343,7 @@ class File extends AbstractResource
                 'multipart' => [
                     [
                         'name' => 'operation',
-                        'contents' => 'copy'
+                        'contents' => $operationMode
                     ],
                     [
                         'name' => 'dst_repo',
@@ -333,7 +357,7 @@ class File extends AbstractResource
             ]
         );
 
-        return $response->getStatusCode() === 200;
+        return $response->getStatusCode() === $returnCode;
     }
 
     /**
@@ -347,40 +371,6 @@ class File extends AbstractResource
      */
     public function move(LibraryType $srcLibrary, $srcFilePath, LibraryType $dstLibrary, $dstDirectoryPath)
     {
-        // do not allow empty paths
-        if (empty($srcFilePath) || empty($dstDirectoryPath)) {
-            return false;
-        }
-
-        $uri = sprintf(
-            '%s/repos/%s/file/?p=%s',
-            $this->clipUri($this->client->getConfig('base_uri')),
-            $srcLibrary->id,
-            $srcFilePath
-        );
-
-        $response = $this->client->request(
-            'POST',
-            $uri,
-            [
-                'headers' => ['Accept' => 'application/json'],
-                'multipart' => [
-                    [
-                        'name' => 'operation',
-                        'contents' => 'move'
-                    ],
-                    [
-                        'name' => 'dst_repo',
-                        'contents' => $dstLibrary->id
-                    ],
-                    [
-                        'name' => 'dst_dir',
-                        'contents' => $dstDirectoryPath
-                    ],
-                ],
-            ]
-        );
-
-        return $response->getStatusCode() === 301;
+        return $this->copy($srcLibrary, $srcFilePath, $dstLibrary, $dstDirectoryPath, self::OPERATION_MOVE);
     }
 }

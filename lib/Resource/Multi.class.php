@@ -19,6 +19,16 @@ use \Seafile\Client\Type\Library as LibraryType;
 class Multi extends AbstractResource
 {
     /**
+     * Mode of operation: copy
+     */
+    const OPERATION_COPY = 1;
+
+    /**
+     * Mode of operation: move
+     */
+    const OPERATION_MOVE = 2;
+
+    /**
      * Move multiple files or folders
      *
      * @param LibraryType $srcLibrary       Source library object
@@ -29,53 +39,7 @@ class Multi extends AbstractResource
      */
     public function move(LibraryType $srcLibrary, array $srcPaths, LibraryType $dstLibrary, $dstDirectoryPath)
     {
-        // do not allow empty paths
-        if (empty($srcPaths) || empty($dstDirectoryPath)) {
-            return false;
-        }
-
-        // get the source folder path
-        // this path must be the same for all files!
-        $srcFolderPath = dirname($srcPaths[0]);
-
-        $dstFileNames = $this->preparePaths($srcFolderPath, $srcPaths);
-
-        if (empty($dstFileNames)) {
-            return false;
-        }
-
-        $srcFolderPath = str_replace("\\", "/", $srcFolderPath); // windows compatibility
-
-        $uri = sprintf(
-            '%s/repos/%s/fileops/move/?p=%s',
-            $this->clipUri($this->client->getConfig('base_uri')),
-            $srcLibrary->id,
-            $srcFolderPath
-        );
-
-        $response = $this->client->request(
-            'POST',
-            $uri,
-            [
-                'headers' => ['Accept' => 'application/json'],
-                'multipart' => [
-                    [
-                        'name' => 'file_names',
-                        'contents' => $dstFileNames
-                    ],
-                    [
-                        'name' => 'dst_repo',
-                        'contents' => $dstLibrary->id
-                    ],
-                    [
-                        'name' => 'dst_dir',
-                        'contents' => $dstDirectoryPath
-                    ],
-                ],
-            ]
-        );
-
-        return $response->getStatusCode() === 200;
+        return $this->copy($srcLibrary, $srcPaths, $dstLibrary, $dstDirectoryPath, self::OPERATION_MOVE);
     }
 
     /**
@@ -85,14 +49,22 @@ class Multi extends AbstractResource
      * @param array       $srcPaths         Array with file/folder paths (they must be in the same folder)
      * @param LibraryType $dstLibrary       Destination library object
      * @param String      $dstDirectoryPath Destination directory Path
+     * @param Int         $operation        'copy' or 'move'
      * @return bool
      */
-    public function copy(LibraryType $srcLibrary, array $srcPaths, LibraryType $dstLibrary, $dstDirectoryPath)
-    {
+    public function copy(
+        LibraryType $srcLibrary,
+        array $srcPaths,
+        LibraryType $dstLibrary,
+        $dstDirectoryPath,
+        $operation = self::OPERATION_COPY
+    ) {
         // do not allow empty paths
         if (empty($srcPaths) || empty($dstDirectoryPath)) {
             return false;
         }
+
+        $operationMode = $operation === self::OPERATION_MOVE ? 'move' : 'copy';
 
         // get the source folder path
         // this path must be the same for all files!
@@ -107,9 +79,10 @@ class Multi extends AbstractResource
         $srcFolderPath = str_replace("\\", "/", $srcFolderPath); // windows compatibility
 
         $uri = sprintf(
-            '%s/repos/%s/fileops/copy/?p=%s',
+            '%s/repos/%s/fileops/%s/?p=%s',
             $this->clipUri($this->client->getConfig('base_uri')),
             $srcLibrary->id,
+            $operationMode,
             $srcFolderPath
         );
 
