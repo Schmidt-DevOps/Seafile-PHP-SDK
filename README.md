@@ -9,7 +9,7 @@ No marketing skills whatsoever, but low rates, nearly 20 years of experience, an
 Get in touch now: https://www.reneschmidt.de/blog/impressum/
 
 [![Build Status](https://api.travis-ci.org/rene-s/Seafile-PHP-SDK.svg)](https://travis-ci.org/rene-s/Seafile-PHP-SDK)
-[![Code Climate](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/badges/gpa.svg)](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK)
+[![Test Coverage](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/badges/coverage.svg)](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/coverage)
 
 ## What is Seafile?
 
