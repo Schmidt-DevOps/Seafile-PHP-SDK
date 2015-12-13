@@ -1,10 +1,10 @@
 <?php
 
-namespace Seafile\Tests;
+namespace Seafile\Client\Tests;
 
-use Seafile\Resource\File;
-use Seafile\Type\Library as LibraryType;
-use Seafile\Type\DirectoryItem;
+use Seafile\Client\Resource\File;
+use Seafile\Client\Type\Library as LibraryType;
+use Seafile\Client\Type\DirectoryItem;
 
 /**
  * File resource stub

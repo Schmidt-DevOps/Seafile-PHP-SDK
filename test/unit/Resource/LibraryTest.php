@@ -1,10 +1,10 @@
 <?php
 
-namespace Seafile\Tests;
+namespace Seafile\Client\Tests;
 
 use GuzzleHttp\Psr7\Response;
-use Seafile\Http\Client;
-use Seafile\Resource\Library;
+use Seafile\Client\Http\Client;
+use Seafile\Client\Resource\Library;
 
 /**
  * Library resource test
@@ -40,7 +40,7 @@ class LibraryTest extends TestCase
         $this->assertInternalType('array', $libs);
 
         foreach ($libs as $lib) {
-            $this->assertInstanceOf('Seafile\Type\Library', $lib);
+            $this->assertInstanceOf('Seafile\Client\Type\Library', $lib);
         }
     }
 
@@ -59,7 +59,7 @@ class LibraryTest extends TestCase
             )
         ));
 
-        $this->assertInstanceOf('Seafile\Type\Library', $libraryResource->getById('some_id'));
+        $this->assertInstanceOf('Seafile\Client\Type\Library', $libraryResource->getById('some_id'));
     }
 
     /**
@@ -69,7 +69,7 @@ class LibraryTest extends TestCase
      */
     public function testDecryptMissingQuery()
     {
-        $library = new \Seafile\Resource\Library($this->getMockedClient(new Response));
+        $library = new \Seafile\Client\Resource\Library($this->getMockedClient(new Response));
         $this->setExpectedException('Exception');
         $library->decrypt('some id', []);
     }
@@ -81,7 +81,7 @@ class LibraryTest extends TestCase
      */
     public function testDecryptMissingPassword()
     {
-        $library = new \Seafile\Resource\Library($this->getMockedClient(new Response));
+        $library = new \Seafile\Client\Resource\Library($this->getMockedClient(new Response));
         $this->setExpectedException('Exception');
         $library->decrypt('some id', ['query' => []]);
     }
@@ -93,7 +93,7 @@ class LibraryTest extends TestCase
      */
     public function testDecryptUnsuccessfully()
     {
-        $library = new \Seafile\Resource\Library($this->getMockedClient(
+        $library = new \Seafile\Client\Resource\Library($this->getMockedClient(
             new Response(
                 400,
                 ['Content-Type' => 'application/json'],
@@ -116,7 +116,7 @@ class LibraryTest extends TestCase
      */
     public function testDecryptSuccessfully()
     {
-        $library = new \Seafile\Resource\Library($this->getMockedClient(
+        $library = new \Seafile\Client\Resource\Library($this->getMockedClient(
             new Response(
                 200,
                 ['Content-Type' => 'application/json'],
@@ -251,7 +251,7 @@ class LibraryTest extends TestCase
 
         $createResponse = new Response($data[0], ['Content-Type' => 'text/plain']);
 
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
         $expectUri = 'http://example.com/repos/';
@@ -302,7 +302,7 @@ class LibraryTest extends TestCase
          */
         $directoryResource = new Library($mockedClient);
 
-        $lib = new \Seafile\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
         $this->assertSame($data[1], $directoryResource->create($name, $description, $data[2]));
@@ -323,7 +323,7 @@ class LibraryTest extends TestCase
 
         $removeResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
         $expectUri = 'http://example.com/repos/some-crazy-id/';
@@ -358,7 +358,7 @@ class LibraryTest extends TestCase
          */
         $libraryResource = new Library($mockedClient);
 
-        $lib = new \Seafile\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
         $this->assertTrue($libraryResource->remove($lib->id));

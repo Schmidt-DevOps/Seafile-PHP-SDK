@@ -1,9 +1,9 @@
 <?php
 
-namespace Seafile\Tests;
+namespace Seafile\Client\Tests;
 
 use GuzzleHttp\Psr7\Response;
-use Seafile\Resource\Directory;
+use Seafile\Client\Resource\Directory;
 
 /**
  * AbstractResource test

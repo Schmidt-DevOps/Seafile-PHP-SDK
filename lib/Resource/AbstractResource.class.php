@@ -1,8 +1,8 @@
 <?php
 
-namespace Seafile\Resource;
+namespace Seafile\Client\Resource;
 
-use Seafile\Http\Client;
+use Seafile\Client\Http\Client;
 
 /**
  * Abstract domain class

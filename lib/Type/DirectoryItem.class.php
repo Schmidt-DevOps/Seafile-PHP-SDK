@@ -1,9 +1,8 @@
 <?php
 
-namespace Seafile\Type;
+namespace Seafile\Client\Type;
 
 use DateTime;
-use stdClass;
 
 /**
  * Directory type class

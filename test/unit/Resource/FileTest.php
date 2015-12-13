@@ -3,12 +3,12 @@
 namespace Seafile\Tests\Domain;
 
 use GuzzleHttp\Psr7\Response;
-use Seafile\Http\Client;
-use Seafile\Resource\File;
-use Seafile\Tests\FileResourceStub;
-use Seafile\Tests\TestCase;
-use Seafile\Type\DirectoryItem;
-use Seafile\Type\Library;
+use Seafile\Client\Http\Client;
+use Seafile\Client\Resource\File;
+use Seafile\Client\Tests\FileResourceStub;
+use Seafile\Client\Tests\TestCase;
+use Seafile\Client\Type\DirectoryItem;
+use Seafile\Client\Type\Library;
 
 /**
  * File resource test
@@ -161,7 +161,7 @@ class FileTest extends TestCase
 
         $response = $fileResource->getFileDetail(new Library(), '/Seafile-PHP-SDK_Test_Upload_jt64pq.txt');
 
-        $this->assertInstanceOf('Seafile\Type\DirectoryItem', $response);
+        $this->assertInstanceOf('Seafile\Client\Type\DirectoryItem', $response);
         $this->assertInstanceOf('DateTime', $response->mtime);
         $this->assertSame('Seafile-PHP-SDK_Test_Upload_jt64pq.txt', $response->name);
         $this->assertSame('file', $response->type);
@@ -287,10 +287,10 @@ class FileTest extends TestCase
         /**
          * @var Client $mockedClient
          */
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $fileResource = new File($mockedClient);
 
-        $lib = new \Seafile\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
         $this->assertFalse($fileResource->remove($lib, ''));
@@ -306,10 +306,10 @@ class FileTest extends TestCase
         /**
          * @var Client $mockedClient
          */
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $fileResource = new File($mockedClient);
 
-        $lib = new \Seafile\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
         $this->assertFalse($fileResource->rename($lib, '', ''));
@@ -324,10 +324,10 @@ class FileTest extends TestCase
      */
     public function dataProviderCopyInvalid()
     {
-        $srcLib = new \Seafile\Type\Library();
+        $srcLib = new \Seafile\Client\Type\Library();
         $srcLib->id = 'some-crazy-id';
 
-        $dstLib = new \Seafile\Type\Library();
+        $dstLib = new \Seafile\Client\Type\Library();
         $dstLib->id = 'some-other-crazy-id';
 
         return [
@@ -348,7 +348,7 @@ class FileTest extends TestCase
         /**
          * @var Client $mockedClient
          */
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $fileResource = new File($mockedClient);
 
         $srcLib = $data[0];
@@ -374,7 +374,7 @@ class FileTest extends TestCase
         );
 
         $deleteResponse = new Response(200, ['Content-Type' => 'text/plain']);
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
         $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=test_dir';
@@ -409,7 +409,7 @@ class FileTest extends TestCase
          */
         $fileResource = new File($mockedClient);
 
-        $lib = new \Seafile\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
         $this->assertTrue($fileResource->remove($lib, 'test_dir'));
@@ -430,7 +430,7 @@ class FileTest extends TestCase
 
         $newDirname = 'test_dir_renamed';
         $renameResponse = new Response(301, ['Content-Type' => 'text/plain']);
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
         $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=test_dir';
@@ -475,7 +475,7 @@ class FileTest extends TestCase
          */
         $fileResource = new File($mockedClient);
 
-        $lib = new \Seafile\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
         $this->assertTrue($fileResource->rename($lib, 'test_dir', $newDirname));
@@ -503,10 +503,10 @@ class FileTest extends TestCase
      */
     public function testCopyMove(array $data)
     {
-        $sourceLib = new \Seafile\Type\Library();
+        $sourceLib = new \Seafile\Client\Type\Library();
         $sourceLib->id = 'some-crazy-id';
 
-        $destLib = new \Seafile\Type\Library();
+        $destLib = new \Seafile\Client\Type\Library();
         $destLib->id = 'some-other-crazy-id';
 
         $getAllResponse = new Response(
@@ -519,7 +519,7 @@ class FileTest extends TestCase
         $dstPath = '/target/file/path';
 
         $response = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
         $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=' . $srcPath;
@@ -578,7 +578,7 @@ class FileTest extends TestCase
      */
     public function testMoveInvalidDestination()
     {
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
 
         /**
          * @var Client $mockedClient
@@ -587,9 +587,9 @@ class FileTest extends TestCase
 
         $this->assertFalse(
             $fileResource->move(
-                new \Seafile\Type\Library(),
+                new \Seafile\Client\Type\Library(),
                 '',
-                new \Seafile\Type\Library(),
+                new \Seafile\Client\Type\Library(),
                 ''
             )
         );

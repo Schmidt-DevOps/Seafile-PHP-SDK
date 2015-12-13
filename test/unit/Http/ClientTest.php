@@ -1,11 +1,8 @@
 <?php
 
-namespace Seafile\Tests;
+namespace Seafile\Client\Tests;
 
-use GuzzleHttp\Psr7\Response;
-use Seafile\Resource\Library;
-use Seafile\Http\Client;
-use Seafile\Tests\TestCase;
+use Seafile\Client\Http\Client;
 
 /**
  * Client test

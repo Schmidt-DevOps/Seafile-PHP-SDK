@@ -1,11 +1,10 @@
 <?php
 
-namespace Seafile\Tests;
+namespace Seafile\Client\Tests;
 
 use GuzzleHttp\Psr7\Response;
-use Seafile\Http\Client;
-use Seafile\Resource\Directory;
-use Seafile\Type\Library;
+use Seafile\Client\Http\Client;
+use Seafile\Client\Resource\Directory;
 
 /**
  * Directory resource test
@@ -36,12 +35,12 @@ class DirectoryTest extends TestCase
             )
         ));
 
-        $directoryItems = $directoryResource->getAll(new \Seafile\Type\Library());
+        $directoryItems = $directoryResource->getAll(new \Seafile\Client\Type\Library());
 
         $this->assertInternalType('array', $directoryItems);
 
         foreach ($directoryItems as $directoryItem) {
-            $this->assertInstanceOf('Seafile\Type\DirectoryItem', $directoryItem);
+            $this->assertInstanceOf('Seafile\Client\Type\DirectoryItem', $directoryItem);
         }
     }
 
@@ -60,7 +59,7 @@ class DirectoryTest extends TestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -76,7 +75,7 @@ class DirectoryTest extends TestCase
          * @var Client $mockedClient
          */
         $directoryResource = new Directory($mockedClient);
-        $lib = new \Seafile\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
         $directoryResource->getAll($lib, $rootDir);
@@ -97,7 +96,7 @@ class DirectoryTest extends TestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -115,7 +114,7 @@ class DirectoryTest extends TestCase
          */
         $directoryResource = new Directory($mockedClient);
 
-        $lib = new \Seafile\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
         $this->assertFalse($directoryResource->exists($lib, 'does_not_exist', $rootDir)); // ...2nd request...
@@ -150,8 +149,29 @@ class DirectoryTest extends TestCase
         );
 
         $mkdirResponse = new Response($expectResponseCode, ['Content-Type' => 'text/plain']);
+        $directoryResource = $this->getDirectoryResource($getAllResponse, $mkdirResponse);
 
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $lib = new \Seafile\Client\Type\Library();
+        $lib->id = 'some-crazy-id';
+
+        if ($expectResponseCode === 201) {
+            $this->assertTrue($directoryResource->create($lib, 'new_dir', '/', false));
+        } else {
+            $this->assertFalse($directoryResource->create($lib, 'new_dir', '/', false));
+        }
+    }
+
+    /**
+     * Get directory resource
+     *
+     * @param Response $getAllResponse Response on "get all" request
+     * @param Response $mkdirResponse  Response on actual operation
+     *
+     * @return Directory
+     */
+    protected function getDirectoryResource($getAllResponse, $mkdirResponse)
+    {
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -174,16 +194,7 @@ class DirectoryTest extends TestCase
         /**
          * @var Client $mockedClient
          */
-        $directoryResource = new Directory($mockedClient);
-
-        $lib = new \Seafile\Type\Library();
-        $lib->id = 'some-crazy-id';
-
-        if ($expectResponseCode === 201) {
-            $this->assertTrue($directoryResource->create($lib, 'new_dir', '/', false));
-        } else {
-            $this->assertFalse($directoryResource->create($lib, 'new_dir', '/', false));
-        }
+        return new Directory($mockedClient);
     }
 
     /**
@@ -199,7 +210,7 @@ class DirectoryTest extends TestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -217,7 +228,7 @@ class DirectoryTest extends TestCase
          */
         $directoryResource = new Directory($mockedClient);
 
-        $lib = new \Seafile\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
         $this->assertFalse($directoryResource->create($lib, 'test_dir', '/', false));
@@ -230,10 +241,10 @@ class DirectoryTest extends TestCase
      */
     public function testCreateEmptyDirName()
     {
-        $directoryResource = new Directory(new \Seafile\Http\Client());
+        $directoryResource = new Directory(new \Seafile\Client\Http\Client());
 
         $this->assertFalse($directoryResource->create(
-            new \Seafile\Type\Library(),
+            new \Seafile\Client\Type\Library(),
             ''
         ));
     }
@@ -252,34 +263,9 @@ class DirectoryTest extends TestCase
         );
 
         $mkdirResponse = new Response(201, ['Content-Type' => 'text/plain']);
+        $directoryResource = $this->getDirectoryResource($getAllResponse, $mkdirResponse);
 
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
-
-        $mockedClient->method('getConfig')->willReturn('http://example.com/');
-
-        // @todo: Test more thoroughly. For example make sure request() gets called with POST twice (a, then b)
-        $mockedClient->expects($this->any())
-            ->method('request')
-            ->with($this->logicalOr(
-                $this->equalTo('GET'),
-                $this->equalTo('POST')
-            ))
-            // Return what was passed to offsetGet as a new instance
-            ->will($this->returnCallback(
-                function ($method) use ($getAllResponse, $mkdirResponse) {
-                    if ($method === 'GET') {
-                        return $getAllResponse;
-                    }
-                    return $mkdirResponse;
-                }
-            ));
-
-        /**
-         * @var Client $mockedClient
-         */
-        $directoryResource = new Directory($mockedClient);
-
-        $lib = new \Seafile\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
         $this->assertTrue($directoryResource->create($lib, 'a/b', '/', true));
@@ -292,7 +278,7 @@ class DirectoryTest extends TestCase
      */
     public function testRenameInvalidDirectoryName()
     {
-        $lib = new \Seafile\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
         $directoryResource = new Directory(new Client());
@@ -313,7 +299,7 @@ class DirectoryTest extends TestCase
         );
 
         $mkdirResponse = new Response(200, ['Content-Type' => 'text/plain']);
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
         $expectUri = 'http://example.com/repos/some-crazy-id/dir/?p=test_dir';
@@ -358,7 +344,7 @@ class DirectoryTest extends TestCase
          */
         $directoryResource = new Directory($mockedClient);
 
-        $lib = new \Seafile\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
         $this->assertTrue($directoryResource->rename($lib, 'test_dir', 'test_dir_renamed'));
@@ -371,7 +357,7 @@ class DirectoryTest extends TestCase
      */
     public function testRemoveInvalidDirectoryName()
     {
-        $lib = new \Seafile\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
         $directoryResource = new Directory(new Client());
@@ -392,7 +378,7 @@ class DirectoryTest extends TestCase
         );
 
         $mkdirResponse = new Response(200, ['Content-Type' => 'text/plain']);
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
         $expectUri = 'http://example.com/repos/some-crazy-id/dir/?p=test_dir';
@@ -427,7 +413,7 @@ class DirectoryTest extends TestCase
          */
         $directoryResource = new Directory($mockedClient);
 
-        $lib = new \Seafile\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
         $this->assertTrue($directoryResource->remove($lib, 'test_dir'));

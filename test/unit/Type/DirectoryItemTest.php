@@ -1,9 +1,8 @@
 <?php
 
-namespace Seafile\Tests\Type;
+namespace Seafile\Client\Tests\Type;
 
-use Seafile\Type\DirectoryItem;
-use Seafile\Type\Library;
+use Seafile\Client\Type\DirectoryItem;
 
 /**
  * Directory type test

@@ -1,6 +1,6 @@
 <?php
 
-namespace Seafile\Tests;
+namespace Seafile\Client\Tests;
 
 use GuzzleHttp\Psr7\Response;
 
@@ -22,11 +22,11 @@ class TestCase extends \PHPUnit_Framework_TestCase
     /**
      * Get mocked Guzzle client instance
      * @param Response $response HTTP Response
-     * @return \Seafile\Http\Client
+     * @return \Seafile\Client\Http\Client
      */
     protected function getMockedClient(Response $response)
     {
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/index.html');
         $mockedClient->method('request')->willReturn($response);

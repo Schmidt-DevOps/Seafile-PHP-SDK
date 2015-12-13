@@ -1,6 +1,6 @@
 <?php
 
-namespace Seafile\Type;
+namespace Seafile\Client\Type;
 
 use DateTime;
 use Doctrine\Common\Inflector\Inflector;

@@ -19,6 +19,7 @@
     "doctrine/inflector": "^1.0"
   },
   "require-dev": {
+    "codeclimate/php-test-reporter": "dev-master",
     "phpunit/phpunit": "4.5.*",
     "phpunit/phpunit-mock-objects": "2.3.*",
     "phpunit/php-token-stream": "1.4.*",
@@ -29,12 +30,12 @@
   "type": "library",
   "autoload": {
     "psr-4": {
-      "Seafile\\": "lib/"
+      "Seafile\\Client\\": "lib/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Seafile\\Tests\\": "test/lib"
+      "Seafile\\Client\\Tests\\": "test/lib"
     }
   }
 }

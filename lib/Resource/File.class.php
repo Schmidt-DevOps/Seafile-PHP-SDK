@@ -1,11 +1,11 @@
 <?php
 
-namespace Seafile\Resource;
+namespace Seafile\Client\Resource;
 
 use Exception;
 use GuzzleHttp\Psr7\Response;
-use Seafile\Type\DirectoryItem;
-use \Seafile\Type\Library as LibraryType;
+use Seafile\Client\Type\DirectoryItem;
+use \Seafile\Client\Type\Library as LibraryType;
 
 /**
  * Handles everything regarding Seafile files.

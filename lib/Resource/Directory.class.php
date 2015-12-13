@@ -1,9 +1,9 @@
 <?php
 
-namespace Seafile\Resource;
+namespace Seafile\Client\Resource;
 
-use \Seafile\Type\Library as LibraryType;
-use \Seafile\Type\DirectoryItem;
+use \Seafile\Client\Type\Library as LibraryType;
+use \Seafile\Client\Type\DirectoryItem;
 
 /**
  * Handles everything regarding Seafile directories.

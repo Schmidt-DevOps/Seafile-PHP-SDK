@@ -7,14 +7,14 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Seafile\Resource\Directory;
-use Seafile\Resource\File;
-use Seafile\Resource\Library;
+use Seafile\Client\Resource\Directory;
+use Seafile\Client\Resource\File;
+use Seafile\Client\Resource\Library;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\MessageFormatter;
 use Monolog\Logger;
-use Seafile\Http\Client;
+use Seafile\Client\Http\Client;
 
 $logger = new Logger('Logger');
 

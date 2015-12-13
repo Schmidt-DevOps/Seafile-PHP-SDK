@@ -1,6 +1,6 @@
 <?php
 
-namespace Seafile\Http;
+namespace Seafile\Client\Http;
 
 /**
  * Guzzle wrapper

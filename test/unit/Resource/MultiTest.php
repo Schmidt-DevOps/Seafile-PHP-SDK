@@ -3,9 +3,9 @@
 namespace Seafile\Tests\Domain;
 
 use GuzzleHttp\Psr7\Response;
-use Seafile\Http\Client;
-use Seafile\Resource\Multi;
-use Seafile\Tests\TestCase;
+use Seafile\Client\Http\Client;
+use Seafile\Client\Resource\Multi;
+use Seafile\Client\Tests\TestCase;
 
 /**
  * Multi resource test
@@ -28,14 +28,14 @@ class MultiTest extends TestCase
      */
     public function testDeleteEmpty()
     {
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
 
         /**
          * @var Client $mockedClient
          */
         $multiResource = new Multi($mockedClient);
 
-        $lib = new \Seafile\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
 
         $this->assertFalse($multiResource->delete($lib, []));
     }
@@ -47,14 +47,14 @@ class MultiTest extends TestCase
      */
     public function testCopyMoveEmpty()
     {
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
 
         /**
          * @var Client $mockedClient
          */
         $multiResource = new Multi($mockedClient);
 
-        $lib = new \Seafile\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
 
         foreach (['copy', 'move'] as $operation) {
             $this->assertFalse($multiResource->{$operation}($lib, [], $lib, ''));
@@ -116,7 +116,7 @@ class MultiTest extends TestCase
         $deletePaths = $data['deletePaths'];
 
         $deleteResponse = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
         $expectUri = 'http://example.com/repos/some-crazy-id/fileops/delete/?p=/some_dir';
@@ -157,7 +157,7 @@ class MultiTest extends TestCase
          */
         $fileResource = new Multi($mockedClient);
 
-        $lib = new \Seafile\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
         $this->assertSame($data['assert'], $fileResource->delete($lib, $deletePaths));
@@ -242,10 +242,10 @@ class MultiTest extends TestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        $srcLib = new \Seafile\Type\Library();
+        $srcLib = new \Seafile\Client\Type\Library();
         $srcLib->id = 'some-crazy-id';
 
-        $dstLib = new \Seafile\Type\Library();
+        $dstLib = new \Seafile\Client\Type\Library();
         $dstLib->id = 'some-other-crazy-id';
 
         $destDir = '/target/dir';
@@ -253,7 +253,7 @@ class MultiTest extends TestCase
         $filePaths = $data['filePaths'];
 
         $deleteResponse = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
-        $mockedClient = $this->getMockBuilder('\Seafile\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
         $expectUri = 'http://example.com/repos/some-crazy-id/fileops/' . $data ['operation'] . '/?p=/some_dir';
