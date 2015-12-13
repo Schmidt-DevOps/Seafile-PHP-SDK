@@ -1,6 +1,6 @@
 <?php
 
-namespace Seafile\Client\Tests;
+namespace Seafile\Client\Tests\Stubs;
 
 use Seafile\Client\Resource\File;
 use Seafile\Client\Type\Library as LibraryType;
