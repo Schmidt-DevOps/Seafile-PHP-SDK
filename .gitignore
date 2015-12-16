@@ -33,5 +33,8 @@
 /build/
 
 # Composer PHAR
-/composer.*
+/composer.lock
 /.idea
+
+# Stuff
+bin/run_tests_*.sh
