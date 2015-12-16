@@ -1,6 +1,6 @@
 # Seafile PHP SDK
 
-This is a PHP package for accessing [Seafile Web API](http://example.com).
+This is a PHP package for accessing [Seafile Web API](https://www.seafile.com/).
 
 ## German Web Application Developer Available for Hire!
 
@@ -10,6 +10,7 @@ Get in touch now: https://www.reneschmidt.de/blog/impressum/
 
 [![Build Status](https://api.travis-ci.org/rene-s/Seafile-PHP-SDK.svg)](https://travis-ci.org/rene-s/Seafile-PHP-SDK)
 [![Test Coverage](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/badges/coverage.svg)](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/coverage)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## What is Seafile?
 
