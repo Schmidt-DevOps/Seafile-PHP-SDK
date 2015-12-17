@@ -1,8 +1,9 @@
 <?php
 
-namespace Seafile\Client\Tests;
+namespace Seafile\Client\Tests\Http;
 
 use Seafile\Client\Http\Client;
+use Seafile\Client\Tests\TestCase;
 
 /**
  * Client test

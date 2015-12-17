@@ -1,6 +1,6 @@
 <?php
 
-namespace Seafile\Tests\Domain;
+namespace Seafile\Client\Tests\Resource;
 
 use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Http\Client;
