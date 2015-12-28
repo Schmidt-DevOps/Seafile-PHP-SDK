@@ -37,6 +37,8 @@ The next stable version is planned for January 2016.
 
 ## Obtain API token
 
+Have a look at script ```bin/obtain_api_token.sh``` and use it if you feel comfortable with it. Basically, the script does this:
+
 ```bash
 mkdir ~/.seafile-php-sdk
 curl -d "username=you@example.com&password=123456" https://your.seafile-server.com/api2/auth-token/ > ~/.seafile-php-sdk/api-token.json
@@ -46,13 +48,15 @@ Insert your test user name and test user password. Hint: if user name contains a
 
 The file ```~/.seafile-php-sdk/api-token.json``` will look something like this:
 
-```javascript
+```
 {"token": "your_api_token"}
 ```
 
 The example script will assume a config file ```~/.seafile-php-sdk/cfg.json``` that looks like this:
 
-```javascript
+Have a look at script ```bin/create_test_cfg.sh``` and use it if you feel comfortable with it. Basically, the script does this:
+
+```
 {
         "baseUri": "https://your-seafile-server.example.com",
         "testLibId": "test-library-id",
