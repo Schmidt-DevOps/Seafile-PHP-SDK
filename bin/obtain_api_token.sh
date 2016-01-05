@@ -24,7 +24,7 @@ done
 
 while [[ "$password" == "" ]];
 do
-    read -s -p "Enter password (will not be saved or shown, press CTRL-C to abort): " password
+    read -p "Enter password (will visible but not saved; press CTRL-C to abort): " password
 done
 
 while [[ "$hostname" == "" ]];
