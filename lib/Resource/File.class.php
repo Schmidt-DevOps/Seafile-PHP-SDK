@@ -99,7 +99,7 @@ class File extends AbstractResource
     /**
      * Update file
      * @param LibraryType $library       Library instance
-     * @param String      $localFilePath Local file path
+     * @param string      $localFilePath Local file path
      * @param string      $dir           Library dir
      * @param mixed       $filename      File name, or false to use the name from $localFilePath
      * @return Response
@@ -131,8 +131,8 @@ class File extends AbstractResource
 
     /**
      * Get multipart params for uploading/updating file
-     * @param String $localFilePath Local file path
-     * @param String $dir           Library dir
+     * @param string $localFilePath Local file path
+     * @param string $dir           Library dir
      * @param Bool   $newFile       Is new file (=upload) or not (=update)
      * @param mixed  $newFilename   New file name, or false to use the name from $localFilePath
      * @return array
@@ -179,7 +179,7 @@ class File extends AbstractResource
     /**
      * Upload file
      * @param LibraryType $library       Library instance
-     * @param String      $localFilePath Local file path
+     * @param string      $localFilePath Local file path
      * @param string      $dir           Library dir
      * @param mixed       $newFilename   New file name, or false to use the name from $localFilePath
      * @param Bool        $newFile       Is new file (=upload) or not (=update)
@@ -205,7 +205,7 @@ class File extends AbstractResource
     /**
      * Get file detail
      * @param LibraryType $library        Library instance
-     * @param String      $remoteFilePath Remote file path
+     * @param string      $remoteFilePath Remote file path
      * @return DirectoryItem
      */
     public function getFileDetail(LibraryType $library, $remoteFilePath)
@@ -227,7 +227,7 @@ class File extends AbstractResource
      * Remove a file
      *
      * @param LibraryType $library  Library object
-     * @param String      $filePath File path
+     * @param string      $filePath File path
      * @return bool
      */
     public function remove(LibraryType $library, $filePath)
@@ -259,8 +259,8 @@ class File extends AbstractResource
      * Rename a file
      *
      * @param LibraryType $library     Library object
-     * @param String      $filePath    File path
-     * @param String      $newFilename New file name
+     * @param string      $filePath    File path
+     * @param string      $newFilename New file name
      * @return bool
      */
     public function rename(LibraryType $library, $filePath, $newFilename)
@@ -302,9 +302,9 @@ class File extends AbstractResource
      * Copy a file
      *
      * @param LibraryType $srcLibrary       Source library object
-     * @param String      $srcFilePath      Source file path
+     * @param string      $srcFilePath      Source file path
      * @param LibraryType $dstLibrary       Destination library object
-     * @param String      $dstDirectoryPath Destination directory path
+     * @param string      $dstDirectoryPath Destination directory path
      * @param Int         $operation        Operation mode
      * @return bool
      */
@@ -364,9 +364,9 @@ class File extends AbstractResource
      * Move a file
      *
      * @param LibraryType $srcLibrary       Source library object
-     * @param String      $srcFilePath      Source file path
+     * @param string      $srcFilePath      Source file path
      * @param LibraryType $dstLibrary       Destination library object
-     * @param String      $dstDirectoryPath Destination directory path
+     * @param string      $dstDirectoryPath Destination directory path
      * @return bool
      */
     public function move(LibraryType $srcLibrary, $srcFilePath, LibraryType $dstLibrary, $dstDirectoryPath)

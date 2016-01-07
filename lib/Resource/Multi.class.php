@@ -34,7 +34,7 @@ class Multi extends AbstractResource
      * @param LibraryType $srcLibrary       Source library object
      * @param array       $srcPaths         Array with file/folder paths
      * @param LibraryType $dstLibrary       Destination library object
-     * @param String      $dstDirectoryPath Destination directory Path
+     * @param string      $dstDirectoryPath Destination directory Path
      * @return bool
      */
     public function move(LibraryType $srcLibrary, array $srcPaths, LibraryType $dstLibrary, $dstDirectoryPath)
@@ -48,7 +48,7 @@ class Multi extends AbstractResource
      * @param LibraryType $srcLibrary       Source library object
      * @param array       $srcPaths         Array with file/folder paths (they must be in the same folder)
      * @param LibraryType $dstLibrary       Destination library object
-     * @param String      $dstDirectoryPath Destination directory Path
+     * @param string      $dstDirectoryPath Destination directory Path
      * @param Int         $operation        'copy' or 'move'
      * @return bool
      */

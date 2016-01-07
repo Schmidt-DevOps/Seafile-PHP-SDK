@@ -23,7 +23,7 @@ class Directory extends AbstractResource
      * Get all items of a directory in a library
      *
      * @param LibraryType $library Library type
-     * @param String      $dir     Directory path
+     * @param string      $dir     Directory path
      *
      * @return DirectoryItem[]
      */
@@ -54,8 +54,8 @@ class Directory extends AbstractResource
      * Check if $dirName exists within $parentDir
      *
      * @param LibraryType $library   Library instance
-     * @param String      $dirName   Directory name
-     * @param String      $parentDir Parent directory
+     * @param string      $dirName   Directory name
+     * @param string      $parentDir Parent directory
      * @return bool
      */
     public function exists(LibraryType $library, $dirName, $parentDir = '/')
@@ -75,8 +75,8 @@ class Directory extends AbstractResource
      * Create directory within $parentDir
      *
      * @param LibraryType $library   Library instance
-     * @param String      $dirName   Directory name
-     * @param String      $parentDir Parent directory
+     * @param string      $dirName   Directory name
+     * @param string      $parentDir Parent directory
      * @param bool        $recursive Recursive create
      * @return bool Success
      */
@@ -138,7 +138,7 @@ class Directory extends AbstractResource
      * Remove a directory
      *
      * @param LibraryType $library       Library instance
-     * @param String      $directoryPath Directory path
+     * @param string      $directoryPath Directory path
      * @return bool
      */
     public function remove(LibraryType $library, $directoryPath)
@@ -170,8 +170,8 @@ class Directory extends AbstractResource
      * Rename a directory
      *
      * @param LibraryType $library          Library object
-     * @param String      $directoryPath    Directory path
-     * @param String      $newDirectoryName New directory name
+     * @param string      $directoryPath    Directory path
+     * @param string      $newDirectoryName New directory name
      * @return bool
      */
     public function rename(LibraryType $library, $directoryPath, $newDirectoryName)

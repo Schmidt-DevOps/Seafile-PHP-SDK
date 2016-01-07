@@ -340,7 +340,7 @@ class FileTest extends TestCase
      * Test copy() with invalid file name
      *
      * @dataProvider dataProviderCopyInvalid
-     * @param Array $data Test data
+     * @param array $data Test data
      * @return void
      */
     public function testCopyInvalid(array $data)
@@ -498,7 +498,7 @@ class FileTest extends TestCase
      * Test copy()
      *
      * @dataProvider dataProviderCopyMove
-     * @param Array $data Data provided
+     * @param array $data Data provided
      * @return void
      */
     public function testCopyMove(array $data)

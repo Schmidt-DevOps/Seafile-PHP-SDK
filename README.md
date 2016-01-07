@@ -6,7 +6,7 @@ This is a PHP package for accessing [Seafile Web API](https://www.seafile.com/).
 
 No marketing skills whatsoever, but low rates, nearly 20 years of experience, and german work attitude.
 
-Get in touch now: https://www.reneschmidt.de/blog/impressum/
+Get in touch now: https://www.reneschmidt.de/DevOps/#contact
 
 [![Build Status](https://api.travis-ci.org/rene-s/Seafile-PHP-SDK.svg)](https://travis-ci.org/rene-s/Seafile-PHP-SDK)
 [![Test Coverage](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/badges/coverage.svg)](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/coverage)
@@ -239,11 +239,31 @@ $client = new Client(
 - PHP >=5.5
 - Guzzle 6
 
+## Seafile Web API V2 Support Matrix
+
+| Resource               | Support grade |
+| ---------------------- | ------------- |
+| Account                | contribute!   |
+| Starred Files          | contribute!   |
+| Group                  | contribute!   |
+| Share                  | contribute!   |
+| Library/Library        | partial       |
+| Library/File           | partial       |
+| Library/Directory      | partial       |
+| Library/Multiple Files | :+1:          |
+| Avatar                 | contribute!   |
+| Events                 | contribute!   |
+| Organization           | contribute!   |
+
 ## Contributing
 
 Please note that this package still is in its infancy. Only a small part of the API has been implemented so far.
 
-Pull requests are welcome.
+**Pull requests are welcome**. Please adhere to some very basic and simple principles:
+
+- Follow "separation of concern" on all levels: 1 issue == 1 pull request. Do not cover multiple issues in a pull request.
+- Unit tests raise the chance of your pull request getting accepted.
+- The same goes for [PHPDoc](https://en.wikipedia.org/wiki/PHPDoc) blocks.
 
 ## Links
 

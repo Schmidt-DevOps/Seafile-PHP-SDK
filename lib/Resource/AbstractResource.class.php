@@ -34,7 +34,7 @@ abstract class AbstractResource
 
     /**
      * Clip tailing slash
-     * @param String $uri URI string
+     * @param string $uri URI string
      * @return mixed|string
      */
     public function clipUri($uri)
