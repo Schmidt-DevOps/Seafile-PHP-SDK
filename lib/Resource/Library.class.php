@@ -20,6 +20,7 @@ class Library extends AbstractResource
 {
     /**
      * List libraries
+     *
      * @return LibraryType[]
      */
     public function getAll()
@@ -39,7 +40,9 @@ class Library extends AbstractResource
 
     /**
      * Get library info
+     *
      * @param string $libraryId Library ID
+     *
      * @return LibraryType
      */
     public function getById($libraryId)
@@ -56,9 +59,12 @@ class Library extends AbstractResource
 
     /**
      * Decrypt library
+     *
      * @param string $libraryId Library ID
      * @param array  $options   Options
-     * @return Bool Decryption succes
+     *
+     * @return Bool Decryption success
+     *
      * @throws \Exception
      */
     public function decrypt($libraryId, array $options)
@@ -84,6 +90,7 @@ class Library extends AbstractResource
      *
      * @param string $value     Library name
      * @param string $attribute Attribute name of library
+     *
      * @return bool
      */
     public function exists($value, $attribute = 'name')
@@ -105,6 +112,7 @@ class Library extends AbstractResource
      * @param string $name        Library name
      * @param string $description Library description
      * @param string $password    false means no encryption, any other string is used as password
+     *
      * @return bool
      */
     public function create($name, $description = "new repo", $password = '')
@@ -158,6 +166,7 @@ class Library extends AbstractResource
      * Remove a library
      *
      * @param string $libraryId Library ID
+     *
      * @return bool
      */
     public function remove($libraryId)

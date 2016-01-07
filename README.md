@@ -255,6 +255,13 @@ $client = new Client(
 | Events                 | contribute!   |
 | Organization           | contribute!   |
 
+## Seafile server compatibility
+
+Tested with:
+
+- Seafile Server 4.4.5 for generic Linux/Debian Wheezy
+- Seafile Server 5.0.3 for generic Linux/Debian Jessie
+
 ## Contributing
 
 Please note that this package still is in its infancy. Only a small part of the API has been implemented so far.

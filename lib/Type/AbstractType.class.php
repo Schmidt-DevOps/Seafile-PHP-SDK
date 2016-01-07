@@ -20,6 +20,15 @@ use stdClass;
  */
 abstract class AbstractType
 {
+    /**
+     * Associative array mode
+     */
+    const ARRAY_ASSOC = 1;
+
+    /**
+     * Multipart array mode
+     */
+    const ARRAY_MULTI_PART = 2;
 
     /**
      * Constructor
@@ -41,15 +50,23 @@ abstract class AbstractType
     {
         foreach ($fromArray as $key => $value) {
             $lowerCamelCaseKey = Inflector::camelize($key);
-            if (property_exists($this, $lowerCamelCaseKey)) {
-                switch ($key) {
-                    case 'mtime':
-                        $this->{$lowerCamelCaseKey} = DateTime::createFromFormat("U", $value);
-                        break;
-                    default:
-                        $this->{$lowerCamelCaseKey} = $value;
-                        break;
-                }
+
+            if (!property_exists($this, $lowerCamelCaseKey)) {
+                continue;
+            }
+
+            switch ($key) {
+                case 'create_time':
+                    $value = floor($value / 1000000);
+                    $this->{$lowerCamelCaseKey} = DateTime::createFromFormat("U", $value);
+                    break;
+                case 'mtime':
+                case 'mtime_created':
+                    $this->{$lowerCamelCaseKey} = DateTime::createFromFormat("U", $value);
+                    break;
+                default:
+                    $this->{$lowerCamelCaseKey} = $value;
+                    break;
             }
         }
 
@@ -65,5 +82,43 @@ abstract class AbstractType
     {
         $this->fromArray((array)$jsonResponse);
         return $this;
+    }
+
+    /**
+     * Return instance as array
+     *
+     * @param int $mode Array mode
+     *
+     * @return array
+     */
+    public function toArray($mode = self::ARRAY_ASSOC)
+    {
+        switch ($mode) {
+            case self::ARRAY_MULTI_PART:
+                $keyVals = $this->toArray(self::ARRAY_ASSOC);
+                $multiPart = [];
+
+                foreach ($keyVals as $key => $val) {
+                    $multiPart[] = [
+                        'name' => Inflector::tableize($key), // misuse & prone to error
+                        'contents' => "$val"
+                    ];
+                }
+
+                return $multiPart;
+            case self::ARRAY_ASSOC:
+            default:
+                return array_filter((array)$this); // removes empty values
+        }
+    }
+
+    /**
+     * Return instance as JSON string
+     *
+     * @return string JSON string
+     */
+    public function toJson()
+    {
+        return json_encode($this);
     }
 }

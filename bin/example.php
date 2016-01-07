@@ -64,6 +64,7 @@ $client = new Client(
         ]
     ]
 );
+
 $libraryResource = new Library($client);
 $directoryResource = new Directory($client);
 $fileResource = new File($client);
