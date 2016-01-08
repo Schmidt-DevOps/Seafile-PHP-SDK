@@ -192,7 +192,7 @@ class Account extends AbstractResource
         }
 
         $uri = sprintf(
-            '%s/accounts/%s/',
+            '%s/accounts/%s',
             $this->clipUri($this->client->getConfig('base_uri')),
             $accountType->email
         );

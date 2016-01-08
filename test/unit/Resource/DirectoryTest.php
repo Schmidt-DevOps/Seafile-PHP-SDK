@@ -137,7 +137,7 @@ class DirectoryTest extends TestCase
     /**
      * Test create() non-recursively
      *
-     * @param Int $expectResponseCode Expected mkdir request response code
+     * @param int $expectResponseCode Expected mkdir request response code
      * @dataProvider createNonRecursiveDataProvider
      * @return void
      */

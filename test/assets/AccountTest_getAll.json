@@ -1,0 +1,14 @@
+[
+  {
+    "source": "DB",
+    "email": "admin@example.com"
+  },
+  {
+    "source": "DB",
+    "email": "one@example.com"
+  },
+  {
+    "source": "DB",
+    "email": "two@example.com"
+  }
+]

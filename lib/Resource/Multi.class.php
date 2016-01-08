@@ -49,7 +49,7 @@ class Multi extends AbstractResource
      * @param array       $srcPaths         Array with file/folder paths (they must be in the same folder)
      * @param LibraryType $dstLibrary       Destination library object
      * @param string      $dstDirectoryPath Destination directory Path
-     * @param Int         $operation        'copy' or 'move'
+     * @param int         $operation        'copy' or 'move'
      * @return bool
      */
     public function copy(

@@ -101,7 +101,7 @@ class MultiTest extends TestCase
      *
      * @dataProvider dataProviderDelete
      *
-     * @param array $data Dataprovider data
+     * @param array $data DataProvider data
      * @return void
      */
     public function testDelete(array $data)
@@ -231,7 +231,7 @@ class MultiTest extends TestCase
      *
      * @dataProvider dataProviderCopyMove
      *
-     * @param array $data Dataprovider data
+     * @param array $data DataProvider data
      * @return void
      */
     public function testCopyMove(array $data)

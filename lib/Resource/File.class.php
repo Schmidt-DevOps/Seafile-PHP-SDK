@@ -113,7 +113,7 @@ class File extends AbstractResource
     /**
      * Get upload URL
      * @param LibraryType $library Library instance
-     * @param Bool        $newFile Is new file (=upload) or not (=update)
+     * @param bool        $newFile Is new file (=upload) or not (=update)
      * @return String Upload link
      */
     public function getUploadUrl(LibraryType $library, $newFile = true)
@@ -133,7 +133,7 @@ class File extends AbstractResource
      * Get multipart params for uploading/updating file
      * @param string $localFilePath Local file path
      * @param string $dir           Library dir
-     * @param Bool   $newFile       Is new file (=upload) or not (=update)
+     * @param bool   $newFile       Is new file (=upload) or not (=update)
      * @param mixed  $newFilename   New file name, or false to use the name from $localFilePath
      * @return array
      */
@@ -182,7 +182,7 @@ class File extends AbstractResource
      * @param string      $localFilePath Local file path
      * @param string      $dir           Library dir
      * @param mixed       $newFilename   New file name, or false to use the name from $localFilePath
-     * @param Bool        $newFile       Is new file (=upload) or not (=update)
+     * @param bool        $newFile       Is new file (=upload) or not (=update)
      * @return Response
      * @throws Exception
      */
@@ -305,7 +305,7 @@ class File extends AbstractResource
      * @param string      $srcFilePath      Source file path
      * @param LibraryType $dstLibrary       Destination library object
      * @param string      $dstDirectoryPath Destination directory path
-     * @param Int         $operation        Operation mode
+     * @param int         $operation        Operation mode
      * @return bool
      */
     public function copy(

@@ -99,17 +99,17 @@ abstract class AbstractType
                 $multiPart = [];
 
                 foreach ($keyVals as $key => $val) {
-                    $multiPart[] = [
-                        'name' => Inflector::tableize($key), // misuse & prone to error
-                        'contents' => "$val"
-                    ];
+                    $multiPart[] = ['name' => Inflector::tableize($key), 'contents' => "$val"];
                 }
 
-                return $multiPart;
-            case self::ARRAY_ASSOC:
+                $array = $multiPart;
+                break;
             default:
-                return array_filter((array)$this); // removes empty values
+                $array = array_filter((array)$this); // removes empty values
+                break;
         }
+
+        return $array;
     }
 
     /**
