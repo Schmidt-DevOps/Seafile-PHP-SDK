@@ -274,7 +274,7 @@ Please note that this package still is in its infancy. Only a small part of the 
 
 ## Links
 
-- http://seafile.com
+- https://seafile.com
 - https://www.seafile-server.org/ (Seafile server hosting in Germany)
 - http://manual.seafile.com/develop/web_api.html#seafile-web-api-v2
 - https://reneschmidt.de

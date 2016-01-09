@@ -5,6 +5,7 @@ namespace Seafile\Client\Tests\Resource;
 use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Http\Client;
 use Seafile\Client\Resource\Account;
+use Seafile\Client\Type\Account as AccountType;
 use Seafile\Client\Tests\TestCase;
 
 /**
@@ -28,7 +29,7 @@ class AccountTest extends TestCase
      */
     public function testGetAll()
     {
-        $accountRes = new Account($this->getMockedClient(
+        $accountResource = new Account($this->getMockedClient(
             new Response(
                 200,
                 ['Content-Type' => 'application/json'],
@@ -36,7 +37,7 @@ class AccountTest extends TestCase
             )
         ));
 
-        $libs = $accountRes->getAll();
+        $libs = $accountResource->getAll();
 
         $this->assertInternalType('array', $libs);
 
@@ -48,11 +49,13 @@ class AccountTest extends TestCase
     /**
      * Test getByEmail()
      *
+     * @param string $method Name of method to be tested
+     *
      * @return void
      */
     public function testGetByEmail($method = 'getByEmail')
     {
-        $libraryResource = new Account($this->getMockedClient(
+        $accountResource = new Account($this->getMockedClient(
             new Response(
                 200,
                 ['Content-Type' => 'application/json'],
@@ -62,7 +65,7 @@ class AccountTest extends TestCase
 
         $email = 'test-5690113abbceb4.93776759@example.com';
 
-        $accountType = $libraryResource->{$method}($email);
+        $accountType = $accountResource->{$method}($email);
 
         $this->assertInstanceOf('Seafile\Client\Type\Account', $accountType);
         $this->assertSame($email, $accountType->email);
@@ -77,7 +80,84 @@ class AccountTest extends TestCase
      */
     public function testGetInfo()
     {
-       $this->testGetByEmail('getInfo');
+        $this->testGetByEmail('getInfo');
+    }
+
+    /**
+     * Test create() with missing attribute values
+     *
+     * @return void
+     */
+    public function testCreateIllegal()
+    {
+        $accountResource = new Account($this->getMockedClient(new Response(200)));
+        $this->assertFalse($accountResource->create(new AccountType()));
+    }
+
+    /**
+     * Data Provider for testCreate()
+     *
+     * @return array
+     */
+    public function dataProviderCreateUpdate()
+    {
+        return [
+            [['method' => 'create', 'responseCode' => 201, 'result' => true]],
+            [['method' => 'create', 'responseCode' => 200, 'result' => false]],
+            [['method' => 'create', 'responseCode' => 500, 'result' => false]],
+            [['method' => 'update', 'responseCode' => 201, 'result' => false]],
+            [['method' => 'update', 'responseCode' => 200, 'result' => true]],
+            [['method' => 'update', 'responseCode' => 500, 'result' => false]]
+        ];
+    }
+
+    /**
+     * Test create() and update()
+     *
+     * @dataProvider dataProviderCreateUpdate
+     *
+     * @param array $data DataProvider data
+     *
+     * @return void
+     */
+    public function testCreateUpdate(array $data)
+    {
+        $baseUri = 'https://example.com/';
+
+        $accountType = (new AccountType)->fromArray([
+            'password' => 'some_password',
+            'email' => 'my_email@example.com'
+        ]);
+
+        $mockedClient = $this->getMock('\Seafile\Client\Http\Client', ['put', 'getConfig']);
+
+        $mockedClient->expects($this->any())
+            ->method('put')
+            ->with($baseUri . 'accounts/' . $accountType->email . '/')// trailing slash is mandatory!
+            ->willReturn(new Response($data['responseCode']));
+
+        $mockedClient->expects($this->any())
+            ->method('getConfig')
+            ->with('base_uri')
+            ->willReturn($baseUri);
+
+        /**
+         * @var Client $mockedClient
+         */
+        $accountResource = new Account($mockedClient);
+
+        $this->assertSame($data['result'], $accountResource->{$data['method']}($accountType));
+    }
+
+    /**
+     * Test update() with missing attribute values
+     *
+     * @return void
+     */
+    public function testUpdateIllegal()
+    {
+        $accountResource = new Account($this->getMockedClient(new Response(200)));
+        $this->assertFalse($accountResource->update(new AccountType()));
     }
 
     /**
@@ -113,7 +193,7 @@ class AccountTest extends TestCase
 
         $mockedClient->expects($this->any())
             ->method('delete')
-            ->with($baseUri . 'accounts/' . $accountType->email)
+            ->with($baseUri . 'accounts/' . $accountType->email . '/')// trailing slash is mandatory!
             ->willReturn(new Response(200));
 
         $mockedClient->expects($this->any())

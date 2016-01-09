@@ -130,7 +130,6 @@ if ($success) {
     $logger->log(Logger::ALERT, '#################### Could not update account');
 }
 
-// @fixme Does not work. DELETE request yields 301 and then a result like getByEmail() instead of just 200
 $logger->log(Logger::INFO, "#################### Sleeping 10s before deleting the account... zzzzzz....");
 sleep(10);
 
