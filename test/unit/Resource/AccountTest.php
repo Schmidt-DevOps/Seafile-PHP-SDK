@@ -22,7 +22,7 @@ use Seafile\Client\Tests\TestCase;
 class AccountTest extends TestCase
 {
     /**
-     * getAll()
+     * Test getAll()
      *
      * @return void
      */
@@ -46,11 +46,11 @@ class AccountTest extends TestCase
     }
 
     /**
-     * getById()
+     * Test getByEmail()
      *
      * @return void
      */
-    public function testGetByEmail()
+    public function testGetByEmail($method = 'getByEmail')
     {
         $libraryResource = new Account($this->getMockedClient(
             new Response(
@@ -62,12 +62,22 @@ class AccountTest extends TestCase
 
         $email = 'test-5690113abbceb4.93776759@example.com';
 
-        $accountType = $libraryResource->getByEmail($email);
+        $accountType = $libraryResource->{$method}($email);
 
         $this->assertInstanceOf('Seafile\Client\Type\Account', $accountType);
         $this->assertSame($email, $accountType->email);
         $this->assertInstanceOf('DateTime', $accountType->createTime);
         $this->assertSame('2016-01-08T19:42:50+0000', $accountType->createTime->format(DATE_ISO8601));
+    }
+
+    /**
+     * Test getInfo()
+     *
+     * @return void
+     */
+    public function testGetInfo()
+    {
+       $this->testGetByEmail('getInfo');
     }
 
     /**
@@ -84,7 +94,7 @@ class AccountTest extends TestCase
     }
 
     /**
-     * Test remove()
+     * Test remove() and removeByEmail
      *
      * @dataProvider dataProviderRemove
      *
@@ -117,5 +127,8 @@ class AccountTest extends TestCase
         $accountResource = new Account($mockedClient);
 
         $this->assertSame($data['result'], $accountResource->remove($accountType));
+
+        // test removeByEmail() in one go
+        $this->assertSame($data['result'], $accountResource->removeByEmail($accountType->email));
     }
 }

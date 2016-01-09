@@ -91,8 +91,12 @@ class Account extends AbstractResource
      */
     public function create(AccountType $accountType)
     {
-        // Password and email are required
-        if (empty($accountType->password) || empty($accountType->email)) {
+        // at least one of these fields is required
+        $requirementsMet = !empty($accountType->password)
+            || !empty($accountType->isStaff)
+            || !empty($accountType->isActive);
+
+        if (!$requirementsMet) {
             return false;
         }
 
@@ -101,8 +105,7 @@ class Account extends AbstractResource
             $this->clipUri($this->client->getConfig('base_uri'))
         );
 
-        $response = $this->client->request(
-            'PUT',
+        $response = $this->client->put(
             $uri,
             [
                 'headers' => ['Accept' => 'application/json; charset=utf-8'],
@@ -122,8 +125,15 @@ class Account extends AbstractResource
      */
     public function update(AccountType $accountType)
     {
-        // Password and email are required
-        if (empty($accountType->password) || empty($accountType->email)) {
+        // at least one of these fields is required
+        $requirementsMet = !empty($accountType->password)
+            || !empty($accountType->isStaff)
+            || !empty($accountType->isActive)
+            || !empty($accountType->name)
+            || !empty($accountType->note)
+            || !empty($accountType->storage);
+
+        if (!$requirementsMet) {
             return false;
         }
 
@@ -132,14 +142,11 @@ class Account extends AbstractResource
             $this->clipUri($this->client->getConfig('base_uri'))
         );
 
-        $params = $accountType->toArray(MODE);
-
-        $response = $this->client->request(
-            'PUT',
+        $response = $this->client->put(
             $uri,
             [
                 'headers' => ['Accept' => 'application/json; charset=utf-8'],
-                'params' => $params,
+                'multipart' => $accountType->toArray(AbstractType::ARRAY_MULTI_PART),
             ]
         );
 

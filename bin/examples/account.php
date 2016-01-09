@@ -8,6 +8,7 @@
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use Seafile\Client\Resource\Account;
+use Seafile\Client\Type\AbstractType;
 use Seafile\Client\Type\Account as AccountType;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Resource\Library;
@@ -114,11 +115,27 @@ if ($success) {
     $logger->log(Logger::ALERT, 'Could not create account ' . $newAccount->email);
 }
 
+$logger->log(Logger::INFO, "#################### Update account");
+
+$changedAccount = (new AccountType)->fromArray([
+    'email' => $newAccount->email,
+    'name' => 'Divine Hugh Jazz'
+]);
+
+$result = $accountResource->update($changedAccount);
+
+if ($success) {
+    $logger->log(Logger::INFO, "#################### Account updated");
+} else {
+    $logger->log(Logger::ALERT, '#################### Could not update account');
+}
+
+// @fixme Does not work. DELETE request yields 301 and then a result like getByEmail() instead of just 200
 $logger->log(Logger::INFO, "#################### Sleeping 10s before deleting the account... zzzzzz....");
 sleep(10);
 
 $logger->log(Logger::INFO, "#################### Delete account " . $newAccount->email);
-$success = $accountResource->removeByEmail($newAccount->email);
+$success = $accountResource->remove($newAccount);
 
 if ($success) {
     $logger->log(Logger::INFO, "#################### Deleted account " . $newAccount->email);
