@@ -142,4 +142,27 @@ if ($success) {
     $logger->log(Logger::ALERT, "#################### Could not delete account " . $newAccount->email);
 }
 
+
+
+//
+//$logger->log(Logger::INFO, "#################### Migrating test@example.com to test1@example.com");
+//
+//$fromAccount = (new AccountType)->fromArray([
+//    'email' => 'test@example.com'
+//]);
+//
+//$toAccount = (new AccountType)->fromArray([
+//    'email' => 'test2@example.com'
+//]);
+//
+//$result = $accountResource->migrate($fromAccount, $toAccount);
+//
+
+
+
+
+
+
+
+
 print(PHP_EOL . 'Done' . PHP_EOL);

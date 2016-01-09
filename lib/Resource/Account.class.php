@@ -162,12 +162,40 @@ class Account extends AbstractResource
      * @param AccountType $toAccountType   AccountType instance to update to
      *
      * @return bool
-     * @todo Yet to be implemented
      */
-    public function migrate(AccountType $fromAccountType, AccountType $toAccountType)
-    {
-        return false; // not yet implemented
-    }
+//    public function migrate(AccountType $fromAccountType, AccountType $toAccountType)
+//    {
+//        // at least one of these fields is required
+//        $requirementsMet = !empty($fromAccountType->email) && !empty($toAccountType->email);
+//
+//        if (!$requirementsMet) {
+//            return false;
+//        }
+//
+//        $uri = sprintf(
+//            '%s/accounts/' . $fromAccountType->email . '/',
+//            $this->clipUri($this->client->getConfig('base_uri'))
+//        );
+//
+//        $response = $this->client->put(
+//            $uri,
+//            [
+//                'headers' => ['Accept' => 'application/json; charset=utf-8'],
+//                'multipart' => [
+//                    [
+//                        'name' => 'op',
+//                        'contents' => 'migrate'
+//                    ],
+//                    [
+//                        'name' => 'to_user',
+//                        'contents' => $toAccountType->email
+//                    ]
+//                ]
+//            ]
+//        );
+//
+//        return $response->getStatusCode() === 200;
+//    }
 
     /**
      * Remove a account by email
