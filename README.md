@@ -202,6 +202,83 @@ $updatedFileId = json_decode((string)$response->getBody());
 $directoryItem = $fileResource->getFileDetail($lib, '/' . basename($fullFilePath));
 ```
 
+### Get API user account info
+
+```php
+$accountResource = new Account($client);
+
+$accountType = $accountResource->getInfo();
+
+print_r($accountType->toArray());
+```
+
+### Get all accounts
+
+```php
+$accountResource = new Account($client);
+
+$accountTypes = $accountResource->getAll();
+
+foreach ($accountTypes as $accountType) {
+    print_r($accountType->toArray());
+}
+```
+
+### Create account
+
+```php
+$newAccountType = (new AccountType)->fromArray([
+    'email' => 'someone@example.com',
+    'password' => 'password',
+    'name' => 'Hugh Jazz',
+    'note' => 'I will not waste chalk',
+    'institution' => 'Duff Beer Inc.'
+]);
+
+$success = $accountResource->create($newAccountType);
+```
+
+### Update account
+
+```php
+$updateAccountType = (new AccountType)->fromArray([
+    'name' => 'Divine Hugh Jazz',
+    'email' => 'someone@example.com'
+]);
+
+$success = $accountResource->update($updateAccountType);
+```
+
+### Get account info by email address
+
+```php
+$accountResource = new Account($client);
+
+$accountType = $accountResource->getByEmail('someone@example.com');
+
+print_r($accountType->toArray());
+```
+
+### Delete account
+
+```php
+$accountResource = new Account($client);
+
+$accountType = (new AccountType)->fromArray([
+    'email' => 'someone@example.com'
+]);
+
+$success = $accountResource->remove($accountType);
+```
+
+or
+
+```php
+$accountResource = new Account($client);
+
+$success = $accountResource->removeByEmail('someone@example.com');
+```
+
 ### Debugging and how to enable logging of requests and responses
 
 This example requires monolog. Log entries and Guzzle debug info will be written to stdout.

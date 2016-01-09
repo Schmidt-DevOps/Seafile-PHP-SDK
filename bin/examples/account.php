@@ -71,24 +71,24 @@ $accountResource = new Account($client);
 
 // get API user info
 $logger->log(Logger::INFO, "#################### Getting API user info");
-$account = $accountResource->getInfo();
+$accountType = $accountResource->getInfo();
 
-foreach ((array)$account as $key => $value) {
+foreach ((array)$accountType as $key => $value) {
     $logger->log(Logger::INFO, $key . ': ' . $value);
 }
 
 // get all users
 $logger->log(Logger::INFO, "#################### Get all users");
-$accounts = $accountResource->getAll();
+$accountTypes = $accountResource->getAll();
 
-foreach ($accounts as $account) {
-    $logger->log(Logger::INFO, $account->email);
+foreach ($accountTypes as $accountType) {
+    $logger->log(Logger::INFO, $accountType->email);
 }
 
 // create random account
 $logger->log(Logger::INFO, "#################### Create random account");
 
-$newAccount = (new AccountType)->fromArray([
+$newAccountType = (new AccountType)->fromArray([
     'email' => uniqid('test-', true) . '@example.com',
     'password' => md5(uniqid('t.gif', true)),
     'name' => 'Hugh Jazz',
@@ -97,14 +97,14 @@ $newAccount = (new AccountType)->fromArray([
     'institution' => 'Duff Beer Inc.'
 ]);
 
-$success = $accountResource->create($newAccount);
+$success = $accountResource->create($newAccountType);
 
 if ($success) {
     // get info on specific user
     $logger->log(Logger::INFO, "#################### Get info on specific user");
-    $account = $accountResource->getByEmail($newAccount->email);
+    $accountType = $accountResource->getByEmail($newAccountType->email);
 
-    foreach ((array)$account as $key => $value) {
+    foreach ((array)$accountType as $key => $value) {
         if ($value instanceof DateTime) {
             $logger->log(Logger::INFO, $key . ': ' . $value->format(\DateTime::ISO8601));
         } else {
@@ -112,17 +112,17 @@ if ($success) {
         }
     }
 } else {
-    $logger->log(Logger::ALERT, 'Could not create account ' . $newAccount->email);
+    $logger->log(Logger::ALERT, 'Could not create account ' . $newAccountType->email);
 }
 
 $logger->log(Logger::INFO, "#################### Update account");
 
-$changedAccount = (new AccountType)->fromArray([
-    'email' => $newAccount->email,
+$changedAccountType = (new AccountType)->fromArray([
+    'email' => $newAccountType->email,
     'name' => 'Divine Hugh Jazz'
 ]);
 
-$result = $accountResource->update($changedAccount);
+$result = $accountResource->update($changedAccountType);
 
 if ($success) {
     $logger->log(Logger::INFO, "#################### Account updated");
@@ -133,13 +133,13 @@ if ($success) {
 $logger->log(Logger::INFO, "#################### Sleeping 10s before deleting the account... zzzzzz....");
 sleep(10);
 
-$logger->log(Logger::INFO, "#################### Delete account " . $newAccount->email);
-$success = $accountResource->remove($newAccount);
+$logger->log(Logger::INFO, "#################### Delete account " . $newAccountType->email);
+$success = $accountResource->remove($newAccountType);
 
 if ($success) {
-    $logger->log(Logger::INFO, "#################### Deleted account " . $newAccount->email);
+    $logger->log(Logger::INFO, "#################### Deleted account " . $newAccountType->email);
 } else {
-    $logger->log(Logger::ALERT, "#################### Could not delete account " . $newAccount->email);
+    $logger->log(Logger::ALERT, "#################### Could not delete account " . $newAccountType->email);
 }
 
 
