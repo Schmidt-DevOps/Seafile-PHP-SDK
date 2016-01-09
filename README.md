@@ -243,7 +243,7 @@ $client = new Client(
 
 | Resource               | Support grade |
 | ---------------------- | ------------- |
-| Account                | contribute!   |
+| Account                | :+1: (except migrate) |
 | Starred Files          | contribute!   |
 | Group                  | contribute!   |
 | Share                  | contribute!   |
