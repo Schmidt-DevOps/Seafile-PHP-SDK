@@ -3,7 +3,7 @@
 namespace Seafile\Client\Type;
 
 use DateTime;
-use Doctrine\Common\Inflector\Inflector;
+use CaseHelper\CaseHelperFactory;
 use stdClass;
 use \Seafile\Client\Type\Account as AccountType;
 
@@ -52,9 +52,9 @@ abstract class AbstractType
     public function fromArray(array $fromArray)
     {
         foreach ($fromArray as $key => $value) {
-            $lowerCamelCaseKey = Inflector::camelize($key);
+            $camelCaseKey = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_SNAKE_CASE)->toCamelCase($key);
 
-            if (!property_exists($this, $lowerCamelCaseKey)) {
+            if (!property_exists($this, $camelCaseKey)) {
                 continue;
             }
 
@@ -65,14 +65,14 @@ abstract class AbstractType
                 case 'create_time':
                 case 'ctime':
                     $value = floor($value / 1000000);
-                    $this->{$lowerCamelCaseKey} = DateTime::createFromFormat("U", $value);
+                    $this->{$camelCaseKey} = DateTime::createFromFormat("U", $value);
                     break;
                 case 'mtime':
                 case 'mtime_created':
-                    $this->{$lowerCamelCaseKey} = DateTime::createFromFormat("U", $value);
+                    $this->{$camelCaseKey} = DateTime::createFromFormat("U", $value);
                     break;
                 default:
-                    $this->{$lowerCamelCaseKey} = $value;
+                    $this->{$camelCaseKey} = $value;
                     break;
             }
         }
@@ -106,7 +106,10 @@ abstract class AbstractType
                 $multiPart = [];
 
                 foreach ($keyVals as $key => $val) {
-                    $multiPart[] = ['name' => Inflector::tableize($key), 'contents' => "$val"];
+                    $multiPart[] = [
+                        'name' => CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_CAMEL_CASE)->toSnakeCase($key),
+                        'contents' => "$val"
+                    ];
                 }
 
                 $array = $multiPart;
