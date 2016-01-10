@@ -39,6 +39,22 @@ class AvatarTest extends TestCase
     }
 
     /**
+     * Test getAvatar() with illegal avatar size
+     *
+     * @return void
+     */
+    public function testGetAvatarIllegalSize()
+    {
+        $baseUri = 'https://example.com/';
+        $resource = 'user';
+        $email = 'someone@example.com';
+        $size = -1;
+
+        $this->setExpectedException('Exception', 'Illegal avatar size');
+        $this->doGetAvatar('getUserAvatarByEmail', $baseUri, $resource, $email, $size);
+    }
+
+    /**
      * Test getGroupAvatarByEmail()
      *
      * @return void
@@ -88,7 +104,7 @@ class AvatarTest extends TestCase
 
         $avatarResource = new AvatarResource($mockedClient);
 
-        $avatarType = $avatarResource->{$method}($entity);
+        $avatarType = $avatarResource->{$method}($entity, $size);
 
         $this->assertInstanceOf('Seafile\Client\Type\Avatar', $avatarType);
         $this->assertInstanceOf('DateTime', $avatarType->mtime);
