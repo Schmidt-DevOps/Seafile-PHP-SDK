@@ -346,7 +346,7 @@ $client = new Client(
 | Library/File           | partial       |
 | Library/Directory      | partial       |
 | Library/Multiple Files | :+1:          |
-| Avatar                 | contribute!   |
+| Avatar                 | :+1:          |
 | Events                 | contribute!   |
 | Organization           | contribute!   |
 
