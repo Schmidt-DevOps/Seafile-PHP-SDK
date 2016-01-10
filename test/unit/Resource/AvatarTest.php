@@ -5,6 +5,7 @@ namespace Seafile\Client\Tests\Resource;
 use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Http\Client;
 use Seafile\Client\Type\Avatar as AvatarType;
+use Seafile\Client\Type\Library as LibraryType;
 use Seafile\Client\Type\Group as GroupType;
 use Seafile\Client\Resource\Avatar as AvatarResource;
 use Seafile\Client\Tests\TestCase;
@@ -102,6 +103,7 @@ class AvatarTest extends TestCase
             ->with('base_uri')
             ->willReturn($baseUri);
 
+        /** @var Client $mockedClient */
         $avatarResource = new AvatarResource($mockedClient);
 
         $avatarType = $avatarResource->{$method}($entity, $size);
@@ -109,5 +111,30 @@ class AvatarTest extends TestCase
         $this->assertInstanceOf('Seafile\Client\Type\Avatar', $avatarType);
         $this->assertInstanceOf('DateTime', $avatarType->mtime);
         $this->assertSame('1970-01-01T00:00:00+0000', $avatarType->mtime->format(DATE_ISO8601));
+    }
+
+    /**
+     * Test getAvatar() with illegal type instance
+     *
+     * @return void
+     */
+    public function testGetAvatarIllegalType()
+    {
+        $baseUri = 'https://example.com/';
+        $mockedClient = $this->getMock('\Seafile\Client\Http\Client');
+
+        $libraryType = new LibraryType();
+
+        $mockedClient->expects($this->any())
+            ->method('getConfig')
+            ->with('base_uri')
+            ->willReturn($baseUri);
+
+        /** @var Client $mockedClient */
+        $avatarResource = new AvatarResource($mockedClient);
+
+        $this->setExpectedException('Exception', 'Unsupported type to retrieve avatar information for.');
+
+        $this->invokeMethod($avatarResource, 'getAvatar', [$libraryType, 80]);
     }
 }

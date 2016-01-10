@@ -102,14 +102,12 @@ abstract class AbstractType
     {
         switch ($mode) {
             case self::ARRAY_MULTI_PART:
+                $caseHelper = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_CAMEL_CASE);
                 $keyVals = $this->toArray(self::ARRAY_ASSOC);
                 $multiPart = [];
 
                 foreach ($keyVals as $key => $val) {
-                    $multiPart[] = [
-                        'name' => CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_CAMEL_CASE)->toSnakeCase($key),
-                        'contents' => "$val"
-                    ];
+                    $multiPart[] = ['name' => $caseHelper->toSnakeCase($key), 'contents' => "$val"];
                 }
 
                 $array = $multiPart;
