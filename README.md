@@ -279,6 +279,24 @@ $accountResource = new Account($client);
 $success = $accountResource->removeByEmail('someone@example.com');
 ```
 
+### Get avatar of an account
+
+```php
+$accountType = (new AccountType)->fromArray([
+   'email' => 'someone@example.com'
+]);
+
+$avatarResource = new Avatar($client);
+
+print_r($avatarResource->getUserAvatar($accountType)->toArray());
+```
+
+or
+
+```php
+print_r($avatarResource->getUserAvatarByEmail('someone@example.com')->toArray());
+```
+
 ### Debugging and how to enable logging of requests and responses
 
 This example requires monolog. Log entries and Guzzle debug info will be written to stdout.

@@ -5,6 +5,7 @@ namespace Seafile\Client\Tests\Type;
 use Seafile\Client\Type\AbstractType;
 use Seafile\Client\Type\DirectoryItem;
 use Seafile\Client\Type\Account as AccountType;
+use Seafile\Client\Type\Group as GroupType;
 
 /**
  * AbstractType test
@@ -74,11 +75,11 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testFromArrayCreateTime()
     {
-        $account = new AccountType([
+        $accountType = new AccountType([
             'create_time' => '1452202279000000'
         ]);
 
-        $this->assertSame('2016-01-07T21:31:19+0000', $account->createTime->format(\DateTime::ISO8601));
+        $this->assertSame('2016-01-07T21:31:19+0000', $accountType->createTime->format(\DateTime::ISO8601));
     }
 
     /**
@@ -88,9 +89,9 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testJson()
     {
-        $account = new AccountType();
+        $accountType = new AccountType();
 
-        $jsonString = $account->toJson();
+        $jsonString = $accountType->toJson();
 
         $this->assertStringStartsWith('{"contactEmail":null', $jsonString);
         $this->assertStringEndsWith('"total":null,"usage":null}', $jsonString);
@@ -125,9 +126,9 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testToArrayAssoc(array $data)
     {
-        $account = (new AccountType())->fromArray($data[0]);
+        $accountType = (new AccountType())->fromArray($data[0]);
 
-        $this->assertEquals($data[1], $account->toArray());
+        $this->assertEquals($data[1], $accountType->toArray());
     }
 
 
@@ -160,8 +161,23 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testToArrayMultiPart(array $data)
     {
-        $account = (new AccountType())->fromArray($data[0]);
+        $accountType = (new AccountType())->fromArray($data[0]);
 
-        $this->assertSame($data[1], $account->toArray(AbstractType::ARRAY_MULTI_PART));
+        $this->assertSame($data[1], $accountType->toArray(AbstractType::ARRAY_MULTI_PART));
+    }
+
+    /**
+     * Test fromArray() with 'creator' attribute
+     *
+     * Must yield AccountType instance
+     *
+     * @return void
+     */
+    public function testFromArrayCreator()
+    {
+        $email = 'someone@example.com';
+        $groupType = (new GroupType())->fromArray(['creator' => $email]);
+        $this->assertInstanceOf('Seafile\Client\Type\Account', $groupType->creator);
+        $this->assertSame($email, $groupType->creator->email);
     }
 }

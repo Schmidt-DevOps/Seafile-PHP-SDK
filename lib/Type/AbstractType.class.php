@@ -5,6 +5,7 @@ namespace Seafile\Client\Type;
 use DateTime;
 use Doctrine\Common\Inflector\Inflector;
 use stdClass;
+use \Seafile\Client\Type\Account as AccountType;
 
 /**
  * Abstract type class
@@ -43,7 +44,9 @@ abstract class AbstractType
 
     /**
      * Populate from array
+     *
      * @param array $fromArray Create from array
+     *
      * @return static
      */
     public function fromArray(array $fromArray)
@@ -56,7 +59,11 @@ abstract class AbstractType
             }
 
             switch ($key) {
+                case 'creator':
+                    $this->{$key} = (new AccountType)->fromArray(['email' => $value]);
+                    break;
                 case 'create_time':
+                case 'ctime':
                     $value = floor($value / 1000000);
                     $this->{$lowerCamelCaseKey} = DateTime::createFromFormat("U", $value);
                     break;

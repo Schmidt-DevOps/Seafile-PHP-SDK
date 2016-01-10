@@ -1,17 +1,14 @@
 <?php
 
 /**
- * Attention: This example script will modify the test library! Do not run this script
+ * Attention: This example script will add and remove accounts! Do not run this script
  * unless you are prepared for that.
  */
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use Seafile\Client\Resource\Account;
-use Seafile\Client\Type\AbstractType;
 use Seafile\Client\Type\Account as AccountType;
-use Seafile\Client\Resource\File;
-use Seafile\Client\Resource\Library;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\MessageFormatter;
