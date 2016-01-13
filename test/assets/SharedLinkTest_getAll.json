@@ -1,0 +1,22 @@
+{
+  "fileshares": [
+    {
+      "username": "ay@example.com",
+      "repo_id": "ddc43d68-6fc7-44cb-b5f3-3d103194f179",
+      "ctime": null,
+      "s_type": "f",
+      "token": "dd2f08a07c",
+      "view_cnt": 0,
+      "path": "/Seafile-PHP-SDK_Test_Upload_a.txt"
+    },
+    {
+      "username": "bee@example.com",
+      "repo_id": "dac43d68-6fc7-44cb-b5f3-3d103194f179",
+      "ctime": null,
+      "s_type": "f",
+      "token": "da2f08a07c",
+      "view_cnt": 0,
+      "path": "/Seafile-PHP-SDK_Test_Upload_b.txt"
+    }
+  ]
+}

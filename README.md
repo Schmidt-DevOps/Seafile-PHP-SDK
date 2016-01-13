@@ -341,7 +341,7 @@ $client = new Client(
 | Account                | :+1: (except migrate) |
 | Starred Files          | contribute!   |
 | Group                  | contribute!   |
-| Share                  | contribute!   |
+| File Share Link        | partial       |
 | Library/Library        | partial       |
 | Library/File           | partial       |
 | Library/Directory      | partial       |

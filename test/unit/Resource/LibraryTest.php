@@ -301,12 +301,12 @@ class LibraryTest extends TestCase
         /**
          * @var Client $mockedClient
          */
-        $directoryResource = new Library($mockedClient);
+        $libraryResource = new Library($mockedClient);
 
         $lib = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
-        $this->assertSame($data[1], $directoryResource->create($name, $description, $data[2]));
+        $this->assertSame($data[1], $libraryResource->create($name, $description, $data[2]));
     }
 
     /**
