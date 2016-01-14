@@ -22,7 +22,7 @@ use Seafile\Client\Tests\TestCase;
 class DirectoryTest extends TestCase
 {
     /**
-     * getAll()
+     * Test getAll()
      *
      * @return void
      */
@@ -46,7 +46,7 @@ class DirectoryTest extends TestCase
     }
 
     /**
-     * getAll() with directory path
+     * Test getAll() with directory path
      *
      * @return void
      */

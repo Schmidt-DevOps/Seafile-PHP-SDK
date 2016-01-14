@@ -338,17 +338,17 @@ $client = new Client(
 
 | Resource               | Support grade |
 | ---------------------- | ------------- |
-| Account                | :+1: (except migrate) |
-| Starred Files          | contribute!   |
-| Group                  | contribute!   |
-| File Share Link        | partial       |
-| Library/Library        | partial       |
-| Library/File           | partial       |
-| Library/Directory      | partial       |
-| Library/Multiple Files | :+1:          |
-| Avatar                 | :+1:          |
-| Events                 | contribute!   |
-| Organization           | contribute!   |
+| Account                | :large_blue_circle::large_blue_circle::large_blue_circle::white_circle: |
+| Starred Files          | :white_circle::white_circle::white_circle::white_circle:   |
+| Group                  | :large_blue_circle::white_circle::white_circle::white_circle:   |
+| File Share Link        | :large_blue_circle::large_blue_circle::white_circle::white_circle:       |
+| Library/Library        | :large_blue_circle::large_blue_circle::white_circle::white_circle:       |
+| Library/File           | :large_blue_circle::large_blue_circle::white_circle::white_circle:       |
+| Library/Directory      | :large_blue_circle::large_blue_circle::white_circle::white_circle:       |
+| Library/Multiple Files | :large_blue_circle::large_blue_circle::large_blue_circle::large_blue_circle:          |
+| Avatar                 | :large_blue_circle::large_blue_circle::large_blue_circle::large_blue_circle:          |
+| Events                 | :white_circle::white_circle::white_circle::white_circle:   |
+| Organization           | :white_circle::white_circle::white_circle::white_circle:   |
 
 ## Seafile server compatibility
 

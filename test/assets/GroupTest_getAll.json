@@ -1,0 +1,21 @@
+{
+  "replynum": 0,
+  "groups": [
+    {
+      "ctime": 1452804381467425,
+      "creator": "ay@example.com",
+      "msgnum": 0,
+      "mtime": 0,
+      "id": 1,
+      "name": "A"
+    },
+    {
+      "ctime": 1452804387552160,
+      "creator": "bee@example.com",
+      "msgnum": 0,
+      "mtime": 0,
+      "id": 2,
+      "name": "B"
+    }
+  ]
+}

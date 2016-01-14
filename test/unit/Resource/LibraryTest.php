@@ -22,7 +22,7 @@ use Seafile\Client\Tests\TestCase;
 class LibraryTest extends TestCase
 {
     /**
-     * getAll()
+     * Test getAll()
      *
      * @return void
      */
