@@ -53,17 +53,17 @@ class Directory extends AbstractResource
     /**
      * Check if $dirName exists within $parentDir
      *
-     * @param LibraryType $library   Library instance
-     * @param string      $dirName   Directory name
-     * @param string      $parentDir Parent directory
+     * @param LibraryType $library     Library instance
+     * @param string      $dirItemName DirectoryItem name
+     * @param string      $parentDir   Parent directory
      * @return bool
      */
-    public function exists(LibraryType $library, $dirName, $parentDir = '/')
+    public function exists(LibraryType $library, $dirItemName, $parentDir = '/')
     {
-        $directories = $this->getAll($library, $parentDir);
+        $directoryItems = $this->getAll($library, $parentDir);
 
-        foreach ($directories as $dir) {
-            if ($dir->name === $dirName) {
+        foreach ($directoryItems as $directoryItem) {
+            if ($directoryItem->name === $dirItemName) {
                 return true;
             }
         }

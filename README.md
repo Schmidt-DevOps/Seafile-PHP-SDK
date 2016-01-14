@@ -141,16 +141,16 @@ foreach ($items as $item) {
 }
 ```
 
-### Check if directory exists
+### Check if directory item exists
 
 ```php
-$parentDir = '/'; // Directory must exist within this folder
+$parentDir = '/'; // DirectoryItem must exist within this directory
 $directory = 'DirectoryName';
-if($directoryResource->exists($lib, $directory, $parentDir) === false) {
- //  directory does not exist
+if($directoryResource->exists($lib, $directoryItemName, $parentDir) === false) {
+ //  directory item does not exist
 }
 ```
-Because Seafile Web API don't provide a function to do this check, the library load all child items of $parent_dir and checks manually.
+Be aware that because Seafile Web API does not provide a function to do this check on its own, all items of the directory will get loaded for iteration. So that's not very efficient.
 
 ### Create directory
 ```php
