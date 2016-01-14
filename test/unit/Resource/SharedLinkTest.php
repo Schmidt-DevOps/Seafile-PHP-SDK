@@ -120,15 +120,6 @@ class SharedLinkTest extends TestCase
      */
     public function testCreate(array $data)
     {
-        $getAllResponse = new Response(
-            200,
-            ['Content-Type' => 'application/json'],
-            file_get_contents(__DIR__ . '/../../assets/SharedLinkTest_getAll.json')
-        );
-
-        $name = "a";
-        $description = "b";
-
         $headers = [
             'Content-Type' => 'text/plain'
         ];
@@ -140,21 +131,6 @@ class SharedLinkTest extends TestCase
         $createResponse = new Response($data['createResponseCode'], $headers);
 
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
-
-        $expectUri = 'http://example.com/repos/';
-        $expectParams = [
-            'headers' => ['Accept' => "application/json"],
-            'multipart' => [
-                [
-                    'name' => 'name',
-                    'contents' => $name,
-                ],
-                [
-                    'name' => 'desc',
-                    'contents' => $description,
-                ]
-            ]
-        ];
 
         $mockedClient->expects($this->any())
             ->method('request')

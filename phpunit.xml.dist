@@ -8,9 +8,16 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         syntaxCheck="false">
+         syntaxCheck="false"
+         timeoutForSmallTests="1"
+         timeoutForMediumTests="3"
+         timeoutForLargeTests="9"
+         beStrictAboutTestsThatDoNotTestAnything="true"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutChangesToGlobalState="true"
+         beStrictAboutTestSize="true">
     <testsuites>
-        <testsuite name="TeradataDmcRest Test Suite">
+        <testsuite name="SeafilePhpSdk Test Suite">
             <directory>./test</directory>
         </testsuite>
     </testsuites>
