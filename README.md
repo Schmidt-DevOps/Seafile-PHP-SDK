@@ -339,7 +339,7 @@ $client = new Client(
 | Resource               | Support grade |
 | ---------------------- | ------------- |
 | Account                | :large_blue_circle::large_blue_circle::large_blue_circle::white_circle: |
-| Starred Files          | :white_circle::white_circle::white_circle::white_circle:   |
+| Starred Files          | :large_blue_circle::large_blue_circle::large_blue_circle::large_blue_circle:          |
 | Group                  | :large_blue_circle::white_circle::white_circle::white_circle:   |
 | File Share Link        | :large_blue_circle::large_blue_circle::white_circle::white_circle:       |
 | Library/Library        | :large_blue_circle::large_blue_circle::white_circle::white_circle:       |
@@ -347,8 +347,8 @@ $client = new Client(
 | Library/Directory      | :large_blue_circle::large_blue_circle::white_circle::white_circle:       |
 | Library/Multiple Files | :large_blue_circle::large_blue_circle::large_blue_circle::large_blue_circle:          |
 | Avatar                 | :large_blue_circle::large_blue_circle::large_blue_circle::large_blue_circle:          |
-| Events                 | :white_circle::white_circle::white_circle::white_circle:   |
-| Organization           | :white_circle::white_circle::white_circle::white_circle:   |
+| Events                 | not planned   |
+| Organization           | not planned   |
 
 ## Seafile server compatibility
 

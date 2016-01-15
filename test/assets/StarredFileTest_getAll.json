@@ -1,0 +1,16 @@
+[
+  {
+    "file_name": "seafile-tutorial.doc",
+    "icon_path": "word.png",
+    "oid": "eeeab96740ef53249b9d21fb3fa28050842266aa",
+    "mtime_relative": "<time datetime=\"2015-12-26T04:20:04\" is=\"relative-time\" title=\"Sat, 26 Dec 2015 04:20:04 +0800\" >2015-12-26</time>",
+    "repo": "eeece753-3a16-4c46-91f7-ee1b013ad17e",
+    "org": -1,
+    "path": "/seafile-tutorial.doc",
+    "size": 300544,
+    "repo_id": "eeece753-3a16-4c46-91f7-ee1b013ad17e",
+    "mtime": 1451074804,
+    "dir": false,
+    "repo_name": "My Library"
+  }
+]

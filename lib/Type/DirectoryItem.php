@@ -5,7 +5,7 @@ namespace Seafile\Client\Type;
 use DateTime;
 
 /**
- * Directory type class
+ * Directory Item class.
  *
  * PHP version 5
  *
@@ -24,9 +24,14 @@ class DirectoryItem extends AbstractType
     public $id = "";
 
     /**
-     * @var string
+     * @var bool
      */
-    public $size = "";
+    public $dir = null;
+
+    /**
+     * @var DateTime
+     */
+    public $mtime;
 
     /**
      * @var string
@@ -34,12 +39,48 @@ class DirectoryItem extends AbstractType
     public $name = "";
 
     /**
+     * @var int
+     */
+    public $org = null;
+
+    /**
+     * @var string
+     */
+    public $path = null;
+
+    /**
+     * @var string
+     */
+    public $repo = null;
+
+    /**
+     * @var string
+     */
+    public $size = "";
+
+    /**
      * @var string
      */
     public $type = "";
 
     /**
-     * @var DateTime
+     * Populate from array
+     *
+     * @param array $fromArray Create from array
+     *
+     * @return static
      */
-    public $mtime;
+    public function fromArray(array $fromArray)
+    {
+        $typeExists = array_key_exists('type', $fromArray);
+        $dirExists = array_key_exists('dir', $fromArray);
+
+        if ($typeExists === false && $dirExists === true && is_bool($fromArray['dir'])) {
+            $fromArray['type'] = $fromArray['dir'] === true ? 'dir' : 'file';
+        }
+
+        $array = parent::fromArray($fromArray);
+
+        return $array;
+    }
 }

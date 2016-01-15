@@ -62,7 +62,11 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
                 'size' => 2,
                 'name' => 'my name',
                 'type' => 'my type',
-                'mtime' => null
+                'mtime' => null,
+                'dir' => null,
+                'org' => null,
+                'path' => null,
+                'repo' => null
             ],
             (array)$dirItem
         );
