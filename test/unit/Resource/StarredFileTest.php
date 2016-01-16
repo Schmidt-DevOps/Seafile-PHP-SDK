@@ -136,4 +136,144 @@ class StarredFileTest extends TestCase
 
         $this->assertSame($responseUrl, $result);
     }
+
+    /**
+     * Test star() with error response
+     *
+     * @throws \Exception
+     * @return void
+     */
+    public function testStarErrorStatusCode()
+    {
+        $lib = new LibraryType();
+        $lib->id = 123;
+
+        $dirItem = new DirectoryItem();
+        $dirItem->type = 'file';
+        $dirItem->path = '/some/path';
+
+        $responseUrl = 'https://example.com/test/';
+
+        $starResponse = new Response(
+            500,
+            [
+                'Accept' => 'application/json',
+                'Location' => $responseUrl
+            ]
+        );
+
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+
+        $mockedClient->expects($this->any())
+            ->method('getConfig')
+            ->with('base_uri')
+            ->willReturn($responseUrl);
+
+        $mockedClient->expects($this->any())
+            ->method('request')
+            ->with('POST')
+            ->willReturn($starResponse);
+
+        /** @var Client $mockedClient */
+        $starredFileResource = new StarredFile($mockedClient);
+
+        $this->setExpectedException('Exception', 'Could not star file');
+
+        $starredFileResource->star($lib, $dirItem);
+    }
+
+    /**
+     * Test star() with missing location
+     *
+     * @throws \Exception
+     * @return void
+     */
+    public function testStarErrorMissingLocation()
+    {
+        $lib = new LibraryType();
+        $lib->id = 123;
+
+        $dirItem = new DirectoryItem();
+        $dirItem->type = 'file';
+        $dirItem->path = '/some/path';
+
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+
+        $mockedClient->expects($this->any())
+            ->method('getConfig')
+            ->with('base_uri')
+            ->willReturn('https://example.com/test/');
+
+        $mockedClient->expects($this->any())
+            ->method('request')
+            ->with('POST')
+            ->willReturn(new Response(500));
+
+        /** @var Client $mockedClient */
+        $starredFileResource = new StarredFile($mockedClient);
+
+        $this->setExpectedException('Exception', 'Could not star file');
+
+        $starredFileResource->star($lib, $dirItem);
+    }
+
+    /**
+     * DataProvider for unstar()
+     *
+     * @return array
+     */
+    public function dataProviderUnstar()
+    {
+        return [
+            [[
+                'responseCode' => 200,
+                'result' => true
+            ]],
+            [[
+                'responseCode' => 500,
+                'result' => false
+            ]]
+        ];
+    }
+
+    /**
+     * Test unstar()
+     *
+     * @param array $data Data provider array
+     *
+     * @return void
+     * @throws \Exception
+     * @dataProvider dataProviderUnstar
+     */
+    public function testUnstar(array $data)
+    {
+        $lib = new LibraryType();
+        $lib->id = 123;
+
+        $dirItem = new DirectoryItem();
+        $dirItem->type = 'file';
+        $dirItem->path = '/some/path';
+
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+
+        $mockedClient->expects($this->any())
+            ->method('getConfig')
+            ->with('base_uri')
+            ->willReturn('https://example.com/test/');
+
+        $mockedClient->expects($this->any())
+            ->method('request')
+            ->with('DELETE')
+            ->willReturn(
+                new Response($data['responseCode'])
+            );
+
+        /** @var Client $mockedClient */
+        $starredFileResource = new StarredFile($mockedClient);
+
+        $this->assertSame(
+            $data['result'],
+            $starredFileResource->unstar($lib, $dirItem)
+        );
+    }
 }

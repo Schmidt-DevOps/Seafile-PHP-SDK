@@ -297,6 +297,48 @@ or
 print_r($avatarResource->getUserAvatarByEmail('someone@example.com')->toArray());
 ```
 
+### Create and remove shared link
+
+```php
+$libraryResource = new Library($client);
+$directoryResource = new Directory($client);
+$fileResource = new File($client);
+$sharedLinkResource = new SharedLink($client);
+
+// create share link for a file
+$expire = 5;
+$shareType = SharedLinkType::SHARE_TYPE_DOWNLOAD;
+$p = "/" . basename($newFilename);
+$password = 'qwertz123';
+
+$shareLinkType = $sharedLinkResource->create($lib, $p, $expire, $shareType, $password);
+
+// remove shared link
+$success = $sharedLinkResource->remove($shareLinkType);
+```
+
+### Get all starred files, star and unstar file
+
+```php
+$libraryResource = new Library($client);
+$starredFileResource = new StarredFile($client);
+
+// get all starred files
+$dirItems = $starredFileResource->getAll();
+
+// unstar all starred files
+foreach ($dirItems as $dirItem) {
+    $lib = $libraryResource->getById($dirItem->repo);
+    $starredFileResource->unstar($lib, $dirItem);
+}
+
+// re-star all files
+foreach ($dirItems as $dirItem) {
+    $lib = $libraryResource->getById($dirItem->repo);
+    $starredFileResource->star($lib, $dirItem);
+}
+```
+
 ### Debugging and how to enable logging of requests and responses
 
 This example requires monolog. Log entries and Guzzle debug info will be written to stdout.
