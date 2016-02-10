@@ -11,8 +11,8 @@ if [ ! -f $file ] || [ $size -eq 0 ]; then
 fi
 
 if [ -f $file ]; then
-    ./vendor/bin/phpcs -v ./lib ./test --ignore=./test/bootstrap.php --ignore=./test/ui --standard=$file
+    ./vendor/bin/phpcs -v ./src ./test --ignore=./test/bootstrap.php --ignore=./test/ui --standard=$file
 fi
 
-./vendor/bin/phpcpd ./lib ./test --exclude=./test/ui
+./vendor/bin/phpcpd ./src ./test --exclude=./test/ui
 ./vendor/bin/phpunit -c ./phpunit.xml.dist test

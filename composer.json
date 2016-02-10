@@ -31,7 +31,7 @@
   "type": "library",
   "autoload": {
     "psr-4": {
-      "Seafile\\Client\\": "lib/"
+      "Seafile\\Client\\": "src/"
     }
   },
   "autoload-dev": {
