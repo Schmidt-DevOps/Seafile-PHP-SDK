@@ -11,9 +11,6 @@ use Seafile\Client\Tests\TestCase;
 /**
  * Account resource test
  *
- * PHP version 5
- *
- * @category  API
  * @package   Seafile\Resource
  * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
  * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>

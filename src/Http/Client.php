@@ -5,9 +5,6 @@ namespace Seafile\Client\Http;
 /**
  * Guzzle wrapper
  *
- * PHP version 5
- *
- * @category  API
  * @package   Seafile\Http
  * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
  * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>

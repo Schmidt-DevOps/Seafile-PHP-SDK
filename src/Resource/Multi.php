@@ -7,9 +7,6 @@ use \Seafile\Client\Type\Library as LibraryType;
 /**
  * Handles everything regarding Seafile multi file/folder operations.
  *
- * PHP version 5
- *
- * @category  API
  * @package   Seafile\Resource
  * @author    Christoph Haas <christoph.h@sprinternet.at>
  * @copyright 2015 Christoph Haas <christoph.h@sprinternet.at>

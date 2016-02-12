@@ -7,9 +7,6 @@ use DateTime;
 /**
  * Avatar type class
  *
- * PHP version 5
- *
- * @category  API
  * @package   Seafile\Type
  * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
  * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>

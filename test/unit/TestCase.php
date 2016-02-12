@@ -7,9 +7,6 @@ use GuzzleHttp\Psr7\Response;
 /**
  * Seafile PHP SDK Test Case class
  *
- * PHP version 5
- *
- * @category  API
  * @package   Seafile\Tests
  * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
  * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
