@@ -61,12 +61,9 @@ abstract class AbstractType
                     break;
                 case 'create_time':
                 case 'ctime':
-                    $value = floor($value / 1000000);
-                    $this->{$camelCaseKey} = DateTime::createFromFormat("U", $value);
-                    break;
                 case 'mtime':
                 case 'mtime_created':
-                    $this->{$camelCaseKey} = DateTime::createFromFormat("U", $value);
+                    $this->{$camelCaseKey} = $this->getDateTime($value);
                     break;
                 default:
                     $this->{$camelCaseKey} = $value;
@@ -75,6 +72,25 @@ abstract class AbstractType
         }
 
         return $this;
+    }
+
+    /**
+     * Time stamps vary a lot in Seafile. Sometimes it's seconds from 1970-01-01 00:00:00, sometimes
+     * it's microseconds. You never know.
+     *
+     * @param int $value Int time stamp, either seconds or microseconds
+     *
+     * @return DateTime
+     */
+    protected function getDateTime($value)
+    {
+        $value = (int)$value;
+
+        if ($value > 9999999999) { // microseconds it is
+            $value = floor($value / 1000000);
+        }
+
+        return DateTime::createFromFormat("U", $value);
     }
 
     /**
