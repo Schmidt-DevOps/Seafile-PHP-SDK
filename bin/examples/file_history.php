@@ -117,4 +117,22 @@ foreach ($fileHistoryItems as $fileHistoryItem) {
     );
 }
 
+$firstFileRevision = array_slice($fileHistoryItems, -1)[0];
+
+$localFilePath = '/tmp/yo.txt';
+$response = $fileResource->downloadRevision($lib, $dirItem, $firstFileRevision, $localFilePath);
+
+if ($response->getStatusCode() == 200) {
+    $logger->log(
+        Logger::INFO,
+        "#### First file revision of " . $dirItem->name . " downloaded to " . $localFilePath
+    );
+} else {
+    $logger->log(
+        Logger::ALERT,
+        "#### Got HTTP status code " . $response->getStatusCode()
+    );
+
+}
+
 print(PHP_EOL . 'Done' . PHP_EOL);

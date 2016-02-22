@@ -76,11 +76,15 @@ class FileHistoryItem extends AbstractType
     public $desc = '';
 
     /**
+     * Commit ID
+     *
      * @var string
      */
     public $id = '';
 
     /**
+     * Object ID
+     *
      * @var string
      */
     public $revFileId = '';

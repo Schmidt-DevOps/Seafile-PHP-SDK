@@ -5,6 +5,7 @@ namespace Seafile\Client\Resource;
 use Exception;
 use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Type\DirectoryItem;
+use Seafile\Client\Type\FileHistoryItem;
 use \Seafile\Client\Type\Library as LibraryType;
 
 /**
@@ -369,5 +370,52 @@ class File extends AbstractResource
     public function move(LibraryType $srcLibrary, $srcFilePath, LibraryType $dstLibrary, $dstDirectoryPath)
     {
         return $this->copy($srcLibrary, $srcFilePath, $dstLibrary, $dstDirectoryPath, self::OPERATION_MOVE);
+    }
+
+    /**
+     * Get file revision download URL
+     *
+     * @param LibraryType     $library         Source library object
+     * @param DirectoryItem   $dirItem         Item instance
+     * @param FileHistoryItem $fileHistoryItem FileHistory item instance
+     *
+     * @return Response
+     */
+    public function getFileRevisionDownloadUrl(
+        LibraryType $library,
+        DirectoryItem $dirItem,
+        FileHistoryItem $fileHistoryItem
+    ) {
+        $url = $this->client->getConfig('base_uri')
+            . '/repos/'
+            . $library->id
+            . '/file/revision/'
+            . '?p=' . $dirItem->path . $dirItem->name
+            . '&commit_id=' . $fileHistoryItem->id;
+
+        $response = $this->client->request('GET', $url);
+
+        return preg_replace("/\"/", '', (string)$response->getBody());
+    }
+
+    /**
+     * Download file revision
+     *
+     * @param LibraryType     $library         Source library object
+     * @param DirectoryItem   $dirItem         Item instance
+     * @param FileHistoryItem $fileHistoryItem FileHistory item instance
+     * @param string          $localFilePath   Save file to path. Existing files will be overwritten without warning
+     *
+     * @return Response
+     */
+    public function downloadRevision(
+        LibraryType $library,
+        DirectoryItem $dirItem,
+        FileHistoryItem $fileHistoryItem,
+        $localFilePath
+    ) {
+        $downloadUrl = $this->getFileRevisionDownloadUrl($library, $dirItem, $fileHistoryItem);
+
+        return $this->client->request('GET', $downloadUrl, ['save_to' => $localFilePath]);
     }
 }
