@@ -78,6 +78,10 @@ $libId = $cfg->testLibId;
 $logger->log(Logger::INFO, "#################### Getting lib with ID " . $libId);
 $lib = $libraryResource->getById($libId);
 
+if ($lib->encrypted === true && isset($cfg->testLibPassword)) {
+    $success = $libraryResource->decrypt($libId, ['query' => ['password' => $cfg->testLibPassword]]);
+}
+
 // upload a Hello World file and random file name (note: this seems not to work at this time when you are not logged into the Seafile web frontend).
 $newFilename = tempnam('.', 'Seafile-PHP-SDK_Test_File_History_Upload_');
 rename($newFilename, $newFilename . '.txt');
