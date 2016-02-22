@@ -3,10 +3,7 @@
 namespace Seafile\Client\Tests\Resource;
 
 use GuzzleHttp\Psr7\Response;
-use Seafile\Client\Http\Client;
-use Seafile\Client\Resource\File;
 use Seafile\Client\Resource\FileHistory;
-use Seafile\Client\Tests\Stubs\FileResourceStub;
 use Seafile\Client\Tests\TestCase;
 use Seafile\Client\Type\DirectoryItem;
 use Seafile\Client\Type\Library;

@@ -6,6 +6,7 @@ use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Http\Client;
 use Seafile\Client\Resource\Multi;
 use Seafile\Client\Tests\TestCase;
+use Seafile\Client\Type\Library;
 
 /**
  * Multi resource test
@@ -32,7 +33,7 @@ class MultiTest extends TestCase
          */
         $multiResource = new Multi($mockedClient);
 
-        $lib = new \Seafile\Client\Type\Library();
+        $lib = new Library();
 
         $this->assertFalse($multiResource->delete($lib, []));
     }
@@ -51,7 +52,7 @@ class MultiTest extends TestCase
          */
         $multiResource = new Multi($mockedClient);
 
-        $lib = new \Seafile\Client\Type\Library();
+        $lib = new Library();
 
         foreach (['copy', 'move'] as $operation) {
             $this->assertFalse($multiResource->{$operation}($lib, [], $lib, ''));
@@ -154,7 +155,7 @@ class MultiTest extends TestCase
          */
         $fileResource = new Multi($mockedClient);
 
-        $lib = new \Seafile\Client\Type\Library();
+        $lib = new Library();
         $lib->id = 'some-crazy-id';
 
         $this->assertSame($data['assert'], $fileResource->delete($lib, $deletePaths));
@@ -239,10 +240,10 @@ class MultiTest extends TestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        $srcLib = new \Seafile\Client\Type\Library();
+        $srcLib = new Library();
         $srcLib->id = 'some-crazy-id';
 
-        $dstLib = new \Seafile\Client\Type\Library();
+        $dstLib = new Library();
         $dstLib->id = 'some-other-crazy-id';
 
         $destDir = '/target/dir';

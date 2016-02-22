@@ -75,7 +75,7 @@ class SharedLinkTest extends TestCase
          */
         $sharedLinkResource = new SharedLink($mockedClient);
 
-        $sharedLink = new \Seafile\Client\Type\SharedLink();
+        $sharedLink = new  SharedLinkType();
         $sharedLink->url = 'https://seafile.example.com/f/abc/';
 
         $this->assertTrue($sharedLinkResource->remove($sharedLink));

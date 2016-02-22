@@ -67,7 +67,7 @@ class LibraryTest extends TestCase
      */
     public function testDecryptMissingQuery()
     {
-        $library = new \Seafile\Client\Resource\Library($this->getMockedClient(new Response));
+        $library = new Library($this->getMockedClient(new Response));
         $this->setExpectedException('Exception');
         $library->decrypt('some id', []);
     }
@@ -79,7 +79,7 @@ class LibraryTest extends TestCase
      */
     public function testDecryptMissingPassword()
     {
-        $library = new \Seafile\Client\Resource\Library($this->getMockedClient(new Response));
+        $library = new Library($this->getMockedClient(new Response));
         $this->setExpectedException('Exception');
         $library->decrypt('some id', ['query' => []]);
     }
@@ -91,7 +91,7 @@ class LibraryTest extends TestCase
      */
     public function testDecryptUnsuccessfully()
     {
-        $library = new \Seafile\Client\Resource\Library($this->getMockedClient(
+        $library = new Library($this->getMockedClient(
             new Response(
                 400,
                 ['Content-Type' => 'application/json'],
@@ -114,7 +114,7 @@ class LibraryTest extends TestCase
      */
     public function testDecryptSuccessfully()
     {
-        $library = new \Seafile\Client\Resource\Library($this->getMockedClient(
+        $library = new Library($this->getMockedClient(
             new Response(
                 200,
                 ['Content-Type' => 'application/json'],

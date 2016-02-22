@@ -4,7 +4,6 @@ namespace Seafile\Client\Tests\Resource;
 
 use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Http\Client;
-use Seafile\Client\Type\Avatar as AvatarType;
 use Seafile\Client\Type\Library as LibraryType;
 use Seafile\Client\Type\Group as GroupType;
 use Seafile\Client\Resource\Avatar as AvatarResource;

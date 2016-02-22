@@ -8,6 +8,7 @@ use Seafile\Client\Resource\File;
 use Seafile\Client\Tests\Stubs\FileResourceStub;
 use Seafile\Client\Tests\TestCase;
 use Seafile\Client\Type\DirectoryItem;
+use Seafile\Client\Type\FileHistoryItem;
 use Seafile\Client\Type\Library;
 
 /**
@@ -287,7 +288,7 @@ class FileTest extends TestCase
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $fileResource = new File($mockedClient);
 
-        $lib = new \Seafile\Client\Type\Library();
+        $lib = new Library();
         $lib->id = 'some-crazy-id';
 
         $this->assertFalse($fileResource->remove($lib, ''));
@@ -306,7 +307,7 @@ class FileTest extends TestCase
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $fileResource = new File($mockedClient);
 
-        $lib = new \Seafile\Client\Type\Library();
+        $lib = new Library();
         $lib->id = 'some-crazy-id';
 
         $this->assertFalse($fileResource->rename($lib, '', ''));
@@ -321,10 +322,10 @@ class FileTest extends TestCase
      */
     public function dataProviderCopyInvalid()
     {
-        $srcLib = new \Seafile\Client\Type\Library();
+        $srcLib = new Library();
         $srcLib->id = 'some-crazy-id';
 
-        $dstLib = new \Seafile\Client\Type\Library();
+        $dstLib = new Library();
         $dstLib->id = 'some-other-crazy-id';
 
         return [
@@ -406,7 +407,7 @@ class FileTest extends TestCase
          */
         $fileResource = new File($mockedClient);
 
-        $lib = new \Seafile\Client\Type\Library();
+        $lib = new Library();
         $lib->id = 'some-crazy-id';
 
         $this->assertTrue($fileResource->remove($lib, 'test_dir'));
@@ -472,7 +473,7 @@ class FileTest extends TestCase
          */
         $fileResource = new File($mockedClient);
 
-        $lib = new \Seafile\Client\Type\Library();
+        $lib = new Library();
         $lib->id = 'some-crazy-id';
 
         $this->assertTrue($fileResource->rename($lib, 'test_dir', $newDirname));
@@ -500,10 +501,10 @@ class FileTest extends TestCase
      */
     public function testCopyMove(array $data)
     {
-        $sourceLib = new \Seafile\Client\Type\Library();
+        $sourceLib = new Library();
         $sourceLib->id = 'some-crazy-id';
 
-        $destLib = new \Seafile\Client\Type\Library();
+        $destLib = new  Library();
         $destLib->id = 'some-other-crazy-id';
 
         $getAllResponse = new Response(
@@ -584,11 +585,65 @@ class FileTest extends TestCase
 
         $this->assertFalse(
             $fileResource->move(
-                new \Seafile\Client\Type\Library(),
+                new Library(),
                 '',
-                new \Seafile\Client\Type\Library(),
+                new Library(),
                 ''
             )
         );
+    }
+
+    /**
+     * Test getFileRevisionDownloadUrl()
+     *
+     * @return void
+     */
+    public function testGetFileRevisionDownloadUrl()
+    {
+        $fileResource = new File($this->getMockedClient(
+            new Response(200, ['Content-Type' => 'application/json'], '"https://some.example.com/some/url"')
+        ));
+
+        $library = new Library();
+        $library->id = 123;
+
+        $dirItem = new DirectoryItem();
+        $dirItem->path = '/';
+        $dirItem->name = 'some_test.txt';
+
+        $fileHistoryItem = new FileHistoryItem();
+        $fileHistoryItem->id = 345;
+
+        $downloadUrl = $fileResource->getFileRevisionDownloadUrl($library, $dirItem, $fileHistoryItem);
+
+        // encapsulating quotes must be gone
+        $this->assertSame('https://some.example.com/some/url', $downloadUrl);
+
+        // @todo Expect certain request() call
+    }
+
+    /**
+     * Test downloadRevision()
+     * @return void
+     * @throws \Exception
+     */
+    public function testDownloadRevision()
+    {
+        $library = new Library();
+        $library->id = 123;
+
+        $dirItem = new DirectoryItem();
+        $dirItem->path = '/';
+        $dirItem->name = 'some_test.txt';
+
+        $fileHistoryItem = new FileHistoryItem();
+        $fileHistoryItem->id = 345;
+
+        $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
+        $response = $fileResource->downloadRevision($library, $dirItem, $fileHistoryItem, '/tmp/yo.txt');
+
+        $this->assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
+
+        // @todo Expect certain request() call
     }
 }
