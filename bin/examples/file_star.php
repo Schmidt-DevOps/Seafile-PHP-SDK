@@ -10,14 +10,12 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 use Seafile\Client\Resource\Directory;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Resource\Library;
-use Seafile\Client\Resource\SharedLink;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\MessageFormatter;
 use Monolog\Logger;
 use Seafile\Client\Http\Client;
 use Seafile\Client\Resource\StarredFile;
-use Seafile\Client\Type\SharedLink as SharedLinkType;
 
 $logger = new Logger('Logger');
 

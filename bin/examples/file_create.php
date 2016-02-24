@@ -7,18 +7,14 @@
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-use Seafile\Client\Resource\Directory;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Resource\Library;
-use Seafile\Client\Resource\SharedLink;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\MessageFormatter;
 use Monolog\Logger;
 use Seafile\Client\Http\Client;
-use Seafile\Client\Resource\StarredFile;
 use Seafile\Client\Type\DirectoryItem;
-use Seafile\Client\Type\SharedLink as SharedLinkType;
 
 $logger = new Logger('Logger');
 
@@ -70,9 +66,7 @@ $client = new Client(
 );
 
 $libraryResource = new Library($client);
-$directoryResource = new Directory($client);
 $fileResource = new File($client);
-$starredFileResource = new StarredFile($client);
 
 $libId = $cfg->testLibId;
 
@@ -87,5 +81,11 @@ $logger->log(Logger::INFO, "#################### Create empty file on Seafile se
 $dirItem = (new DirectoryItem())->fromArray(['path' => '/', 'name' => uniqid('some_name_', true) . '.txt']);
 
 $success = $fileResource->create($lib, $dirItem);
+
+if ($success === true) {
+    $logger->log(Logger::INFO, "#################### File created: " . $dirItem->name);
+} else {
+    $logger->log(Logger::ERROR, "#################### File created: " . $dirItem->name);
+}
 
 print(PHP_EOL . 'Done' . PHP_EOL);

@@ -490,4 +490,46 @@ class File extends AbstractResource
 
         return $response->getStatusCode() === 201;
     }
+
+//    /**
+//     * Lock file. Only supported in Seafile Professional which I currently do not have.
+//     *
+//     * @param LibraryType   $library Library instance
+//     * @param DirectoryItem $item    Item instance
+//     *
+//     * @return bool
+//     */
+//    public function lock(LibraryType $library, DirectoryItem $item)
+//    {
+//        // do not allow empty paths
+//        if (empty($item->path) || empty($item->name)) {
+//            return false;
+//        }
+//
+//        $uri = sprintf(
+//            '%s/repos/%s/file/',
+//            $this->clipUri($this->client->getConfig('base_uri')),
+//            $library->id
+//        );
+//
+//        $response = $this->client->request(
+//            'PUT',
+//            $uri,
+//            [
+//                'headers' => ['Accept' => 'application/json'],
+//                'multipart' => [
+//                    [
+//                        'name' => 'operation',
+//                        'contents' => 'lock'
+//                    ],
+//                    [
+//                        'name' => 'p',
+//                        'contents' => $item->path . $item->name
+//                    ],
+//                ],
+//            ]
+//        );
+//
+//        return $response->getStatusCode() === 200;
+//    }
 }

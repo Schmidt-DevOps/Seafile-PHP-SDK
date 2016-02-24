@@ -7,16 +7,13 @@
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-use Seafile\Client\Resource\Directory;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Resource\Library;
-use Seafile\Client\Resource\FileHistory as FileHistoryResource;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\MessageFormatter;
 use Monolog\Logger;
 use Seafile\Client\Http\Client;
-use Seafile\Client\Type\FileHistoryItem;
 
 $logger = new Logger('Logger');
 
@@ -68,7 +65,6 @@ $client = new Client(
 );
 
 $libraryResource = new Library($client);
-$directoryResource = new Directory($client);
 $fileResource = new File($client);
 
 $libId = $cfg->testLibId;
