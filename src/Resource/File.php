@@ -30,6 +30,11 @@ class File extends AbstractResource
     const OPERATION_MOVE = 2;
 
     /**
+     * Mode of operation: create
+     */
+    const OPERATION_CREATE = 3;
+
+    /**
      * Get download URL of a file
      * @param LibraryType   $library Library instance
      * @param DirectoryItem $item    Item instance
@@ -421,6 +426,7 @@ class File extends AbstractResource
 
     /**
      * Get history of a file DirectoryItem
+     *
      * @param LibraryType   $library Library instance
      * @param DirectoryItem $item    Item instance
      * @return FileHistoryItem[]
@@ -444,5 +450,44 @@ class File extends AbstractResource
         }
 
         return $fileHistoryCollection;
+    }
+
+    /**
+     * Create empty file on Seafile server
+     *
+     * @param LibraryType   $library Library instance
+     * @param DirectoryItem $item    Item instance
+     *
+     * @return bool
+     */
+    public function create(LibraryType $library, DirectoryItem $item)
+    {
+        // do not allow empty paths
+        if (empty($item->path) || empty($item->name)) {
+            return false;
+        }
+
+        $uri = sprintf(
+            '%s/repos/%s/file/?p=%s',
+            $this->clipUri($this->client->getConfig('base_uri')),
+            $library->id,
+            $item->path . $item->name
+        );
+
+        $response = $this->client->request(
+            'POST',
+            $uri,
+            [
+                'headers' => ['Accept' => 'application/json'],
+                'multipart' => [
+                    [
+                        'name' => 'operation',
+                        'contents' => 'create'
+                    ],
+                ],
+            ]
+        );
+
+        return $response->getStatusCode() === 201;
     }
 }

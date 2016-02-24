@@ -3,6 +3,7 @@
 namespace Seafile\Client\Tests;
 
 use GuzzleHttp\Psr7\Response;
+use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * Seafile PHP SDK Test Case class
@@ -39,7 +40,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
      *
      * @param Response $response HTTP Response
      *
-     * @return \Seafile\Client\Http\Client
+     * @return \Seafile\Client\Http\Client|PHPUnit_Framework_MockObject_MockObject
      */
     protected function getMockedClient(Response $response)
     {

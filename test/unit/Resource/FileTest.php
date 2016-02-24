@@ -673,4 +673,56 @@ class FileTest extends TestCase
             $this->assertInstanceOf('Seafile\Client\Type\FileHistoryItem', $fileHistoryItem);
         }
     }
+
+    /**
+     * Test create() with invalid DirectoryItem
+     *
+     * @return void
+     */
+    public function testCreateInvalid()
+    {
+        $fileResource = new File($this->getMockedClient(new Response()));
+
+        $this->assertFalse($fileResource->create(new Library, new DirectoryItem));
+    }
+
+    /**
+     * Test create() with valid DirectoryItem
+     *
+     * @return void
+     */
+    public function testCreate()
+    {
+        $clientMock = $this->getMockedClient(
+            new Response(
+                201,
+                ['Content-Type' => 'application/json'],
+                'success'
+            )
+        );
+
+        $clientMock->expects($this->any())
+            ->method('request')
+            ->with(
+                $this->equalTo('POST'),
+                'http://example.com/index.html/repos/123/file/?p=/some_name.txt'
+            )
+            // Return what was passed to offsetGet as a new instance
+            ->will($this->returnValue(new Response(
+                201,
+                ['Content-Type' => 'application/json'],
+                'success'
+            )));
+
+        $fileResource = new File($clientMock);
+
+        $lib = new Library;
+        $lib->id = 123;
+
+        $dirItem = new DirectoryItem;
+        $dirItem->path = '/';
+        $dirItem->name = 'some_name.txt';
+
+        $this->assertTrue($fileResource->create($lib, $dirItem));
+    }
 }
