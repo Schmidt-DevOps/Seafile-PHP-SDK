@@ -418,4 +418,31 @@ class File extends AbstractResource
 
         return $this->client->request('GET', $downloadUrl, ['save_to' => $localFilePath]);
     }
+
+    /**
+     * Get history of a file DirectoryItem
+     * @param LibraryType   $library Library instance
+     * @param DirectoryItem $item    Item instance
+     * @return FileHistoryItem[]
+     */
+    public function getHistory(LibraryType $library, DirectoryItem $item)
+    {
+        $url = $this->client->getConfig('base_uri')
+            . '/repos/'
+            . $library->id
+            . '/file/history/'
+            . '?p=' . $item->path . $item->name;
+
+        $response = $this->client->request('GET', $url);
+
+        $json = json_decode($response->getBody());
+
+        $fileHistoryCollection = [];
+
+        foreach ($json->commits as $lib) {
+            $fileHistoryCollection[] = (new FileHistoryItem)->fromJson($lib);
+        }
+
+        return $fileHistoryCollection;
+    }
 }

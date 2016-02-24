@@ -646,4 +646,31 @@ class FileTest extends TestCase
 
         // @todo Expect certain request() call
     }
+
+    /**
+     * Test getHistory()
+     *
+     * @return void
+     */
+    public function testGetHistory()
+    {
+        $fileResource = new File($this->getMockedClient(
+            new Response(
+                200,
+                ['Content-Type' => 'application/json'],
+                file_get_contents(__DIR__ . '/../../assets/FileHistoryTest_getAll.json')
+            )
+        ));
+
+        $lib = new Library();
+        $lib->id = 123;
+
+        $fileHistoryItems = $fileResource->getHistory($lib, new DirectoryItem());
+
+        $this->assertInternalType('array', $fileHistoryItems);
+
+        foreach ($fileHistoryItems as $fileHistoryItem) {
+            $this->assertInstanceOf('Seafile\Client\Type\FileHistoryItem', $fileHistoryItem);
+        }
+    }
 }

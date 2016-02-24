@@ -70,7 +70,6 @@ $client = new Client(
 $libraryResource = new Library($client);
 $directoryResource = new Directory($client);
 $fileResource = new File($client);
-$fileHistoryResource = new FileHistoryResource($client);
 
 $libId = $cfg->testLibId;
 
@@ -105,7 +104,7 @@ if ($dirItem->path === NULL) {
 
 // Get file history
 $logger->log(Logger::INFO, "#################### Getting file history of " . $newFilename);
-$fileHistoryItems = $fileHistoryResource->getAll($lib, $dirItem);
+$fileHistoryItems = $fileResource->getHistory($lib, $dirItem);
 
 
 $logger->log(Logger::INFO, "#################### Listing file history of " . $newFilename);
