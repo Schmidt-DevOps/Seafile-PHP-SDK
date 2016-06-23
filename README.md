@@ -396,8 +396,8 @@ $client = new Client(
 
 Tested with:
 
-- Seafile Server 4.4.5 for generic Linux/Debian Wheezy
-- Seafile Server 5.0.3 for generic Linux/Debian Jessie
+- Seafile Server 5.1.3 for generic Linux/Debian Jessie
+- Seafile Server 5.1.3 for generic Linux/Debian Wheezy
 
 ## Contributing
 
