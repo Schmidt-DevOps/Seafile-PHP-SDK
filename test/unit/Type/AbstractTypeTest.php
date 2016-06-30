@@ -15,6 +15,7 @@ use Seafile\Client\Type\Group as GroupType;
  * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
+ * @covers    Seafile\Client\Type\AbstractType
  */
 class AbstractTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -79,6 +80,22 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
         $accountType = new AccountType([
             'create_time' => '1452202279000000'
         ]);
+
+        $this->assertSame('2016-01-07T21:31:19+0000', $accountType->createTime->format(\DateTime::ISO8601));
+    }
+
+    /**
+     * Test fromJson() with create_time property
+     *
+     * @return void
+     */
+    public function testFromJsonCreateTime()
+    {
+        $accountType = new AccountType();
+
+        $accountType->fromJson(json_decode(json_encode([
+            'create_time' => '1452202279000000'
+        ])));
 
         $this->assertSame('2016-01-07T21:31:19+0000', $accountType->createTime->format(\DateTime::ISO8601));
     }

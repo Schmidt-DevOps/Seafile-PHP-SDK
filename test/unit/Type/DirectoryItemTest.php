@@ -12,6 +12,7 @@ use Seafile\Client\Type\DirectoryItem;
  * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
+ * @covers    Seafile\Client\Type\DirectoryItem
  */
 class DirectoryItemTest extends \PHPUnit_Framework_TestCase
 {

@@ -19,6 +19,7 @@ use Seafile\Client\Type\Library;
  * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
+ * @covers    Seafile\Client\Resource\File
  */
 class FileTest extends TestCase
 {
