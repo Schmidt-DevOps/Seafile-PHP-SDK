@@ -49,12 +49,17 @@ class File extends AbstractResource
             . $library->id
             . '/file/'
             . '?reuse=' . $reuse
-            . '&p=' . $dir . $item->name;
+            . '&p=' . $this->urlencodePath($dir . $item->name);
 
         $response = $this->client->request('GET', $url);
         $downloadUrl = (string)$response->getBody();
 
         return preg_replace("/\"/", '', $downloadUrl);
+    }
+
+    protected function urlencodePath($path)
+    {
+        return implode('/', array_map('rawurlencode', explode('/', (string) $path)));
     }
 
     /**
@@ -217,7 +222,7 @@ class File extends AbstractResource
             . '/repos/'
             . $library->id
             . '/file/detail/'
-            . '?p=' . $remoteFilePath;
+            . '?p=' . $this->urlencodePath($remoteFilePath);
 
         $response = $this->client->request('GET', $url);
 
@@ -244,7 +249,7 @@ class File extends AbstractResource
             '%s/repos/%s/file/?p=%s',
             $this->clipUri($this->client->getConfig('base_uri')),
             $library->id,
-            $filePath
+            $this->urlencodePath($filePath)
         );
 
         $response = $this->client->request(
@@ -277,7 +282,7 @@ class File extends AbstractResource
             '%s/repos/%s/file/?p=%s',
             $this->clipUri($this->client->getConfig('base_uri')),
             $library->id,
-            $filePath
+            $this->urlencodePath($filePath)
         );
 
         $response = $this->client->request(
@@ -335,7 +340,7 @@ class File extends AbstractResource
             '%s/repos/%s/file/?p=%s',
             $this->clipUri($this->client->getConfig('base_uri')),
             $srcLibrary->id,
-            $srcFilePath
+            $this->urlencodePath($srcFilePath)
         );
 
         $response = $this->client->request(
@@ -395,7 +400,7 @@ class File extends AbstractResource
             . '/repos/'
             . $library->id
             . '/file/revision/'
-            . '?p=' . $dirItem->path . $dirItem->name
+            . '?p=' . $this->urlencodePath($dirItem->path . $dirItem->name)
             . '&commit_id=' . $fileHistoryItem->id;
 
         $response = $this->client->request('GET', $url);
@@ -437,7 +442,7 @@ class File extends AbstractResource
             . '/repos/'
             . $library->id
             . '/file/history/'
-            . '?p=' . $item->path . $item->name;
+            . '?p=' . $this->urlencodePath($item->path . $item->name);
 
         $response = $this->client->request('GET', $url);
 
@@ -471,7 +476,7 @@ class File extends AbstractResource
             '%s/repos/%s/file/?p=%s',
             $this->clipUri($this->client->getConfig('base_uri')),
             $library->id,
-            $item->path . $item->name
+            $this->urlencodePath($item->path . $item->name)
         );
 
         $response = $this->client->request(
