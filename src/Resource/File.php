@@ -57,9 +57,15 @@ class File extends AbstractResource
         return preg_replace("/\"/", '', $downloadUrl);
     }
 
+    /**
+     * URL-encode path string
+     *
+     * @param string $path Path string
+     * @return string
+     */
     protected function urlencodePath($path)
     {
-        return implode('/', array_map('rawurlencode', explode('/', (string) $path)));
+        return implode('/', array_map('rawurlencode', explode('/', (string)$path)));
     }
 
     /**

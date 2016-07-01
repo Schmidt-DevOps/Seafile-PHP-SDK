@@ -47,25 +47,27 @@ class FileTest extends TestCase
      */
     public function testUrlencodePath()
     {
+        $actualEncodedPaths = $expectedEncodedPaths = $paths = [];
+
         // Arrange
         $fileResource = $this->getMockBuilder(File::class)
             ->disableOriginalConstructor()
             ->setMethods(null)
             ->getMock();
 
-        $path1 = '/foo#bar baz.txt';
-        $expectedEncodedPath1 = '/foo%23bar%20baz.txt';
+        $paths[0] = '/foo#bar baz.txt';
+        $expectedEncodedPaths[0] = '/foo%23bar%20baz.txt';
 
-        $path2 = '/foo bar baz/foo#bar&baz.txt';
-        $expectedEncodedPath2 = '/foo%20bar%20baz/foo%23bar%26baz.txt';
+        $paths[1] = '/foo bar baz/foo#bar&baz.txt';
+        $expectedEncodedPaths[1] = '/foo%20bar%20baz/foo%23bar%26baz.txt';
 
         // Act
-        $actualEncodedPath1 = $this->invokeMethod($fileResource, 'urlencodePath', [$path1]);
-        $actualEncodedPath2 = $this->invokeMethod($fileResource, 'urlencodePath', [$path2]);
+        $actualEncodedPaths[0] = $this->invokeMethod($fileResource, 'urlencodePath', [$paths[0]]);
+        $actualEncodedPaths[1] = $this->invokeMethod($fileResource, 'urlencodePath', [$paths[1]]);
 
         // Assert
-        $this->assertSame($expectedEncodedPath1, $actualEncodedPath1);
-        $this->assertSame($expectedEncodedPath2, $actualEncodedPath2);
+        $this->assertSame($expectedEncodedPaths[0], $actualEncodedPaths[0]);
+        $this->assertSame($expectedEncodedPaths[1], $actualEncodedPaths[1]);
     }
 
     /**
