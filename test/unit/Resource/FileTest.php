@@ -41,33 +41,40 @@ class FileTest extends TestCase
     }
 
     /**
+     * Data provider for testUrlEncodePath()
+     *
+     * @return array
+     */
+    public function dataProviderTestUrlEncodePath()
+    {
+        return [
+            ['/foo#bar baz.txt', '/foo%23bar%20baz.txt'], // url-encode #, space in file name
+            ['/foo bar baz/foo#bar&baz.txt', '/foo%20bar%20baz/foo%23bar%26baz.txt'], // url-encode in dir
+            ['/cant/touch/this', '/cant/touch/this'], // no url-encoding here
+            ["/must not 'choke' on quote", '/must%20not%20%27choke%27%20on%20quote'],
+            ['/must/retain/trailing/slash/', '/must/retain/trailing/slash/'],
+            ['must_not_prepend_slash', 'must_not_prepend_slash']
+        ];
+    }
+
+    /**
      * Test urlencodePath()
      *
+     * @param string $path              Path to encode
+     * @param string $expectEncodedPath Expected encoded path
      * @return void
+     * @dataProvider dataProviderTestUrlEncodePath
      */
-    public function testUrlencodePath()
+    public function testUrlEncodePath($path, $expectEncodedPath)
     {
-        $actualEncodedPaths = $expectedEncodedPaths = $paths = [];
-
-        // Arrange
         $fileResource = $this->getMockBuilder(File::class)
             ->disableOriginalConstructor()
             ->setMethods(null)
             ->getMock();
 
-        $paths[0] = '/foo#bar baz.txt';
-        $expectedEncodedPaths[0] = '/foo%23bar%20baz.txt';
+        $actualEncodedPath = $this->invokeMethod($fileResource, 'urlencodePath', [$path]);
 
-        $paths[1] = '/foo bar baz/foo#bar&baz.txt';
-        $expectedEncodedPaths[1] = '/foo%20bar%20baz/foo%23bar%26baz.txt';
-
-        // Act
-        $actualEncodedPaths[0] = $this->invokeMethod($fileResource, 'urlencodePath', [$paths[0]]);
-        $actualEncodedPaths[1] = $this->invokeMethod($fileResource, 'urlencodePath', [$paths[1]]);
-
-        // Assert
-        $this->assertSame($expectedEncodedPaths[0], $actualEncodedPaths[0]);
-        $this->assertSame($expectedEncodedPaths[1], $actualEncodedPaths[1]);
+        $this->assertSame($expectEncodedPath, $actualEncodedPath);
     }
 
     /**
@@ -107,7 +114,7 @@ class FileTest extends TestCase
     }
 
     /**
-     * Try to upload a non-existant local file
+     * Try to upload a non-existent local file
      * @return void
      * @throws \Exception
      */
