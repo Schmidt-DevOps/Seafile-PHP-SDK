@@ -1,0 +1,13 @@
+[
+  {
+    "id": "0000000000000000000000000000000000000000",
+    "type": "file",
+    "name": "test1.c",
+    "size": 0
+  },
+  {
+    "id": "f4fe14c8cda2206bb9606907cf4fca6b30221cf9",
+    "type": "file",
+    "name": "test_file"
+  }
+]

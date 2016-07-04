@@ -49,7 +49,7 @@ class File extends AbstractResource
             . $library->id
             . '/file/'
             . '?reuse=' . $reuse
-            . '&p=' . $this->urlencodePath($dir . $item->name);
+            . '&p=' . $this->urlEncodePath($dir . $item->name);
 
         $response = $this->client->request('GET', $url);
         $downloadUrl = (string)$response->getBody();
@@ -63,7 +63,7 @@ class File extends AbstractResource
      * @param string $path Path string
      * @return string
      */
-    protected function urlencodePath($path)
+    protected function urlEncodePath($path)
     {
         return implode('/', array_map('rawurlencode', explode('/', (string)$path)));
     }
@@ -228,7 +228,7 @@ class File extends AbstractResource
             . '/repos/'
             . $library->id
             . '/file/detail/'
-            . '?p=' . $this->urlencodePath($remoteFilePath);
+            . '?p=' . $this->urlEncodePath($remoteFilePath);
 
         $response = $this->client->request('GET', $url);
 
@@ -255,7 +255,7 @@ class File extends AbstractResource
             '%s/repos/%s/file/?p=%s',
             $this->clipUri($this->client->getConfig('base_uri')),
             $library->id,
-            $this->urlencodePath($filePath)
+            $this->urlEncodePath($filePath)
         );
 
         $response = $this->client->request(
@@ -272,23 +272,28 @@ class File extends AbstractResource
     /**
      * Rename a file
      *
-     * @param LibraryType $library     Library object
-     * @param string      $filePath    File path
-     * @param string      $newFilename New file name
+     * @param LibraryType   $library     Library object
+     * @param DirectoryItem $dirItem     Directory item to rename
+     * @param string        $newFilename New file name
      * @return bool
      */
-    public function rename(LibraryType $library, $filePath, $newFilename)
+    public function rename(LibraryType $library, DirectoryItem $dirItem, $newFilename)
     {
-        // do not allow empty paths
-        if (empty($filePath) || empty($newFilename)) {
-            return false;
+        $filePath = $dirItem->dir . $dirItem->name;
+
+        if (empty($filePath)) {
+            throw new \InvalidArgumentException('Invalid file path: must not be empty');
+        }
+
+        if (empty($newFilename) || strpos($newFilename, '/') === 0) {
+            throw new \InvalidArgumentException('Invalid new file name: length must be >0 and must not start with /');
         }
 
         $uri = sprintf(
             '%s/repos/%s/file/?p=%s',
             $this->clipUri($this->client->getConfig('base_uri')),
             $library->id,
-            $this->urlencodePath($filePath)
+            $this->urlEncodePath($filePath)
         );
 
         $response = $this->client->request(
@@ -309,7 +314,13 @@ class File extends AbstractResource
             ]
         );
 
-        return $response->getStatusCode() === 301;
+        $success = $response->getStatusCode() === 200;
+
+        if ($success) {
+            $dirItem->name = $newFilename;
+        }
+
+        return $success;
     }
 
     /**
@@ -346,7 +357,7 @@ class File extends AbstractResource
             '%s/repos/%s/file/?p=%s',
             $this->clipUri($this->client->getConfig('base_uri')),
             $srcLibrary->id,
-            $this->urlencodePath($srcFilePath)
+            $this->urlEncodePath($srcFilePath)
         );
 
         $response = $this->client->request(
@@ -406,7 +417,7 @@ class File extends AbstractResource
             . '/repos/'
             . $library->id
             . '/file/revision/'
-            . '?p=' . $this->urlencodePath($dirItem->path . $dirItem->name)
+            . '?p=' . $this->urlEncodePath($dirItem->path . $dirItem->name)
             . '&commit_id=' . $fileHistoryItem->id;
 
         $response = $this->client->request('GET', $url);
@@ -448,7 +459,7 @@ class File extends AbstractResource
             . '/repos/'
             . $library->id
             . '/file/history/'
-            . '?p=' . $this->urlencodePath($item->path . $item->name);
+            . '?p=' . $this->urlEncodePath($item->path . $item->name);
 
         $response = $this->client->request('GET', $url);
 
@@ -482,7 +493,7 @@ class File extends AbstractResource
             '%s/repos/%s/file/?p=%s',
             $this->clipUri($this->client->getConfig('base_uri')),
             $library->id,
-            $this->urlencodePath($item->path . $item->name)
+            $this->urlEncodePath($item->path . $item->name)
         );
 
         $response = $this->client->request(

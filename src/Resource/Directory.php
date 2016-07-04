@@ -40,8 +40,15 @@ class Directory extends AbstractResource
 
         $dirItemCollection = [];
 
-        foreach ($json as $dirItem) {
-            $dirItemCollection[] = (new DirectoryItem)->fromJson($dirItem);
+        foreach ($json as $dirItemJson) {
+            $dirItem = (new DirectoryItem)->fromJson($dirItemJson);
+
+            // if dirItem has no value for "dir", set it here
+            if ($dirItem->dir === '/') {
+                $dirItem = $dirItem->fromArray(['dir' => $dir]);
+            }
+
+            $dirItemCollection[] = $dirItem;
         }
 
         return $dirItemCollection;

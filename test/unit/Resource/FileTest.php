@@ -333,14 +333,34 @@ class FileTest extends TestCase
     }
 
     /**
+     * Data provider for testRenameInvalidFilename()
+     *
+     * @return array
+     */
+    public function dataProviderTestRenameInvalidFilename()
+    {
+        return [
+            ['', ''], // file path must not be empty, neither does new file name
+            ['a', ''], // new file name must not be empty
+            ['', 'b'], // file path must not be empty
+            ['/proper/path', '/new_file_name_must_not_start_with_slash']
+        ];
+    }
+
+    /**
      * Test rename() with invalid file name
      *
+     * @param string $invalidFilePath    Invalid file path
+     * @param string $invalidNewFilename Invalid new file name
+     *
      * @return void
+     * @expectedException \InvalidArgumentException
+     * @dataProvider dataProviderTestRenameInvalidFilename
      */
-    public function testRenameInvalidFilename()
+    public function testRenameInvalidFilename($invalidFilePath, $invalidNewFilename)
     {
         /**
-         * @var Client $mockedClient
+         * @var Client|\PHPUnit_Framework_MockObject_MockObject $mockedClient
          */
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $fileResource = new File($mockedClient);
@@ -348,9 +368,9 @@ class FileTest extends TestCase
         $lib = new Library();
         $lib->id = 'some-crazy-id';
 
-        $this->assertFalse($fileResource->rename($lib, '', ''));
-        $this->assertFalse($fileResource->rename($lib, 'a', ''));
-        $this->assertFalse($fileResource->rename($lib, '', 'b'));
+        $dirItem = new DirectoryItem(['dir' => $invalidFilePath]);
+
+        $fileResource->rename($lib, $dirItem, $invalidNewFilename);
     }
 
     /**
@@ -461,15 +481,19 @@ class FileTest extends TestCase
         $getAllResponse = new Response(
             200,
             ['Content-Type' => 'application/json'],
-            file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
+            file_get_contents(__DIR__ . '/../../assets/FileTest_getAll.json')
         );
 
-        $newDirname = 'test_dir_renamed';
-        $renameResponse = new Response(301, ['Content-Type' => 'text/plain']);
+        $newFilename = 'test_file_renamed';
+        $renameResponse = new Response(200, ['Content-Type' => 'text/plain']);
+
+        /**
+         * @var Client|\PHPUnit_Framework_MockObject_MockObject $mockedClient
+         */
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=test_dir';
+        $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=/test_file';
         $expectParams = [
             'headers' => ['Accept' => "application/json"],
             'multipart' => [
@@ -479,7 +503,7 @@ class FileTest extends TestCase
                 ],
                 [
                     'name' => 'newname',
-                    'contents' => $newDirname
+                    'contents' => $newFilename
                 ],
             ],
         ];
@@ -487,17 +511,9 @@ class FileTest extends TestCase
         // @todo: Test more thoroughly. For example make sure request() gets called with POST twice (a, then b)
         $mockedClient->expects($this->any())
             ->method('request')
-            ->with($this->logicalOr(
-                $this->equalTo('GET'),
-                $this->equalTo('POST')
-            ))
-            // Return what was passed to offsetGet as a new instance
+            ->with($this->equalTo('POST'))
             ->will($this->returnCallback(
                 function ($method, $uri, $params) use ($getAllResponse, $renameResponse, $expectUri, $expectParams) {
-                    if ($method === 'GET') {
-                        return $getAllResponse;
-                    }
-
                     if ($expectUri === $uri && $expectParams === $params) {
                         return $renameResponse;
                     }
@@ -506,15 +522,12 @@ class FileTest extends TestCase
                 }
             ));
 
-        /**
-         * @var Client $mockedClient
-         */
         $fileResource = new File($mockedClient);
 
-        $lib = new Library();
-        $lib->id = 'some-crazy-id';
+        $lib = new Library(['id' => 'some-crazy-id']);
+        $dirItem = new DirectoryItem(['name' => 'test_file']);
 
-        $this->assertTrue($fileResource->rename($lib, 'test_dir', $newDirname));
+        $this->assertTrue($fileResource->rename($lib, $dirItem, $newFilename));
     }
 
     /**

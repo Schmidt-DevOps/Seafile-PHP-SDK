@@ -23,7 +23,7 @@ class DirectoryItem extends AbstractType
     /**
      * @var bool
      */
-    public $dir = null;
+    public $dir = '/';
 
     /**
      * @var DateTime

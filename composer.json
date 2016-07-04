@@ -15,11 +15,11 @@
   "require": {
     "php": ">=5.5",
     "guzzlehttp/guzzle": "~6.0",
-    "monolog/monolog": "^1.17",
     "nabil1337/case-helper": "0.1.*"
   },
   "require-dev": {
     "codeclimate/php-test-reporter": "dev-master",
+    "monolog/monolog": "^1.17",
     "phpunit/php-invoker": "1.1.*",
     "phpunit/phpunit": "4.5.*",
     "phpunit/phpunit-mock-objects": "2.3.*",
