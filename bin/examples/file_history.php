@@ -50,22 +50,22 @@ if (!is_readable($cfgFile)) {
 }
 
 $token = json_decode(file_get_contents($tokenFile));
-$cfg = json_decode(file_get_contents($cfgFile));
+$cfg   = json_decode(file_get_contents($cfgFile));
 
 $client = new Client(
     [
         'base_uri' => $cfg->baseUri,
-        'debug' => true,
-        'handler' => $stack,
-        'headers' => [
-            'Content-Type' => 'application/json',
-            'Authorization' => 'Token ' . $token->token
-        ]
+        'debug'    => true,
+        'handler'  => $stack,
+        'headers'  => [
+            'Content-Type'  => 'application/json',
+            'Authorization' => 'Token ' . $token->token,
+        ],
     ]
 );
 
 $libraryResource = new Library($client);
-$fileResource = new File($client);
+$fileResource    = new File($client);
 
 $libId = $cfg->testLibId;
 
@@ -94,7 +94,7 @@ $response = $fileResource->update($lib, $newFilename, '/');
 $logger->log(Logger::INFO, "#################### Getting file detail of " . $newFilename);
 $dirItem = $fileResource->getFileDetail($lib, basename($newFilename));
 
-if ($dirItem->path === NULL) {
+if ($dirItem->path === null) {
     $dirItem->path = '/';
 }
 
@@ -115,7 +115,7 @@ foreach ($fileHistoryItems as $fileHistoryItem) {
 $firstFileRevision = array_slice($fileHistoryItems, -1)[0];
 
 $localFilePath = '/tmp/yo.txt';
-$response = $fileResource->downloadRevision($lib, $dirItem, $firstFileRevision, $localFilePath);
+$response      = $fileResource->downloadRevision($lib, $dirItem, $firstFileRevision, $localFilePath);
 
 if ($response->getStatusCode() == 200) {
     $logger->log(

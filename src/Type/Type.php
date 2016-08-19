@@ -4,19 +4,18 @@ namespace Seafile\Client\Type;
 
 use DateTime;
 use CaseHelper\CaseHelperFactory;
-use stdClass;
 use \Seafile\Client\Type\Account as AccountType;
 
 /**
  * Abstract type class
  *
  * @package   Seafile\Type
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
- * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
+ * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-abstract class AbstractType
+abstract class Type
 {
     /**
      * Associative array mode
@@ -30,6 +29,7 @@ abstract class AbstractType
 
     /**
      * Constructor
+     *
      * @param array $fromArray Create from array
      */
     public function __construct(array $fromArray = [])
@@ -44,7 +44,7 @@ abstract class AbstractType
      *
      * @param array $fromArray Create from array
      *
-     * @return static
+     * @return self
      */
     public function fromArray(array $fromArray)
     {
@@ -95,12 +95,15 @@ abstract class AbstractType
 
     /**
      * Create from jsonResponse
-     * @param stdClass $jsonResponse Json response
-     * @return static
+     *
+     * @param \stdClass $jsonResponse Json response
+     *
+     * @return self
      */
-    public function fromJson(stdClass $jsonResponse)
+    public function fromJson(\stdClass $jsonResponse)
     {
         $this->fromArray((array)$jsonResponse);
+
         return $this;
     }
 
@@ -116,8 +119,8 @@ abstract class AbstractType
         switch ($mode) {
             case self::ARRAY_MULTI_PART:
                 $caseHelper = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_CAMEL_CASE);
-                $keyVals = $this->toArray(self::ARRAY_ASSOC);
-                $multiPart = [];
+                $keyVals    = $this->toArray(self::ARRAY_ASSOC);
+                $multiPart  = [];
 
                 foreach ($keyVals as $key => $val) {
                     $multiPart[] = ['name' => $caseHelper->toSnakeCase($key), 'contents' => "$val"];

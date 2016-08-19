@@ -13,8 +13,8 @@ use Seafile\Client\Type\SharedLink as SharedLinkType;
  * SharedLink resource test
  *
  * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
- * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
+ * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    Seafile\Client\Resource\SharedLink
@@ -38,10 +38,10 @@ class SharedLinkTest extends TestCase
 
         $sharedLinks = $sharedLinkResource->getAll();
 
-        $this->assertInternalType('array', $sharedLinks);
+        self::assertInternalType('array', $sharedLinks);
 
         foreach ($sharedLinks as $sharedLink) {
-            $this->assertInstanceOf('Seafile\Client\Type\SharedLink', $sharedLink);
+            self::assertInstanceOf('Seafile\Client\Type\SharedLink', $sharedLink);
         }
     }
 
@@ -57,15 +57,15 @@ class SharedLinkTest extends TestCase
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/repos/some-crazy-id/';
+        $expectUri    = 'http://example.com/repos/some-crazy-id/';
         $expectParams = [
-            'headers' => ['Accept' => "application/json"]
+            'headers' => ['Accept' => "application/json"],
         ];
 
         // @todo: Test more thoroughly. For example make sure request() gets called with POST twice (a, then b)
-        $mockedClient->expects($this->any())
+        $mockedClient->expects(self::any())
             ->method('request')
-            ->will($this->returnCallback(
+            ->will(self::returnCallback(
                 function ($method, $uri, $params) use ($removeResponse, $expectUri, $expectParams) {
                     return $removeResponse;
                 }
@@ -76,10 +76,10 @@ class SharedLinkTest extends TestCase
          */
         $sharedLinkResource = new SharedLink($mockedClient);
 
-        $sharedLink = new  SharedLinkType();
+        $sharedLink      = new  SharedLinkType();
         $sharedLink->url = 'https://seafile.example.com/f/abc/';
 
-        $this->assertTrue($sharedLinkResource->remove($sharedLink));
+        self::assertTrue($sharedLinkResource->remove($sharedLink));
     }
 
     /**
@@ -91,21 +91,27 @@ class SharedLinkTest extends TestCase
     {
         return [
             // [[expect response code, expected result, password]]
-            [[
-                'createResponseCode' => 201,
-                'returnType' => 'Seafile\Client\Type\SharedLink',
-                'Location' => 'https://seafile.example.com/some_url/'
-            ]],
-            [[
-                'createResponseCode' => 500,
-                'returnType' => null,
-                'Location' => 'https://seafile.example.com/some_url/'
-            ]],
-            [[
-                'createResponseCode' => 201,
-                'returnType' => null,
-                'Location' => ''
-            ]],
+            [
+                [
+                    'createResponseCode' => 201,
+                    'returnType'         => 'Seafile\Client\Type\SharedLink',
+                    'Location'           => 'https://seafile.example.com/some_url/',
+                ],
+            ],
+            [
+                [
+                    'createResponseCode' => 500,
+                    'returnType'         => null,
+                    'Location'           => 'https://seafile.example.com/some_url/',
+                ],
+            ],
+            [
+                [
+                    'createResponseCode' => 201,
+                    'returnType'         => null,
+                    'Location'           => '',
+                ],
+            ],
         ];
     }
 
@@ -113,13 +119,15 @@ class SharedLinkTest extends TestCase
      * Test create()
      *
      * @dataProvider dataProviderCreate
+     *
      * @param array $data Test data
+     *
      * @return void
      */
     public function testCreate(array $data)
     {
         $headers = [
-            'Content-Type' => 'text/plain'
+            'Content-Type' => 'text/plain',
         ];
 
         if (!empty($data['Location'])) {
@@ -130,7 +138,7 @@ class SharedLinkTest extends TestCase
 
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
 
-        $mockedClient->expects($this->any())
+        $mockedClient->expects(self::any())
             ->method('request')
             ->with('PUT')
             ->willReturn($createResponse);
@@ -140,18 +148,18 @@ class SharedLinkTest extends TestCase
          */
         $sharedLinkResource = new SharedLink($mockedClient);
 
-        $sharedLinkType = new SharedLinkType();
+        $sharedLinkType      = new SharedLinkType();
         $sharedLinkType->url = 'https://seafile.example.com/f/abc/';
 
-        $libraryType = new LibraryType();
+        $libraryType     = new LibraryType();
         $libraryType->id = 'decaf-deadbeef-dad';
 
         if (is_null($data['returnType'])) {
-            $this->assertNull(
+            self::assertNull(
                 $sharedLinkResource->create($libraryType, '/abc', 123, SharedLinkType::SHARE_TYPE_DOWNLOAD, 'pa55word')
             );
         } else {
-            $this->assertInstanceOf(
+            self::assertInstanceOf(
                 $data['returnType'],
                 $sharedLinkResource->create($libraryType, '/abc', 123, SharedLinkType::SHARE_TYPE_DOWNLOAD, 'pa55word')
             );

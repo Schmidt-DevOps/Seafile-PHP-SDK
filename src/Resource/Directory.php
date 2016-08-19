@@ -9,12 +9,12 @@ use \Seafile\Client\Type\DirectoryItem;
  * Handles everything regarding Seafile directories.
  *
  * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
- * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
+ * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-class Directory extends AbstractResource
+class Directory extends Resource
 {
     /**
      * Get all items of a directory in a library
@@ -32,7 +32,7 @@ class Directory extends AbstractResource
             'GET',
             $clippedBaseUri . '/repos/' . $library->id . '/dir/',
             [
-                'query' => ['p' => $dir]
+                'query' => ['p' => $dir],
             ]
         );
 
@@ -60,6 +60,7 @@ class Directory extends AbstractResource
      * @param LibraryType $library     Library instance
      * @param string      $dirItemName DirectoryItem name
      * @param string      $parentDir   Parent directory
+     *
      * @return bool
      */
     public function exists(LibraryType $library, $dirItemName, $parentDir = '/')
@@ -82,18 +83,19 @@ class Directory extends AbstractResource
      * @param string      $dirName   Directory name
      * @param string      $parentDir Parent directory
      * @param bool        $recursive Recursive create
+     *
      * @return bool Success
      */
     public function create(LibraryType $library, $dirName, $parentDir = '/', $recursive = false)
     {
         if ($recursive) {
             $response = false;
-            $parts = explode('/', trim($dirName, '/'));
-            $tmp = array();
+            $parts    = explode('/', trim($dirName, '/'));
+            $tmp      = [];
 
             foreach ($parts as $part) {
                 $parentPath = '/' . implode('/', $tmp);
-                $tmp[] = $part;
+                $tmp[]      = $part;
 
                 if ($this->exists($library, $part, $parentPath) === false) {
                     $response = $this->create($library, $part, $parentPath, false);
@@ -125,11 +127,11 @@ class Directory extends AbstractResource
             'POST',
             $uri,
             [
-                'headers' => ['Accept' => 'application/json'],
+                'headers'   => ['Accept' => 'application/json'],
                 'multipart' => [
                     [
-                        'name' => 'operation',
-                        'contents' => 'mkdir'
+                        'name'     => 'operation',
+                        'contents' => 'mkdir',
                     ],
                 ],
             ]
@@ -143,6 +145,7 @@ class Directory extends AbstractResource
      *
      * @param LibraryType $library       Library instance
      * @param string      $directoryPath Directory path
+     *
      * @return bool
      */
     public function remove(LibraryType $library, $directoryPath)
@@ -176,6 +179,7 @@ class Directory extends AbstractResource
      * @param LibraryType $library          Library object
      * @param string      $directoryPath    Directory path
      * @param string      $newDirectoryName New directory name
+     *
      * @return bool
      */
     public function rename(LibraryType $library, $directoryPath, $newDirectoryName)
@@ -196,15 +200,15 @@ class Directory extends AbstractResource
             'POST',
             $uri,
             [
-                'headers' => ['Accept' => 'application/json'],
+                'headers'   => ['Accept' => 'application/json'],
                 'multipart' => [
                     [
-                        'name' => 'operation',
-                        'contents' => 'rename'
+                        'name'     => 'operation',
+                        'contents' => 'rename',
                     ],
                     [
-                        'name' => 'newname',
-                        'contents' => $newDirectoryName
+                        'name'     => 'newname',
+                        'contents' => $newDirectoryName,
                     ],
                 ],
             ]

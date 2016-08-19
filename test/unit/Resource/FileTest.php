@@ -15,8 +15,8 @@ use Seafile\Client\Type\Library;
  * File resource test
  *
  * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
- * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
+ * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    Seafile\Client\Resource\File
@@ -37,7 +37,7 @@ class FileTest extends TestCase
         $downloadLink = $fileResource->getDownloadUrl(new Library(), new DirectoryItem());
 
         // encapsulating quotes must be gone
-        $this->assertSame('https://some.example.com/some/url', $downloadLink);
+        self::assertSame('https://some.example.com/some/url', $downloadLink);
     }
 
     /**
@@ -53,7 +53,7 @@ class FileTest extends TestCase
             ['/cant/touch/this', '/cant/touch/this'], // no url-encoding here
             ["/must not 'choke' on quote", '/must%20not%20%27choke%27%20on%20quote'],
             ['/must/retain/trailing/slash/', '/must/retain/trailing/slash/'],
-            ['must_not_prepend_slash', 'must_not_prepend_slash']
+            ['must_not_prepend_slash', 'must_not_prepend_slash'],
         ];
     }
 
@@ -62,6 +62,7 @@ class FileTest extends TestCase
      *
      * @param string $path              Path to encode
      * @param string $expectEncodedPath Expected encoded path
+     *
      * @return void
      * @dataProvider dataProviderTestUrlEncodePath
      */
@@ -74,7 +75,7 @@ class FileTest extends TestCase
 
         $actualEncodedPath = $this->invokeMethod($fileResource, 'urlencodePath', [$path]);
 
-        $this->assertSame($expectEncodedPath, $actualEncodedPath);
+        self::assertSame($expectEncodedPath, $actualEncodedPath);
     }
 
     /**
@@ -91,17 +92,18 @@ class FileTest extends TestCase
         $uploadUrl = $fileResource->getUploadUrl(new Library());
 
         // encapsulating quotes must be gone
-        $this->assertSame('https://some.example.com/some/url', $uploadUrl);
+        self::assertSame('https://some.example.com/some/url', $uploadUrl);
     }
 
     /**
      * Download a file, local destination path is already occupied
+     *
      * @return void
      * @throws \Exception
      */
     public function testDownloadFromDirFileExists()
     {
-        $newFilename = tempnam(sys_get_temp_dir(), uniqid());
+        $newFilename  = tempnam(sys_get_temp_dir(), uniqid());
         $fileResource = new File($this->getMockedClient(new Response()));
 
         try {
@@ -115,12 +117,13 @@ class FileTest extends TestCase
 
     /**
      * Try to upload a non-existent local file
+     *
      * @return void
      * @throws \Exception
      */
     public function testUploadDoesNotExist()
     {
-        $filename = uniqid();
+        $filename     = uniqid();
         $fileResource = new File($this->getMockedClient(new Response()));
 
         $this->setExpectedException('Exception');
@@ -130,55 +133,59 @@ class FileTest extends TestCase
 
     /**
      * Test downloadFromDir()
+     *
      * @return void
      * @throws \Exception
      */
     public function testDownloadFromDir()
     {
         $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
-        $response = $fileResource->downloadFromDir(new Library(), new DirectoryItem(), '/some/path', '/', 1);
+        $response     = $fileResource->downloadFromDir(new Library(), new DirectoryItem(), '/some/path', '/', 1);
 
-        $this->assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
+        self::assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
     }
 
     /**
      * Test download()
+     *
      * @return void
      * @throws \Exception
      */
     public function testDownload()
     {
         $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
-        $response = $fileResource->download(new Library(), '/some/path', '/some/file', 1);
+        $response     = $fileResource->download(new Library(), '/some/path', '/some/file', 1);
 
         // @todo Assert request query params
-        $this->assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
+        self::assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
     }
 
     /**
      * Test upload()
+     *
      * @return void
      * @throws \Exception
      */
     public function testUpload()
     {
         $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
-        $response = $fileResource->upload(new Library(), sys_get_temp_dir(), '/');
+        $response     = $fileResource->upload(new Library(), sys_get_temp_dir(), '/');
 
-        $this->assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
+        self::assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
     }
 
     /**
      * Test update()
+     *
      * @return void
      * @throws \Exception
      */
     public function testUpdate()
     {
         $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
-        $response = $fileResource->update(new Library(), sys_get_temp_dir(), '/');
+        $response     = $fileResource->update(new Library(), sys_get_temp_dir(), '/');
 
-        $this->assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
+        self::assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
     }
 
     /**
@@ -197,15 +204,16 @@ class FileTest extends TestCase
 
         $response = $fileResource->getFileDetail(new Library(), '/Seafile-PHP-SDK_Test_Upload_jt64pq.txt');
 
-        $this->assertInstanceOf('Seafile\Client\Type\DirectoryItem', $response);
-        $this->assertInstanceOf('DateTime', $response->mtime);
-        $this->assertSame('Seafile-PHP-SDK_Test_Upload_jt64pq.txt', $response->name);
-        $this->assertSame('file', $response->type);
-        $this->assertequals('32', $response->size);
+        self::assertInstanceOf('Seafile\Client\Type\DirectoryItem', $response);
+        self::assertInstanceOf('DateTime', $response->mtime);
+        self::assertSame('Seafile-PHP-SDK_Test_Upload_jt64pq.txt', $response->name);
+        self::assertSame('file', $response->type);
+        self::assertequals('32', $response->size);
     }
 
     /**
      * Test getMultiPartParams() for update
+     *
      * @return void
      * @throws \Exception
      */
@@ -215,19 +223,19 @@ class FileTest extends TestCase
         file_put_contents($localFilePath, '0');
 
         try {
-            $dir = '/';
+            $dir          = '/';
             $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
-            $this->assertContains(
+            self::assertContains(
                 [
-                    'name' => 'parent_dir',
-                    'contents' => $dir
+                    'name'     => 'parent_dir',
+                    'contents' => $dir,
                 ],
                 $fileResource->getMultiPartParams($localFilePath, $dir, true)
             );
-            $this->assertNotContains(
+            self::assertNotContains(
                 [
-                    'name' => 'target_file',
-                    'contents' => $dir . basename($localFilePath)
+                    'name'     => 'target_file',
+                    'contents' => $dir . basename($localFilePath),
                 ],
                 $fileResource->getMultiPartParams($localFilePath, $dir, true)
             );
@@ -245,35 +253,35 @@ class FileTest extends TestCase
      */
     public function testUpdateMultiPartParamsNewFilename()
     {
-        $dir = '/';
+        $dir           = '/';
         $localFilePath = sys_get_temp_dir() . '/' . uniqid('test_', true) . '.txt';
-        $fileResource = new File($this->getMockedClient(new Response()));
-        $newFilename = sys_get_temp_dir() . '/' . uniqid('test_', true) . '.txt';
+        $fileResource  = new File($this->getMockedClient(new Response()));
+        $newFilename   = sys_get_temp_dir() . '/' . uniqid('test_', true) . '.txt';
         file_put_contents($localFilePath, 'abc');
 
         $params = $fileResource->getMultiPartParams($localFilePath, $dir, true, $newFilename);
 
         $params[0]['contents'] = get_resource_type($params[0]['contents']);
 
-        $this->assertEquals(
+        self::assertEquals(
             [
                 [
-                    'headers' => ['Content-Type' => 'application/octet-stream'],
-                    'name' => 'file',
-                    'contents' => 'stream'
+                    'headers'  => ['Content-Type' => 'application/octet-stream'],
+                    'name'     => 'file',
+                    'contents' => 'stream',
                 ],
                 [
-                    'name' => 'name',
-                    'contents' => $newFilename
+                    'name'     => 'name',
+                    'contents' => $newFilename,
                 ],
                 [
-                    'name' => 'filename',
-                    'contents' => $newFilename
+                    'name'     => 'filename',
+                    'contents' => $newFilename,
                 ],
                 [
-                    'name' => 'parent_dir',
-                    'contents' => '/'
-                ]
+                    'name'     => 'parent_dir',
+                    'contents' => '/',
+                ],
             ],
             $params
         );
@@ -281,6 +289,7 @@ class FileTest extends TestCase
 
     /**
      * Test getMultiPartParams() for upload
+     *
      * @return void
      * @throws \Exception
      */
@@ -290,19 +299,19 @@ class FileTest extends TestCase
         file_put_contents($localFilePath, '0');
 
         try {
-            $dir = '/';
+            $dir          = '/';
             $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
-            $this->assertNotContains(
+            self::assertNotContains(
                 [
-                    'name' => 'parent_dir',
-                    'contents' => $dir
+                    'name'     => 'parent_dir',
+                    'contents' => $dir,
                 ],
                 $fileResource->getMultiPartParams($localFilePath, $dir, false)
             );
-            $this->assertContains(
+            self::assertContains(
                 [
-                    'name' => 'target_file',
-                    'contents' => $dir . basename($localFilePath)
+                    'name'     => 'target_file',
+                    'contents' => $dir . basename($localFilePath),
                 ],
                 $fileResource->getMultiPartParams($localFilePath, $dir, false)
             );
@@ -326,10 +335,10 @@ class FileTest extends TestCase
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $fileResource = new File($mockedClient);
 
-        $lib = new Library();
+        $lib     = new Library();
         $lib->id = 'some-crazy-id';
 
-        $this->assertFalse($fileResource->remove($lib, ''));
+        self::assertFalse($fileResource->remove($lib, ''));
     }
 
     /**
@@ -343,7 +352,7 @@ class FileTest extends TestCase
             ['', ''], // file path must not be empty, neither does new file name
             ['a', ''], // new file name must not be empty
             ['', 'b'], // file path must not be empty
-            ['/proper/path', '/new_file_name_must_not_start_with_slash']
+            ['/proper/path', '/new_file_name_must_not_start_with_slash'],
         ];
     }
 
@@ -365,7 +374,7 @@ class FileTest extends TestCase
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $fileResource = new File($mockedClient);
 
-        $lib = new Library();
+        $lib     = new Library();
         $lib->id = 'some-crazy-id';
 
         $dirItem = new DirectoryItem(['dir' => $invalidFilePath]);
@@ -380,10 +389,10 @@ class FileTest extends TestCase
      */
     public function dataProviderCopyInvalid()
     {
-        $srcLib = new Library();
+        $srcLib     = new Library();
         $srcLib->id = 'some-crazy-id';
 
-        $dstLib = new Library();
+        $dstLib     = new Library();
         $dstLib->id = 'some-other-crazy-id';
 
         return [
@@ -396,7 +405,9 @@ class FileTest extends TestCase
      * Test copy() with invalid file name
      *
      * @dataProvider dataProviderCopyInvalid
+     *
      * @param array $data Test data
+     *
      * @return void
      */
     public function testCopyInvalid(array $data)
@@ -407,13 +418,13 @@ class FileTest extends TestCase
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $fileResource = new File($mockedClient);
 
-        $srcLib = $data[0];
+        $srcLib      = $data[0];
         $srcFilePath = $data[1];
-        $dstLib = $data[2];
+        $dstLib      = $data[2];
         $dstFilePath = $data[3];
-        $expected = $data[4];
+        $expected    = $data[4];
 
-        $this->assertSame($expected, $fileResource->copy($srcLib, $srcFilePath, $dstLib, $dstFilePath));
+        self::assertSame($expected, $fileResource->copy($srcLib, $srcFilePath, $dstLib, $dstFilePath));
     }
 
     /**
@@ -430,23 +441,23 @@ class FileTest extends TestCase
         );
 
         $deleteResponse = new Response(200, ['Content-Type' => 'text/plain']);
-        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+        $mockedClient   = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=test_dir';
+        $expectUri    = 'http://example.com/repos/some-crazy-id/file/?p=test_dir';
         $expectParams = [
-            'headers' => ['Accept' => "application/json"]
+            'headers' => ['Accept' => "application/json"],
         ];
 
         // @todo: Test more thoroughly. For example make sure request() gets called with POST twice (a, then b)
-        $mockedClient->expects($this->any())
+        $mockedClient->expects(self::any())
             ->method('request')
-            ->with($this->logicalOr(
-                $this->equalTo('GET'),
-                $this->equalTo('DELETE')
+            ->with(self::logicalOr(
+                self::equalTo('GET'),
+                self::equalTo('DELETE')
             ))
             // Return what was passed to offsetGet as a new instance
-            ->will($this->returnCallback(
+            ->will(self::returnCallback(
                 function ($method, $uri, $params) use ($getAllResponse, $deleteResponse, $expectUri, $expectParams) {
                     if ($method === 'GET') {
                         return $getAllResponse;
@@ -465,10 +476,10 @@ class FileTest extends TestCase
          */
         $fileResource = new File($mockedClient);
 
-        $lib = new Library();
+        $lib     = new Library();
         $lib->id = 'some-crazy-id';
 
-        $this->assertTrue($fileResource->remove($lib, 'test_dir'));
+        self::assertTrue($fileResource->remove($lib, 'test_dir'));
     }
 
     /**
@@ -484,7 +495,7 @@ class FileTest extends TestCase
             file_get_contents(__DIR__ . '/../../assets/FileTest_getAll.json')
         );
 
-        $newFilename = 'test_file_renamed';
+        $newFilename    = 'test_file_renamed';
         $renameResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
         /**
@@ -493,26 +504,26 @@ class FileTest extends TestCase
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=/test_file';
+        $expectUri    = 'http://example.com/repos/some-crazy-id/file/?p=/test_file';
         $expectParams = [
-            'headers' => ['Accept' => "application/json"],
+            'headers'   => ['Accept' => "application/json"],
             'multipart' => [
                 [
-                    'name' => 'operation',
-                    'contents' => 'rename'
+                    'name'     => 'operation',
+                    'contents' => 'rename',
                 ],
                 [
-                    'name' => 'newname',
-                    'contents' => $newFilename
+                    'name'     => 'newname',
+                    'contents' => $newFilename,
                 ],
             ],
         ];
 
         // @todo: Test more thoroughly. For example make sure request() gets called with POST twice (a, then b)
-        $mockedClient->expects($this->any())
+        $mockedClient->expects(self::any())
             ->method('request')
-            ->with($this->equalTo('POST'))
-            ->will($this->returnCallback(
+            ->with(self::equalTo('POST'))
+            ->will(self::returnCallback(
                 function ($method, $uri, $params) use ($getAllResponse, $renameResponse, $expectUri, $expectParams) {
                     if ($expectUri === $uri && $expectParams === $params) {
                         return $renameResponse;
@@ -524,10 +535,10 @@ class FileTest extends TestCase
 
         $fileResource = new File($mockedClient);
 
-        $lib = new Library(['id' => 'some-crazy-id']);
+        $lib     = new Library(['id' => 'some-crazy-id']);
         $dirItem = new DirectoryItem(['name' => 'test_file']);
 
-        $this->assertTrue($fileResource->rename($lib, $dirItem, $newFilename));
+        self::assertTrue($fileResource->rename($lib, $dirItem, $newFilename));
     }
 
     /**
@@ -539,7 +550,7 @@ class FileTest extends TestCase
     {
         return [
             [['operation' => 'copy', 'responseCode' => 200]],
-            [['operation' => 'move', 'responseCode' => 301]]
+            [['operation' => 'move', 'responseCode' => 301]],
         ];
     }
 
@@ -547,15 +558,17 @@ class FileTest extends TestCase
      * Test copy()
      *
      * @dataProvider dataProviderCopyMove
+     *
      * @param array $data Data provided
+     *
      * @return void
      */
     public function testCopyMove(array $data)
     {
-        $sourceLib = new Library();
+        $sourceLib     = new Library();
         $sourceLib->id = 'some-crazy-id';
 
-        $destLib = new  Library();
+        $destLib     = new  Library();
         $destLib->id = 'some-other-crazy-id';
 
         $getAllResponse = new Response(
@@ -567,38 +580,38 @@ class FileTest extends TestCase
         $srcPath = '/src/file/path';
         $dstPath = '/target/file/path';
 
-        $response = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
+        $response     = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=' . $srcPath;
+        $expectUri    = 'http://example.com/repos/some-crazy-id/file/?p=' . $srcPath;
         $expectParams = [
-            'headers' => ['Accept' => 'application/json'],
+            'headers'   => ['Accept' => 'application/json'],
             'multipart' => [
                 [
-                    'name' => 'operation',
-                    'contents' => $data['operation']
+                    'name'     => 'operation',
+                    'contents' => $data['operation'],
                 ],
                 [
-                    'name' => 'dst_repo',
-                    'contents' => $destLib->id
+                    'name'     => 'dst_repo',
+                    'contents' => $destLib->id,
                 ],
                 [
-                    'name' => 'dst_dir',
-                    'contents' => $dstPath
+                    'name'     => 'dst_dir',
+                    'contents' => $dstPath,
                 ],
             ],
         ];
 
         // @todo: Test more thoroughly. For example make sure request() gets called with POST twice (a, then b)
-        $mockedClient->expects($this->any())
+        $mockedClient->expects(self::any())
             ->method('request')
-            ->with($this->logicalOr(
-                $this->equalTo('GET'),
-                $this->equalTo('POST')
+            ->with(self::logicalOr(
+                self::equalTo('GET'),
+                self::equalTo('POST')
             ))
             // Return what was passed to offsetGet as a new instance
-            ->will($this->returnCallback(
+            ->will(self::returnCallback(
                 function ($method, $uri, $params) use ($getAllResponse, $response, $expectUri, $expectParams) {
                     if ($method === 'GET') {
                         return $getAllResponse;
@@ -617,7 +630,7 @@ class FileTest extends TestCase
          */
         $fileResource = new File($mockedClient);
 
-        $this->assertTrue($fileResource->{$data['operation']}($sourceLib, $srcPath, $destLib, $dstPath));
+        self::assertTrue($fileResource->{$data['operation']}($sourceLib, $srcPath, $destLib, $dstPath));
     }
 
     /**
@@ -634,7 +647,7 @@ class FileTest extends TestCase
          */
         $fileResource = new File($mockedClient);
 
-        $this->assertFalse(
+        self::assertFalse(
             $fileResource->move(
                 new Library(),
                 '',
@@ -655,45 +668,46 @@ class FileTest extends TestCase
             new Response(200, ['Content-Type' => 'application/json'], '"https://some.example.com/some/url"')
         ));
 
-        $library = new Library();
+        $library     = new Library();
         $library->id = 123;
 
-        $dirItem = new DirectoryItem();
+        $dirItem       = new DirectoryItem();
         $dirItem->path = '/';
         $dirItem->name = 'some_test.txt';
 
-        $fileHistoryItem = new FileHistoryItem();
+        $fileHistoryItem     = new FileHistoryItem();
         $fileHistoryItem->id = 345;
 
         $downloadUrl = $fileResource->getFileRevisionDownloadUrl($library, $dirItem, $fileHistoryItem);
 
         // encapsulating quotes must be gone
-        $this->assertSame('https://some.example.com/some/url', $downloadUrl);
+        self::assertSame('https://some.example.com/some/url', $downloadUrl);
 
         // @todo Expect certain request() call
     }
 
     /**
      * Test downloadRevision()
+     *
      * @return void
      * @throws \Exception
      */
     public function testDownloadRevision()
     {
-        $library = new Library();
+        $library     = new Library();
         $library->id = 123;
 
-        $dirItem = new DirectoryItem();
+        $dirItem       = new DirectoryItem();
         $dirItem->path = '/';
         $dirItem->name = 'some_test.txt';
 
-        $fileHistoryItem = new FileHistoryItem();
+        $fileHistoryItem     = new FileHistoryItem();
         $fileHistoryItem->id = 345;
 
         $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
-        $response = $fileResource->downloadRevision($library, $dirItem, $fileHistoryItem, '/tmp/yo.txt');
+        $response     = $fileResource->downloadRevision($library, $dirItem, $fileHistoryItem, '/tmp/yo.txt');
 
-        $this->assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
+        self::assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
 
         // @todo Expect certain request() call
     }
@@ -713,15 +727,15 @@ class FileTest extends TestCase
             )
         ));
 
-        $lib = new Library();
+        $lib     = new Library();
         $lib->id = 123;
 
         $fileHistoryItems = $fileResource->getHistory($lib, new DirectoryItem());
 
-        $this->assertInternalType('array', $fileHistoryItems);
+        self::assertInternalType('array', $fileHistoryItems);
 
         foreach ($fileHistoryItems as $fileHistoryItem) {
-            $this->assertInstanceOf('Seafile\Client\Type\FileHistoryItem', $fileHistoryItem);
+            self::assertInstanceOf('Seafile\Client\Type\FileHistoryItem', $fileHistoryItem);
         }
     }
 
@@ -734,7 +748,7 @@ class FileTest extends TestCase
     {
         $fileResource = new File($this->getMockedClient(new Response()));
 
-        $this->assertFalse($fileResource->create(new Library, new DirectoryItem));
+        self::assertFalse($fileResource->create(new Library, new DirectoryItem));
     }
 
     /**
@@ -752,14 +766,14 @@ class FileTest extends TestCase
             )
         );
 
-        $clientMock->expects($this->any())
+        $clientMock->expects(self::any())
             ->method('request')
             ->with(
-                $this->equalTo('POST'),
+                self::equalTo('POST'),
                 'http://example.com/index.html/repos/123/file/?p=/some_name.txt'
             )
             // Return what was passed to offsetGet as a new instance
-            ->will($this->returnValue(new Response(
+            ->will(self::returnValue(new Response(
                 201,
                 ['Content-Type' => 'application/json'],
                 'success'
@@ -767,13 +781,13 @@ class FileTest extends TestCase
 
         $fileResource = new File($clientMock);
 
-        $lib = new Library;
+        $lib     = new Library;
         $lib->id = 123;
 
-        $dirItem = new DirectoryItem;
+        $dirItem       = new DirectoryItem;
         $dirItem->path = '/';
         $dirItem->name = 'some_name.txt';
 
-        $this->assertTrue($fileResource->create($lib, $dirItem));
+        self::assertTrue($fileResource->create($lib, $dirItem));
     }
 }

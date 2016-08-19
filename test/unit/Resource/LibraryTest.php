@@ -11,8 +11,8 @@ use Seafile\Client\Tests\TestCase;
  * Library resource test
  *
  * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
- * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
+ * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    Seafile\Client\Resource\Library
@@ -36,10 +36,10 @@ class LibraryTest extends TestCase
 
         $libs = $libraryResource->getAll();
 
-        $this->assertInternalType('array', $libs);
+        self::assertInternalType('array', $libs);
 
         foreach ($libs as $lib) {
-            $this->assertInstanceOf('Seafile\Client\Type\Library', $lib);
+            self::assertInstanceOf('Seafile\Client\Type\Library', $lib);
         }
     }
 
@@ -58,11 +58,12 @@ class LibraryTest extends TestCase
             )
         ));
 
-        $this->assertInstanceOf('Seafile\Client\Type\Library', $libraryResource->getById('some_id'));
+        self::assertInstanceOf('Seafile\Client\Type\Library', $libraryResource->getById('some_id'));
     }
 
     /**
      * Try to decrypt without query parameters. Must fail of course.
+     *
      * @return void
      * @throws \Exception
      */
@@ -75,6 +76,7 @@ class LibraryTest extends TestCase
 
     /**
      * Try to decrypt without password. Must fail of course.
+     *
      * @return void
      * @throws \Exception
      */
@@ -87,6 +89,7 @@ class LibraryTest extends TestCase
 
     /**
      * Decryption fails
+     *
      * @return void
      * @throws \Exception
      */
@@ -100,7 +103,7 @@ class LibraryTest extends TestCase
             )
         ));
 
-        $this->assertFalse(
+        self::assertFalse(
             $library->decrypt(
                 'some id',
                 ['query' => ['password' => 'some password']]
@@ -110,6 +113,7 @@ class LibraryTest extends TestCase
 
     /**
      * Decryption succeeds
+     *
      * @return void
      * @throws \Exception
      */
@@ -123,7 +127,7 @@ class LibraryTest extends TestCase
             )
         ));
 
-        $this->assertTrue(
+        self::assertTrue(
             $library->decrypt(
                 'some id',
                 ['query' => ['password' => 'some password']]
@@ -133,6 +137,7 @@ class LibraryTest extends TestCase
 
     /**
      * Data provider for testExists()
+     *
      * @return array
      */
     public function dataProviderExists()
@@ -141,7 +146,7 @@ class LibraryTest extends TestCase
             [['invalid_value', 'invalid_attribute', false]],
             [['bar', 'name', true]],
             [["f158d1dd-cc19-412c-b143-2ac83f352290", 'id', true]],
-            [["f158d1dd-cc19-412c-b143-2ac83f35229_", 'id', false]]
+            [["f158d1dd-cc19-412c-b143-2ac83f35229_", 'id', false]],
         ];
     }
 
@@ -149,7 +154,9 @@ class LibraryTest extends TestCase
      * Test exists()
      *
      * @dataProvider dataProviderExists
+     *
      * @param array $data Test data
+     *
      * @return void
      */
     public function testExists(array $data)
@@ -162,18 +169,19 @@ class LibraryTest extends TestCase
             )
         ));
 
-        $this->assertSame($data[2], $libraryResource->exists($data[0], $data[1]));
+        self::assertSame($data[2], $libraryResource->exists($data[0], $data[1]));
     }
 
     /**
      * DataProvider for testCreateInvalid()
+     *
      * @return array
      */
     public function dataProviderCreateInvalid()
     {
         return [
             [['', false]],
-            [['foo', false]]
+            [['foo', false]],
         ];
     }
 
@@ -181,7 +189,9 @@ class LibraryTest extends TestCase
      * Test create(), provide invalid parameters, expect failure
      *
      * @dataProvider dataProviderCreateInvalid
+     *
      * @param array $data Test data
+     *
      * @return void
      */
     public function testCreateInvalid(array $data)
@@ -194,7 +204,7 @@ class LibraryTest extends TestCase
             )
         ));
 
-        $this->assertSame($data[1], $libraryResource->create($data[0]));
+        self::assertSame($data[1], $libraryResource->create($data[0]));
     }
 
     /**
@@ -212,7 +222,7 @@ class LibraryTest extends TestCase
             )
         ));
 
-        $this->assertFalse($libraryResource->remove(''));
+        self::assertFalse($libraryResource->remove(''));
     }
 
     /**
@@ -226,7 +236,7 @@ class LibraryTest extends TestCase
             // [[expect response code, expected result, password]]
             [[200, true, '']],
             [[500, false, '']],
-            [[200, true, 'some_password']]
+            [[200, true, 'some_password']],
         ];
     }
 
@@ -234,7 +244,9 @@ class LibraryTest extends TestCase
      * Test create()
      *
      * @dataProvider dataProviderCreate
+     *
      * @param array $data Test data
+     *
      * @return void
      */
     public function testCreate(array $data)
@@ -245,7 +257,7 @@ class LibraryTest extends TestCase
             file_get_contents(__DIR__ . '/../../assets/LibraryTest_getAll.json')
         );
 
-        $name = "a";
+        $name        = "a";
         $description = "b";
 
         $createResponse = new Response($data[0], ['Content-Type' => 'text/plain']);
@@ -253,36 +265,36 @@ class LibraryTest extends TestCase
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/repos/';
+        $expectUri    = 'http://example.com/repos/';
         $expectParams = [
-            'headers' => ['Accept' => "application/json"],
+            'headers'   => ['Accept' => "application/json"],
             'multipart' => [
                 [
-                    'name' => 'name',
+                    'name'     => 'name',
                     'contents' => $name,
                 ],
                 [
-                    'name' => 'desc',
+                    'name'     => 'desc',
                     'contents' => $description,
-                ]
-            ]
+                ],
+            ],
         ];
 
         if ($data[2]) {
             $expectParams['multipart'][] = [
-                'name' => 'passwd',
-                'contents' => $data[2]
+                'name'     => 'passwd',
+                'contents' => $data[2],
             ];
         }
 
-        $mockedClient->expects($this->any())
+        $mockedClient->expects(self::any())
             ->method('request')
-            ->with($this->logicalOr(
-                $this->equalTo('GET'),
-                $this->equalTo('POST')
+            ->with(self::logicalOr(
+                self::equalTo('GET'),
+                self::equalTo('POST')
             ))
             // Return what was passed to offsetGet as a new instance
-            ->will($this->returnCallback(
+            ->will(self::returnCallback(
                 function ($method, $uri, $params) use ($getAllResponse, $createResponse, $expectUri, $expectParams) {
                     if ($method === 'GET') {
                         return $getAllResponse;
@@ -301,10 +313,10 @@ class LibraryTest extends TestCase
          */
         $libraryResource = new Library($mockedClient);
 
-        $lib = new \Seafile\Client\Type\Library();
+        $lib     = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
-        $this->assertSame($data[1], $libraryResource->create($name, $description, $data[2]));
+        self::assertSame($data[1], $libraryResource->create($name, $description, $data[2]));
     }
 
     /**
@@ -325,20 +337,20 @@ class LibraryTest extends TestCase
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/repos/some-crazy-id/';
+        $expectUri    = 'http://example.com/repos/some-crazy-id/';
         $expectParams = [
-            'headers' => ['Accept' => "application/json"]
+            'headers' => ['Accept' => "application/json"],
         ];
 
         // @todo: Test more thoroughly. For example make sure request() gets called with POST twice (a, then b)
-        $mockedClient->expects($this->any())
+        $mockedClient->expects(self::any())
             ->method('request')
-            ->with($this->logicalOr(
-                $this->equalTo('GET'),
-                $this->equalTo('DELETE')
+            ->with(self::logicalOr(
+                self::equalTo('GET'),
+                self::equalTo('DELETE')
             ))
             // Return what was passed to offsetGet as a new instance
-            ->will($this->returnCallback(
+            ->will(self::returnCallback(
                 function ($method, $uri, $params) use ($getAllResponse, $removeResponse, $expectUri, $expectParams) {
                     if ($method === 'GET') {
                         return $getAllResponse;
@@ -357,9 +369,9 @@ class LibraryTest extends TestCase
          */
         $libraryResource = new Library($mockedClient);
 
-        $lib = new \Seafile\Client\Type\Library();
+        $lib     = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
-        $this->assertTrue($libraryResource->remove($lib->id));
+        self::assertTrue($libraryResource->remove($lib->id));
     }
 }

@@ -2,22 +2,23 @@
 
 namespace Seafile\Client\Tests\Type;
 
-use Seafile\Client\Type\AbstractType;
+use Seafile\Client\Tests\TestCase;
+use Seafile\Client\Type\Type;
 use Seafile\Client\Type\DirectoryItem;
 use Seafile\Client\Type\Account as AccountType;
 use Seafile\Client\Type\Group as GroupType;
 
 /**
- * AbstractType test
+ * Type test
  *
  * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
- * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
+ * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
- * @covers    Seafile\Client\Type\AbstractType
+ * @covers    Seafile\Client\Type\Type
  */
-class AbstractTypeTest extends \PHPUnit_Framework_TestCase
+class TypeTest extends TestCase
 {
     /**
      * Test fromArray()
@@ -27,16 +28,16 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
     public function testFromArray()
     {
         $dirItem = new DirectoryItem([
-            'id' => 1,
+            'id'   => 1,
             'size' => 2,
             'name' => 'my name',
-            'type' => 'my type'
+            'type' => 'my type',
         ]);
 
-        $this->assertSame(1, $dirItem->id);
-        $this->assertSame(2, $dirItem->size);
-        $this->assertSame('my name', $dirItem->name);
-        $this->assertSame('my type', $dirItem->type);
+        self::assertSame(1, $dirItem->id);
+        self::assertSame(2, $dirItem->size);
+        self::assertSame('my name', $dirItem->name);
+        self::assertSame('my type', $dirItem->type);
     }
 
     /**
@@ -47,24 +48,24 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
     public function testFromArrayPropertyMissing()
     {
         $dirItem = new DirectoryItem([
-            'id' => 1,
-            'size' => 2,
-            'name' => 'my name',
-            'type' => 'my type',
-            'does_not_exist' => '123'
+            'id'             => 1,
+            'size'           => 2,
+            'name'           => 'my name',
+            'type'           => 'my type',
+            'does_not_exist' => '123',
         ]);
 
-        $this->assertEquals(
+        self::assertEquals(
             [
-                'id' => 1,
-                'size' => 2,
-                'name' => 'my name',
-                'type' => 'my type',
+                'id'    => 1,
+                'size'  => 2,
+                'name'  => 'my name',
+                'type'  => 'my type',
                 'mtime' => null,
-                'dir' => '/',
-                'org' => null,
-                'path' => null,
-                'repo' => null
+                'dir'   => '/',
+                'org'   => null,
+                'path'  => null,
+                'repo'  => null,
             ],
             (array)$dirItem
         );
@@ -78,10 +79,10 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
     public function testFromArrayCreateTime()
     {
         $accountType = new AccountType([
-            'create_time' => '1452202279000000'
+            'create_time' => '1452202279000000',
         ]);
 
-        $this->assertSame('2016-01-07T21:31:19+0000', $accountType->createTime->format(\DateTime::ISO8601));
+        self::assertSame('2016-01-07T21:31:19+0000', $accountType->createTime->format(\DateTime::ISO8601));
     }
 
     /**
@@ -94,10 +95,10 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
         $accountType = new AccountType();
 
         $accountType->fromJson(json_decode(json_encode([
-            'create_time' => '1452202279000000'
+            'create_time' => '1452202279000000',
         ])));
 
-        $this->assertSame('2016-01-07T21:31:19+0000', $accountType->createTime->format(\DateTime::ISO8601));
+        self::assertSame('2016-01-07T21:31:19+0000', $accountType->createTime->format(\DateTime::ISO8601));
     }
 
     /**
@@ -111,8 +112,8 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
 
         $jsonString = $accountType->toJson();
 
-        $this->assertStringStartsWith('{"contactEmail":null', $jsonString);
-        $this->assertStringEndsWith('"total":null,"usage":null}', $jsonString);
+        self::assertStringStartsWith('{"contactEmail":null', $jsonString);
+        self::assertStringEndsWith('"total":null,"usage":null}', $jsonString);
     }
 
     /**
@@ -123,14 +124,18 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
     public function dataProviderTestToArrayAssoc()
     {
         return [
-            [[
-                [],
-                [] // no empty values
-            ]],
-            [[
-                ['createTime' => 1452202279000000],
-                ['createTime' => 1452202279000000] // no empty values
-            ]]
+            [
+                [
+                    [],
+                    [] // no empty values
+                ],
+            ],
+            [
+                [
+                    ['createTime' => 1452202279000000],
+                    ['createTime' => 1452202279000000] // no empty values
+                ],
+            ],
         ];
     }
 
@@ -146,7 +151,7 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
     {
         $accountType = (new AccountType())->fromArray($data[0]);
 
-        $this->assertEquals($data[1], $accountType->toArray());
+        self::assertEquals($data[1], $accountType->toArray());
     }
 
 
@@ -158,14 +163,18 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
     public function dataProviderTestToArrayMultiPart()
     {
         return [
-            [[
-                [],
-                [] // no empty values
-            ]],
-            [[
-                ['createTime' => 1452202279000000],
-                [['name' => 'create_time', 'contents' => '1452202279000000']] // no empty values
-            ]]
+            [
+                [
+                    [],
+                    [] // no empty values
+                ],
+            ],
+            [
+                [
+                    ['createTime' => 1452202279000000],
+                    [['name' => 'create_time', 'contents' => '1452202279000000']] // no empty values
+                ],
+            ],
         ];
     }
 
@@ -181,7 +190,7 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
     {
         $accountType = (new AccountType())->fromArray($data[0]);
 
-        $this->assertSame($data[1], $accountType->toArray(AbstractType::ARRAY_MULTI_PART));
+        self::assertSame($data[1], $accountType->toArray(Type::ARRAY_MULTI_PART));
     }
 
     /**
@@ -193,9 +202,9 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testFromArrayCreator()
     {
-        $email = 'someone@example.com';
+        $email     = 'someone@example.com';
         $groupType = (new GroupType())->fromArray(['creator' => $email]);
-        $this->assertInstanceOf('Seafile\Client\Type\Account', $groupType->creator);
-        $this->assertSame($email, $groupType->creator->email);
+        self::assertInstanceOf('Seafile\Client\Type\Account', $groupType->creator);
+        self::assertSame($email, $groupType->creator->email);
     }
 }

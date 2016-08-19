@@ -31,7 +31,7 @@ $stack->push(
  * {"token": "your_token"}
  */
 $tokenFile = getenv("HOME") . "/.seafile-php-sdk/api-token.json";
-$cfgFile = getenv("HOME") . "/.seafile-php-sdk/cfg.json";
+$cfgFile   = getenv("HOME") . "/.seafile-php-sdk/cfg.json";
 
 if (!is_readable($tokenFile)) {
     throw new Exception($tokenFile . ' is not readable or does not exist.');
@@ -42,23 +42,23 @@ if (!is_readable($cfgFile)) {
 }
 
 $token = json_decode(file_get_contents($tokenFile));
-$cfg = json_decode(file_get_contents($cfgFile));
+$cfg   = json_decode(file_get_contents($cfgFile));
 
 $client = new Client(
     [
         'base_uri' => $cfg->baseUri,
-        'debug' => true,
-        'handler' => $stack,
-        'headers' => [
-            'Content-Type' => 'application/json',
-            'Authorization' => 'Token ' . $token->token
-        ]
+        'debug'    => true,
+        'handler'  => $stack,
+        'headers'  => [
+            'Content-Type'  => 'application/json',
+            'Authorization' => 'Token ' . $token->token,
+        ],
     ]
 );
 
-$libraryResource = new Library($client);
+$libraryResource   = new Library($client);
 $directoryResource = new Directory($client);
-$fileResource = new File($client);
+$fileResource      = new File($client);
 
 $libId = $cfg->testLibId;
 
@@ -71,9 +71,9 @@ if ($lib->encrypted === true && isset($cfg->testLibPassword)) {
 
 $logger->log(Logger::INFO, "#################### GO!");
 
-$fileName = 'test.txt';
+$path        = null;
+$fileName    = 'test.txt';
 $newFilename = 'test_' . date('U') . '.txt';
-
 $dirItem = $fileResource->getFileDetail($lib, $path . $fileName);
 
 $logger->log(Logger::INFO, "#################### File to be renamed: " . $path . $dirItem->name);
@@ -90,7 +90,7 @@ sleep(60);
 
 
 $newFilename = 'even_newer_file_name_test_' . date('U') . '.txt';
-$success = $fileResource->rename($lib, $dirItem, $newFilename);
+$success     = $fileResource->rename($lib, $dirItem, $newFilename);
 
 if ($success) {
     $logger->log(Logger::INFO, "#################### File renamed from " . $dirItem->name . ' to ' . $newFilename);

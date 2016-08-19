@@ -8,12 +8,12 @@ use \Seafile\Client\Type\Library as LibraryType;
  * Handles everything regarding Seafile libraries.
  *
  * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
- * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
+ * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-class Library extends AbstractResource
+class Library extends Resource
 {
     /**
      * List libraries
@@ -67,7 +67,7 @@ class Library extends AbstractResource
     public function decrypt($libraryId, array $options)
     {
         $hasQueryParams = array_key_exists('query', $options);
-        $hasPassword = $hasQueryParams && array_key_exists('password', $options['query']);
+        $hasPassword    = $hasQueryParams && array_key_exists('password', $options['query']);
 
         if (!$hasQueryParams || !$hasPassword) {
             throw new \Exception('Password query parameter is required to decrypt library');
@@ -131,18 +131,18 @@ class Library extends AbstractResource
 
         $multipartData = [
             [
-                'name' => 'name',
+                'name'     => 'name',
                 'contents' => $name,
             ],
             [
-                'name' => 'desc',
+                'name'     => 'desc',
                 'contents' => $description,
             ],
         ];
 
         if ($password !== '') {
             $multipartData[] = [
-                'name' => 'passwd',
+                'name'     => 'passwd',
                 'contents' => $password,
             ];
         }
@@ -151,7 +151,7 @@ class Library extends AbstractResource
             'POST',
             $uri,
             [
-                'headers' => ['Accept' => 'application/json'],
+                'headers'   => ['Accept' => 'application/json'],
                 'multipart' => $multipartData,
             ]
         );

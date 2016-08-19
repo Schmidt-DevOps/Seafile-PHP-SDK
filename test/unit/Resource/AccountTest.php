@@ -12,8 +12,8 @@ use Seafile\Client\Tests\TestCase;
  * Account resource test
  *
  * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
- * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
+ * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    Seafile\Client\Resource\Account
@@ -37,10 +37,10 @@ class AccountTest extends TestCase
 
         $libs = $accountResource->getAll();
 
-        $this->assertInternalType('array', $libs);
+        self::assertInternalType('array', $libs);
 
         foreach ($libs as $lib) {
-            $this->assertInstanceOf('Seafile\Client\Type\Account', $lib);
+            self::assertInstanceOf('Seafile\Client\Type\Account', $lib);
         }
     }
 
@@ -65,10 +65,10 @@ class AccountTest extends TestCase
 
         $accountType = $accountResource->{$method}($email);
 
-        $this->assertInstanceOf('Seafile\Client\Type\Account', $accountType);
-        $this->assertSame($email, $accountType->email);
-        $this->assertInstanceOf('DateTime', $accountType->createTime);
-        $this->assertSame('2016-01-08T19:42:50+0000', $accountType->createTime->format(DATE_ISO8601));
+        self::assertInstanceOf('Seafile\Client\Type\Account', $accountType);
+        self::assertSame($email, $accountType->email);
+        self::assertInstanceOf('DateTime', $accountType->createTime);
+        self::assertSame('2016-01-08T19:42:50+0000', $accountType->createTime->format(DATE_ISO8601));
     }
 
     /**
@@ -89,7 +89,7 @@ class AccountTest extends TestCase
     public function testCreateIllegal()
     {
         $accountResource = new Account($this->getMockedClient(new Response(200)));
-        $this->assertFalse($accountResource->create(new AccountType()));
+        self::assertFalse($accountResource->create(new AccountType()));
     }
 
     /**
@@ -105,7 +105,7 @@ class AccountTest extends TestCase
             [['method' => 'create', 'responseCode' => 500, 'result' => false]],
             [['method' => 'update', 'responseCode' => 201, 'result' => false]],
             [['method' => 'update', 'responseCode' => 200, 'result' => true]],
-            [['method' => 'update', 'responseCode' => 500, 'result' => false]]
+            [['method' => 'update', 'responseCode' => 500, 'result' => false]],
         ];
     }
 
@@ -124,17 +124,17 @@ class AccountTest extends TestCase
 
         $accountType = (new AccountType)->fromArray([
             'password' => 'some_password',
-            'email' => 'my_email@example.com'
+            'email'    => 'my_email@example.com',
         ]);
 
         $mockedClient = $this->getMock('\Seafile\Client\Http\Client', ['put', 'getConfig']);
 
-        $mockedClient->expects($this->any())
+        $mockedClient->expects(self::any())
             ->method('put')
             ->with($baseUri . 'accounts/' . $accountType->email . '/')// trailing slash is mandatory!
             ->willReturn(new Response($data['responseCode']));
 
-        $mockedClient->expects($this->any())
+        $mockedClient->expects(self::any())
             ->method('getConfig')
             ->with('base_uri')
             ->willReturn($baseUri);
@@ -144,7 +144,7 @@ class AccountTest extends TestCase
          */
         $accountResource = new Account($mockedClient);
 
-        $this->assertSame($data['result'], $accountResource->{$data['method']}($accountType));
+        self::assertSame($data['result'], $accountResource->{$data['method']}($accountType));
     }
 
     /**
@@ -155,7 +155,7 @@ class AccountTest extends TestCase
     public function testUpdateIllegal()
     {
         $accountResource = new Account($this->getMockedClient(new Response(200)));
-        $this->assertFalse($accountResource->update(new AccountType()));
+        self::assertFalse($accountResource->update(new AccountType()));
     }
 
     /**
@@ -167,7 +167,7 @@ class AccountTest extends TestCase
     {
         return [
             [['email' => 'test@example.com', 'result' => true]],
-            [['email' => '', 'result' => false]]
+            [['email' => '', 'result' => false]],
         ];
     }
 
@@ -184,17 +184,17 @@ class AccountTest extends TestCase
     {
         $baseUri = 'https://example.com/';
 
-        $accountType = new \Seafile\Client\Type\Account();
+        $accountType        = new AccountType();
         $accountType->email = $data['email'];
 
         $mockedClient = $this->getMock('\Seafile\Client\Http\Client', ['delete', 'getConfig']);
 
-        $mockedClient->expects($this->any())
+        $mockedClient->expects(self::any())
             ->method('delete')
             ->with($baseUri . 'accounts/' . $accountType->email . '/')// trailing slash is mandatory!
             ->willReturn(new Response(200));
 
-        $mockedClient->expects($this->any())
+        $mockedClient->expects(self::any())
             ->method('getConfig')
             ->with('base_uri')
             ->willReturn($baseUri);
@@ -204,9 +204,9 @@ class AccountTest extends TestCase
          */
         $accountResource = new Account($mockedClient);
 
-        $this->assertSame($data['result'], $accountResource->remove($accountType));
+        self::assertSame($data['result'], $accountResource->remove($accountType));
 
         // test removeByEmail() in one go
-        $this->assertSame($data['result'], $accountResource->removeByEmail($accountType->email));
+        self::assertSame($data['result'], $accountResource->removeByEmail($accountType->email));
     }
 }

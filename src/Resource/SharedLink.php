@@ -10,12 +10,12 @@ use \Seafile\Client\Type\Library as LibraryType;
  * Handles everything regarding Seafile shared links.
  *
  * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
- * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
+ * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-class SharedLink extends AbstractResource
+class SharedLink extends Resource
 {
 
     /**
@@ -57,7 +57,7 @@ class SharedLink extends AbstractResource
             'DELETE',
             $uri,
             [
-                'headers' => ['Accept' => 'application/json']
+                'headers' => ['Accept' => 'application/json'],
             ]
         );
 
@@ -68,7 +68,7 @@ class SharedLink extends AbstractResource
      * Create share link
      *
      * @param LibraryType $library   Library instance
-     * @param string      $p         Path
+     * @param string      $path      Path
      * @param int         $expire    Expire in such many days
      * @param string      $shareType Share type
      * @param string      $password  Optional password string
@@ -78,7 +78,7 @@ class SharedLink extends AbstractResource
      */
     public function create(
         LibraryType $library,
-        $p,
+        $path,
         $expire = null,
         $shareType = SharedLinkType::SHARE_TYPE_DOWNLOAD,
         $password = null
@@ -90,8 +90,8 @@ class SharedLink extends AbstractResource
         );
 
         $multiPartParams = [
-            ['name' => 'p', 'contents' => $p],
-            ['name' => 'share_type', 'contents' => $shareType]
+            ['name' => 'p', 'contents' => $path],
+            ['name' => 'share_type', 'contents' => $shareType],
         ];
 
         if (!is_null($expire)) {
@@ -106,8 +106,8 @@ class SharedLink extends AbstractResource
             'PUT',
             $uri,
             [
-                'headers' => ['Accept' => 'application/json'],
-                'multipart' => $multiPartParams
+                'headers'   => ['Accept' => 'application/json'],
+                'multipart' => $multiPartParams,
             ]
         );
 
@@ -118,11 +118,11 @@ class SharedLink extends AbstractResource
         $url = $response->getHeader('Location')[0];
 
         return (new SharedLinkType)->fromArray([
-            'url' => $url,
-            'expire' => $expire,
-            'password' => $password,
-            'path' => $p,
-            'shareType' => $shareType
+            'url'       => $url,
+            'expire'    => $expire,
+            'password'  => $password,
+            'path'      => $path,
+            'shareType' => $shareType,
         ]);
     }
 }

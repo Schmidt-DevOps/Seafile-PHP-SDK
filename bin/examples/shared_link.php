@@ -53,23 +53,23 @@ if (!is_readable($cfgFile)) {
 }
 
 $token = json_decode(file_get_contents($tokenFile));
-$cfg = json_decode(file_get_contents($cfgFile));
+$cfg   = json_decode(file_get_contents($cfgFile));
 
 $client = new Client(
     [
         'base_uri' => $cfg->baseUri,
-        'debug' => true,
-        'handler' => $stack,
-        'headers' => [
-            'Content-Type' => 'application/json',
-            'Authorization' => 'Token ' . $token->token
-        ]
+        'debug'    => true,
+        'handler'  => $stack,
+        'headers'  => [
+            'Content-Type'  => 'application/json',
+            'Authorization' => 'Token ' . $token->token,
+        ],
     ]
 );
 
-$libraryResource = new Library($client);
-$directoryResource = new Directory($client);
-$fileResource = new File($client);
+$libraryResource    = new Library($client);
+$directoryResource  = new Directory($client);
+$fileResource       = new File($client);
 $sharedLinkResource = new SharedLink($client);
 
 // get all libraries available
@@ -87,7 +87,7 @@ $logger->log(Logger::INFO, "#################### Getting lib with ID " . $libId)
 $lib = $libraryResource->getById($libId);
 
 $lib->password = $cfg->testLibPassword; // library is encrypted and thus we provide a password
-$success = $libraryResource->decrypt($libId, ['query' => ['password' => $cfg->testLibPassword]]);
+$success       = $libraryResource->decrypt($libId, ['query' => ['password' => $cfg->testLibPassword]]);
 
 // upload a Hello World file and random file name (note: this seems not to work at this time when you are not logged into the Seafile web frontend).
 $newFilename = './Seafile-PHP-SDK_Test_Upload.txt';
@@ -102,10 +102,10 @@ $response = $fileResource->upload($lib, $newFilename, '/');
 // create share link for a file
 $logger->log(Logger::INFO, "#################### Create share link for a file");
 
-$expire = 5;
+$expire    = 5;
 $shareType = SharedLinkType::SHARE_TYPE_DOWNLOAD;
-$p = "/" . basename($newFilename);
-$password = 'qwertz123';
+$p         = "/" . basename($newFilename);
+$password  = 'qwertz123';
 
 $shareLinkType = $sharedLinkResource->create($lib, $p, $expire, $shareType, $password);
 

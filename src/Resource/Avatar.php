@@ -2,7 +2,7 @@
 
 namespace Seafile\Client\Resource;
 
-use Seafile\Client\Type\AbstractType;
+use Seafile\Client\Type\Type;
 use \Seafile\Client\Type\Account as AccountType;
 use \Seafile\Client\Type\Group as GroupType;
 use \Seafile\Client\Type\Avatar as AvatarType;
@@ -11,12 +11,12 @@ use \Seafile\Client\Type\Avatar as AvatarType;
  * Handles everything regarding Seafile avatars.
  *
  * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
- * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
+ * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-class Avatar extends AbstractResource
+class Avatar extends Resource
 {
 
     /**
@@ -62,12 +62,15 @@ class Avatar extends AbstractResource
     }
 
     /**
-     * @param AbstractType|GroupType|AccountType $type Either AccountType or GroupType instance
-     * @param int                                $size Avatar size
+     * Get avatar image
+     *
+     * @param Type|GroupType|AccountType $type Either AccountType or GroupType instance
+     * @param int                        $size Avatar size
+     *
      * @return AvatarType
      * @throws \Exception
      */
-    protected function getAvatar(AbstractType $type, $size)
+    protected function getAvatar(Type $type, $size)
     {
         if (!is_int($size) || $size < 1) {
             throw new \Exception('Illegal avatar size');
@@ -75,11 +78,11 @@ class Avatar extends AbstractResource
 
         switch (true) {
             case ($type instanceof GroupType):
-                $id = $type->id;
+                $id       = $type->id;
                 $resource = 'group';
                 break;
             case ($type instanceof AccountType):
-                $id = $type->email;
+                $id       = $type->email;
                 $resource = 'user';
                 break;
             default:

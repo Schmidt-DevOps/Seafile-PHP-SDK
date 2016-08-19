@@ -13,7 +13,7 @@ use \Seafile\Client\Type\Library as LibraryType;
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-class Multi extends AbstractResource
+class Multi extends Resource
 {
     /**
      * Mode of operation: copy
@@ -32,6 +32,7 @@ class Multi extends AbstractResource
      * @param array       $srcPaths         Array with file/folder paths
      * @param LibraryType $dstLibrary       Destination library object
      * @param string      $dstDirectoryPath Destination directory Path
+     *
      * @return bool
      */
     public function move(LibraryType $srcLibrary, array $srcPaths, LibraryType $dstLibrary, $dstDirectoryPath)
@@ -46,7 +47,8 @@ class Multi extends AbstractResource
      * @param array       $srcPaths         Array with file/folder paths (they must be in the same folder)
      * @param LibraryType $dstLibrary       Destination library object
      * @param string      $dstDirectoryPath Destination directory Path
-     * @param int         $operation        'copy' or 'move'
+     * @param int         $operation        self::OPERATION_COPY or self::OPERATION_MOVE
+     *
      * @return bool
      */
     public function copy(
@@ -87,19 +89,19 @@ class Multi extends AbstractResource
             'POST',
             $uri,
             [
-                'headers' => ['Accept' => 'application/json'],
+                'headers'   => ['Accept' => 'application/json'],
                 'multipart' => [
                     [
-                        'name' => 'file_names',
-                        'contents' => $dstFileNames
+                        'name'     => 'file_names',
+                        'contents' => $dstFileNames,
                     ],
                     [
-                        'name' => 'dst_repo',
-                        'contents' => $dstLibrary->id
+                        'name'     => 'dst_repo',
+                        'contents' => $dstLibrary->id,
                     ],
                     [
-                        'name' => 'dst_dir',
-                        'contents' => $dstDirectoryPath
+                        'name'     => 'dst_dir',
+                        'contents' => $dstDirectoryPath,
                     ],
                 ],
             ]
@@ -114,6 +116,7 @@ class Multi extends AbstractResource
      * @param string $folder    Folder path
      * @param array  $paths     Paths of files
      * @param string $fileNames Optional file names
+     *
      * @return string
      */
     protected function preparePaths($folder, array $paths, $fileNames = '')
@@ -136,6 +139,7 @@ class Multi extends AbstractResource
      *
      * @param LibraryType $library Library object
      * @param array       $paths   Array with file and folder paths (they must be in the same folder)
+     *
      * @return bool
      */
     public function delete(LibraryType $library, array $paths)
@@ -168,11 +172,11 @@ class Multi extends AbstractResource
             'POST',
             $uri,
             [
-                'headers' => ['Accept' => 'application/json'],
+                'headers'   => ['Accept' => 'application/json'],
                 'multipart' => [
                     [
-                        'name' => 'file_names',
-                        'contents' => $fileNames
+                        'name'     => 'file_names',
+                        'contents' => $fileNames,
                     ],
                 ],
             ]

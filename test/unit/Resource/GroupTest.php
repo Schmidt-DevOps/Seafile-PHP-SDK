@@ -10,8 +10,8 @@ use Seafile\Client\Tests\TestCase;
  * Group resource test
  *
  * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
- * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
+ * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    Seafile\Client\Resource\Group
@@ -35,10 +35,10 @@ class GroupTest extends TestCase
 
         $groups = $groupResource->getAll();
 
-        $this->assertInternalType('array', $groups);
+        self::assertInternalType('array', $groups);
 
         foreach ($groups as $group) {
-            $this->assertInstanceOf('Seafile\Client\Type\Group', $group);
+            self::assertInstanceOf('Seafile\Client\Type\Group', $group);
         }
     }
 }

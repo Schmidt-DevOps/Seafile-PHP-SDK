@@ -50,17 +50,17 @@ if (!is_readable($cfgFile)) {
 }
 
 $token = json_decode(file_get_contents($tokenFile));
-$cfg = json_decode(file_get_contents($cfgFile));
+$cfg   = json_decode(file_get_contents($cfgFile));
 
 $client = new Client(
     [
         'base_uri' => $cfg->baseUri,
-        'debug' => true,
-        'handler' => $stack,
-        'headers' => [
-            'Content-Type' => 'application/json',
-            'Authorization' => 'Token ' . $token->token
-        ]
+        'debug'    => true,
+        'handler'  => $stack,
+        'headers'  => [
+            'Content-Type'  => 'application/json',
+            'Authorization' => 'Token ' . $token->token,
+        ],
     ]
 );
 
@@ -86,12 +86,12 @@ foreach ($accountTypes as $accountType) {
 $logger->log(Logger::INFO, "#################### Create random account");
 
 $newAccountType = (new AccountType)->fromArray([
-    'email' => uniqid('test-', true) . '@example.com',
-    'password' => md5(uniqid('t.gif', true)),
-    'name' => 'Hugh Jazz',
-    'note' => 'I will not waste chalk',
-    'storage' => 100000000,
-    'institution' => 'Duff Beer Inc.'
+    'email'       => uniqid('test-', true) . '@example.com',
+    'password'    => md5(uniqid('t.gif', true)),
+    'name'        => 'Hugh Jazz',
+    'note'        => 'I will not waste chalk',
+    'storage'     => 100000000,
+    'institution' => 'Duff Beer Inc.',
 ]);
 
 $success = $accountResource->create($newAccountType);
@@ -116,7 +116,7 @@ $logger->log(Logger::INFO, "#################### Update account");
 
 $changedAccountType = (new AccountType)->fromArray([
     'email' => $newAccountType->email,
-    'name' => 'Divine Hugh Jazz'
+    'name'  => 'Divine Hugh Jazz',
 ]);
 
 $result = $accountResource->update($changedAccountType);
@@ -140,7 +140,6 @@ if ($success) {
 }
 
 
-
 //
 //$logger->log(Logger::INFO, "#################### Migrating test@example.com to test1@example.com");
 //
@@ -154,12 +153,6 @@ if ($success) {
 //
 //$result = $accountResource->migrate($fromAccount, $toAccount);
 //
-
-
-
-
-
-
 
 
 print(PHP_EOL . 'Done' . PHP_EOL);

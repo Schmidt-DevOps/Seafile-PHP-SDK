@@ -2,19 +2,19 @@
 
 namespace Seafile\Client\Resource;
 
-use Seafile\Client\Type\AbstractType;
+use Seafile\Client\Type\Type;
 use \Seafile\Client\Type\Account as AccountType;
 
 /**
  * Handles everything regarding Seafile accounts.
  *
  * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
- * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
+ * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-class Account extends AbstractResource
+class Account extends Resource
 {
     /**
      * List accounts
@@ -105,8 +105,8 @@ class Account extends AbstractResource
         $response = $this->client->put(
             $uri,
             [
-                'headers' => ['Accept' => 'application/json; charset=utf-8'],
-                'multipart' => $accountType->toArray(AbstractType::ARRAY_MULTI_PART),
+                'headers'   => ['Accept' => 'application/json; charset=utf-8'],
+                'multipart' => $accountType->toArray(Type::ARRAY_MULTI_PART),
             ]
         );
 
@@ -142,8 +142,8 @@ class Account extends AbstractResource
         $response = $this->client->put(
             $uri,
             [
-                'headers' => ['Accept' => 'application/json; charset=utf-8'],
-                'multipart' => $accountType->toArray(AbstractType::ARRAY_MULTI_PART),
+                'headers'   => ['Accept' => 'application/json; charset=utf-8'],
+                'multipart' => $accountType->toArray(Type::ARRAY_MULTI_PART),
             ]
         );
 

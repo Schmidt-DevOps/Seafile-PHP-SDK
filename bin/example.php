@@ -51,23 +51,23 @@ if (!is_readable($cfgFile)) {
 }
 
 $token = json_decode(file_get_contents($tokenFile));
-$cfg = json_decode(file_get_contents($cfgFile));
+$cfg   = json_decode(file_get_contents($cfgFile));
 
 $client = new Client(
     [
         'base_uri' => $cfg->baseUri,
-        'debug' => true,
-        'handler' => $stack,
-        'headers' => [
-            'Content-Type' => 'application/json',
-            'Authorization' => 'Token ' . $token->token
-        ]
+        'debug'    => true,
+        'handler'  => $stack,
+        'headers'  => [
+            'Content-Type'  => 'application/json',
+            'Authorization' => 'Token ' . $token->token,
+        ],
     ]
 );
 
-$libraryResource = new Library($client);
+$libraryResource   = new Library($client);
 $directoryResource = new Directory($client);
-$fileResource = new File($client);
+$fileResource      = new File($client);
 
 // get all libraries available
 $logger->log(Logger::INFO, "#################### Getting all libraries");
@@ -148,6 +148,6 @@ $logger->log(Logger::INFO, "#################### Recursively create directory st
 $parentDir = '/'; // Create directory within this folder
 $directory = 'a/b/c/d/e/f/g/h/i'; // directory structure
 $recursive = true; // recursive will create parentDir if not already existing
-$success = $directoryResource->create($lib, $directory, $parentDir, $recursive);
+$success   = $directoryResource->create($lib, $directory, $parentDir, $recursive);
 
 print(PHP_EOL . 'Done' . PHP_EOL);

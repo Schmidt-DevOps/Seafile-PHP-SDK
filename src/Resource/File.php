@@ -12,12 +12,12 @@ use \Seafile\Client\Type\Library as LibraryType;
  * Handles everything regarding Seafile files.
  *
  * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
- * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
+ * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-class File extends AbstractResource
+class File extends Resource
 {
     /**
      * Mode of operation: copy
@@ -36,10 +36,12 @@ class File extends AbstractResource
 
     /**
      * Get download URL of a file
+     *
      * @param LibraryType   $library Library instance
      * @param DirectoryItem $item    Item instance
      * @param string        $dir     Dir string
      * @param int           $reuse   Reuse more than once per hour
+     *
      * @return string
      */
     public function getDownloadUrl(LibraryType $library, DirectoryItem $item, $dir = '/', $reuse = 1)
@@ -51,7 +53,7 @@ class File extends AbstractResource
             . '?reuse=' . $reuse
             . '&p=' . $this->urlEncodePath($dir . $item->name);
 
-        $response = $this->client->request('GET', $url);
+        $response    = $this->client->request('GET', $url);
         $downloadUrl = (string)$response->getBody();
 
         return preg_replace("/\"/", '', $downloadUrl);
@@ -61,6 +63,7 @@ class File extends AbstractResource
      * URL-encode path string
      *
      * @param string $path Path string
+     *
      * @return string
      */
     protected function urlEncodePath($path)
@@ -76,6 +79,7 @@ class File extends AbstractResource
      * @param string        $localFilePath Save file to path
      * @param string        $dir           Dir string
      * @param int           $reuse         Reuse more than once per hour
+     *
      * @return Response
      * @throws Exception
      */
@@ -97,12 +101,13 @@ class File extends AbstractResource
      * @param string      $filePath      Save file to path
      * @param string      $localFilePath Local file path
      * @param int         $reuse         Reuse more than once per hour
+     *
      * @return Response
      * @throws Exception
      */
     public function download(LibraryType $library, $filePath, $localFilePath, $reuse = 1)
     {
-        $item = new DirectoryItem();
+        $item       = new DirectoryItem();
         $item->name = basename($filePath);
 
         $dir = str_replace("\\", "/", dirname($filePath)); // compatibility for windows
@@ -112,10 +117,12 @@ class File extends AbstractResource
 
     /**
      * Update file
+     *
      * @param LibraryType $library       Library instance
      * @param string      $localFilePath Local file path
      * @param string      $dir           Library dir
      * @param mixed       $filename      File name, or false to use the name from $localFilePath
+     *
      * @return Response
      * @throws Exception
      */
@@ -126,8 +133,10 @@ class File extends AbstractResource
 
     /**
      * Get upload URL
+     *
      * @param LibraryType $library Library instance
      * @param bool        $newFile Is new file (=upload) or not (=update)
+     *
      * @return String Upload link
      */
     public function getUploadUrl(LibraryType $library, $newFile = true)
@@ -137,7 +146,7 @@ class File extends AbstractResource
             . $library->id
             . '/' . ($newFile ? 'upload' : 'update') . '-link/';
 
-        $response = $this->client->request('GET', $url);
+        $response   = $this->client->request('GET', $url);
         $uploadLink = (string)$response->getBody();
 
         return preg_replace("/\"/", '', $uploadLink);
@@ -145,10 +154,12 @@ class File extends AbstractResource
 
     /**
      * Get multipart params for uploading/updating file
+     *
      * @param string $localFilePath Local file path
      * @param string $dir           Library dir
      * @param bool   $newFile       Is new file (=upload) or not (=update)
      * @param mixed  $newFilename   New file name, or false to use the name from $localFilePath
+     *
      * @return array
      */
     public function getMultiPartParams($localFilePath, $dir, $newFile = true, $newFilename = false)
@@ -161,29 +172,29 @@ class File extends AbstractResource
 
         $multiPartParams = [
             [
-                'headers' => ['Content-Type' => 'application/octet-stream'],
-                'name' => 'file',
-                'contents' => fopen($localFilePath, 'r')
+                'headers'  => ['Content-Type' => 'application/octet-stream'],
+                'name'     => 'file',
+                'contents' => fopen($localFilePath, 'r'),
             ],
             [
-                'name' => 'name',
-                'contents' => $fileBaseName
+                'name'     => 'name',
+                'contents' => $fileBaseName,
             ],
             [
-                'name' => 'filename',
-                'contents' => $fileBaseName
-            ]
+                'name'     => 'filename',
+                'contents' => $fileBaseName,
+            ],
         ];
 
         if ($newFile) {
             $multiPartParams[] = [
-                'name' => 'parent_dir',
-                'contents' => $dir
+                'name'     => 'parent_dir',
+                'contents' => $dir,
             ];
         } else {
             $multiPartParams[] = [
-                'name' => 'target_file',
-                'contents' => rtrim($dir, "/") . "/" . $fileBaseName
+                'name'     => 'target_file',
+                'contents' => rtrim($dir, "/") . "/" . $fileBaseName,
             ];
         }
 
@@ -192,11 +203,13 @@ class File extends AbstractResource
 
     /**
      * Upload file
+     *
      * @param LibraryType $library       Library instance
      * @param string      $localFilePath Local file path
      * @param string      $dir           Library dir
      * @param mixed       $newFilename   New file name, or false to use the name from $localFilePath
      * @param bool        $newFile       Is new file (=upload) or not (=update)
+     *
      * @return Response
      * @throws Exception
      */
@@ -210,16 +223,18 @@ class File extends AbstractResource
             'POST',
             $this->getUploadUrl($library, $newFile),
             [
-                'headers' => ['Accept' => '*/*'],
-                'multipart' => $this->getMultiPartParams($localFilePath, $dir, $newFile, $newFilename)
+                'headers'   => ['Accept' => '*/*'],
+                'multipart' => $this->getMultiPartParams($localFilePath, $dir, $newFile, $newFilename),
             ]
         );
     }
 
     /**
      * Get file detail
+     *
      * @param LibraryType $library        Library instance
      * @param string      $remoteFilePath Remote file path
+     *
      * @return DirectoryItem
      */
     public function getFileDetail(LibraryType $library, $remoteFilePath)
@@ -242,6 +257,7 @@ class File extends AbstractResource
      *
      * @param LibraryType $library  Library object
      * @param string      $filePath File path
+     *
      * @return bool
      */
     public function remove(LibraryType $library, $filePath)
@@ -275,6 +291,7 @@ class File extends AbstractResource
      * @param LibraryType   $library     Library object
      * @param DirectoryItem $dirItem     Directory item to rename
      * @param string        $newFilename New file name
+     *
      * @return bool
      */
     public function rename(LibraryType $library, DirectoryItem $dirItem, $newFilename)
@@ -300,15 +317,15 @@ class File extends AbstractResource
             'POST',
             $uri,
             [
-                'headers' => ['Accept' => 'application/json'],
+                'headers'   => ['Accept' => 'application/json'],
                 'multipart' => [
                     [
-                        'name' => 'operation',
-                        'contents' => 'rename'
+                        'name'     => 'operation',
+                        'contents' => 'rename',
                     ],
                     [
-                        'name' => 'newname',
-                        'contents' => $newFilename
+                        'name'     => 'newname',
+                        'contents' => $newFilename,
                     ],
                 ],
             ]
@@ -331,6 +348,7 @@ class File extends AbstractResource
      * @param LibraryType $dstLibrary       Destination library object
      * @param string      $dstDirectoryPath Destination directory path
      * @param int         $operation        Operation mode
+     *
      * @return bool
      */
     public function copy(
@@ -346,11 +364,11 @@ class File extends AbstractResource
         }
 
         $operationMode = 'copy';
-        $returnCode = 200;
+        $returnCode    = 200;
 
         if ($operation === self::OPERATION_MOVE) {
             $operationMode = 'move';
-            $returnCode = 301;
+            $returnCode    = 301;
         }
 
         $uri = sprintf(
@@ -364,19 +382,19 @@ class File extends AbstractResource
             'POST',
             $uri,
             [
-                'headers' => ['Accept' => 'application/json'],
+                'headers'   => ['Accept' => 'application/json'],
                 'multipart' => [
                     [
-                        'name' => 'operation',
-                        'contents' => $operationMode
+                        'name'     => 'operation',
+                        'contents' => $operationMode,
                     ],
                     [
-                        'name' => 'dst_repo',
-                        'contents' => $dstLibrary->id
+                        'name'     => 'dst_repo',
+                        'contents' => $dstLibrary->id,
                     ],
                     [
-                        'name' => 'dst_dir',
-                        'contents' => $dstDirectoryPath
+                        'name'     => 'dst_dir',
+                        'contents' => $dstDirectoryPath,
                     ],
                 ],
             ]
@@ -392,6 +410,7 @@ class File extends AbstractResource
      * @param string      $srcFilePath      Source file path
      * @param LibraryType $dstLibrary       Destination library object
      * @param string      $dstDirectoryPath Destination directory path
+     *
      * @return bool
      */
     public function move(LibraryType $srcLibrary, $srcFilePath, LibraryType $dstLibrary, $dstDirectoryPath)
@@ -451,6 +470,7 @@ class File extends AbstractResource
      *
      * @param LibraryType   $library Library instance
      * @param DirectoryItem $item    Item instance
+     *
      * @return FileHistoryItem[]
      */
     public function getHistory(LibraryType $library, DirectoryItem $item)
@@ -500,11 +520,11 @@ class File extends AbstractResource
             'POST',
             $uri,
             [
-                'headers' => ['Accept' => 'application/json'],
+                'headers'   => ['Accept' => 'application/json'],
                 'multipart' => [
                     [
-                        'name' => 'operation',
-                        'contents' => 'create'
+                        'name'     => 'operation',
+                        'contents' => 'create',
                     ],
                 ],
             ]

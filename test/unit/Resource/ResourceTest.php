@@ -7,16 +7,16 @@ use Seafile\Client\Resource\Directory;
 use Seafile\Client\Tests\TestCase;
 
 /**
- * AbstractResource test
+ * Resource test
  *
  * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
- * @copyright 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene@reneschmidt.de>
+ * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
+ * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
- * @covers    Seafile\Client\Resource\AbstractResource
+ * @covers    Seafile\Client\Resource\Resource
  */
-class AbstractResourceTest extends TestCase
+class ResourceTest extends TestCase
 {
     /**
      * test clipUri()
@@ -30,14 +30,14 @@ class AbstractResourceTest extends TestCase
         ));
 
         $uris = [
-            '/' => '',
-            '' => '',
-            'https://example.com' => 'https://example.com',
+            '/'                    => '',
+            ''                     => '',
+            'https://example.com'  => 'https://example.com',
             'https://example.com/' => 'https://example.com',
         ];
 
         foreach ($uris as $uri => $clippedUri) {
-            $this->assertSame($clippedUri, $directoryResource->clipUri($uri));
+            self::assertSame($clippedUri, $directoryResource->clipUri($uri));
         }
     }
 }
