@@ -398,6 +398,8 @@ Tested with:
 
 - Seafile Server 5.1.3 for generic Linux/Debian Jessie
 - Seafile Server 5.1.3 for generic Linux/Debian Wheezy
+- Seafile Server 5.1.4 for generic Linux/Ubuntu Xenial
+- Seafile Server 6.0.3 for generic Linux/Ubuntu Xenial
 
 ## Contributing
 
