@@ -33,7 +33,7 @@ Please note that this SDK currently is under active development and that things 
 
 If you are looking for stability please refer to stable tags.
 
-The next stable version is planned for January 2017.
+The next stable version is planned for January 2018.
 
 ## Obtain API token
 

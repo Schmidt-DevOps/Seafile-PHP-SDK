@@ -15,4 +15,4 @@ if [ -f $file ]; then
 fi
 
 ./vendor/bin/phpcpd ./src ./test --exclude=./test/ui
-./vendor/bin/phpunit -c ./phpunit.xml.dist test
+./vendor/bin/phpunit test
