@@ -6,7 +6,7 @@ This is a PHP package for accessing [Seafile Web API](https://www.seafile.com/).
 
 No marketing skills whatsoever, but low rates, nearly 20 years of experience, and german work attitude.
 
-Get in touch now: https://www.reneschmidt.de/DevOps/#contact
+Get in touch now: https://sdo.sh/DevOps/#contact
 
 [![Build Status](https://api.travis-ci.org/rene-s/Seafile-PHP-SDK.svg)](https://travis-ci.org/rene-s/Seafile-PHP-SDK)
 [![Test Coverage](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/badges/coverage.svg)](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/coverage)
@@ -416,8 +416,8 @@ Please note that this package still is in its infancy. Only a small part of the 
 - https://seafile.com
 - https://www.seafile-server.org/ (Seafile server hosting in Germany)
 - http://manual.seafile.com/develop/web_api.html#seafile-web-api-v2
-- https://reneschmidt.de
+- https://sdo.sh
 
 ## License
 
-[MIT](https://raw.githubusercontent.com/rene-s/seafile-php-sdk/master/LICENSE) &copy; 2015 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG
+[MIT](https://raw.githubusercontent.com/rene-s/seafile-php-sdk/master/LICENSE) &copy; 2015-2017 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG

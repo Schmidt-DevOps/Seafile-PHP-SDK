@@ -3,6 +3,14 @@
   "description": "This is a PHP package for accessing Seafile Web API",
   "homepage": "https://github.com/rene-s/Seafile-PHP-SDK",
   "license": "MIT",
+  "authors": [
+    {
+      "name": "René Schmidt",
+      "email": "rene+_sfphpsdk@sdo.sh",
+      "homepage": "https://sdo.sh",
+      "role": "Developer"
+    }
+  ],
   "keywords": [
     "seafile",
     "php",
