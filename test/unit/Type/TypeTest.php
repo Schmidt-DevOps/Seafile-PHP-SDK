@@ -16,7 +16,7 @@ use Seafile\Client\Type\Group as GroupType;
  * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
- * @covers    Seafile\Client\Type\Type
+ * @covers    \Seafile\Client\Type\Type
  */
 class TypeTest extends TestCase
 {

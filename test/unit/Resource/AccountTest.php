@@ -16,7 +16,7 @@ use Seafile\Client\Tests\TestCase;
  * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
- * @covers    Seafile\Client\Resource\Account
+ * @covers    \Seafile\Client\Resource\Account
  */
 class AccountTest extends TestCase
 {
@@ -127,11 +127,11 @@ class AccountTest extends TestCase
             'email'    => 'my_email@example.com',
         ]);
 
-        $mockedClient = $this->getMock('\Seafile\Client\Http\Client', ['put', 'getConfig']);
+        $mockedClient = $this->createPartialMock('\Seafile\Client\Http\Client', ['put', 'getConfig']);
 
         $mockedClient->expects(self::any())
             ->method('put')
-            ->with($baseUri . 'accounts/' . $accountType->email . '/')// trailing slash is mandatory!
+            ->with($baseUri . 'accounts/' . $accountType->{'email'} . '/')// trailing slash is mandatory!
             ->willReturn(new Response($data['responseCode']));
 
         $mockedClient->expects(self::any())
@@ -187,7 +187,7 @@ class AccountTest extends TestCase
         $accountType        = new AccountType();
         $accountType->email = $data['email'];
 
-        $mockedClient = $this->getMock('\Seafile\Client\Http\Client', ['delete', 'getConfig']);
+        $mockedClient = $this->createPartialMock('\Seafile\Client\Http\Client', ['delete', 'getConfig']);
 
         $mockedClient->expects(self::any())
             ->method('delete')

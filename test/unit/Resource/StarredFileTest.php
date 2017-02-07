@@ -17,7 +17,7 @@ use Seafile\Client\Type\Library as LibraryType;
  * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
- * @covers    Seafile\Client\Resource\StarredFile
+ * @covers    \Seafile\Client\Resource\StarredFile
  */
 class StarredFileTest extends TestCase
 {
@@ -58,7 +58,8 @@ class StarredFileTest extends TestCase
     {
         $starredFileResource = new StarredFile($this->getMockedClient(new Response()));
 
-        $this->setExpectedException('Exception', 'Cannot star other items than files.');
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('Cannot star other items than files.');
 
         $starredFileResource->star(new LibraryType(), new DirectoryItem());
     }
@@ -175,7 +176,8 @@ class StarredFileTest extends TestCase
         /** @var Client $mockedClient */
         $starredFileResource = new StarredFile($mockedClient);
 
-        $this->setExpectedException('Exception', 'Could not star file');
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('Could not star file');
 
         $starredFileResource->star($lib, $dirItem);
     }
@@ -210,7 +212,8 @@ class StarredFileTest extends TestCase
         /** @var Client $mockedClient */
         $starredFileResource = new StarredFile($mockedClient);
 
-        $this->setExpectedException('Exception', 'Could not star file');
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('Could not star file');
 
         $starredFileResource->star($lib, $dirItem);
     }

@@ -33,7 +33,6 @@
     </filter>
     <logging>
         <log type="coverage-clover" target="/tmp/seafile-php-sdk-clover.xml"/>
-        <log type="tap" target="/tmp/phpunit-result/seafile-php-sdk-current-tap.txt"/>
         <log type="coverage-html" target="/tmp/phpunit-result/seafile-php-sdk-current" showUncoveredFiles="true"/>
         <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
     </logging>

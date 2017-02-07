@@ -17,7 +17,7 @@ use Seafile\Client\Type\SharedLink as SharedLinkType;
  * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
- * @covers    Seafile\Client\Resource\SharedLink
+ * @covers    \Seafile\Client\Resource\SharedLink
  */
 class SharedLinkTest extends TestCase
 {

@@ -19,7 +19,7 @@ use Seafile\Client\Type\Library;
  * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
- * @covers    Seafile\Client\Resource\File
+ * @covers    \Seafile\Client\Resource\File
  */
 class FileTest extends TestCase
 {
@@ -107,7 +107,7 @@ class FileTest extends TestCase
         $fileResource = new File($this->getMockedClient(new Response()));
 
         try {
-            $this->setExpectedException('Exception');
+            $this->expectException('Exception');
             $fileResource->downloadFromDir(new Library(), new DirectoryItem(), $newFilename, '/');
             $this->fail('Exception expected');
         } finally {
@@ -126,7 +126,7 @@ class FileTest extends TestCase
         $filename     = uniqid();
         $fileResource = new File($this->getMockedClient(new Response()));
 
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         $fileResource->upload(new Library(), $filename);
         $this->fail('Exception expected');
     }
@@ -525,7 +525,7 @@ class FileTest extends TestCase
             ->with(self::equalTo('POST'))
             ->will(self::returnCallback(
                 function ($method, $uri, $params) use ($getAllResponse, $renameResponse, $expectUri, $expectParams) {
-                    if ($expectUri === $uri && $expectParams === $params) {
+                    if ($expectUri === $uri && $expectParams === $params && $method === 'POST') {
                         return $renameResponse;
                     }
 

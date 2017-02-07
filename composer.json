@@ -21,20 +21,20 @@
     "encrypted"
   ],
   "require": {
-    "php": ">=5.5",
+    "php": ">=5.6",
     "guzzlehttp/guzzle": "~6.0",
-    "nabil1337/case-helper": "0.1.*"
+    "nabil1337/case-helper": "~0.1"
   },
   "require-dev": {
     "codeclimate/php-test-reporter": "dev-master",
     "monolog/monolog": "^1.17",
-    "phpunit/php-invoker": "1.1.*",
-    "phpunit/phpunit": "4.5.*",
-    "phpunit/phpunit-mock-objects": "2.3.*",
-    "phpunit/php-token-stream": "1.4.*",
-    "phpunit/php-code-coverage": "2.2.*",
-    "sebastian/phpcpd": "2.0.*",
-    "squizlabs/php_codesniffer": "2.3.*"
+    "phpunit/php-invoker": "~1.1",
+    "phpunit/phpunit": "~5.0",
+    "phpunit/phpunit-mock-objects": "~3.2",
+    "phpunit/php-token-stream": "~1.4",
+    "phpunit/php-code-coverage": "~4.0",
+    "sebastian/phpcpd": "~2.0",
+    "squizlabs/php_codesniffer": "~2.3"
   },
   "type": "library",
   "autoload": {

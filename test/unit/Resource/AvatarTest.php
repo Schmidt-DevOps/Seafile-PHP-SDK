@@ -17,7 +17,7 @@ use Seafile\Client\Tests\TestCase;
  * @copyright 2015-2016 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@reneschmidt.de>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
- * @covers    Seafile\Client\Resource\Avatar
+ * @covers    \Seafile\Client\Resource\Avatar
  */
 class AvatarTest extends TestCase
 {
@@ -28,10 +28,10 @@ class AvatarTest extends TestCase
      */
     public function testGetUserAvatarByEmail()
     {
-        $baseUri  = 'https://example.com/';
+        $baseUri = 'https://example.com/';
         $resource = 'user';
-        $email    = 'someone@example.com';
-        $size     = 80;
+        $email = 'someone@example.com';
+        $size = 80;
 
         $this->doGetAvatar('getUserAvatarByEmail', $baseUri, $resource, $email, $size);
     }
@@ -43,12 +43,13 @@ class AvatarTest extends TestCase
      */
     public function testGetAvatarIllegalSize()
     {
-        $baseUri  = 'https://example.com/';
+        $baseUri = 'https://example.com/';
         $resource = 'user';
-        $email    = 'someone@example.com';
-        $size     = -1;
+        $email = 'someone@example.com';
+        $size = -1;
 
-        $this->setExpectedException('Exception', 'Illegal avatar size');
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('Illegal avatar size');
         $this->doGetAvatar('getUserAvatarByEmail', $baseUri, $resource, $email, $size);
     }
 
@@ -59,10 +60,10 @@ class AvatarTest extends TestCase
      */
     public function testGetGroupAvatarByEmail()
     {
-        $baseUri  = 'https://example.com/';
+        $baseUri = 'https://example.com/';
         $resource = 'group';
-        $id       = '1';
-        $size     = 80;
+        $id = '1';
+        $size = 80;
 
         $this->doGetAvatar('getGroupAvatar', $baseUri, $resource, (new GroupType)->fromArray(['id' => $id]), $size);
     }
@@ -80,7 +81,7 @@ class AvatarTest extends TestCase
      */
     protected function doGetAvatar($method, $baseUri, $resource, $entity, $size)
     {
-        $mockedClient = $this->getMock('\Seafile\Client\Http\Client', ['get', 'getConfig']);
+        $mockedClient = $this->createPartialMock('\Seafile\Client\Http\Client', ['get', 'getConfig']);
 
         $id = ($entity instanceof GroupType ? $entity->id : $entity);
 
@@ -117,8 +118,8 @@ class AvatarTest extends TestCase
      */
     public function testGetAvatarIllegalType()
     {
-        $baseUri      = 'https://example.com/';
-        $mockedClient = $this->getMock('\Seafile\Client\Http\Client');
+        $baseUri = 'https://example.com/';
+        $mockedClient = $this->createMock('\Seafile\Client\Http\Client');
 
         $libraryType = new LibraryType();
 
@@ -130,7 +131,8 @@ class AvatarTest extends TestCase
         /** @var Client $mockedClient */
         $avatarResource = new AvatarResource($mockedClient);
 
-        $this->setExpectedException('Exception', 'Unsupported type to retrieve avatar information for.');
+        $this->expectException('Exception');
+        $this->expectExceptionMessage('Unsupported type to retrieve avatar information for.');
 
         $this->invokeMethod($avatarResource, 'getAvatar', [$libraryType, 80]);
     }

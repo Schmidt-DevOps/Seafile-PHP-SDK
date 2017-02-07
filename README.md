@@ -373,7 +373,7 @@ $client = new Client(
 
 ## Dependencies
 
-- PHP >=5.5
+- PHP >=7.0 (if you require a backport to an older PHP version [contact me](rene+_gth@sdo.sh) for a quote!)
 - Guzzle 6
 
 ## Seafile Web API V2 Support Matrix
@@ -396,10 +396,12 @@ $client = new Client(
 
 Tested with:
 
-- Seafile Server 5.1.3 for generic Linux/Debian Jessie
-- Seafile Server 5.1.3 for generic Linux/Debian Wheezy
-- Seafile Server 5.1.4 for generic Linux/Ubuntu Xenial
-- Seafile Server 6.0.3 for generic Linux/Ubuntu Xenial
+- ~~Seafile Server 5.1.3 for generic Linux/Debian Jessie~~
+- ~~Seafile Server 5.1.3 for generic Linux/Debian Wheezy~~
+- ~~Seafile Server 5.1.4 for generic Linux/Ubuntu Xenial~~
+- ~~Seafile Server 6.0.3 for generic Linux/Ubuntu Xenial~~
+- Seafile Server 6.0.7 for generic Linux/Ubuntu Xenial
+- If you require a backport for an older Seafile server version [contact me](rene+_gth@sdo.sh) for a quote!
 
 ## Contributing
 
