@@ -373,7 +373,8 @@ $client = new Client(
 
 ## Dependencies
 
-- PHP >=7.0 64 bits (if you require a backport to an older PHP version [contact me](rene+_gth@sdo.sh) for a quote!)
+- PHP >=5.6.29 64 bits (if you require a backport to an older PHP version [contact me](rene+_gth@sdo.sh) for a quote!)
+- PHP >=7.0 64 bits
 - Guzzle 6
 
 ## Seafile Web API V2 Support Matrix
