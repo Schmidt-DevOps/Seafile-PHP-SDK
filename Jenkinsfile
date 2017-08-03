@@ -1,25 +1,20 @@
-node {
-    def app
+pipeline {
+  agent any
 
-    stage('Clone repository') {
+  stages {
+    stage('Checkout') {
+      steps {
         checkout scm
+        sh 'rm -rf ./build/{logs,pdepend}'
+        sh 'mkdir -p ./build/{logs,pdepend}'
+        sh './bin/prepare_tests.sh'
+      }
     }
 
-    stage('Build image') {
-        app = docker.build("composer")
+    stage('Unit tests') {
+      steps {
+        sh './bin/run_tests.sh'
+      }
     }
-
-    stage('Prepare tests') {
-        app.inside {
-            sh 'rm -rf ./build/{logs,pdepend}'
-            sh 'mkdir -p ./build/{logs,pdepend}'
-            sh './bin/prepare_tests.sh'
-        }
-    }
-
-    stage('Run tests') {
-        app.inside {
-            sh './bin/run_tests.sh'
-        }
-    }
+  }
 }
