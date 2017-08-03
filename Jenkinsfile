@@ -1,20 +1,21 @@
-pipeline {
-  agent any
-
-  stages {
-    stage('Checkout') {
-      steps {
+node {
+    stage("Unit testing") {
         checkout scm
-        sh 'rm -rf ./build/{logs,pdepend}'
-        sh 'mkdir -p ./build/{logs,pdepend}'
-        sh './bin/prepare_tests.sh'
-      }
+
+        docker.image('composer').inside {
+            stage("Prepare") {
+                sh 'rm -rf ./build/{logs,pdepend} 2> /dev/null'
+                sh 'mkdir -p ./build/{logs,pdepend}'
+                sh 'chmod +x ./bin/*.sh'
+                sh 'COMPOSER_HOME=/tmp/.composer ./bin/prepare_tests.sh'
+            }
+
+            stage("Run tests") {
+                sh './bin/run_tests.sh'
+            }
+        }
     }
 
-    stage('Unit tests') {
-      steps {
-        sh './bin/run_tests.sh'
-      }
-    }
-  }
+    // Clean up workspace
+    step([$class: 'WsCleanup'])
 }
