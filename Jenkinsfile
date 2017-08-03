@@ -1,25 +1,20 @@
 node {
-    def app
-
-    stage('Clone repository') {
+    stage("Unit testing") {
         checkout scm
-    }
 
-    stage('Build image') {
-        app = docker.build("composer")
-    }
+        docker.image('composer').inside {
+            stage("Prepare") {
+                sh 'rm -rf ./build/{logs,pdepend} 2> /dev/null'
+                sh 'mkdir -p ./build/{logs,pdepend}'
+                sh './bin/prepare_tests.sh'
+            }
 
-    stage('Prepare tests') {
-        app.inside {
-            sh 'rm -rf ./build/{logs,pdepend}'
-            sh 'mkdir -p ./build/{logs,pdepend}'
-            sh './bin/prepare_tests.sh'
+            stage("Run tests") {
+                sh './bin/run_tests.sh'
+            }
         }
     }
 
-    stage('Run tests') {
-        app.inside {
-            sh './bin/run_tests.sh'
-        }
-    }
+    // Clean up workspace
+    step([$class: 'WsCleanup'])
 }
