@@ -109,10 +109,11 @@ class Library extends Resource
      * @param string $name        Library name
      * @param string $description Library description
      * @param string $password    false means no encryption, any other string is used as password
+     * @param object $returnResp  the full response, including repo_id and so on
      *
      * @return bool
      */
-    public function create($name, $description = "new repo", $password = '')
+    public function create($name, $description = "new repo", $password = '', &$returnResp = null)
     {
         // only create a library which is not empty to prevent wrong implementation
         if (empty($name)) {
@@ -155,6 +156,8 @@ class Library extends Resource
                 'multipart' => $multipartData,
             ]
         );
+        
+        $returnResp = json_decode((string)$response->getBody());
 
         return $response->getStatusCode() === 200;
     }
