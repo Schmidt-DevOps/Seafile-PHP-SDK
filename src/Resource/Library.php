@@ -189,4 +189,28 @@ class Library extends Resource
 
         return $response->getStatusCode() === 200;
     }
+
+    /**
+     * Share a library
+     *
+     * @param string $libraryId Library ID
+     * @param array $users Sharing users
+     * @param string $permission the permission of the shared library
+     *
+     * @return bool
+     */
+    public function sharePersonal($libraryId, $users, $permission='rw')
+    {
+        $uri = sprintf(
+            '%s/shared-repos/%s/?share_type=personal&users=%s&permission=%s',
+            $this->clipUri($this->client->getConfig('base_uri')),
+            $libraryId,
+            join(',', $users),
+            $permission
+        );
+
+        $response = $this->client->put($uri);
+
+        return $response->getStatusCode() === 200;
+    }
 }
