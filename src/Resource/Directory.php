@@ -24,7 +24,7 @@ class Directory extends Resource
      *
      * @return DirectoryItem[]
      */
-    public function getAll(LibraryType $library, $dir = '/')
+    public function getAll(LibraryType $library, string $dir = '/')
     {
         $clippedBaseUri = $this->clipUri($this->client->getConfig('base_uri'));
 
@@ -63,7 +63,7 @@ class Directory extends Resource
      *
      * @return bool
      */
-    public function exists(LibraryType $library, $dirItemName, $parentDir = '/')
+    public function exists(LibraryType $library, string $dirItemName, string $parentDir = '/')
     {
         $directoryItems = $this->getAll($library, $parentDir);
 
@@ -86,16 +86,16 @@ class Directory extends Resource
      *
      * @return bool Success
      */
-    public function create(LibraryType $library, $dirName, $parentDir = '/', $recursive = false)
+    public function create(LibraryType $library, string $dirName, string $parentDir = '/', bool $recursive = false)
     {
         if ($recursive) {
             $response = false;
-            $parts    = explode('/', trim($dirName, '/'));
-            $tmp      = [];
+            $parts = explode('/', trim($dirName, '/'));
+            $tmp = [];
 
             foreach ($parts as $part) {
                 $parentPath = '/' . implode('/', $tmp);
-                $tmp[]      = $part;
+                $tmp[] = $part;
 
                 if ($this->exists($library, $part, $parentPath) === false) {
                     $response = $this->create($library, $part, $parentPath, false);
@@ -148,7 +148,7 @@ class Directory extends Resource
      *
      * @return bool
      */
-    public function remove(LibraryType $library, $directoryPath)
+    public function remove(LibraryType $library, string $directoryPath)
     {
         // don't allow empty paths
         if (empty($directoryPath)) {
@@ -182,7 +182,7 @@ class Directory extends Resource
      *
      * @return bool
      */
-    public function rename(LibraryType $library, $directoryPath, $newDirectoryName)
+    public function rename(LibraryType $library, string $directoryPath, string $newDirectoryName)
     {
         // don't allow empty paths
         if (empty($directoryPath) || empty($newDirectoryName)) {

@@ -26,10 +26,10 @@ class TestCase extends \PHPUnit_Framework_TestCase
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = [])
+    public function invokeMethod(&$object, string $methodName, array $parameters = [])
     {
         $reflection = new \ReflectionClass(get_class($object));
-        $method     = $reflection->getMethod($methodName);
+        $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 
         return $method->invokeArgs($object, $parameters);

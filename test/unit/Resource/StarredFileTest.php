@@ -72,10 +72,10 @@ class StarredFileTest extends TestCase
      */
     public function testStar()
     {
-        $lib     = new LibraryType();
+        $lib = new LibraryType();
         $lib->id = 123;
 
-        $dirItem       = new DirectoryItem();
+        $dirItem = new DirectoryItem();
         $dirItem->type = 'file';
         $dirItem->path = '/some/path';
 
@@ -144,10 +144,10 @@ class StarredFileTest extends TestCase
      */
     public function testStarErrorStatusCode()
     {
-        $lib     = new LibraryType();
+        $lib = new LibraryType();
         $lib->id = 123;
 
-        $dirItem       = new DirectoryItem();
+        $dirItem = new DirectoryItem();
         $dirItem->type = 'file';
         $dirItem->path = '/some/path';
 
@@ -190,10 +190,10 @@ class StarredFileTest extends TestCase
      */
     public function testStarErrorMissingLocation()
     {
-        $lib     = new LibraryType();
+        $lib = new LibraryType();
         $lib->id = 123;
 
-        $dirItem       = new DirectoryItem();
+        $dirItem = new DirectoryItem();
         $dirItem->type = 'file';
         $dirItem->path = '/some/path';
 
@@ -223,7 +223,7 @@ class StarredFileTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderUnstar()
+    public static function dataProviderUnstar(): array
     {
         return [
             [
@@ -252,10 +252,10 @@ class StarredFileTest extends TestCase
      */
     public function testUnstar(array $data)
     {
-        $lib     = new LibraryType();
+        $lib = new LibraryType();
         $lib->id = 123;
 
-        $dirItem       = new DirectoryItem();
+        $dirItem = new DirectoryItem();
         $dirItem->type = 'file';
         $dirItem->path = '/some/path';
 

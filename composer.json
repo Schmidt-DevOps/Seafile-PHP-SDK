@@ -21,7 +21,7 @@
     "encrypted"
   ],
   "require": {
-    "php": ">=5.6",
+    "php": ">=7.0",
     "guzzlehttp/guzzle": "~6.0",
     "nabil1337/case-helper": "~0.1"
   },

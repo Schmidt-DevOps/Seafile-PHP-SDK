@@ -15,13 +15,12 @@ use \Seafile\Client\Type\Group as GroupType;
  */
 class Group extends Resource
 {
-
     /**
      * List groups
      *
      * @return GroupType[]
      */
-    public function getAll()
+    public function getAll(): array
     {
         $response = $this->client->request('GET', $this->client->getConfig('base_uri') . '/groups/');
 

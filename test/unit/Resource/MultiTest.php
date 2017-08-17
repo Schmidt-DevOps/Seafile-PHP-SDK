@@ -65,7 +65,7 @@ class MultiTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderDelete()
+    public static function dataProviderDelete(): array
     {
         return [
             [
@@ -116,14 +116,14 @@ class MultiTest extends TestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        $fileNames   = $data['fileNames'];
+        $fileNames = $data['fileNames'];
         $deletePaths = $data['deletePaths'];
 
         $deleteResponse = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
-        $mockedClient   = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri    = 'http://example.com/repos/some-crazy-id/fileops/delete/?p=/some_dir';
+        $expectUri = 'http://example.com/repos/some-crazy-id/fileops/delete/?p=/some_dir';
         $expectParams = [
             'headers'   => ['Accept' => "application/json"],
             'multipart' => [
@@ -161,7 +161,7 @@ class MultiTest extends TestCase
          */
         $fileResource = new Multi($mockedClient);
 
-        $lib     = new Library();
+        $lib = new Library();
         $lib->id = 'some-crazy-id';
 
         self::assertSame($data['assert'], $fileResource->delete($lib, $deletePaths));
@@ -172,7 +172,7 @@ class MultiTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderCopyMove()
+    public static function dataProviderCopyMove(): array
     {
         return [
             [
@@ -255,21 +255,21 @@ class MultiTest extends TestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        $srcLib     = new Library();
+        $srcLib = new Library();
         $srcLib->id = 'some-crazy-id';
 
-        $dstLib     = new Library();
+        $dstLib = new Library();
         $dstLib->id = 'some-other-crazy-id';
 
-        $destDir   = '/target/dir';
+        $destDir = '/target/dir';
         $fileNames = $data['fileNames'];
         $filePaths = $data['filePaths'];
 
         $deleteResponse = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
-        $mockedClient   = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri    = 'http://example.com/repos/some-crazy-id/fileops/' . $data ['operation'] . '/?p=/some_dir';
+        $expectUri = 'http://example.com/repos/some-crazy-id/fileops/' . $data ['operation'] . '/?p=/some_dir';
         $expectParams = [
             'headers'   => ['Accept' => "application/json"],
             'multipart' => [

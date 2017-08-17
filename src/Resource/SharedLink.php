@@ -23,7 +23,7 @@ class SharedLink extends Resource
      *
      * @return SharedLinkType[]
      */
-    public function getAll()
+    public function getAll(): array
     {
         $response = $this->client->request('GET', $this->client->getConfig('base_uri') . '/shared-links/');
 
@@ -45,7 +45,7 @@ class SharedLink extends Resource
      *
      * @return bool
      */
-    public function remove(SharedLinkType $sharedLinkType)
+    public function remove(SharedLinkType $sharedLinkType): bool
     {
         $uri = sprintf(
             '%s/shared-links/?t=%s',
@@ -78,10 +78,10 @@ class SharedLink extends Resource
      */
     public function create(
         LibraryType $library,
-        $path,
-        $expire = null,
-        $shareType = SharedLinkType::SHARE_TYPE_DOWNLOAD,
-        $password = null
+        string $path,
+        int $expire = null,
+        string $shareType = SharedLinkType::SHARE_TYPE_DOWNLOAD,
+        string $password = null
     ) {
         $uri = sprintf(
             '%s/repos/%s/file/shared-link/',

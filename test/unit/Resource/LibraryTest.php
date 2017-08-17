@@ -140,7 +140,7 @@ class LibraryTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderExists()
+    public static function dataProviderExists(): array
     {
         return [
             [['invalid_value', 'invalid_attribute', false]],
@@ -177,7 +177,7 @@ class LibraryTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderCreateInvalid()
+    public static function dataProviderCreateInvalid(): array
     {
         return [
             [['', false]],
@@ -230,7 +230,7 @@ class LibraryTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderCreate()
+    public static function dataProviderCreate(): array
     {
         return [
             // [[expect response code, expected result, password]]
@@ -257,7 +257,7 @@ class LibraryTest extends TestCase
             file_get_contents(__DIR__ . '/../../assets/LibraryTest_getAll.json')
         );
 
-        $name        = "a";
+        $name = "a";
         $description = "b";
 
         $createResponse = new Response($data[0], ['Content-Type' => 'text/plain']);
@@ -265,7 +265,7 @@ class LibraryTest extends TestCase
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri    = 'http://example.com/repos/';
+        $expectUri = 'http://example.com/repos/';
         $expectParams = [
             'headers'   => ['Accept' => "application/json"],
             'multipart' => [
@@ -313,7 +313,7 @@ class LibraryTest extends TestCase
          */
         $libraryResource = new Library($mockedClient);
 
-        $lib     = new \Seafile\Client\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
         self::assertSame($data[1], $libraryResource->create($name, $description, $data[2]));
@@ -337,7 +337,7 @@ class LibraryTest extends TestCase
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri    = 'http://example.com/repos/some-crazy-id/';
+        $expectUri = 'http://example.com/repos/some-crazy-id/';
         $expectParams = [
             'headers' => ['Accept' => "application/json"],
         ];
@@ -369,7 +369,7 @@ class LibraryTest extends TestCase
          */
         $libraryResource = new Library($mockedClient);
 
-        $lib     = new \Seafile\Client\Type\Library();
+        $lib = new \Seafile\Client\Type\Library();
         $lib->id = 'some-crazy-id';
 
         self::assertTrue($libraryResource->remove($lib->id));

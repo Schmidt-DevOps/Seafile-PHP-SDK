@@ -44,7 +44,7 @@ class File extends Resource
      *
      * @return string
      */
-    public function getDownloadUrl(LibraryType $library, DirectoryItem $item, $dir = '/', $reuse = 1)
+    public function getDownloadUrl(LibraryType $library, DirectoryItem $item, string $dir = '/', int $reuse = 1)
     {
         $url = $this->client->getConfig('base_uri')
             . '/repos/'
@@ -53,7 +53,7 @@ class File extends Resource
             . '?reuse=' . $reuse
             . '&p=' . $this->urlEncodePath($dir . $item->name);
 
-        $response    = $this->client->request('GET', $url);
+        $response = $this->client->request('GET', $url);
         $downloadUrl = (string)$response->getBody();
 
         return preg_replace("/\"/", '', $downloadUrl);
@@ -66,7 +66,7 @@ class File extends Resource
      *
      * @return string
      */
-    protected function urlEncodePath($path)
+    protected function urlEncodePath(string $path)
     {
         return implode('/', array_map('rawurlencode', explode('/', (string)$path)));
     }
@@ -83,7 +83,7 @@ class File extends Resource
      * @return Response
      * @throws Exception
      */
-    public function downloadFromDir(LibraryType $library, DirectoryItem $item, $localFilePath, $dir, $reuse = 1)
+    public function downloadFromDir(LibraryType $library, DirectoryItem $item, string $localFilePath, string $dir, int $reuse = 1)
     {
         if (is_readable($localFilePath)) {
             throw new Exception('File already exists');
@@ -105,9 +105,9 @@ class File extends Resource
      * @return Response
      * @throws Exception
      */
-    public function download(LibraryType $library, $filePath, $localFilePath, $reuse = 1)
+    public function download(LibraryType $library, string $filePath, string $localFilePath, int $reuse = 1)
     {
-        $item       = new DirectoryItem();
+        $item = new DirectoryItem();
         $item->name = basename($filePath);
 
         $dir = str_replace("\\", "/", dirname($filePath)); // compatibility for windows
@@ -126,7 +126,7 @@ class File extends Resource
      * @return Response
      * @throws Exception
      */
-    public function update(LibraryType $library, $localFilePath, $dir = '/', $filename = false)
+    public function update(LibraryType $library, string $localFilePath, string $dir = '/', $filename = false): Response
     {
         return $this->upload($library, $localFilePath, $dir, $filename, false);
     }
@@ -139,14 +139,14 @@ class File extends Resource
      *
      * @return String Upload link
      */
-    public function getUploadUrl(LibraryType $library, $newFile = true)
+    public function getUploadUrl(LibraryType $library, bool $newFile = true)
     {
         $url = $this->client->getConfig('base_uri')
             . '/repos/'
             . $library->id
             . '/' . ($newFile ? 'upload' : 'update') . '-link/';
 
-        $response   = $this->client->request('GET', $url);
+        $response = $this->client->request('GET', $url);
         $uploadLink = (string)$response->getBody();
 
         return preg_replace("/\"/", '', $uploadLink);
@@ -162,7 +162,7 @@ class File extends Resource
      *
      * @return array
      */
-    public function getMultiPartParams($localFilePath, $dir, $newFile = true, $newFilename = false)
+    public function getMultiPartParams(string $localFilePath, string $dir, bool $newFile = true, $newFilename = false): array
     {
         if ($newFilename === false) {
             $fileBaseName = basename($localFilePath);
@@ -213,7 +213,7 @@ class File extends Resource
      * @return Response
      * @throws Exception
      */
-    public function upload(LibraryType $library, $localFilePath, $dir = '/', $newFilename = false, $newFile = true)
+    public function upload(LibraryType $library, string $localFilePath, string $dir = '/', $newFilename = false, bool $newFile = true): Response
     {
         if (!is_readable($localFilePath)) {
             throw new Exception('File ' . $localFilePath . ' could not be read or does not exist');
@@ -237,7 +237,7 @@ class File extends Resource
      *
      * @return DirectoryItem
      */
-    public function getFileDetail(LibraryType $library, $remoteFilePath)
+    public function getFileDetail(LibraryType $library, string $remoteFilePath): DirectoryItem
     {
         $url = $this->client->getConfig('base_uri')
             . '/repos/'
@@ -260,7 +260,7 @@ class File extends Resource
      *
      * @return bool
      */
-    public function remove(LibraryType $library, $filePath)
+    public function remove(LibraryType $library, string $filePath): bool
     {
         // do not allow empty paths
         if (empty($filePath)) {
@@ -294,7 +294,7 @@ class File extends Resource
      *
      * @return bool
      */
-    public function rename(LibraryType $library, DirectoryItem $dirItem, $newFilename)
+    public function rename(LibraryType $library, DirectoryItem $dirItem, string $newFilename): bool
     {
         $filePath = $dirItem->dir . $dirItem->name;
 
@@ -353,22 +353,22 @@ class File extends Resource
      */
     public function copy(
         LibraryType $srcLibrary,
-        $srcFilePath,
+        string $srcFilePath,
         LibraryType $dstLibrary,
-        $dstDirectoryPath,
-        $operation = self::OPERATION_COPY
-    ) {
+        string $dstDirectoryPath,
+        int $operation = self::OPERATION_COPY
+    ): bool {
         // do not allow empty paths
         if (empty($srcFilePath) || empty($dstDirectoryPath)) {
             return false;
         }
 
         $operationMode = 'copy';
-        $returnCode    = 200;
+        $returnCode = 200;
 
         if ($operation === self::OPERATION_MOVE) {
             $operationMode = 'move';
-            $returnCode    = 301;
+            $returnCode = 301;
         }
 
         $uri = sprintf(
@@ -413,7 +413,7 @@ class File extends Resource
      *
      * @return bool
      */
-    public function move(LibraryType $srcLibrary, $srcFilePath, LibraryType $dstLibrary, $dstDirectoryPath)
+    public function move(LibraryType $srcLibrary, string $srcFilePath, LibraryType $dstLibrary, string $dstDirectoryPath): bool
     {
         return $this->copy($srcLibrary, $srcFilePath, $dstLibrary, $dstDirectoryPath, self::OPERATION_MOVE);
     }
@@ -458,8 +458,8 @@ class File extends Resource
         LibraryType $library,
         DirectoryItem $dirItem,
         FileHistoryItem $fileHistoryItem,
-        $localFilePath
-    ) {
+        string $localFilePath
+    ): Response {
         $downloadUrl = $this->getFileRevisionDownloadUrl($library, $dirItem, $fileHistoryItem);
 
         return $this->client->request('GET', $downloadUrl, ['save_to' => $localFilePath]);
@@ -502,7 +502,7 @@ class File extends Resource
      *
      * @return bool
      */
-    public function create(LibraryType $library, DirectoryItem $item)
+    public function create(LibraryType $library, DirectoryItem $item): bool
     {
         // do not allow empty paths
         if (empty($item->path) || empty($item->name)) {

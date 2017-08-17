@@ -23,7 +23,7 @@ class Account extends Resource
      *
      * @return AccountType[]
      */
-    public function getAll()
+    public function getAll(): array
     {
         $response = $this->client->request('GET', $this->client->getConfig('base_uri') . '/accounts/');
 
@@ -47,7 +47,7 @@ class Account extends Resource
      *
      * @return AccountType
      */
-    public function getByEmail($emailAddress)
+    public function getByEmail(string $emailAddress): AccountType
     {
         $response = $this->client->request(
             'GET',
@@ -65,7 +65,7 @@ class Account extends Resource
      *
      * @return AccountType
      */
-    public function getInfo()
+    public function getInfo(): AccountType
     {
         $response = $this->client->request(
             'GET',
@@ -86,7 +86,7 @@ class Account extends Resource
      *
      * @return bool
      */
-    public function create(AccountType $accountType)
+    public function create(AccountType $accountType): bool
     {
         // at least one of these fields is required
         $requirementsMet = !empty($accountType->password)
@@ -120,7 +120,7 @@ class Account extends Resource
      *
      * @return bool
      */
-    public function update(AccountType $accountType)
+    public function update(AccountType $accountType): bool
     {
         // at least one of these fields is required
         $requirementsMet = !empty($accountType->password)
@@ -203,7 +203,7 @@ class Account extends Resource
      *
      * @return bool
      */
-    public function removeByEmail($email)
+    public function removeByEmail(string $email): bool
     {
         return $this->remove((new AccountType)->fromArray(['email' => $email]));
     }
@@ -217,7 +217,7 @@ class Account extends Resource
      *
      * @return bool
      */
-    public function remove(AccountType $accountType)
+    public function remove(AccountType $accountType): bool
     {
         if (empty($accountType->email)) {
             return false;

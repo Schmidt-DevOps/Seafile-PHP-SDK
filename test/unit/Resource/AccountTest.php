@@ -51,7 +51,7 @@ class AccountTest extends TestCase
      *
      * @return void
      */
-    public function testGetByEmail($method = 'getByEmail')
+    public function testGetByEmail(string $method = 'getByEmail')
     {
         $accountResource = new Account($this->getMockedClient(
             new Response(
@@ -97,7 +97,7 @@ class AccountTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderCreateUpdate()
+    public static function dataProviderCreateUpdate(): array
     {
         return [
             [['method' => 'create', 'responseCode' => 201, 'result' => true]],
@@ -163,7 +163,7 @@ class AccountTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderRemove()
+    public static function dataProviderRemove(): array
     {
         return [
             [['email' => 'test@example.com', 'result' => true]],
@@ -184,7 +184,7 @@ class AccountTest extends TestCase
     {
         $baseUri = 'https://example.com/';
 
-        $accountType        = new AccountType();
+        $accountType = new AccountType();
         $accountType->email = $data['email'];
 
         $mockedClient = $this->createPartialMock('\Seafile\Client\Http\Client', ['delete', 'getConfig']);

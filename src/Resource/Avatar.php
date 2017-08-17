@@ -28,7 +28,7 @@ class Avatar extends Resource
      * @return AvatarType
      * @throws \Exception
      */
-    public function getUserAvatarByEmail($emailAddress, $size = 80)
+    public function getUserAvatarByEmail(string $emailAddress, int $size = 80)
     {
         return $this->getUserAvatar((new AccountType)->fromArray(['email' => $emailAddress]), $size);
     }
@@ -42,7 +42,7 @@ class Avatar extends Resource
      * @return AvatarType
      * @throws \Exception
      */
-    public function getUserAvatar(AccountType $accountType, $size = 80)
+    public function getUserAvatar(AccountType $accountType, int $size = 80)
     {
         return $this->getAvatar($accountType, $size);
     }
@@ -56,7 +56,7 @@ class Avatar extends Resource
      * @return AvatarType
      * @throws \Exception
      */
-    public function getGroupAvatar(GroupType $groupType, $size = 80)
+    public function getGroupAvatar(GroupType $groupType, int $size = 80)
     {
         return $this->getAvatar($groupType, $size);
     }
@@ -70,7 +70,7 @@ class Avatar extends Resource
      * @return AvatarType
      * @throws \Exception
      */
-    protected function getAvatar(Type $type, $size)
+    protected function getAvatar(Type $type, int $size)
     {
         if (!is_int($size) || $size < 1) {
             throw new \Exception('Illegal avatar size');
@@ -78,11 +78,11 @@ class Avatar extends Resource
 
         switch (true) {
             case ($type instanceof GroupType):
-                $id       = $type->id;
+                $id = $type->id;
                 $resource = 'group';
                 break;
             case ($type instanceof AccountType):
-                $id       = $type->email;
+                $id = $type->email;
                 $resource = 'user';
                 break;
             default:

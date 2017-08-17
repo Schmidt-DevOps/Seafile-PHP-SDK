@@ -27,21 +27,21 @@ class SharedLink extends Type
     /**
      * View count
      *
-     * @var int
+     * @var int|null
      */
     public $viewCnt = null;
 
     /**
      * Token
      *
-     * @var string
+     * @var string|null
      */
     public $token = null;
 
     /**
      * Share link type
      *
-     * @var string
+     * @var string|null
      */
     public $sType = null;
 
@@ -55,28 +55,28 @@ class SharedLink extends Type
     /**
      * Path
      *
-     * @var string
+     * @var string|null
      */
     public $path = null;
 
     /**
      * Repo ID
      *
-     * @var string
+     * @var string|null
      */
     public $repoId = null;
 
     /**
      * User name
      *
-     * @var string
+     * @var string|null
      */
     public $username = null;
 
     /**
      * URL
      *
-     * @var string
+     * @var string|null
      */
     public $url = null;
 }

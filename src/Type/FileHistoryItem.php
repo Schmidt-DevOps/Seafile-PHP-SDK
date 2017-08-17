@@ -90,7 +90,7 @@ class FileHistoryItem extends Type
     public $revFileId = '';
 
     /**
-     * @var null
+     * @var int|null
      */
     public $secondParentId = null;
 }

@@ -79,7 +79,7 @@ class AvatarTest extends TestCase
      *
      * @return void
      */
-    protected function doGetAvatar($method, $baseUri, $resource, $entity, $size)
+    protected function doGetAvatar(string $method, string $baseUri, string $resource, $entity, string $size)
     {
         $mockedClient = $this->createPartialMock('\Seafile\Client\Http\Client', ['get', 'getConfig']);
 

@@ -16,17 +16,17 @@ use DateTime;
 class Avatar extends Type
 {
     /**
-     * @var string
+     * @var string|null
      */
     public $url = null;
 
     /**
-     * @var bool
+     * @var bool|null
      */
     public $isDefault = null;
 
     /**
-     * @var DateTime
+     * @var DateTime|null
      */
     public $mtime = null;
 }

@@ -75,8 +75,8 @@ class DirectoryTest extends TestCase
          * @var Client $mockedClient
          */
         $directoryResource = new Directory($mockedClient);
-        $lib               = new Library();
-        $lib->id           = 'some-crazy-id';
+        $lib = new Library();
+        $lib->id = 'some-crazy-id';
 
         $directoryResource->getAll($lib, $rootDir);
     }
@@ -114,7 +114,7 @@ class DirectoryTest extends TestCase
          */
         $directoryResource = new Directory($mockedClient);
 
-        $lib     = new Library();
+        $lib = new Library();
         $lib->id = 'some-crazy-id';
 
         self::assertFalse($directoryResource->exists($lib, 'does_not_exist', $rootDir)); // ...2nd request...
@@ -141,7 +141,7 @@ class DirectoryTest extends TestCase
      * @dataProvider createNonRecursiveDataProvider
      * @return void
      */
-    public function testCreateNonRecursive($expectResponseCode)
+    public function testCreateNonRecursive(int $expectResponseCode)
     {
         $getAllResponse = new Response(
             200,
@@ -149,10 +149,10 @@ class DirectoryTest extends TestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        $mkdirResponse     = new Response($expectResponseCode, ['Content-Type' => 'text/plain']);
+        $mkdirResponse = new Response($expectResponseCode, ['Content-Type' => 'text/plain']);
         $directoryResource = $this->getDirectoryResource($getAllResponse, $mkdirResponse);
 
-        $lib     = new Library();
+        $lib = new Library();
         $lib->id = 'some-crazy-id';
 
         if ($expectResponseCode === 201) {
@@ -170,7 +170,7 @@ class DirectoryTest extends TestCase
      *
      * @return Directory
      */
-    protected function getDirectoryResource($getAllResponse, $mkdirResponse)
+    protected function getDirectoryResource(Response $getAllResponse, Response $mkdirResponse)
     {
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
 
@@ -230,7 +230,7 @@ class DirectoryTest extends TestCase
          */
         $directoryResource = new Directory($mockedClient);
 
-        $lib     = new Library();
+        $lib = new Library();
         $lib->id = 'some-crazy-id';
 
         self::assertFalse($directoryResource->create($lib, 'test_dir', '/', false));
@@ -264,10 +264,10 @@ class DirectoryTest extends TestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        $mkdirResponse     = new Response(201, ['Content-Type' => 'text/plain']);
+        $mkdirResponse = new Response(201, ['Content-Type' => 'text/plain']);
         $directoryResource = $this->getDirectoryResource($getAllResponse, $mkdirResponse);
 
-        $lib     = new Library();
+        $lib = new Library();
         $lib->id = 'some-crazy-id';
 
         self::assertTrue($directoryResource->create($lib, 'a/b', '/', true));
@@ -280,7 +280,7 @@ class DirectoryTest extends TestCase
      */
     public function testRenameInvalidDirectoryName()
     {
-        $lib     = new Library();
+        $lib = new Library();
         $lib->id = 'some-crazy-id';
 
         $directoryResource = new Directory(new Client());
@@ -301,10 +301,10 @@ class DirectoryTest extends TestCase
         );
 
         $mkdirResponse = new Response(200, ['Content-Type' => 'text/plain']);
-        $mockedClient  = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri    = 'http://example.com/repos/some-crazy-id/dir/?p=test_dir';
+        $expectUri = 'http://example.com/repos/some-crazy-id/dir/?p=test_dir';
         $expectParams = [
             'headers'   => ['Accept' => "application/json"],
             'multipart' => [
@@ -346,7 +346,7 @@ class DirectoryTest extends TestCase
          */
         $directoryResource = new Directory($mockedClient);
 
-        $lib     = new Library();
+        $lib = new Library();
         $lib->id = 'some-crazy-id';
 
         self::assertTrue($directoryResource->rename($lib, 'test_dir', 'test_dir_renamed'));
@@ -359,7 +359,7 @@ class DirectoryTest extends TestCase
      */
     public function testRemoveInvalidDirectoryName()
     {
-        $lib     = new Library();
+        $lib = new Library();
         $lib->id = 'some-crazy-id';
 
         $directoryResource = new Directory(new Client());
@@ -380,10 +380,10 @@ class DirectoryTest extends TestCase
         );
 
         $mkdirResponse = new Response(200, ['Content-Type' => 'text/plain']);
-        $mockedClient  = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri    = 'http://example.com/repos/some-crazy-id/dir/?p=test_dir';
+        $expectUri = 'http://example.com/repos/some-crazy-id/dir/?p=test_dir';
         $expectParams = [
             'headers' => ['Accept' => "application/json"],
         ];
@@ -415,7 +415,7 @@ class DirectoryTest extends TestCase
          */
         $directoryResource = new Directory($mockedClient);
 
-        $lib     = new Library();
+        $lib = new Library();
         $lib->id = 'some-crazy-id';
 
         self::assertTrue($directoryResource->remove($lib, 'test_dir'));

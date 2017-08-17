@@ -16,7 +16,7 @@ use DateTime;
 class Account extends Type
 {
     /**
-     * @var string
+     * @var string|null
      */
     public $contactEmail = null;
 
@@ -26,72 +26,72 @@ class Account extends Type
     public $createTime = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $department = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $email = null;
 
     /**
-     * @var int
+     * @var int|null
      */
     public $id = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $institution = null;
 
     /**
-     * @var bool
+     * @var bool|null
      */
     public $isStaff = null;
 
     /**
-     * @var bool
+     * @var bool|null
      */
     public $isActive = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $loginId = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $name = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $note = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $password = null;
 
     /**
-     * @var int
+     * @var int|null
      */
     public $storage = null;
 
     /**
-     * @var int
+     * @var int|null
      */
     public $spaceQuota = null;
 
     /**
-     * @var int
+     * @var int|null
      */
     public $total = null;
 
     /**
-     * @var int
+     * @var int|null
      */
     public $usage = null;
 }

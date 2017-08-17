@@ -42,7 +42,7 @@ class StarredFile extends Resource
      *
      * @return DirectoryItem[]
      */
-    public function getAll()
+    public function getAll(): array
     {
         $response = $this->client->request('GET', $this->resourceUri);
 
@@ -66,7 +66,7 @@ class StarredFile extends Resource
      * @return string URL of starred file list
      * @throws \Exception
      */
-    public function star(LibraryType $library, DirectoryItem $dirItem)
+    public function star(LibraryType $library, DirectoryItem $dirItem): string
     {
         if ($dirItem->type !== 'file') {
             throw new \Exception('Cannot star other items than files.');
@@ -105,7 +105,7 @@ class StarredFile extends Resource
      *
      * @return bool
      */
-    public function unstar(LibraryType $library, DirectoryItem $dirItem)
+    public function unstar(LibraryType $library, DirectoryItem $dirItem): bool
     {
         $uri = sprintf(
             '%s/?repo_id=%s&p=%s',

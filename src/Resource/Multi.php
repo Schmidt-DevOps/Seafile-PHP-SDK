@@ -35,7 +35,7 @@ class Multi extends Resource
      *
      * @return bool
      */
-    public function move(LibraryType $srcLibrary, array $srcPaths, LibraryType $dstLibrary, $dstDirectoryPath)
+    public function move(LibraryType $srcLibrary, array $srcPaths, LibraryType $dstLibrary, string $dstDirectoryPath): bool
     {
         return $this->copy($srcLibrary, $srcPaths, $dstLibrary, $dstDirectoryPath, self::OPERATION_MOVE);
     }
@@ -55,9 +55,9 @@ class Multi extends Resource
         LibraryType $srcLibrary,
         array $srcPaths,
         LibraryType $dstLibrary,
-        $dstDirectoryPath,
-        $operation = self::OPERATION_COPY
-    ) {
+        string $dstDirectoryPath,
+        int $operation = self::OPERATION_COPY
+    ): bool {
         // do not allow empty paths
         if (empty($srcPaths) || empty($dstDirectoryPath)) {
             return false;
@@ -119,7 +119,7 @@ class Multi extends Resource
      *
      * @return string
      */
-    protected function preparePaths($folder, array $paths, $fileNames = '')
+    protected function preparePaths(string $folder, array $paths, string $fileNames = ''): string
     {
         foreach ($paths as $path) {
             if (dirname($path) != $folder) {
@@ -142,7 +142,7 @@ class Multi extends Resource
      *
      * @return bool
      */
-    public function delete(LibraryType $library, array $paths)
+    public function delete(LibraryType $library, array $paths): bool
     {
         // do not allow empty paths
         if (empty($paths)) {

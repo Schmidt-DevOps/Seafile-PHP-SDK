@@ -121,7 +121,7 @@ class TypeTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderTestToArrayAssoc()
+    public static function dataProviderTestToArrayAssoc(): array
     {
         return [
             [
@@ -160,7 +160,7 @@ class TypeTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderTestToArrayMultiPart()
+    public static function dataProviderTestToArrayMultiPart(): array
     {
         return [
             [
@@ -202,7 +202,7 @@ class TypeTest extends TestCase
      */
     public function testFromArrayCreator()
     {
-        $email     = 'someone@example.com';
+        $email = 'someone@example.com';
         $groupType = (new GroupType())->fromArray(['creator' => $email]);
         self::assertInstanceOf('Seafile\Client\Type\Account', $groupType->creator);
         self::assertSame($email, $groupType->creator->email);

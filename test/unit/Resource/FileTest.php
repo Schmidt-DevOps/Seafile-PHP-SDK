@@ -45,7 +45,7 @@ class FileTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderTestUrlEncodePath()
+    public static function dataProviderTestUrlEncodePath(): array
     {
         return [
             ['/foo#bar baz.txt', '/foo%23bar%20baz.txt'], // url-encode #, space in file name
@@ -66,7 +66,7 @@ class FileTest extends TestCase
      * @return void
      * @dataProvider dataProviderTestUrlEncodePath
      */
-    public function testUrlEncodePath($path, $expectEncodedPath)
+    public function testUrlEncodePath(string $path, string $expectEncodedPath)
     {
         $fileResource = $this->getMockBuilder(File::class)
             ->disableOriginalConstructor()
@@ -103,7 +103,7 @@ class FileTest extends TestCase
      */
     public function testDownloadFromDirFileExists()
     {
-        $newFilename  = tempnam(sys_get_temp_dir(), uniqid());
+        $newFilename = tempnam(sys_get_temp_dir(), uniqid());
         $fileResource = new File($this->getMockedClient(new Response()));
 
         try {
@@ -123,7 +123,7 @@ class FileTest extends TestCase
      */
     public function testUploadDoesNotExist()
     {
-        $filename     = uniqid();
+        $filename = uniqid();
         $fileResource = new File($this->getMockedClient(new Response()));
 
         $this->expectException('Exception');
@@ -140,7 +140,7 @@ class FileTest extends TestCase
     public function testDownloadFromDir()
     {
         $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
-        $response     = $fileResource->downloadFromDir(new Library(), new DirectoryItem(), '/some/path', '/', 1);
+        $response = $fileResource->downloadFromDir(new Library(), new DirectoryItem(), '/some/path', '/', 1);
 
         self::assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
     }
@@ -154,7 +154,7 @@ class FileTest extends TestCase
     public function testDownload()
     {
         $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
-        $response     = $fileResource->download(new Library(), '/some/path', '/some/file', 1);
+        $response = $fileResource->download(new Library(), '/some/path', '/some/file', 1);
 
         // @todo Assert request query params
         self::assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
@@ -169,7 +169,7 @@ class FileTest extends TestCase
     public function testUpload()
     {
         $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
-        $response     = $fileResource->upload(new Library(), sys_get_temp_dir(), '/');
+        $response = $fileResource->upload(new Library(), sys_get_temp_dir(), '/');
 
         self::assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
     }
@@ -183,7 +183,7 @@ class FileTest extends TestCase
     public function testUpdate()
     {
         $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
-        $response     = $fileResource->update(new Library(), sys_get_temp_dir(), '/');
+        $response = $fileResource->update(new Library(), sys_get_temp_dir(), '/');
 
         self::assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
     }
@@ -223,7 +223,7 @@ class FileTest extends TestCase
         file_put_contents($localFilePath, '0');
 
         try {
-            $dir          = '/';
+            $dir = '/';
             $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
             self::assertContains(
                 [
@@ -253,10 +253,10 @@ class FileTest extends TestCase
      */
     public function testUpdateMultiPartParamsNewFilename()
     {
-        $dir           = '/';
+        $dir = '/';
         $localFilePath = sys_get_temp_dir() . '/' . uniqid('test_', true) . '.txt';
-        $fileResource  = new File($this->getMockedClient(new Response()));
-        $newFilename   = sys_get_temp_dir() . '/' . uniqid('test_', true) . '.txt';
+        $fileResource = new File($this->getMockedClient(new Response()));
+        $newFilename = sys_get_temp_dir() . '/' . uniqid('test_', true) . '.txt';
         file_put_contents($localFilePath, 'abc');
 
         $params = $fileResource->getMultiPartParams($localFilePath, $dir, true, $newFilename);
@@ -299,7 +299,7 @@ class FileTest extends TestCase
         file_put_contents($localFilePath, '0');
 
         try {
-            $dir          = '/';
+            $dir = '/';
             $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
             self::assertNotContains(
                 [
@@ -335,7 +335,7 @@ class FileTest extends TestCase
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $fileResource = new File($mockedClient);
 
-        $lib     = new Library();
+        $lib = new Library();
         $lib->id = 'some-crazy-id';
 
         self::assertFalse($fileResource->remove($lib, ''));
@@ -346,7 +346,7 @@ class FileTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderTestRenameInvalidFilename()
+    public static function dataProviderTestRenameInvalidFilename(): array
     {
         return [
             ['', ''], // file path must not be empty, neither does new file name
@@ -366,7 +366,7 @@ class FileTest extends TestCase
      * @expectedException \InvalidArgumentException
      * @dataProvider dataProviderTestRenameInvalidFilename
      */
-    public function testRenameInvalidFilename($invalidFilePath, $invalidNewFilename)
+    public function testRenameInvalidFilename(string $invalidFilePath, string $invalidNewFilename)
     {
         /**
          * @var Client|\PHPUnit_Framework_MockObject_MockObject $mockedClient
@@ -374,7 +374,7 @@ class FileTest extends TestCase
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $fileResource = new File($mockedClient);
 
-        $lib     = new Library();
+        $lib = new Library();
         $lib->id = 'some-crazy-id';
 
         $dirItem = new DirectoryItem(['dir' => $invalidFilePath]);
@@ -387,12 +387,12 @@ class FileTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderCopyInvalid()
+    public static function dataProviderCopyInvalid(): array
     {
-        $srcLib     = new Library();
+        $srcLib = new Library();
         $srcLib->id = 'some-crazy-id';
 
-        $dstLib     = new Library();
+        $dstLib = new Library();
         $dstLib->id = 'some-other-crazy-id';
 
         return [
@@ -418,11 +418,11 @@ class FileTest extends TestCase
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $fileResource = new File($mockedClient);
 
-        $srcLib      = $data[0];
+        $srcLib = $data[0];
         $srcFilePath = $data[1];
-        $dstLib      = $data[2];
+        $dstLib = $data[2];
         $dstFilePath = $data[3];
-        $expected    = $data[4];
+        $expected = $data[4];
 
         self::assertSame($expected, $fileResource->copy($srcLib, $srcFilePath, $dstLib, $dstFilePath));
     }
@@ -441,10 +441,10 @@ class FileTest extends TestCase
         );
 
         $deleteResponse = new Response(200, ['Content-Type' => 'text/plain']);
-        $mockedClient   = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri    = 'http://example.com/repos/some-crazy-id/file/?p=test_dir';
+        $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=test_dir';
         $expectParams = [
             'headers' => ['Accept' => "application/json"],
         ];
@@ -476,7 +476,7 @@ class FileTest extends TestCase
          */
         $fileResource = new File($mockedClient);
 
-        $lib     = new Library();
+        $lib = new Library();
         $lib->id = 'some-crazy-id';
 
         self::assertTrue($fileResource->remove($lib, 'test_dir'));
@@ -495,7 +495,7 @@ class FileTest extends TestCase
             file_get_contents(__DIR__ . '/../../assets/FileTest_getAll.json')
         );
 
-        $newFilename    = 'test_file_renamed';
+        $newFilename = 'test_file_renamed';
         $renameResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
         /**
@@ -504,7 +504,7 @@ class FileTest extends TestCase
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri    = 'http://example.com/repos/some-crazy-id/file/?p=/test_file';
+        $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=/test_file';
         $expectParams = [
             'headers'   => ['Accept' => "application/json"],
             'multipart' => [
@@ -535,7 +535,7 @@ class FileTest extends TestCase
 
         $fileResource = new File($mockedClient);
 
-        $lib     = new Library(['id' => 'some-crazy-id']);
+        $lib = new Library(['id' => 'some-crazy-id']);
         $dirItem = new DirectoryItem(['name' => 'test_file']);
 
         self::assertTrue($fileResource->rename($lib, $dirItem, $newFilename));
@@ -546,7 +546,7 @@ class FileTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderCopyMove()
+    public static function dataProviderCopyMove(): array
     {
         return [
             [['operation' => 'copy', 'responseCode' => 200]],
@@ -565,10 +565,10 @@ class FileTest extends TestCase
      */
     public function testCopyMove(array $data)
     {
-        $sourceLib     = new Library();
+        $sourceLib = new Library();
         $sourceLib->id = 'some-crazy-id';
 
-        $destLib     = new  Library();
+        $destLib = new  Library();
         $destLib->id = 'some-other-crazy-id';
 
         $getAllResponse = new Response(
@@ -580,11 +580,11 @@ class FileTest extends TestCase
         $srcPath = '/src/file/path';
         $dstPath = '/target/file/path';
 
-        $response     = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
+        $response = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri    = 'http://example.com/repos/some-crazy-id/file/?p=' . $srcPath;
+        $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=' . $srcPath;
         $expectParams = [
             'headers'   => ['Accept' => 'application/json'],
             'multipart' => [
@@ -668,14 +668,14 @@ class FileTest extends TestCase
             new Response(200, ['Content-Type' => 'application/json'], '"https://some.example.com/some/url"')
         ));
 
-        $library     = new Library();
+        $library = new Library();
         $library->id = 123;
 
-        $dirItem       = new DirectoryItem();
+        $dirItem = new DirectoryItem();
         $dirItem->path = '/';
         $dirItem->name = 'some_test.txt';
 
-        $fileHistoryItem     = new FileHistoryItem();
+        $fileHistoryItem = new FileHistoryItem();
         $fileHistoryItem->id = 345;
 
         $downloadUrl = $fileResource->getFileRevisionDownloadUrl($library, $dirItem, $fileHistoryItem);
@@ -694,18 +694,18 @@ class FileTest extends TestCase
      */
     public function testDownloadRevision()
     {
-        $library     = new Library();
+        $library = new Library();
         $library->id = 123;
 
-        $dirItem       = new DirectoryItem();
+        $dirItem = new DirectoryItem();
         $dirItem->path = '/';
         $dirItem->name = 'some_test.txt';
 
-        $fileHistoryItem     = new FileHistoryItem();
+        $fileHistoryItem = new FileHistoryItem();
         $fileHistoryItem->id = 345;
 
         $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
-        $response     = $fileResource->downloadRevision($library, $dirItem, $fileHistoryItem, '/tmp/yo.txt');
+        $response = $fileResource->downloadRevision($library, $dirItem, $fileHistoryItem, '/tmp/yo.txt');
 
         self::assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
 
@@ -727,7 +727,7 @@ class FileTest extends TestCase
             )
         ));
 
-        $lib     = new Library();
+        $lib = new Library();
         $lib->id = 123;
 
         $fileHistoryItems = $fileResource->getHistory($lib, new DirectoryItem());
@@ -781,10 +781,10 @@ class FileTest extends TestCase
 
         $fileResource = new File($clientMock);
 
-        $lib     = new Library;
+        $lib = new Library;
         $lib->id = 123;
 
-        $dirItem       = new DirectoryItem;
+        $dirItem = new DirectoryItem;
         $dirItem->path = '/';
         $dirItem->name = 'some_name.txt';
 

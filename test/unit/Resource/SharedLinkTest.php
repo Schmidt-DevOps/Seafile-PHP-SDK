@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Tests\Resource;
 
+use Guzzle\Http\Message\Request;
 use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Http\Client;
 use Seafile\Client\Resource\SharedLink;
@@ -57,7 +58,7 @@ class SharedLinkTest extends TestCase
         $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri    = 'http://example.com/repos/some-crazy-id/';
+        $expectUri = 'http://example.com/repos/some-crazy-id/';
         $expectParams = [
             'headers' => ['Accept' => "application/json"],
         ];
@@ -76,7 +77,7 @@ class SharedLinkTest extends TestCase
          */
         $sharedLinkResource = new SharedLink($mockedClient);
 
-        $sharedLink      = new  SharedLinkType();
+        $sharedLink = new  SharedLinkType();
         $sharedLink->url = 'https://seafile.example.com/f/abc/';
 
         self::assertTrue($sharedLinkResource->remove($sharedLink));
@@ -87,7 +88,7 @@ class SharedLinkTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderCreate()
+    public static function dataProviderCreate(): array
     {
         return [
             // [[expect response code, expected result, password]]
@@ -143,15 +144,20 @@ class SharedLinkTest extends TestCase
             ->with('PUT')
             ->willReturn($createResponse);
 
+        $mockedClient->expects(self::any())
+            ->method('getConfig')
+            ->with('base_uri')
+            ->willReturn('http://example.com');
+
         /**
          * @var Client $mockedClient
          */
         $sharedLinkResource = new SharedLink($mockedClient);
 
-        $sharedLinkType      = new SharedLinkType();
+        $sharedLinkType = new SharedLinkType();
         $sharedLinkType->url = 'https://seafile.example.com/f/abc/';
 
-        $libraryType     = new LibraryType();
+        $libraryType = new LibraryType();
         $libraryType->id = 'decaf-deadbeef-dad';
 
         if (is_null($data['returnType'])) {

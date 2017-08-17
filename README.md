@@ -366,6 +366,17 @@ $client = new Client(
     ]
 );
 ```
+## Version history
+
+### Version 2.x (not yet released)
+
+This version will not be backwards compatible with Version 1.x. 
+
+- SEAF-001: Will support PHP >7.0.0 only. In case you require a version that still supports PHP 5.6 let [me](rene+_gth@sdo.sh) know so I can tell you my rates :)
+- SEAF-002: Requires PHPUnit 6.x
+
+### Version 1.0.1
+Latest and last version to support PHP 5.6.
 
 ## Issues
 
@@ -373,7 +384,6 @@ $client = new Client(
 
 ## Dependencies
 
-- PHP >=5.6.29 64 bits (if you require a backport to an older PHP version [contact me](rene+_gth@sdo.sh) for a quote!)
 - PHP >=7.0 64 bits
 - Guzzle 6
 
@@ -418,7 +428,7 @@ Please note that this package still is in its infancy. Only a small part of the 
 
 - https://seafile.com
 - https://www.seafile-server.org/ (Seafile server hosting in Germany)
-- http://manual.seafile.com/develop/web_api.html#seafile-web-api-v2
+- https://manual.seafile.com/develop/web_api.html#seafile-web-api-v2
 - https://sdo.sh
 
 ## License
