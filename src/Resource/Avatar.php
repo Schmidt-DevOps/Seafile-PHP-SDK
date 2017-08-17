@@ -18,7 +18,6 @@ use \Seafile\Client\Type\Avatar as AvatarType;
  */
 class Avatar extends Resource
 {
-
     /**
      * Get user avatar by email address
      *

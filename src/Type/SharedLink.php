@@ -13,7 +13,6 @@ namespace Seafile\Client\Type;
  */
 class SharedLink extends Type
 {
-
     /**
      * Default share type
      */

@@ -17,7 +17,6 @@ use \Seafile\Client\Type\Library as LibraryType;
  */
 class SharedLink extends Resource
 {
-
     /**
      * List shared links
      *

@@ -21,7 +21,6 @@ use Seafile\Client\Type\Library as LibraryType;
  */
 class StarredFileTest extends TestCase
 {
-
     /**
      * Test getAll()
      *

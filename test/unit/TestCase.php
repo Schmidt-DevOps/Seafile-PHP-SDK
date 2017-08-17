@@ -14,9 +14,8 @@ use PHPUnit_Framework_MockObject_MockObject;
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-class TestCase extends \PHPUnit_Framework_TestCase
+class TestCase extends \PHPUnit\Framework\TestCase
 {
-
     /**
      * Call protected/private method of a class.
      *

@@ -17,7 +17,6 @@ use Seafile\Client\Type\DirectoryItem;
  */
 class DirectoryItemTest extends TestCase
 {
-
     /**
      * DataProvider for testFromArray()
      *
