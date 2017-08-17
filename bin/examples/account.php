@@ -94,9 +94,9 @@ $newAccountType = (new AccountType)->fromArray([
     'institution' => 'Duff Beer Inc.',
 ]);
 
-$success = $accountResource->create($newAccountType);
+$response = $accountResource->create($newAccountType);
 
-if ($success) {
+if ($response->getStatusCode() === 201) {
     // get info on specific user
     $logger->log(Logger::INFO, "#################### Get info on specific user");
     $accountType = $accountResource->getByEmail($newAccountType->email);
@@ -119,9 +119,9 @@ $changedAccountType = (new AccountType)->fromArray([
     'name'  => 'Divine Hugh Jazz',
 ]);
 
-$result = $accountResource->update($changedAccountType);
+$response = $accountResource->update($changedAccountType);
 
-if ($success) {
+if ($response->getStatusCode() === 200) {
     $logger->log(Logger::INFO, "#################### Account updated");
 } else {
     $logger->log(Logger::ALERT, '#################### Could not update account');
@@ -131,9 +131,9 @@ $logger->log(Logger::INFO, "#################### Sleeping 10s before deleting th
 sleep(10);
 
 $logger->log(Logger::INFO, "#################### Delete account " . $newAccountType->email);
-$success = $accountResource->remove($newAccountType);
+$response = $accountResource->remove($newAccountType);
 
-if ($success) {
+if ($response->getStatusCode() === 200) {
     $logger->log(Logger::INFO, "#################### Deleted account " . $newAccountType->email);
 } else {
     $logger->log(Logger::ALERT, "#################### Could not delete account " . $newAccountType->email);

@@ -2,6 +2,8 @@
 
 namespace Seafile\Client\Resource;
 
+use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
 use Seafile\Client\Type\Type;
 use \Seafile\Client\Type\Account as AccountType;
 
@@ -84,9 +86,9 @@ class Account extends Resource
      *
      * @param AccountType $accountType AccountType instance with data for new account
      *
-     * @return bool
+     * @return ResponseInterface
      */
-    public function create(AccountType $accountType): bool
+    public function create(AccountType $accountType): ResponseInterface
     {
         // at least one of these fields is required
         $requirementsMet = !empty($accountType->password)
@@ -94,7 +96,7 @@ class Account extends Resource
             || !empty($accountType->isActive);
 
         if (!$requirementsMet) {
-            return false;
+            return new Response(400);
         }
 
         $uri = sprintf(
@@ -105,12 +107,12 @@ class Account extends Resource
         $response = $this->client->put(
             $uri,
             [
-                'headers'   => ['Accept' => 'application/json; charset=utf-8'],
+                'headers' => ['Accept' => 'application/json; charset=utf-8'],
                 'multipart' => $accountType->toArray(Type::ARRAY_MULTI_PART),
             ]
         );
 
-        return $response->getStatusCode() === 201;
+        return $response; // HTTP status code 201 == success
     }
 
     /**
@@ -118,9 +120,9 @@ class Account extends Resource
      *
      * @param AccountType $accountType AccountType instance with updated data
      *
-     * @return bool
+     * @return ResponseInterface
      */
-    public function update(AccountType $accountType): bool
+    public function update(AccountType $accountType): ResponseInterface
     {
         // at least one of these fields is required
         $requirementsMet = !empty($accountType->password)
@@ -131,7 +133,7 @@ class Account extends Resource
             || !empty($accountType->storage);
 
         if (!$requirementsMet) {
-            return false;
+            return new Response(400);
         }
 
         $uri = sprintf(
@@ -142,12 +144,12 @@ class Account extends Resource
         $response = $this->client->put(
             $uri,
             [
-                'headers'   => ['Accept' => 'application/json; charset=utf-8'],
+                'headers' => ['Accept' => 'application/json; charset=utf-8'],
                 'multipart' => $accountType->toArray(Type::ARRAY_MULTI_PART),
             ]
         );
 
-        return $response->getStatusCode() === 200;
+        return $response; // HTTP status code 200 == success
     }
 
     /**
@@ -156,7 +158,7 @@ class Account extends Resource
      * Requires admin permissions
      *
      * @param AccountType $fromAccountType AccountType instance to update from
-     * @param AccountType $toAccountType   AccountType instance to update to
+     * @param AccountType $toAccountType AccountType instance to update to
      *
      * @return bool
      */
@@ -201,9 +203,9 @@ class Account extends Resource
      *
      * @param string $email Email address
      *
-     * @return bool
+     * @return ResponseInterface
      */
-    public function removeByEmail(string $email): bool
+    public function removeByEmail(string $email): ResponseInterface
     {
         return $this->remove((new AccountType)->fromArray(['email' => $email]));
     }
@@ -215,12 +217,12 @@ class Account extends Resource
      *
      * @param AccountType $accountType Account to remove
      *
-     * @return bool
+     * @return ResponseInterface
      */
-    public function remove(AccountType $accountType): bool
+    public function remove(AccountType $accountType): ResponseInterface
     {
         if (empty($accountType->email)) {
-            return false;
+            return new Response(400);
         }
 
         $uri = sprintf(
@@ -229,6 +231,6 @@ class Account extends Resource
             $accountType->email
         );
 
-        return $this->client->delete($uri)->getStatusCode() === 200;
+        return $this->client->delete($uri);
     }
 }

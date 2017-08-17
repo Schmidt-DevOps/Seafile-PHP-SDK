@@ -3,6 +3,7 @@
 namespace Seafile\Client\Tests\Resource;
 
 use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
 use Seafile\Client\Http\Client;
 use Seafile\Client\Resource\Account;
 use Seafile\Client\Type\Account as AccountType;
@@ -89,7 +90,10 @@ class AccountTest extends TestCase
     public function testCreateIllegal()
     {
         $accountResource = new Account($this->getMockedClient(new Response(200)));
-        self::assertFalse($accountResource->create(new AccountType()));
+
+        $response = $accountResource->create(new AccountType());
+
+        self::assertSame(400,$response->getStatusCode());
     }
 
     /**
@@ -100,11 +104,11 @@ class AccountTest extends TestCase
     public static function dataProviderCreateUpdate(): array
     {
         return [
-            [['method' => 'create', 'responseCode' => 201, 'result' => true]],
+            [['method' => 'create', 'responseCode' => 201, 'result' => true]], // 201 means create success
             [['method' => 'create', 'responseCode' => 200, 'result' => false]],
             [['method' => 'create', 'responseCode' => 500, 'result' => false]],
             [['method' => 'update', 'responseCode' => 201, 'result' => false]],
-            [['method' => 'update', 'responseCode' => 200, 'result' => true]],
+            [['method' => 'update', 'responseCode' => 200, 'result' => true]], // 200 means update success
             [['method' => 'update', 'responseCode' => 500, 'result' => false]],
         ];
     }
@@ -124,7 +128,7 @@ class AccountTest extends TestCase
 
         $accountType = (new AccountType)->fromArray([
             'password' => 'some_password',
-            'email'    => 'my_email@example.com',
+            'email' => 'my_email@example.com',
         ]);
 
         $mockedClient = $this->createPartialMock('\Seafile\Client\Http\Client', ['put', 'getConfig']);
@@ -144,7 +148,16 @@ class AccountTest extends TestCase
          */
         $accountResource = new Account($mockedClient);
 
-        self::assertSame($data['result'], $accountResource->{$data['method']}($accountType));
+        /** @var ResponseInterface $result */
+        $result = $accountResource->{$data['method']}($accountType);
+
+        self::assertInstanceOf(ResponseInterface::class, $result);
+
+        if ($data['result'] === true) {
+            self::assertTrue($result->getStatusCode() === $data['responseCode']);
+        } else {
+            self::assertFalse($result->getStatusCode() !== $data['responseCode']);
+        }
     }
 
     /**
@@ -155,7 +168,9 @@ class AccountTest extends TestCase
     public function testUpdateIllegal()
     {
         $accountResource = new Account($this->getMockedClient(new Response(200)));
-        self::assertFalse($accountResource->update(new AccountType()));
+
+        $response = $accountResource->update(new AccountType());
+        self::assertFalse($response->getStatusCode() === 200);
     }
 
     /**
@@ -204,9 +219,12 @@ class AccountTest extends TestCase
          */
         $accountResource = new Account($mockedClient);
 
-        self::assertSame($data['result'], $accountResource->remove($accountType));
+        $response = $accountResource->remove($accountType);
+
+        self::assertSame($data['result'], $response->getStatusCode() === 200);
 
         // test removeByEmail() in one go
-        self::assertSame($data['result'], $accountResource->removeByEmail($accountType->email));
+        $response = $accountResource->removeByEmail($accountType->email);
+        self::assertSame($data['result'], $response->getStatusCode() === 200);
     }
 }
