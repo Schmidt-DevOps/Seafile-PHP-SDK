@@ -123,6 +123,10 @@ abstract class Type
                 $multiPart  = [];
 
                 foreach ($keyVals as $key => $val) {
+                    if ($val instanceof DateTime) {
+                        $val = $val->format('U');
+                    }
+                    
                     $multiPart[] = ['name' => $caseHelper->toSnakeCase($key), 'contents' => "$val"];
                 }
 
