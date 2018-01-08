@@ -23,6 +23,7 @@ class Directory extends Resource
      * @param string      $dir     Directory path
      *
      * @return DirectoryItem[]
+     * @throws \Exception
      */
     public function getAll(LibraryType $library, string $dir = '/')
     {
@@ -62,6 +63,7 @@ class Directory extends Resource
      * @param string      $parentDir   Parent directory
      *
      * @return bool
+     * @throws \Exception
      */
     public function exists(LibraryType $library, string $dirItemName, string $parentDir = '/')
     {
@@ -85,6 +87,7 @@ class Directory extends Resource
      * @param bool        $recursive Recursive create
      *
      * @return bool Success
+     * @throws \Exception
      */
     public function create(LibraryType $library, string $dirName, string $parentDir = '/', bool $recursive = false)
     {

@@ -129,12 +129,12 @@ foreach ($libs as $lib) {
 }
 ```
 
-### List files and directories of a library
+### List directory contents
 
 ```php
 $directoryResource = new Directory($client);
 $lib = $libraryResource->getById('some library ID of yours');
-$items = $directoryResource->getAll($lib);
+$items = $directoryResource->getAll($lib, '/'); // 2nd param is the name of the directory or '/' 
 
 foreach ($items as $item) {
     printf("%s: %s (%d bytes)\n", $item->type, $item->name, $item->size);

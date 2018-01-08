@@ -21,7 +21,7 @@
     "encrypted"
   ],
   "require": {
-    "php": ">=7.0",
+    "php": ">=7.1",
     "guzzlehttp/guzzle": "~6.0",
     "nabil1337/case-helper": "~0.1"
   },
@@ -31,9 +31,8 @@
     "phpunit/phpunit": "~6.0",
     "phpunit/phpunit-mock-objects": "~4.0",
     "phpunit/php-token-stream": "~1.4",
-    "phpunit/php-code-coverage": "~5.0",
     "sebastian/phpcpd": "~2.0",
-    "squizlabs/php_codesniffer": "~2.3"
+    "squizlabs/php_codesniffer": "~3.2"
   },
   "type": "library",
   "autoload": {

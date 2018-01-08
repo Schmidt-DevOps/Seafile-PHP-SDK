@@ -41,6 +41,7 @@ class StarredFile extends Resource
      * Get all starred files
      *
      * @return DirectoryItem[]
+     * @throws \Exception
      */
     public function getAll(): array
     {

@@ -15,7 +15,7 @@ use \Seafile\Client\Type\Account as AccountType;
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-abstract class Type
+abstract class Type implements TypeInterface
 {
     /**
      * Associative array mode
@@ -31,6 +31,8 @@ abstract class Type
      * Constructor
      *
      * @param array $fromArray Create from array
+     *
+     * @throws \Exception
      */
     public function __construct(array $fromArray = [])
     {
@@ -45,8 +47,9 @@ abstract class Type
      * @param array $fromArray Create from array
      *
      * @return self
+     * @throws \Exception
      */
-    public function fromArray(array $fromArray)
+    public function fromArray(array $fromArray): TypeInterface
     {
         foreach ($fromArray as $key => $value) {
             $camelCaseKey = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_SNAKE_CASE)->toCamelCase($key);
@@ -82,7 +85,7 @@ abstract class Type
      *
      * @return DateTime
      */
-    protected function getDateTime(int $value): DateTime
+    public function getDateTime(int $value): DateTime
     {
         if ($value > 9999999999) { // microseconds it is
             $value = floor($value / 1000000);
@@ -96,9 +99,10 @@ abstract class Type
      *
      * @param \stdClass $jsonResponse Json response
      *
-     * @return static
+     * @return TypeInterface|DirectoryItem
+     * @throws \Exception
      */
-    public function fromJson(\stdClass $jsonResponse)
+    public function fromJson(\stdClass $jsonResponse): TypeInterface
     {
         $this->fromArray((array)$jsonResponse);
 
@@ -111,6 +115,7 @@ abstract class Type
      * @param int $mode Array mode
      *
      * @return array
+     * @throws \Exception
      */
     public function toArray(int $mode = self::ARRAY_ASSOC): array
     {

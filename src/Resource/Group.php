@@ -19,6 +19,7 @@ class Group extends Resource
      * List groups
      *
      * @return GroupType[]
+     * @throws \Exception
      */
     public function getAll(): array
     {

@@ -22,6 +22,7 @@ class Account extends Resource
      * Requires admin permissions
      *
      * @return AccountType[]
+     * @throws \Exception
      */
     public function getAll(): array
     {
@@ -46,6 +47,7 @@ class Account extends Resource
      * @param string $emailAddress Email address
      *
      * @return AccountType
+     * @throws \Exception
      */
     public function getByEmail(string $emailAddress): AccountType
     {
@@ -64,6 +66,7 @@ class Account extends Resource
      * Get Account info
      *
      * @return AccountType
+     * @throws \Exception
      */
     public function getInfo(): AccountType
     {
@@ -85,6 +88,7 @@ class Account extends Resource
      * @param AccountType $accountType AccountType instance with data for new account
      *
      * @return bool
+     * @throws \Exception
      */
     public function create(AccountType $accountType): bool
     {
@@ -119,6 +123,7 @@ class Account extends Resource
      * @param AccountType $accountType AccountType instance with updated data
      *
      * @return bool
+     * @throws \Exception
      */
     public function update(AccountType $accountType): bool
     {
@@ -202,6 +207,7 @@ class Account extends Resource
      * @param string $email Email address
      *
      * @return bool
+     * @throws \Exception
      */
     public function removeByEmail(string $email): bool
     {

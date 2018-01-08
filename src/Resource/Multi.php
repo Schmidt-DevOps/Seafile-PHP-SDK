@@ -35,8 +35,12 @@ class Multi extends Resource
      *
      * @return bool
      */
-    public function move(LibraryType $srcLibrary, array $srcPaths, LibraryType $dstLibrary, string $dstDirectoryPath): bool
-    {
+    public function move(
+        LibraryType $srcLibrary,
+        array $srcPaths,
+        LibraryType $dstLibrary,
+        string $dstDirectoryPath
+    ): bool {
         return $this->copy($srcLibrary, $srcPaths, $dstLibrary, $dstDirectoryPath, self::OPERATION_MOVE);
     }
 

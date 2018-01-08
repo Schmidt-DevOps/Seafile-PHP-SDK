@@ -83,8 +83,13 @@ class File extends Resource
      * @return Response
      * @throws Exception
      */
-    public function downloadFromDir(LibraryType $library, DirectoryItem $item, string $localFilePath, string $dir, int $reuse = 1)
-    {
+    public function downloadFromDir(
+        LibraryType $library,
+        DirectoryItem $item,
+        string $localFilePath,
+        string $dir,
+        int $reuse = 1
+    ): Response {
         if (is_readable($localFilePath)) {
             throw new Exception('File already exists');
         }
@@ -162,8 +167,12 @@ class File extends Resource
      *
      * @return array
      */
-    public function getMultiPartParams(string $localFilePath, string $dir, bool $newFile = true, $newFilename = false): array
-    {
+    public function getMultiPartParams(
+        string $localFilePath,
+        string $dir,
+        bool $newFile = true,
+        $newFilename = false
+    ): array {
         if ($newFilename === false) {
             $fileBaseName = basename($localFilePath);
         } else {
@@ -213,8 +222,13 @@ class File extends Resource
      * @return Response
      * @throws Exception
      */
-    public function upload(LibraryType $library, string $localFilePath, string $dir = '/', $newFilename = false, bool $newFile = true): Response
-    {
+    public function upload(
+        LibraryType $library,
+        string $localFilePath,
+        string $dir = '/',
+        $newFilename = false,
+        bool $newFile = true
+    ): Response {
         if (!is_readable($localFilePath)) {
             throw new Exception('File ' . $localFilePath . ' could not be read or does not exist');
         }
@@ -413,8 +427,12 @@ class File extends Resource
      *
      * @return bool
      */
-    public function move(LibraryType $srcLibrary, string $srcFilePath, LibraryType $dstLibrary, string $dstDirectoryPath): bool
-    {
+    public function move(
+        LibraryType $srcLibrary,
+        string $srcFilePath,
+        LibraryType $dstLibrary,
+        string $dstDirectoryPath
+    ): bool {
         return $this->copy($srcLibrary, $srcFilePath, $dstLibrary, $dstDirectoryPath, self::OPERATION_MOVE);
     }
 

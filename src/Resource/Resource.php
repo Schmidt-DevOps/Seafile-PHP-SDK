@@ -13,7 +13,7 @@ use Seafile\Client\Http\Client;
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-abstract class Resource
+abstract class Resource implements ResourceInterface
 {
     /** Represents 'read' permission (in whatever context) */
     const PERMISSION_R = 'r';

@@ -19,6 +19,7 @@ class Library extends Resource
      * List libraries
      *
      * @return LibraryType[]
+     * @throws \Exception
      */
     public function getAll(): array
     {
@@ -41,6 +42,7 @@ class Library extends Resource
      * @param string $libraryId Library ID
      *
      * @return LibraryType
+     * @throws \Exception
      */
     public function getById($libraryId): LibraryType
     {
@@ -89,6 +91,7 @@ class Library extends Resource
      * @param string $attribute Attribute name of library
      *
      * @return bool
+     * @throws \Exception
      */
     public function exists($value, $attribute = 'name'): bool
     {
@@ -111,6 +114,7 @@ class Library extends Resource
      * @param string $password    false means no encryption, any other string is used as password
      *
      * @return bool
+     * @throws \Exception
      */
     public function create($name, $description = "new repo", $password = ''): bool
     {

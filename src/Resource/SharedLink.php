@@ -15,12 +15,13 @@ use \Seafile\Client\Type\Library as LibraryType;
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-class SharedLink extends Resource
+class SharedLink extends Resource implements ResourceInterface
 {
     /**
      * List shared links
      *
      * @return SharedLinkType[]
+     * @throws Exception
      */
     public function getAll(): array
     {
