@@ -400,8 +400,8 @@ Latest and last version to support PHP 5.6.
 | Library/Directory      | :large_blue_circle::large_blue_circle::white_circle::white_circle:       |
 | Library/Multiple Files | :large_blue_circle::large_blue_circle::large_blue_circle::large_blue_circle:          |
 | Avatar                 | :large_blue_circle::large_blue_circle::large_blue_circle::large_blue_circle:          |
-| Events                 | not planned   |
-| Organization           | not planned   |
+| Events                 | [contact me](rene+_gth@sdo.sh)   |
+| Organization           | [contact me](rene+_gth@sdo.sh)   |
 
 ## Seafile server compatibility
 
@@ -411,12 +411,12 @@ Tested with:
 - ~~Seafile Server 5.1.3 for generic Linux/Debian Wheezy~~
 - ~~Seafile Server 5.1.4 for generic Linux/Ubuntu Xenial~~
 - ~~Seafile Server 6.0.3 for generic Linux/Ubuntu Xenial~~
-- Seafile Server 6.0.7 for generic Linux/Ubuntu Xenial
+- Seafile Server 6.2.x for generic Linux/Ubuntu Xenial
 - If you require a backport for an older Seafile server version [contact me](rene+_gth@sdo.sh) for a quote!
 
 ## Contributing
 
-Please note that this package still is in its infancy. Only a small part of the API has been implemented so far.
+Please note that this package still is in its infancy. Only a part of the API has been implemented so far.
 
 **Pull requests are welcome**. Please adhere to some very basic and simple principles:
 
@@ -427,9 +427,10 @@ Please note that this package still is in its infancy. Only a small part of the 
 ## Links
 
 - https://seafile.com
-- https://www.seafile-server.org/ (Seafile server hosting in Germany)
 - https://manual.seafile.com/develop/web_api.html#seafile-web-api-v2
 - https://sdo.sh
+- https://luckycloud.de/de/ (Seafile server hosting in Germany)
+- https://www.yoursecurecloud.de/ (Seafile server hosting in Germany)
 
 ## License
 
