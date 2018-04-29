@@ -48,6 +48,8 @@ class DirectoryItemTest extends TestCase
      *
      * @return void
      * @dataProvider dataFromArray
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testFromArray(array $data)
     {

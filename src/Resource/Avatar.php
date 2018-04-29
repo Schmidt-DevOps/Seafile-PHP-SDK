@@ -96,4 +96,30 @@ class Avatar extends Resource
 
         return (new AvatarType)->fromJson($json);
     }
+
+    /**
+     * Create a new user avatar
+     *
+     * @param AccountType $accountType AccountType instance with data for new account
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function createUserAvatar(AccountType $accountType): bool
+    {
+        $uri = sprintf(
+            '%s/accounts/' . $accountType->email . '/',
+            $this->clipUri($this->client->getConfig('base_uri'))
+        );
+
+        $response = $this->client->put(
+            $uri,
+            [
+                'headers'   => ['Accept' => 'application/json; charset=utf-8'],
+                'multipart' => $accountType->toArray(Type::ARRAY_MULTI_PART),
+            ]
+        );
+
+        return $response->getStatusCode() === 201;
+    }
 }

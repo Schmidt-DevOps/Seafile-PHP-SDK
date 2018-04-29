@@ -400,8 +400,15 @@ Latest and last version to support PHP 5.6.
 | Library/Directory      | :large_blue_circle::large_blue_circle::white_circle::white_circle:       |
 | Library/Multiple Files | :large_blue_circle::large_blue_circle::large_blue_circle::large_blue_circle:          |
 | Avatar                 | :large_blue_circle::large_blue_circle::large_blue_circle::large_blue_circle:          |
-| Events                 | [contact me](rene+_gth@sdo.sh)   |
-| Organization           | [contact me](rene+_gth@sdo.sh)   |
+| Events                 | Yet to be done, [contact me](rene+_gth@sdo.sh) |
+| Organization           | Yet to be done, [contact me](rene+_gth@sdo.sh) |
+
+
+## Seafile Web API V2.1 Support Matrix
+
+| Resource               | Support grade |
+| ---------------------- | ------------- |
+| Web API v2.1           | Yet to be done, [contact me](rene+_gth@sdo.sh) |
 
 ## Seafile server compatibility
 

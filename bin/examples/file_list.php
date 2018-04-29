@@ -91,7 +91,9 @@ try {
         printf("(%s) %s/%s (%d bytes)\n", $item->type, $item->path, $item->name, $item->size);
     }
 } catch (\Exception $e) {
-    print("Exception: " . $e->getMessage());
+    $logger->critical($e->getMessage());
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
+    $logger->critical($e->getMessage());
 }
 
 print(PHP_EOL . 'Done' . PHP_EOL);

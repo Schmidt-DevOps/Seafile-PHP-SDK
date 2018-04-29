@@ -44,88 +44,93 @@ $tokenFile = getenv("HOME") . "/.seafile-php-sdk/api-token.json";
  */
 $cfgFile = getenv("HOME") . "/.seafile-php-sdk/cfg.json";
 
-if (!is_readable($tokenFile)) {
-    throw new Exception($tokenFile . ' is not readable or does not exist.');
-}
+try {
+    if (!is_readable($tokenFile)) {
+        throw new Exception($tokenFile . ' is not readable or does not exist.');
+    }
 
-if (!is_readable($cfgFile)) {
-    throw new Exception($cfgFile . ' is not readable or does not exist.');
-}
+    if (!is_readable($cfgFile)) {
+        throw new Exception($cfgFile . ' is not readable or does not exist.');
+    }
 
-$token = json_decode(file_get_contents($tokenFile));
-$cfg   = json_decode(file_get_contents($cfgFile));
+    $token = json_decode(file_get_contents($tokenFile));
+    $cfg = json_decode(file_get_contents($cfgFile));
 
-$client = new Client(
-    [
-        'base_uri' => $cfg->baseUri,
-        'debug'    => true,
-        'handler'  => $stack,
-        'headers'  => [
-            'Content-Type'  => 'application/json',
-            'Authorization' => 'Token ' . $token->token,
-        ],
-    ]
-);
+    $client = new Client(
+        [
+            'base_uri' => $cfg->baseUri,
+            'debug'    => true,
+            'handler'  => $stack,
+            'headers'  => [
+                'Content-Type'  => 'application/json',
+                'Authorization' => 'Token ' . $token->token,
+            ],
+        ]
+    );
 
-$libraryResource    = new Library($client);
-$directoryResource  = new Directory($client);
-$fileResource       = new File($client);
-$sharedLinkResource = new SharedLink($client);
+    $libraryResource = new Library($client);
+    $directoryResource = new Directory($client);
+    $fileResource = new File($client);
+    $sharedLinkResource = new SharedLink($client);
 
 // get all libraries available
-$logger->log(Logger::INFO, "#################### Getting all libraries");
-$libs = $libraryResource->getAll();
+    $logger->log(Logger::INFO, "#################### Getting all libraries");
+    $libs = $libraryResource->getAll();
 
-foreach ($libs as $lib) {
-    printf("Name: %s, ID: %s, is encrypted: %s\n", $lib->name, $lib->id, $lib->encrypted ? 'YES' : 'NO');
-}
+    foreach ($libs as $lib) {
+        printf("Name: %s, ID: %s, is encrypted: %s\n", $lib->name, $lib->id, $lib->encrypted ? 'YES' : 'NO');
+    }
 
-$libId = $cfg->testLibId;
+    $libId = $cfg->testLibId;
 
 // get specific library
-$logger->log(Logger::INFO, "#################### Getting lib with ID " . $libId);
-$lib = $libraryResource->getById($libId);
+    $logger->log(Logger::INFO, "#################### Getting lib with ID " . $libId);
+    $lib = $libraryResource->getById($libId);
 
-$lib->password = $cfg->testLibPassword; // library is encrypted and thus we provide a password
-$success       = $libraryResource->decrypt($libId, ['query' => ['password' => $cfg->testLibPassword]]);
+    $lib->password = $cfg->testLibPassword; // library is encrypted and thus we provide a password
+    $success = $libraryResource->decrypt($libId, ['query' => ['password' => $cfg->testLibPassword]]);
 
 // upload a Hello World file and random file name (note: this seems not to work at this time when you are not logged into the Seafile web frontend).
-$newFilename = './Seafile-PHP-SDK_Test_Upload.txt';
+    $newFilename = './Seafile-PHP-SDK_Test_Upload.txt';
 
-if (!file_exists($newFilename)) {
-    file_put_contents($newFilename, 'Hello World: ' . date('Y-m-d H:i:s'));
-}
+    if (!file_exists($newFilename)) {
+        file_put_contents($newFilename, 'Hello World: ' . date('Y-m-d H:i:s'));
+    }
 
-$logger->log(Logger::INFO, "#################### Uploading file " . $newFilename);
-$response = $fileResource->upload($lib, $newFilename, '/');
+    $logger->log(Logger::INFO, "#################### Uploading file " . $newFilename);
+    $response = $fileResource->upload($lib, $newFilename, '/');
 
 // create share link for a file
-$logger->log(Logger::INFO, "#################### Create share link for a file");
+    $logger->log(Logger::INFO, "#################### Create share link for a file");
 
-$expire    = 5;
-$shareType = SharedLinkType::SHARE_TYPE_DOWNLOAD;
-$p         = "/" . basename($newFilename);
-$password  = 'qwertz123';
+    $expire = 5;
+    $shareType = SharedLinkType::SHARE_TYPE_DOWNLOAD;
+    $p = "/" . basename($newFilename);
+    $password = 'qwertz123';
 
-$shareLinkType = $sharedLinkResource->create($lib, $p, $expire, $shareType, $password);
+    $shareLinkType = $sharedLinkResource->create($lib, $p, $expire, $shareType, $password);
 
-var_dump($shareLinkType);
+    var_dump($shareLinkType);
 
-$logger->log(Logger::INFO, "#################### Get all shared links");
-$response = $sharedLinkResource->getAll();
+    $logger->log(Logger::INFO, "#################### Get all shared links");
+    $response = $sharedLinkResource->getAll();
 
-var_dump($response);
+    var_dump($response);
 
+    $logger->log(Logger::INFO, "#################### Sleeping 10s before deleting the shared link");
+    sleep(10);
 
-$logger->log(Logger::INFO, "#################### Sleeping 10s before deleting the shared link");
-sleep(10);
+    $success = $sharedLinkResource->remove($shareLinkType);
 
-$success = $sharedLinkResource->remove($shareLinkType);
-
-if ($success) {
-    $logger->log(Logger::INFO, "#################### Shared link deleted");
-} else {
-    $logger->log(Logger::INFO, "#################### Could not delete share link");
+    if ($success) {
+        $logger->log(Logger::INFO, "#################### Shared link deleted");
+    } else {
+        $logger->log(Logger::INFO, "#################### Could not delete share link");
+    }
+} catch (\Exception $e) {
+    $logger->critical($e->getMessage());
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
+    $logger->critical($e->getMessage());
 }
 
 print(PHP_EOL . 'Done' . PHP_EOL);

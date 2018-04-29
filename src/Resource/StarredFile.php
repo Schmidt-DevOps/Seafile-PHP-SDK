@@ -5,7 +5,6 @@ namespace Seafile\Client\Resource;
 use Seafile\Client\Http\Client;
 use \Seafile\Client\Type\Library as LibraryType;
 use \Seafile\Client\Type\DirectoryItem;
-use \Seafile\Client\Type\StarredFile as StarredFileType;
 
 /**
  * Handles everything regarding Seafile starred files.
@@ -42,6 +41,7 @@ class StarredFile extends Resource
      *
      * @return DirectoryItem[]
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getAll(): array
     {
@@ -66,6 +66,7 @@ class StarredFile extends Resource
      *
      * @return string URL of starred file list
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function star(LibraryType $library, DirectoryItem $dirItem): string
     {
@@ -105,6 +106,7 @@ class StarredFile extends Resource
      * @param DirectoryItem $dirItem DirectoryItem instance
      *
      * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function unstar(LibraryType $library, DirectoryItem $dirItem): bool
     {

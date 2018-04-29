@@ -18,7 +18,7 @@ use Seafile\Client\Tests\TestCase;
 class ClientTest extends TestCase
 {
     /**
-     * Test base_uri empty
+     * Test that base_uri is empty by default.
      *
      * @return void
      */
@@ -29,7 +29,7 @@ class ClientTest extends TestCase
     }
 
     /**
-     * Test base_uri not empty
+     * Test that base_uri not empty when a value has been set.
      *
      * @return void
      */

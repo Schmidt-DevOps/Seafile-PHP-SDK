@@ -3,7 +3,7 @@
 namespace Seafile\Client\Tests\Resource;
 
 use GuzzleHttp\Psr7\Response;
-use Seafile\Client\Http\Client;
+use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Tests\Stubs\FileResourceStub;
 use Seafile\Client\Tests\TestCase;
@@ -27,6 +27,8 @@ class FileTest extends TestCase
      * Test getDownloadUrl()
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testGetDownloadUrl()
     {
@@ -65,6 +67,7 @@ class FileTest extends TestCase
      *
      * @return void
      * @dataProvider dataProviderTestUrlEncodePath
+     * @throws \ReflectionException
      */
     public function testUrlEncodePath(string $path, string $expectEncodedPath)
     {
@@ -82,6 +85,8 @@ class FileTest extends TestCase
      * Test getUploadUrl()
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testGetUploadLink()
     {
@@ -100,6 +105,7 @@ class FileTest extends TestCase
      *
      * @return void
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testDownloadFromDirFileExists()
     {
@@ -120,6 +126,7 @@ class FileTest extends TestCase
      *
      * @return void
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testUploadDoesNotExist()
     {
@@ -136,13 +143,14 @@ class FileTest extends TestCase
      *
      * @return void
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testDownloadFromDir()
     {
         $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
         $response = $fileResource->downloadFromDir(new Library(), new DirectoryItem(), '/some/path', '/', 1);
 
-        self::assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
+        self::assertInstanceOf(Response::class, $response);
     }
 
     /**
@@ -150,6 +158,7 @@ class FileTest extends TestCase
      *
      * @return void
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testDownload()
     {
@@ -157,7 +166,7 @@ class FileTest extends TestCase
         $response = $fileResource->download(new Library(), '/some/path', '/some/file', 1);
 
         // @todo Assert request query params
-        self::assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
+        self::assertInstanceOf(Response::class, $response);
     }
 
     /**
@@ -165,13 +174,14 @@ class FileTest extends TestCase
      *
      * @return void
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testUpload()
     {
         $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
         $response = $fileResource->upload(new Library(), sys_get_temp_dir(), '/');
 
-        self::assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
+        self::assertInstanceOf(Response::class, $response);
     }
 
     /**
@@ -185,13 +195,15 @@ class FileTest extends TestCase
         $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
         $response = $fileResource->update(new Library(), sys_get_temp_dir(), '/');
 
-        self::assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
+        self::assertInstanceOf(Response::class, $response);
     }
 
     /**
      * test getFileDetail()
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testGetFileDetail()
     {
@@ -204,8 +216,8 @@ class FileTest extends TestCase
 
         $response = $fileResource->getFileDetail(new Library(), '/Seafile-PHP-SDK_Test_Upload_jt64pq.txt');
 
-        self::assertInstanceOf('Seafile\Client\Type\DirectoryItem', $response);
-        self::assertInstanceOf('DateTime', $response->mtime);
+        self::assertInstanceOf(DirectoryItem::class, $response);
+        self::assertInstanceOf(\DateTime::class, $response->mtime);
         self::assertSame('Seafile-PHP-SDK_Test_Upload_jt64pq.txt', $response->name);
         self::assertSame('file', $response->type);
         self::assertequals('32', $response->size);
@@ -326,13 +338,14 @@ class FileTest extends TestCase
      * Test remove() with invalid file name
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testRemoveInvalidFilename()
     {
-        /**
-         * @var Client $mockedClient
-         */
-        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
+
         $fileResource = new File($mockedClient);
 
         $lib = new Library();
@@ -365,13 +378,14 @@ class FileTest extends TestCase
      * @return void
      * @expectedException \InvalidArgumentException
      * @dataProvider dataProviderTestRenameInvalidFilename
+     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testRenameInvalidFilename(string $invalidFilePath, string $invalidNewFilename)
     {
-        /**
-         * @var Client|\PHPUnit_Framework_MockObject_MockObject $mockedClient
-         */
-        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
+
         $fileResource = new File($mockedClient);
 
         $lib = new Library();
@@ -386,6 +400,7 @@ class FileTest extends TestCase
      * Data provider for testCopyInvalid()
      *
      * @return array
+     * @throws \Exception
      */
     public static function dataProviderCopyInvalid(): array
     {
@@ -409,13 +424,13 @@ class FileTest extends TestCase
      * @param array $data Test data
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testCopyInvalid(array $data)
     {
-        /**
-         * @var Client $mockedClient
-         */
-        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
+
         $fileResource = new File($mockedClient);
 
         $srcLib = $data[0];
@@ -431,6 +446,8 @@ class FileTest extends TestCase
      * Test remove()
      *
      * @return void
+     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testRemove()
     {
@@ -441,7 +458,9 @@ class FileTest extends TestCase
         );
 
         $deleteResponse = new Response(200, ['Content-Type' => 'text/plain']);
-        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+
+        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
         $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=test_dir';
@@ -471,9 +490,6 @@ class FileTest extends TestCase
                 }
             ));
 
-        /**
-         * @var Client $mockedClient
-         */
         $fileResource = new File($mockedClient);
 
         $lib = new Library();
@@ -486,6 +502,8 @@ class FileTest extends TestCase
      * Test rename()
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testRename()
     {
@@ -498,10 +516,8 @@ class FileTest extends TestCase
         $newFilename = 'test_file_renamed';
         $renameResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /**
-         * @var Client|\PHPUnit_Framework_MockObject_MockObject $mockedClient
-         */
-        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
         $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=/test_file';
@@ -562,6 +578,7 @@ class FileTest extends TestCase
      * @param array $data Data provided
      *
      * @return void
+     * @throws \Exception
      */
     public function testCopyMove(array $data)
     {
@@ -581,7 +598,9 @@ class FileTest extends TestCase
         $dstPath = '/target/file/path';
 
         $response = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
-        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+
+        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
         $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=' . $srcPath;
@@ -625,9 +644,6 @@ class FileTest extends TestCase
                 }
             ));
 
-        /**
-         * @var Client $mockedClient
-         */
         $fileResource = new File($mockedClient);
 
         self::assertTrue($fileResource->{$data['operation']}($sourceLib, $srcPath, $destLib, $dstPath));
@@ -637,14 +653,14 @@ class FileTest extends TestCase
      * Test move() with invalid destination dir
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testMoveInvalidDestination()
     {
-        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
-        /**
-         * @var Client $mockedClient
-         */
         $fileResource = new File($mockedClient);
 
         self::assertFalse(
@@ -661,6 +677,8 @@ class FileTest extends TestCase
      * Test getFileRevisionDownloadUrl()
      *
      * @return void
+     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testGetFileRevisionDownloadUrl()
     {
@@ -691,6 +709,7 @@ class FileTest extends TestCase
      *
      * @return void
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testDownloadRevision()
     {
@@ -707,7 +726,7 @@ class FileTest extends TestCase
         $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
         $response = $fileResource->downloadRevision($library, $dirItem, $fileHistoryItem, '/tmp/yo.txt');
 
-        self::assertInstanceOf('GuzzleHttp\Psr7\Response', $response);
+        self::assertInstanceOf(Response::class, $response);
 
         // @todo Expect certain request() call
     }
@@ -716,6 +735,8 @@ class FileTest extends TestCase
      * Test getHistory()
      *
      * @return void
+     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testGetHistory()
     {
@@ -735,7 +756,7 @@ class FileTest extends TestCase
         self::assertInternalType('array', $fileHistoryItems);
 
         foreach ($fileHistoryItems as $fileHistoryItem) {
-            self::assertInstanceOf('Seafile\Client\Type\FileHistoryItem', $fileHistoryItem);
+            self::assertInstanceOf(FileHistoryItem::class, $fileHistoryItem);
         }
     }
 
@@ -743,6 +764,8 @@ class FileTest extends TestCase
      * Test create() with invalid DirectoryItem
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testCreateInvalid()
     {
@@ -755,6 +778,8 @@ class FileTest extends TestCase
      * Test create() with valid DirectoryItem
      *
      * @return void
+     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testCreate()
     {

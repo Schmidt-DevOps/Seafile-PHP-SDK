@@ -49,7 +49,7 @@ abstract class Type implements TypeInterface
      * @return self
      * @throws \Exception
      */
-    public function fromArray(array $fromArray): TypeInterface
+    public function fromArray(array $fromArray) // type is given in derived class
     {
         foreach ($fromArray as $key => $value) {
             $camelCaseKey = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_SNAKE_CASE)->toCamelCase($key);
@@ -99,10 +99,10 @@ abstract class Type implements TypeInterface
      *
      * @param \stdClass $jsonResponse Json response
      *
-     * @return TypeInterface|DirectoryItem
+     * @return self
      * @throws \Exception
      */
-    public function fromJson(\stdClass $jsonResponse): TypeInterface
+    public function fromJson(\stdClass $jsonResponse) // type is given in derived class
     {
         $this->fromArray((array)$jsonResponse);
 

@@ -20,6 +20,7 @@ class Group extends Resource
      *
      * @return GroupType[]
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getAll(): array
     {

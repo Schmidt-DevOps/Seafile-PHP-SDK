@@ -12,6 +12,7 @@ use DateTime;
  * @copyright 2015-2017 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
+ * @method DirectoryItem fromJson(\stdClass $jsonResponse)
  */
 class DirectoryItem extends Type
 {
@@ -71,7 +72,7 @@ class DirectoryItem extends Type
      * @return DirectoryItem
      * @throws \Exception
      */
-    public function fromArray(array $fromArray): TypeInterface
+    public function fromArray(array $fromArray): DirectoryItem
     {
         $typeExists = array_key_exists('type', $fromArray);
         $dirExists = array_key_exists('dir', $fromArray);

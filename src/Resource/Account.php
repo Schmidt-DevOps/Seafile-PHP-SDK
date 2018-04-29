@@ -4,6 +4,7 @@ namespace Seafile\Client\Resource;
 
 use Seafile\Client\Type\Type;
 use \Seafile\Client\Type\Account as AccountType;
+use Seafile\Client\Type\TypeInterface;
 
 /**
  * Handles everything regarding Seafile accounts.
@@ -23,6 +24,7 @@ class Account extends Resource
      *
      * @return AccountType[]
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getAll(): array
     {
@@ -48,6 +50,7 @@ class Account extends Resource
      *
      * @return AccountType
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getByEmail(string $emailAddress): AccountType
     {
@@ -65,14 +68,17 @@ class Account extends Resource
     /**
      * Get Account info
      *
-     * @return AccountType
+     * @param string $emailAddress Email address to get info of
+     *
+     * @return AccountType|TypeInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Exception
      */
-    public function getInfo(): AccountType
+    public function getInfo(string $emailAddress): TypeInterface
     {
         $response = $this->client->request(
             'GET',
-            $this->client->getConfig('base_uri') . '/account/info/'
+            $this->client->getConfig('base_uri') . '/accounts/' . $emailAddress . '/'
         );
 
         $json = json_decode($response->getBody());

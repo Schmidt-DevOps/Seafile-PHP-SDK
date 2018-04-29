@@ -43,59 +43,65 @@ $tokenFile = getenv("HOME") . "/.seafile-php-sdk/api-token.json";
  */
 $cfgFile = getenv("HOME") . "/.seafile-php-sdk/cfg.json";
 
-if (!is_readable($tokenFile)) {
-    throw new Exception($tokenFile . ' is not readable or does not exist.');
-}
+try {
+    if (!is_readable($tokenFile)) {
+        throw new Exception($tokenFile . ' is not readable or does not exist.');
+    }
 
-if (!is_readable($cfgFile)) {
-    throw new Exception($cfgFile . ' is not readable or does not exist.');
-}
+    if (!is_readable($cfgFile)) {
+        throw new Exception($cfgFile . ' is not readable or does not exist.');
+    }
 
-$token = json_decode(file_get_contents($tokenFile));
-$cfg   = json_decode(file_get_contents($cfgFile));
+    $token = json_decode(file_get_contents($tokenFile));
+    $cfg = json_decode(file_get_contents($cfgFile));
 
-$client = new Client(
-    [
-        'base_uri' => $cfg->baseUri,
-        'debug'    => true,
-        'handler'  => $stack,
-        'headers'  => [
-            'Content-Type'  => 'application/json',
-            'Authorization' => 'Token ' . $token->token,
-        ],
-    ]
-);
+    $client = new Client(
+        [
+            'base_uri' => $cfg->baseUri,
+            'debug'    => true,
+            'handler'  => $stack,
+            'headers'  => [
+                'Content-Type'  => 'application/json',
+                'Authorization' => 'Token ' . $token->token,
+            ],
+        ]
+    );
 
-$libraryResource     = new Library($client);
-$directoryResource   = new Directory($client);
-$fileResource        = new File($client);
-$starredFileResource = new StarredFile($client);
+    $libraryResource = new Library($client);
+    $directoryResource = new Directory($client);
+    $fileResource = new File($client);
+    $starredFileResource = new StarredFile($client);
 
 // get all starred files
-$logger->log(Logger::INFO, "#################### Getting all starred files");
-$dirItems = $starredFileResource->getAll();
+    $logger->log(Logger::INFO, "#################### Getting all starred files");
+    $dirItems = $starredFileResource->getAll();
 
-if (!empty($dirItems)) {
-    foreach ($dirItems as $dirItem) {
-        var_dump($dirItem);
+    if (!empty($dirItems)) {
+        foreach ($dirItems as $dirItem) {
+            var_dump($dirItem);
+        }
+
+        $logger->log(Logger::INFO, "#################### Unstarring files...");
+
+        foreach ($dirItems as $dirItem) {
+            $lib = $libraryResource->getById($dirItem->repo);
+            $starredFileResource->unstar($lib, $dirItem);
+        }
+
+        $logger->log(Logger::INFO, "#################### Sleeping 10s before starring them again...");
+        sleep(10);
+
+        foreach ($dirItems as $dirItem) {
+            $lib = $libraryResource->getById($dirItem->repo);
+            $starredFileResource->star($lib, $dirItem);
+        }
+    } else {
+        $logger->log(Logger::DEBUG, "#################### No starred files found.");
     }
-
-    $logger->log(Logger::INFO, "#################### Unstarring files...");
-
-    foreach ($dirItems as $dirItem) {
-        $lib = $libraryResource->getById($dirItem->repo);
-        $starredFileResource->unstar($lib, $dirItem);
-    }
-
-    $logger->log(Logger::INFO, "#################### Sleeping 10s before starring them again...");
-    sleep(10);
-
-    foreach ($dirItems as $dirItem) {
-        $lib = $libraryResource->getById($dirItem->repo);
-        $starredFileResource->star($lib, $dirItem);
-    }
-} else {
-    $logger->log(Logger::DEBUG, "#################### No starred files found.");
+} catch (\Exception $e) {
+    $logger->critical($e->getMessage());
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
+    $logger->critical($e->getMessage());
 }
 
 print(PHP_EOL . 'Done' . PHP_EOL);

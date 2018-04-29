@@ -131,7 +131,9 @@ try {
 
     }
 } catch (\Exception $e) {
-    print("Exception: " . $e->getMessage());
+    $logger->critical($e->getMessage());
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
+    $logger->critical($e->getMessage());
 }
 
 print(PHP_EOL . 'Done' . PHP_EOL);

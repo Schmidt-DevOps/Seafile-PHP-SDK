@@ -5,6 +5,7 @@ namespace Seafile\Client\Tests\Resource;
 use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Resource\Group;
 use Seafile\Client\Tests\TestCase;
+use Seafile\Client\Type\Group as GroupType;
 
 /**
  * Group resource test
@@ -22,6 +23,7 @@ class GroupTest extends TestCase
      * Test getAll()
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testGetAll()
     {
@@ -38,7 +40,7 @@ class GroupTest extends TestCase
         self::assertInternalType('array', $groups);
 
         foreach ($groups as $group) {
-            self::assertInstanceOf('Seafile\Client\Type\Group', $group);
+            self::assertInstanceOf(GroupType::class, $group);
         }
     }
 }

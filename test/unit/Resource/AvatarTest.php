@@ -3,7 +3,8 @@
 namespace Seafile\Client\Tests\Resource;
 
 use GuzzleHttp\Psr7\Response;
-use Seafile\Client\Http\Client;
+use Seafile\Client\Http\Client as SeafileHttpClient;
+use Seafile\Client\Type\Avatar;
 use Seafile\Client\Type\Library as LibraryType;
 use Seafile\Client\Type\Group as GroupType;
 use Seafile\Client\Resource\Avatar as AvatarResource;
@@ -57,6 +58,7 @@ class AvatarTest extends TestCase
      * Test getGroupAvatarByEmail()
      *
      * @return void
+     * @throws \Exception
      */
     public function testGetGroupAvatarByEmail()
     {
@@ -75,13 +77,14 @@ class AvatarTest extends TestCase
      * @param string           $baseUri  Base URI
      * @param string           $resource Resource string
      * @param string|GroupType $entity   Resource entity
-     * @param int              $size     Avatar size in pixels
+     * @param string           $size     Avatar size in pixels
      *
      * @return void
      */
     protected function doGetAvatar(string $method, string $baseUri, string $resource, $entity, string $size)
     {
-        $mockedClient = $this->createPartialMock('\Seafile\Client\Http\Client', ['get', 'getConfig']);
+        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        $mockedClient = $this->createPartialMock(SeafileHttpClient::class, ['get', 'getConfig']);
 
         $id = ($entity instanceof GroupType ? $entity->id : $entity);
 
@@ -101,13 +104,12 @@ class AvatarTest extends TestCase
             ->with('base_uri')
             ->willReturn($baseUri);
 
-        /** @var Client $mockedClient */
         $avatarResource = new AvatarResource($mockedClient);
 
         $avatarType = $avatarResource->{$method}($entity, $size);
 
-        self::assertInstanceOf('Seafile\Client\Type\Avatar', $avatarType);
-        self::assertInstanceOf('DateTime', $avatarType->mtime);
+        self::assertInstanceOf(Avatar::class, $avatarType);
+        self::assertInstanceOf(\DateTime::class, $avatarType->mtime);
         self::assertSame('1970-01-01T00:00:00+0000', $avatarType->mtime->format(DATE_ISO8601));
     }
 
@@ -115,11 +117,14 @@ class AvatarTest extends TestCase
      * Test getAvatar() with illegal type instance
      *
      * @return void
+     * @throws \Exception
      */
     public function testGetAvatarIllegalType()
     {
         $baseUri = 'https://example.com/';
-        $mockedClient = $this->createMock('\Seafile\Client\Http\Client');
+
+        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $libraryType = new LibraryType();
 
@@ -128,7 +133,6 @@ class AvatarTest extends TestCase
             ->with('base_uri')
             ->willReturn($baseUri);
 
-        /** @var Client $mockedClient */
         $avatarResource = new AvatarResource($mockedClient);
 
         $this->expectException('Exception');

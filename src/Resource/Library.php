@@ -20,6 +20,7 @@ class Library extends Resource
      *
      * @return LibraryType[]
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getAll(): array
     {
@@ -43,6 +44,7 @@ class Library extends Resource
      *
      * @return LibraryType
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getById($libraryId): LibraryType
     {
@@ -65,6 +67,7 @@ class Library extends Resource
      * @return bool Decryption success
      *
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function decrypt($libraryId, array $options): bool
     {
@@ -92,6 +95,7 @@ class Library extends Resource
      *
      * @return bool
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function exists($value, $attribute = 'name'): bool
     {
@@ -115,6 +119,7 @@ class Library extends Resource
      *
      * @return bool
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function create($name, $description = "new repo", $password = ''): bool
     {
@@ -169,6 +174,7 @@ class Library extends Resource
      * @param string $libraryId Library ID
      *
      * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function remove($libraryId): bool
     {

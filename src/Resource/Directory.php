@@ -24,6 +24,7 @@ class Directory extends Resource
      *
      * @return DirectoryItem[]
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getAll(LibraryType $library, string $dir = '/')
     {
@@ -64,6 +65,7 @@ class Directory extends Resource
      *
      * @return bool
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function exists(LibraryType $library, string $dirItemName, string $parentDir = '/')
     {
@@ -88,6 +90,7 @@ class Directory extends Resource
      *
      * @return bool Success
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function create(LibraryType $library, string $dirName, string $parentDir = '/', bool $recursive = false)
     {
@@ -150,6 +153,7 @@ class Directory extends Resource
      * @param string      $directoryPath Directory path
      *
      * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function remove(LibraryType $library, string $directoryPath)
     {
@@ -184,6 +188,7 @@ class Directory extends Resource
      * @param string      $newDirectoryName New directory name
      *
      * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function rename(LibraryType $library, string $directoryPath, string $newDirectoryName)
     {

@@ -3,7 +3,7 @@
 namespace Seafile\Client\Tests\Resource;
 
 use GuzzleHttp\Psr7\Response;
-use Seafile\Client\Http\Client;
+use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Multi;
 use Seafile\Client\Tests\TestCase;
 use Seafile\Client\Type\Library;
@@ -24,14 +24,14 @@ class MultiTest extends TestCase
      * Test delete() with empty paths
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testDeleteEmpty()
     {
-        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
-        /**
-         * @var Client $mockedClient
-         */
         $multiResource = new Multi($mockedClient);
 
         $lib = new Library();
@@ -43,14 +43,14 @@ class MultiTest extends TestCase
      * Test copy() and move() with empty paths
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testCopyMoveEmpty()
     {
-        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
-        /**
-         * @var Client $mockedClient
-         */
         $multiResource = new Multi($mockedClient);
 
         $lib = new Library();
@@ -107,6 +107,8 @@ class MultiTest extends TestCase
      * @param array $data DataProvider data
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testDelete(array $data)
     {
@@ -120,7 +122,9 @@ class MultiTest extends TestCase
         $deletePaths = $data['deletePaths'];
 
         $deleteResponse = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
-        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+
+        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
         $expectUri = 'http://example.com/repos/some-crazy-id/fileops/delete/?p=/some_dir';
@@ -156,9 +160,6 @@ class MultiTest extends TestCase
                 }
             ));
 
-        /**
-         * @var Client $mockedClient
-         */
         $fileResource = new Multi($mockedClient);
 
         $lib = new Library();
@@ -246,6 +247,8 @@ class MultiTest extends TestCase
      * @param array $data DataProvider data
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testCopyMove(array $data)
     {
@@ -266,7 +269,9 @@ class MultiTest extends TestCase
         $filePaths = $data['filePaths'];
 
         $deleteResponse = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
-        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+
+        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
         $expectUri = 'http://example.com/repos/some-crazy-id/fileops/' . $data ['operation'] . '/?p=/some_dir';
@@ -310,9 +315,6 @@ class MultiTest extends TestCase
                 }
             ));
 
-        /**
-         * @var Client $mockedClient
-         */
         $fileResource = new Multi($mockedClient);
 
         self::assertSame(

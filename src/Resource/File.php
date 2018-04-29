@@ -4,6 +4,7 @@ namespace Seafile\Client\Resource;
 
 use Exception;
 use GuzzleHttp\Psr7\Response;
+use http\Env\Request;
 use Seafile\Client\Type\DirectoryItem;
 use Seafile\Client\Type\FileHistoryItem;
 use \Seafile\Client\Type\Library as LibraryType;
@@ -43,6 +44,7 @@ class File extends Resource
      * @param int           $reuse   Reuse more than once per hour
      *
      * @return string
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getDownloadUrl(LibraryType $library, DirectoryItem $item, string $dir = '/', int $reuse = 1)
     {
@@ -82,6 +84,7 @@ class File extends Resource
      *
      * @return Response
      * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function downloadFromDir(
         LibraryType $library,
@@ -109,6 +112,7 @@ class File extends Resource
      *
      * @return Response
      * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function download(LibraryType $library, string $filePath, string $localFilePath, int $reuse = 1)
     {
@@ -143,6 +147,7 @@ class File extends Resource
      * @param bool        $newFile Is new file (=upload) or not (=update)
      *
      * @return String Upload link
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getUploadUrl(LibraryType $library, bool $newFile = true)
     {
@@ -221,6 +226,7 @@ class File extends Resource
      *
      * @return Response
      * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function upload(
         LibraryType $library,
@@ -250,6 +256,8 @@ class File extends Resource
      * @param string      $remoteFilePath Remote file path
      *
      * @return DirectoryItem
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
      */
     public function getFileDetail(LibraryType $library, string $remoteFilePath): DirectoryItem
     {
@@ -273,6 +281,7 @@ class File extends Resource
      * @param string      $filePath File path
      *
      * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function remove(LibraryType $library, string $filePath): bool
     {
@@ -307,6 +316,7 @@ class File extends Resource
      * @param string        $newFilename New file name
      *
      * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function rename(LibraryType $library, DirectoryItem $dirItem, string $newFilename): bool
     {
@@ -364,6 +374,7 @@ class File extends Resource
      * @param int         $operation        Operation mode
      *
      * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function copy(
         LibraryType $srcLibrary,
@@ -426,6 +437,7 @@ class File extends Resource
      * @param string      $dstDirectoryPath Destination directory path
      *
      * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function move(
         LibraryType $srcLibrary,
@@ -444,6 +456,7 @@ class File extends Resource
      * @param FileHistoryItem $fileHistoryItem FileHistory item instance
      *
      * @return Response
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getFileRevisionDownloadUrl(
         LibraryType $library,
@@ -471,6 +484,7 @@ class File extends Resource
      * @param string          $localFilePath   Save file to path. Existing files will be overwritten without warning
      *
      * @return Response
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function downloadRevision(
         LibraryType $library,
@@ -490,6 +504,8 @@ class File extends Resource
      * @param DirectoryItem $item    Item instance
      *
      * @return FileHistoryItem[]
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
      */
     public function getHistory(LibraryType $library, DirectoryItem $item)
     {
@@ -519,6 +535,7 @@ class File extends Resource
      * @param DirectoryItem $item    Item instance
      *
      * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function create(LibraryType $library, DirectoryItem $item): bool
     {

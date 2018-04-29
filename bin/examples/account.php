@@ -50,6 +50,8 @@ try {
         throw new Exception($cfgFile . ' is not readable or does not exist.');
     }
 
+    $emailAddress = uniqid('test-', true) . '@example.com';
+
     $token = json_decode(file_get_contents($tokenFile));
     $cfg = json_decode(file_get_contents($cfgFile));
 
@@ -67,15 +69,7 @@ try {
 
     $accountResource = new Account($client);
 
-// get API user info
-    $logger->log(Logger::INFO, "#################### Getting API user info");
-    $accountType = $accountResource->getInfo();
-
-    foreach ((array)$accountType as $key => $value) {
-        $logger->log(Logger::INFO, $key . ': ' . $value);
-    }
-
-// get all users
+    // get all users
     $logger->log(Logger::INFO, "#################### Get all users");
     $accountTypes = $accountResource->getAll();
 
@@ -83,16 +77,16 @@ try {
         $logger->log(Logger::INFO, $accountType->email);
     }
 
-// create random account
+    // create random account
     $logger->log(Logger::INFO, "#################### Create random account");
 
     $newAccountType = (new AccountType)->fromArray([
-        'email'       => uniqid('test-', true) . '@example.com',
-        'password'    => md5(uniqid('t.gif', true)),
-        'name'        => 'Hugh Jazz',
-        'note'        => 'I will not waste chalk',
-        'storage'     => 100000000,
-        'institution' => 'Duff Beer Inc.',
+        'email'    => $emailAddress,
+        'password' => md5(uniqid('t.gif', true)),
+        'name'     => 'Hugh Jazz',
+        'note'     => 'I will not waste chalk',
+        'storage'  => 100000000
+        //'institution' => 'Duff Beer Inc.',
     ]);
 
     $success = $accountResource->create($newAccountType);
@@ -109,6 +103,19 @@ try {
                 $logger->log(Logger::INFO, $key . ': ' . $value);
             }
         }
+
+        // Add avatar image
+
+
+        // get API user info
+        $logger->log(Logger::INFO, "#################### Getting API user info");
+        $accountType = $accountResource->getInfo($emailAddress);
+
+        foreach ((array)$accountType as $key => $value) {
+            $logger->log(Logger::INFO, $key . ': ' . print_r($value, true));
+        }
+
+
     } else {
         $logger->log(Logger::ALERT, 'Could not create account ' . $newAccountType->email);
     }
@@ -155,6 +162,8 @@ try {
 //
 } catch (\Exception $e) {
     print("Exception: " . $e->getMessage());
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
+    print("GuzzleException: " . $e->getMessage());
 }
 
 print(PHP_EOL . 'Done' . PHP_EOL);

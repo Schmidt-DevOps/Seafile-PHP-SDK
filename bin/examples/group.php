@@ -29,38 +29,44 @@ $stack->push(
  * {"token": "your_token"}
  */
 $tokenFile = getenv("HOME") . "/.seafile-php-sdk/api-token.json";
-$cfgFile   = getenv("HOME") . "/.seafile-php-sdk/cfg.json";
+$cfgFile = getenv("HOME") . "/.seafile-php-sdk/cfg.json";
 
-if (!is_readable($tokenFile)) {
-    throw new Exception($tokenFile . ' is not readable or does not exist.');
-}
+try {
+    if (!is_readable($tokenFile)) {
+        throw new Exception($tokenFile . ' is not readable or does not exist.');
+    }
 
-if (!is_readable($cfgFile)) {
-    throw new Exception($cfgFile . ' is not readable or does not exist.');
-}
+    if (!is_readable($cfgFile)) {
+        throw new Exception($cfgFile . ' is not readable or does not exist.');
+    }
 
-$token = json_decode(file_get_contents($tokenFile));
-$cfg   = json_decode(file_get_contents($cfgFile));
+    $token = json_decode(file_get_contents($tokenFile));
+    $cfg = json_decode(file_get_contents($cfgFile));
 
-$client = new Client(
-    [
-        'base_uri' => $cfg->baseUri,
-        'debug'    => true,
-        'handler'  => $stack,
-        'headers'  => [
-            'Content-Type'  => 'application/json',
-            'Authorization' => 'Token ' . $token->token,
-        ],
-    ]
-);
+    $client = new Client(
+        [
+            'base_uri' => $cfg->baseUri,
+            'debug'    => true,
+            'handler'  => $stack,
+            'headers'  => [
+                'Content-Type'  => 'application/json',
+                'Authorization' => 'Token ' . $token->token,
+            ],
+        ]
+    );
 
-$groupResource = new Group($client);
-$logger->log(Logger::INFO, "#################### Get all groups ");
+    $groupResource = new Group($client);
+    $logger->log(Logger::INFO, "#################### Get all groups ");
 
-$groups = $groupResource->getAll();
+    $groups = $groupResource->getAll();
 
-foreach ($groups as $group) {
-    $logger->log(Logger::INFO, "#################### " . sprintf("Group name: %s", $group->name));
+    foreach ($groups as $group) {
+        $logger->log(Logger::INFO, "#################### " . sprintf("Group name: %s", $group->name));
+    }
+} catch (\Exception $e) {
+    $logger->critical($e->getMessage());
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
+    $logger->critical($e->getMessage());
 }
 
 print(PHP_EOL . 'Done' . PHP_EOL);

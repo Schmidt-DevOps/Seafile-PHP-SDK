@@ -3,6 +3,7 @@
 namespace Seafile\Client\Tests\Type;
 
 use Seafile\Client\Tests\TestCase;
+use Seafile\Client\Type\Account;
 use Seafile\Client\Type\Type;
 use Seafile\Client\Type\DirectoryItem;
 use Seafile\Client\Type\Account as AccountType;
@@ -24,6 +25,7 @@ class TypeTest extends TestCase
      * Test fromArray()
      *
      * @return void
+     * @throws \Exception
      */
     public function testFromArray()
     {
@@ -44,6 +46,7 @@ class TypeTest extends TestCase
      * Test fromArray() with a non-existing property
      *
      * @return void
+     * @throws \Exception
      */
     public function testFromArrayPropertyMissing()
     {
@@ -75,6 +78,7 @@ class TypeTest extends TestCase
      * Test fromArray() with create_time property
      *
      * @return void
+     * @throws \Exception
      */
     public function testFromArrayCreateTime()
     {
@@ -89,6 +93,7 @@ class TypeTest extends TestCase
      * Test fromJson() with create_time property
      *
      * @return void
+     * @throws \Exception
      */
     public function testFromJsonCreateTime()
     {
@@ -105,6 +110,7 @@ class TypeTest extends TestCase
      * Test toJson()
      *
      * @return void
+     * @throws \Exception
      */
     public function testJson()
     {
@@ -146,6 +152,7 @@ class TypeTest extends TestCase
      *
      * @return void
      * @dataProvider dataProviderTestToArrayAssoc
+     * @throws \Exception
      */
     public function testToArrayAssoc(array $data)
     {
@@ -185,6 +192,7 @@ class TypeTest extends TestCase
      *
      * @return void
      * @dataProvider dataProviderTestToArrayMultiPart
+     * @throws \Exception
      */
     public function testToArrayMultiPart(array $data)
     {
@@ -199,12 +207,13 @@ class TypeTest extends TestCase
      * Must yield AccountType instance
      *
      * @return void
+     * @throws \Exception
      */
     public function testFromArrayCreator()
     {
         $email = 'someone@example.com';
         $groupType = (new GroupType())->fromArray(['creator' => $email]);
-        self::assertInstanceOf('Seafile\Client\Type\Account', $groupType->creator);
+        self::assertInstanceOf(Account::class, $groupType->creator);
         self::assertSame($email, $groupType->creator->email);
     }
 }
