@@ -29,6 +29,10 @@ class FileResourceStub extends File
      */
     public function getDownloadUrl(LibraryType $library, DirectoryItem $item, string $dir = '/', int $reuse = 1)
     {
+        $library = null;
+        $item    = null;
+        $dir     = null;
+        $reuse   = null;
         return 'http://download.example.com/';
     }
 
@@ -42,6 +46,8 @@ class FileResourceStub extends File
      */
     public function getUploadUrl(LibraryType $library, bool $newFile = true)
     {
+        $library = null;
+        $newFile = null;
         return 'http://upload.example.com/';
     }
 }

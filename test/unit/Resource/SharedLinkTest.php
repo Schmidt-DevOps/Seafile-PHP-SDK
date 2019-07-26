@@ -40,7 +40,7 @@ class SharedLinkTest extends TestCase
 
         $sharedLinks = $sharedLinkResource->getAll();
 
-        self::assertInternalType('array', $sharedLinks);
+        self::assertIsArray($sharedLinks);
 
         foreach ($sharedLinks as $sharedLink) {
             self::assertInstanceOf(SharedLinkType::class, $sharedLink);
@@ -71,7 +71,7 @@ class SharedLinkTest extends TestCase
         $mockedClient->expects(self::any())
             ->method('request')
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($removeResponse, $expectUri, $expectParams) {
+                function () use ($removeResponse, $expectUri, $expectParams) {
                     return $removeResponse;
                 }
             ));

@@ -37,7 +37,7 @@ class GroupTest extends TestCase
 
         $groups = $groupResource->getAll();
 
-        self::assertInternalType('array', $groups);
+        self::assertIsArray($groups);
 
         foreach ($groups as $group) {
             self::assertInstanceOf(GroupType::class, $group);

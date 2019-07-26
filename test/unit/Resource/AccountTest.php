@@ -38,7 +38,7 @@ class AccountTest extends TestCase
 
         $libs = $accountResource->getAll();
 
-        self::assertInternalType('array', $libs);
+        self::assertIsArray($libs);
 
         foreach ($libs as $lib) {
             self::assertInstanceOf(AccountType::class, $lib);

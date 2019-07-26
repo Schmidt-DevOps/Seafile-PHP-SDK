@@ -39,7 +39,7 @@ class LibraryTest extends TestCase
 
         $libs = $libraryResource->getAll();
 
-        self::assertInternalType('array', $libs);
+        self::assertIsArray($libs);
 
         foreach ($libs as $lib) {
             self::assertInstanceOf(LibraryType::class, $lib);
