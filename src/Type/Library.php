@@ -12,6 +12,8 @@ use DateTime;
  * @copyright 2015-2017 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
+ * @method Library fromJson(\stdClass $jsonResponse)
+ * @method Library fromArray(array $fromArray)
  */
 class Library extends Type
 {

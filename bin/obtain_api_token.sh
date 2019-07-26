@@ -19,17 +19,19 @@ urlencode() {
 
 while [[ "$username" == "" ]];
 do
-    read -p "Enter user name/email address (will not be saved, press CTRL-C to abort): " username
+    read -p "Enter user name/email address of your Seafile server account (will not be saved, press CTRL-C to abort): " username
 done
 
 while [[ "$password" == "" ]];
 do
-    read -p "Enter password (will visible but not saved; press CTRL-C to abort): " password
+    read -p "Enter password of your account (will be visible but not saved; press CTRL-C to abort): " password
 done
 
 while [[ "$hostname" == "" ]];
 do
-    read -p "Enter Seafile server hostname (without schema and slashes, press CTRL-C to abort): " hostname
+    echo "Enter Seafile server hostname (without schema and slashes, for example: seafile.example.com)"
+    echo "Please note that this script does not support Two Factor Authentication."
+    read -p "(press CTRL-C to abort): " hostname
 done
 
 token_path=~/.seafile-php-sdk/api-token.json

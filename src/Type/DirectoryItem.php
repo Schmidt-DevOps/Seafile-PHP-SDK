@@ -12,6 +12,7 @@ use DateTime;
  * @copyright 2015-2017 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
+ * @method DirectoryItem fromJson(\stdClass $jsonResponse)
  */
 class DirectoryItem extends Type
 {
@@ -36,17 +37,17 @@ class DirectoryItem extends Type
     public $name = "";
 
     /**
-     * @var int
+     * @var int|null
      */
     public $org = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $path = null;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $repo = null;
 
@@ -60,20 +61,24 @@ class DirectoryItem extends Type
      */
     public $type = "";
 
+    const TYPE_DIR = 'dir';
+    const TYPE_FILE = 'file';
+
     /**
      * Populate from array
      *
      * @param array $fromArray Create from array
      *
-     * @return static
+     * @return DirectoryItem
+     * @throws \Exception
      */
-    public function fromArray(array $fromArray)
+    public function fromArray(array $fromArray): DirectoryItem
     {
         $typeExists = array_key_exists('type', $fromArray);
-        $dirExists  = array_key_exists('dir', $fromArray);
+        $dirExists = array_key_exists('dir', $fromArray);
 
         if ($typeExists === false && $dirExists === true && is_bool($fromArray['dir'])) {
-            $fromArray['type'] = $fromArray['dir'] === true ? 'dir' : 'file';
+            $fromArray['type'] = $fromArray['dir'] === true ? self::TYPE_DIR : self::TYPE_FILE;
         }
 
         /**

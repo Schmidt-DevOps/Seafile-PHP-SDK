@@ -34,9 +34,14 @@ class Multi extends Resource
      * @param string      $dstDirectoryPath Destination directory Path
      *
      * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function move(LibraryType $srcLibrary, array $srcPaths, LibraryType $dstLibrary, $dstDirectoryPath)
-    {
+    public function move(
+        LibraryType $srcLibrary,
+        array $srcPaths,
+        LibraryType $dstLibrary,
+        string $dstDirectoryPath
+    ): bool {
         return $this->copy($srcLibrary, $srcPaths, $dstLibrary, $dstDirectoryPath, self::OPERATION_MOVE);
     }
 
@@ -50,14 +55,15 @@ class Multi extends Resource
      * @param int         $operation        self::OPERATION_COPY or self::OPERATION_MOVE
      *
      * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function copy(
         LibraryType $srcLibrary,
         array $srcPaths,
         LibraryType $dstLibrary,
-        $dstDirectoryPath,
-        $operation = self::OPERATION_COPY
-    ) {
+        string $dstDirectoryPath,
+        int $operation = self::OPERATION_COPY
+    ): bool {
         // do not allow empty paths
         if (empty($srcPaths) || empty($dstDirectoryPath)) {
             return false;
@@ -119,7 +125,7 @@ class Multi extends Resource
      *
      * @return string
      */
-    protected function preparePaths($folder, array $paths, $fileNames = '')
+    protected function preparePaths(string $folder, array $paths, string $fileNames = ''): string
     {
         foreach ($paths as $path) {
             if (dirname($path) != $folder) {
@@ -141,8 +147,9 @@ class Multi extends Resource
      * @param array       $paths   Array with file and folder paths (they must be in the same folder)
      *
      * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function delete(LibraryType $library, array $paths)
+    public function delete(LibraryType $library, array $paths): bool
     {
         // do not allow empty paths
         if (empty($paths)) {

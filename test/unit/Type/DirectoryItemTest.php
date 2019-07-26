@@ -17,7 +17,6 @@ use Seafile\Client\Type\DirectoryItem;
  */
 class DirectoryItemTest extends TestCase
 {
-
     /**
      * DataProvider for testFromArray()
      *
@@ -49,6 +48,8 @@ class DirectoryItemTest extends TestCase
      *
      * @return void
      * @dataProvider dataFromArray
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testFromArray(array $data)
     {

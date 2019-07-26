@@ -15,15 +15,16 @@ use \Seafile\Client\Type\Library as LibraryType;
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-class SharedLink extends Resource
+class SharedLink extends Resource implements ResourceInterface
 {
-
     /**
      * List shared links
      *
      * @return SharedLinkType[]
+     * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getAll()
+    public function getAll(): array
     {
         $response = $this->client->request('GET', $this->client->getConfig('base_uri') . '/shared-links/');
 
@@ -44,8 +45,9 @@ class SharedLink extends Resource
      * @param SharedLinkType $sharedLinkType SharedLinkType instance
      *
      * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function remove(SharedLinkType $sharedLinkType)
+    public function remove(SharedLinkType $sharedLinkType): bool
     {
         $uri = sprintf(
             '%s/shared-links/?t=%s',
@@ -73,16 +75,17 @@ class SharedLink extends Resource
      * @param string      $shareType Share type
      * @param string      $password  Optional password string
      *
-     * @return SharedLinkType
+     * @return SharedLinkType|null
      * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function create(
         LibraryType $library,
-        $path,
-        $expire = null,
-        $shareType = SharedLinkType::SHARE_TYPE_DOWNLOAD,
-        $password = null
-    ) {
+        string $path,
+        int $expire = null,
+        string $shareType = SharedLinkType::SHARE_TYPE_DOWNLOAD,
+        string $password = null
+    ): ?SharedLinkType {
         $uri = sprintf(
             '%s/repos/%s/file/shared-link/',
             $this->clipUri($this->client->getConfig('base_uri')),

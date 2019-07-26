@@ -41,104 +41,111 @@ $tokenFile = getenv("HOME") . "/.seafile-php-sdk/api-token.json";
  */
 $cfgFile = getenv("HOME") . "/.seafile-php-sdk/cfg.json";
 
-if (!is_readable($tokenFile)) {
-    throw new Exception($tokenFile . ' is not readable or does not exist.');
-}
-
-if (!is_readable($cfgFile)) {
-    throw new Exception($cfgFile . ' is not readable or does not exist.');
-}
-
-$token = json_decode(file_get_contents($tokenFile));
-$cfg   = json_decode(file_get_contents($cfgFile));
-
-$client = new Client(
-    [
-        'base_uri' => $cfg->baseUri,
-        'debug'    => true,
-        'handler'  => $stack,
-        'headers'  => [
-            'Content-Type'  => 'application/json',
-            'Authorization' => 'Token ' . $token->token,
-        ],
-    ]
-);
-
-$accountResource = new Account($client);
-
-// get API user info
-$logger->log(Logger::INFO, "#################### Getting API user info");
-$accountType = $accountResource->getInfo();
-
-foreach ((array)$accountType as $key => $value) {
-    $logger->log(Logger::INFO, $key . ': ' . $value);
-}
-
-// get all users
-$logger->log(Logger::INFO, "#################### Get all users");
-$accountTypes = $accountResource->getAll();
-
-foreach ($accountTypes as $accountType) {
-    $logger->log(Logger::INFO, $accountType->email);
-}
-
-// create random account
-$logger->log(Logger::INFO, "#################### Create random account");
-
-$newAccountType = (new AccountType)->fromArray([
-    'email'       => uniqid('test-', true) . '@example.com',
-    'password'    => md5(uniqid('t.gif', true)),
-    'name'        => 'Hugh Jazz',
-    'note'        => 'I will not waste chalk',
-    'storage'     => 100000000,
-    'institution' => 'Duff Beer Inc.',
-]);
-
-$success = $accountResource->create($newAccountType);
-
-if ($success) {
-    // get info on specific user
-    $logger->log(Logger::INFO, "#################### Get info on specific user");
-    $accountType = $accountResource->getByEmail($newAccountType->email);
-
-    foreach ((array)$accountType as $key => $value) {
-        if ($value instanceof DateTime) {
-            $logger->log(Logger::INFO, $key . ': ' . $value->format(\DateTime::ISO8601));
-        } else {
-            $logger->log(Logger::INFO, $key . ': ' . $value);
-        }
+try {
+    if (!is_readable($tokenFile)) {
+        throw new Exception($tokenFile . ' is not readable or does not exist.');
     }
-} else {
-    $logger->log(Logger::ALERT, 'Could not create account ' . $newAccountType->email);
-}
 
-$logger->log(Logger::INFO, "#################### Update account");
+    if (!is_readable($cfgFile)) {
+        throw new Exception($cfgFile . ' is not readable or does not exist.');
+    }
 
-$changedAccountType = (new AccountType)->fromArray([
-    'email' => $newAccountType->email,
-    'name'  => 'Divine Hugh Jazz',
-]);
+    $emailAddress = uniqid('test-', true) . '@example.com';
 
-$result = $accountResource->update($changedAccountType);
+    $token = json_decode(file_get_contents($tokenFile));
+    $cfg = json_decode(file_get_contents($cfgFile));
 
-if ($success) {
-    $logger->log(Logger::INFO, "#################### Account updated");
-} else {
-    $logger->log(Logger::ALERT, '#################### Could not update account');
-}
+    $client = new Client(
+        [
+            'base_uri' => $cfg->baseUri,
+            'debug'    => true,
+            'handler'  => $stack,
+            'headers'  => [
+                'Content-Type'  => 'application/json',
+                'Authorization' => 'Token ' . $token->token,
+            ],
+        ]
+    );
 
-$logger->log(Logger::INFO, "#################### Sleeping 10s before deleting the account... zzzzzz....");
-sleep(10);
+    $accountResource = new Account($client);
 
-$logger->log(Logger::INFO, "#################### Delete account " . $newAccountType->email);
-$success = $accountResource->remove($newAccountType);
+    // get all users
+    $logger->log(Logger::INFO, "#################### Get all users");
+    $accountTypes = $accountResource->getAll();
 
-if ($success) {
-    $logger->log(Logger::INFO, "#################### Deleted account " . $newAccountType->email);
-} else {
-    $logger->log(Logger::ALERT, "#################### Could not delete account " . $newAccountType->email);
-}
+    foreach ($accountTypes as $accountType) {
+        $logger->log(Logger::INFO, $accountType->email);
+    }
 
+    // create random account
+    $logger->log(Logger::INFO, "#################### Create random account");
+
+    $newAccountType = (new AccountType)->fromArray([
+        'email'    => $emailAddress,
+        'password' => md5(uniqid('t.gif', true)),
+        'name'     => 'Hugh Jazz',
+        'note'     => 'I will not waste chalk',
+        'storage'  => 100000000
+        //'institution' => 'Duff Beer Inc.',
+    ]);
+
+    $success = $accountResource->create($newAccountType);
+
+    if ($success) {
+        // get info on specific user
+        $logger->log(Logger::INFO, "#################### Get info on specific user");
+        $accountType = $accountResource->getByEmail($newAccountType->email);
+
+        foreach ((array)$accountType as $key => $value) {
+            if ($value instanceof DateTime) {
+                $logger->log(Logger::INFO, $key . ': ' . $value->format(\DateTime::ISO8601));
+            } else {
+                $logger->log(Logger::INFO, $key . ': ' . $value);
+            }
+        }
+
+        // Add avatar image
+
+
+        // get API user info
+        $logger->log(Logger::INFO, "#################### Getting API user info");
+        $accountType = $accountResource->getInfo($emailAddress);
+
+        foreach ((array)$accountType as $key => $value) {
+            $logger->log(Logger::INFO, $key . ': ' . print_r($value, true));
+        }
+
+
+    } else {
+        $logger->log(Logger::ALERT, 'Could not create account ' . $newAccountType->email);
+    }
+
+    $logger->log(Logger::INFO, "#################### Update account");
+
+    $changedAccountType = (new AccountType)->fromArray([
+        'email' => $newAccountType->email,
+        'name'  => 'Divine Hugh Jazz',
+    ]);
+
+    $result = $accountResource->update($changedAccountType);
+
+    if ($success) {
+        $logger->log(Logger::INFO, "#################### Account updated");
+    } else {
+        $logger->log(Logger::ALERT, '#################### Could not update account');
+    }
+
+    $logger->log(Logger::INFO, "#################### Sleeping 10s before deleting the account... zzzzzz....");
+    sleep(10);
+
+    $logger->log(Logger::INFO, "#################### Delete account " . $newAccountType->email);
+    $success = $accountResource->remove($newAccountType);
+
+    if ($success) {
+        $logger->log(Logger::INFO, "#################### Deleted account " . $newAccountType->email);
+    } else {
+        $logger->log(Logger::ALERT, "#################### Could not delete account " . $newAccountType->email);
+    }
 
 //
 //$logger->log(Logger::INFO, "#################### Migrating test@example.com to test1@example.com");
@@ -153,6 +160,10 @@ if ($success) {
 //
 //$result = $accountResource->migrate($fromAccount, $toAccount);
 //
-
+} catch (\Exception $e) {
+    print("Exception: " . $e->getMessage());
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
+    print("GuzzleException: " . $e->getMessage());
+}
 
 print(PHP_EOL . 'Done' . PHP_EOL);

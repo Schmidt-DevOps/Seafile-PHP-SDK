@@ -3,7 +3,7 @@
 namespace Seafile\Client\Tests\Resource;
 
 use GuzzleHttp\Psr7\Response;
-use Seafile\Client\Http\Client;
+use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\SharedLink;
 use Seafile\Client\Tests\TestCase;
 use Seafile\Client\Type\Library as LibraryType;
@@ -25,6 +25,8 @@ class SharedLinkTest extends TestCase
      * Test getAll()
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testGetAll()
     {
@@ -41,7 +43,7 @@ class SharedLinkTest extends TestCase
         self::assertInternalType('array', $sharedLinks);
 
         foreach ($sharedLinks as $sharedLink) {
-            self::assertInstanceOf('Seafile\Client\Type\SharedLink', $sharedLink);
+            self::assertInstanceOf(SharedLinkType::class, $sharedLink);
         }
     }
 
@@ -49,15 +51,18 @@ class SharedLinkTest extends TestCase
      * Test remove()
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testRemove()
     {
         $removeResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri    = 'http://example.com/repos/some-crazy-id/';
+        $expectUri = 'http://example.com/repos/some-crazy-id/';
         $expectParams = [
             'headers' => ['Accept' => "application/json"],
         ];
@@ -71,12 +76,9 @@ class SharedLinkTest extends TestCase
                 }
             ));
 
-        /**
-         * @var Client $mockedClient
-         */
         $sharedLinkResource = new SharedLink($mockedClient);
 
-        $sharedLink      = new  SharedLinkType();
+        $sharedLink = new  SharedLinkType();
         $sharedLink->url = 'https://seafile.example.com/f/abc/';
 
         self::assertTrue($sharedLinkResource->remove($sharedLink));
@@ -87,7 +89,7 @@ class SharedLinkTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderCreate()
+    public static function dataProviderCreate(): array
     {
         return [
             // [[expect response code, expected result, password]]
@@ -123,6 +125,8 @@ class SharedLinkTest extends TestCase
      * @param array $data Test data
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testCreate(array $data)
     {
@@ -136,22 +140,25 @@ class SharedLinkTest extends TestCase
 
         $createResponse = new Response($data['createResponseCode'], $headers);
 
-        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())
             ->method('request')
             ->with('PUT')
             ->willReturn($createResponse);
 
-        /**
-         * @var Client $mockedClient
-         */
+        $mockedClient->expects(self::any())
+            ->method('getConfig')
+            ->with('base_uri')
+            ->willReturn('http://example.com');
+
         $sharedLinkResource = new SharedLink($mockedClient);
 
-        $sharedLinkType      = new SharedLinkType();
+        $sharedLinkType = new SharedLinkType();
         $sharedLinkType->url = 'https://seafile.example.com/f/abc/';
 
-        $libraryType     = new LibraryType();
+        $libraryType = new LibraryType();
         $libraryType->id = 'decaf-deadbeef-dad';
 
         if (is_null($data['returnType'])) {

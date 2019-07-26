@@ -12,6 +12,8 @@ use DateTime;
  * @copyright 2015-2017 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
+ * @method FileHistoryItem fromJson(\stdClass $jsonResponse)
+ * @method FileHistoryItem fromArray(array $fromArray)
  */
 class FileHistoryItem extends Type
 {
@@ -90,7 +92,7 @@ class FileHistoryItem extends Type
     public $revFileId = '';
 
     /**
-     * @var null
+     * @var int|null
      */
     public $secondParentId = null;
 }

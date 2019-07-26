@@ -15,7 +15,7 @@ use \Seafile\Client\Type\Account as AccountType;
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-abstract class Type
+abstract class Type implements TypeInterface
 {
     /**
      * Associative array mode
@@ -31,6 +31,8 @@ abstract class Type
      * Constructor
      *
      * @param array $fromArray Create from array
+     *
+     * @throws \Exception
      */
     public function __construct(array $fromArray = [])
     {
@@ -44,9 +46,10 @@ abstract class Type
      *
      * @param array $fromArray Create from array
      *
-     * @return static
+     * @return self
+     * @throws \Exception
      */
-    public function fromArray(array $fromArray)
+    public function fromArray(array $fromArray) // type is given in derived class
     {
         foreach ($fromArray as $key => $value) {
             $camelCaseKey = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_SNAKE_CASE)->toCamelCase($key);
@@ -63,7 +66,7 @@ abstract class Type
                 case 'ctime':
                 case 'mtime':
                 case 'mtime_created':
-                    $this->{$camelCaseKey} = $this->getDateTime($value);
+                    $this->{$camelCaseKey} = $this->getDateTime((int)$value);
                     break;
                 default:
                     $this->{$camelCaseKey} = $value;
@@ -82,10 +85,8 @@ abstract class Type
      *
      * @return DateTime
      */
-    protected function getDateTime($value)
+    public function getDateTime(int $value): DateTime
     {
-        $value = (int)$value;
-
         if ($value > 9999999999) { // microseconds it is
             $value = floor($value / 1000000);
         }
@@ -98,9 +99,10 @@ abstract class Type
      *
      * @param \stdClass $jsonResponse Json response
      *
-     * @return static
+     * @return self
+     * @throws \Exception
      */
-    public function fromJson(\stdClass $jsonResponse)
+    public function fromJson(\stdClass $jsonResponse) // type is given in derived class
     {
         $this->fromArray((array)$jsonResponse);
 
@@ -113,14 +115,15 @@ abstract class Type
      * @param int $mode Array mode
      *
      * @return array
+     * @throws \Exception
      */
-    public function toArray($mode = self::ARRAY_ASSOC)
+    public function toArray(int $mode = self::ARRAY_ASSOC): array
     {
         switch ($mode) {
             case self::ARRAY_MULTI_PART:
                 $caseHelper = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_CAMEL_CASE);
-                $keyVals    = $this->toArray(self::ARRAY_ASSOC);
-                $multiPart  = [];
+                $keyVals = $this->toArray(self::ARRAY_ASSOC);
+                $multiPart = [];
 
                 foreach ($keyVals as $key => $val) {
                     if ($val instanceof DateTime) {
@@ -145,7 +148,7 @@ abstract class Type
      *
      * @return string JSON string
      */
-    public function toJson()
+    public function toJson(): string
     {
         return json_encode($this);
     }

@@ -3,7 +3,7 @@
 namespace Seafile\Client\Tests\Resource;
 
 use GuzzleHttp\Psr7\Response;
-use Seafile\Client\Http\Client;
+use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Account;
 use Seafile\Client\Type\Account as AccountType;
 use Seafile\Client\Tests\TestCase;
@@ -24,6 +24,7 @@ class AccountTest extends TestCase
      * Test getAll()
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testGetAll()
     {
@@ -40,7 +41,7 @@ class AccountTest extends TestCase
         self::assertInternalType('array', $libs);
 
         foreach ($libs as $lib) {
-            self::assertInstanceOf('Seafile\Client\Type\Account', $lib);
+            self::assertInstanceOf(AccountType::class, $lib);
         }
     }
 
@@ -51,7 +52,7 @@ class AccountTest extends TestCase
      *
      * @return void
      */
-    public function testGetByEmail($method = 'getByEmail')
+    public function testGetByEmail(string $method = 'getByEmail')
     {
         $accountResource = new Account($this->getMockedClient(
             new Response(
@@ -65,9 +66,9 @@ class AccountTest extends TestCase
 
         $accountType = $accountResource->{$method}($email);
 
-        self::assertInstanceOf('Seafile\Client\Type\Account', $accountType);
+        self::assertInstanceOf(AccountType::class, $accountType);
         self::assertSame($email, $accountType->email);
-        self::assertInstanceOf('DateTime', $accountType->createTime);
+        self::assertInstanceOf(\DateTime::class, $accountType->createTime);
         self::assertSame('2016-01-08T19:42:50+0000', $accountType->createTime->format(DATE_ISO8601));
     }
 
@@ -85,6 +86,7 @@ class AccountTest extends TestCase
      * Test create() with missing attribute values
      *
      * @return void
+     * @throws \Exception
      */
     public function testCreateIllegal()
     {
@@ -97,7 +99,7 @@ class AccountTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderCreateUpdate()
+    public static function dataProviderCreateUpdate(): array
     {
         return [
             [['method' => 'create', 'responseCode' => 201, 'result' => true]],
@@ -117,6 +119,7 @@ class AccountTest extends TestCase
      * @param array $data DataProvider data
      *
      * @return void
+     * @throws \Exception
      */
     public function testCreateUpdate(array $data)
     {
@@ -127,7 +130,8 @@ class AccountTest extends TestCase
             'email'    => 'my_email@example.com',
         ]);
 
-        $mockedClient = $this->createPartialMock('\Seafile\Client\Http\Client', ['put', 'getConfig']);
+        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        $mockedClient = $this->createPartialMock(SeafileHttpClient::class, ['put', 'getConfig']);
 
         $mockedClient->expects(self::any())
             ->method('put')
@@ -139,9 +143,6 @@ class AccountTest extends TestCase
             ->with('base_uri')
             ->willReturn($baseUri);
 
-        /**
-         * @var Client $mockedClient
-         */
         $accountResource = new Account($mockedClient);
 
         self::assertSame($data['result'], $accountResource->{$data['method']}($accountType));
@@ -151,6 +152,7 @@ class AccountTest extends TestCase
      * Test update() with missing attribute values
      *
      * @return void
+     * @throws \Exception
      */
     public function testUpdateIllegal()
     {
@@ -163,7 +165,7 @@ class AccountTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderRemove()
+    public static function dataProviderRemove(): array
     {
         return [
             [['email' => 'test@example.com', 'result' => true]],
@@ -179,15 +181,17 @@ class AccountTest extends TestCase
      * @param array $data DataProvider data
      *
      * @return void
+     * @throws \Exception
      */
     public function testRemove(array $data)
     {
         $baseUri = 'https://example.com/';
 
-        $accountType        = new AccountType();
+        $accountType = new AccountType();
         $accountType->email = $data['email'];
 
-        $mockedClient = $this->createPartialMock('\Seafile\Client\Http\Client', ['delete', 'getConfig']);
+        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        $mockedClient = $this->createPartialMock(SeafileHttpClient::class, ['delete', 'getConfig']);
 
         $mockedClient->expects(self::any())
             ->method('delete')
@@ -199,9 +203,6 @@ class AccountTest extends TestCase
             ->with('base_uri')
             ->willReturn($baseUri);
 
-        /**
-         * @var Client $mockedClient
-         */
         $accountResource = new Account($mockedClient);
 
         self::assertSame($data['result'], $accountResource->remove($accountType));

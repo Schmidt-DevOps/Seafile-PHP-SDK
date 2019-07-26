@@ -42,50 +42,56 @@ $tokenFile = getenv("HOME") . "/.seafile-php-sdk/api-token.json";
  */
 $cfgFile = getenv("HOME") . "/.seafile-php-sdk/cfg.json";
 
-if (!is_readable($tokenFile)) {
-    throw new Exception($tokenFile . ' is not readable or does not exist.');
-}
+try {
+    if (!is_readable($tokenFile)) {
+        throw new Exception($tokenFile . ' is not readable or does not exist.');
+    }
 
-if (!is_readable($cfgFile)) {
-    throw new Exception($cfgFile . ' is not readable or does not exist.');
-}
+    if (!is_readable($cfgFile)) {
+        throw new Exception($cfgFile . ' is not readable or does not exist.');
+    }
 
-$token = json_decode(file_get_contents($tokenFile));
-$cfg   = json_decode(file_get_contents($cfgFile));
+    $token = json_decode(file_get_contents($tokenFile));
+    $cfg = json_decode(file_get_contents($cfgFile));
 
-$client = new Client(
-    [
-        'base_uri' => $cfg->baseUri,
-        'debug'    => true,
-        'handler'  => $stack,
-        'headers'  => [
-            'Content-Type'  => 'application/json',
-            'Authorization' => 'Token ' . $token->token,
-        ],
-    ]
-);
+    $client = new Client(
+        [
+            'base_uri' => $cfg->baseUri,
+            'debug'    => true,
+            'handler'  => $stack,
+            'headers'  => [
+                'Content-Type'  => 'application/json',
+                'Authorization' => 'Token ' . $token->token,
+            ],
+        ]
+    );
 
-$libraryResource = new Library($client);
-$fileResource    = new File($client);
+    $libraryResource = new Library($client);
+    $fileResource = new File($client);
 
-$libId = $cfg->testLibId;
+    $libId = $cfg->testLibId;
 
-$lib = $libraryResource->getById($libId);
+    $lib = $libraryResource->getById($libId);
 
-if ($lib->encrypted === true && isset($cfg->testLibPassword)) {
-    $success = $libraryResource->decrypt($libId, ['query' => ['password' => $cfg->testLibPassword]]);
-}
+    if ($lib->encrypted === true && isset($cfg->testLibPassword)) {
+        $success = $libraryResource->decrypt($libId, ['query' => ['password' => $cfg->testLibPassword]]);
+    }
 
-$logger->log(Logger::INFO, "#################### Create empty file on Seafile server.");
+    $logger->log(Logger::INFO, "#################### Create empty file on Seafile server.");
 
-$dirItem = (new DirectoryItem())->fromArray(['path' => '/', 'name' => uniqid('some_name_', true) . '.txt']);
+    $dirItem = (new DirectoryItem())->fromArray(['path' => '/', 'name' => uniqid('some_name_', true) . '.txt']);
 
-$success = $fileResource->create($lib, $dirItem);
+    $success = $fileResource->create($lib, $dirItem);
 
-if ($success === true) {
-    $logger->log(Logger::INFO, "#################### File created: " . $dirItem->name);
-} else {
-    $logger->log(Logger::ERROR, "#################### File created: " . $dirItem->name);
+    if ($success === true) {
+        $logger->log(Logger::INFO, "#################### File created: " . $dirItem->name);
+    } else {
+        $logger->log(Logger::ERROR, "#################### File created: " . $dirItem->name);
+    }
+} catch (\Exception $e) {
+    $logger->critical($e->getMessage());
+} catch (\GuzzleHttp\Exception\GuzzleException $e) {
+    $logger->critical($e->getMessage());
 }
 
 print(PHP_EOL . 'Done' . PHP_EOL);

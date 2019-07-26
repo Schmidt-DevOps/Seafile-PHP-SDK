@@ -5,7 +5,7 @@ namespace Seafile\Client\Resource;
 use Seafile\Client\Http\Client;
 
 /**
- * Abstract domain class
+ * Abstract resource class
  *
  * @package   Seafile\Resource
  * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
@@ -13,8 +13,14 @@ use Seafile\Client\Http\Client;
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-abstract class Resource
+abstract class Resource implements ResourceInterface
 {
+    /** Represents 'read' permission (in whatever context) */
+    const PERMISSION_R = 'r';
+
+    /** Represents 'read and write' permission (in whatever context) */
+    const PERMISSION_RW = 'rw';
+
     /**
      * @var Client
      */
@@ -37,7 +43,7 @@ abstract class Resource
      *
      * @return mixed|string
      */
-    public function clipUri($uri)
+    public function clipUri(string $uri): string
     {
         return preg_replace("/\/$/", '', $uri);
     }

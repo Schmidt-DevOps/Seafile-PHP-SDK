@@ -18,7 +18,6 @@ use \Seafile\Client\Type\Avatar as AvatarType;
  */
 class Avatar extends Resource
 {
-
     /**
      * Get user avatar by email address
      *
@@ -28,7 +27,7 @@ class Avatar extends Resource
      * @return AvatarType
      * @throws \Exception
      */
-    public function getUserAvatarByEmail($emailAddress, $size = 80)
+    public function getUserAvatarByEmail(string $emailAddress, int $size = 80)
     {
         return $this->getUserAvatar((new AccountType)->fromArray(['email' => $emailAddress]), $size);
     }
@@ -42,7 +41,7 @@ class Avatar extends Resource
      * @return AvatarType
      * @throws \Exception
      */
-    public function getUserAvatar(AccountType $accountType, $size = 80)
+    public function getUserAvatar(AccountType $accountType, int $size = 80)
     {
         return $this->getAvatar($accountType, $size);
     }
@@ -56,7 +55,7 @@ class Avatar extends Resource
      * @return AvatarType
      * @throws \Exception
      */
-    public function getGroupAvatar(GroupType $groupType, $size = 80)
+    public function getGroupAvatar(GroupType $groupType, int $size = 80)
     {
         return $this->getAvatar($groupType, $size);
     }
@@ -70,7 +69,7 @@ class Avatar extends Resource
      * @return AvatarType
      * @throws \Exception
      */
-    protected function getAvatar(Type $type, $size)
+    protected function getAvatar(Type $type, int $size)
     {
         if (!is_int($size) || $size < 1) {
             throw new \Exception('Illegal avatar size');
@@ -78,11 +77,11 @@ class Avatar extends Resource
 
         switch (true) {
             case ($type instanceof GroupType):
-                $id       = $type->id;
+                $id = $type->id;
                 $resource = 'group';
                 break;
             case ($type instanceof AccountType):
-                $id       = $type->email;
+                $id = $type->email;
                 $resource = 'user';
                 break;
             default:
@@ -96,5 +95,31 @@ class Avatar extends Resource
         $json = json_decode($response->getBody());
 
         return (new AvatarType)->fromJson($json);
+    }
+
+    /**
+     * Create a new user avatar
+     *
+     * @param AccountType $accountType AccountType instance with data for new account
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function createUserAvatar(AccountType $accountType): bool
+    {
+        $uri = sprintf(
+            '%s/accounts/' . $accountType->email . '/',
+            $this->clipUri($this->client->getConfig('base_uri'))
+        );
+
+        $response = $this->client->put(
+            $uri,
+            [
+                'headers'   => ['Accept' => 'application/json; charset=utf-8'],
+                'multipart' => $accountType->toArray(Type::ARRAY_MULTI_PART),
+            ]
+        );
+
+        return $response->getStatusCode() === 201;
     }
 }

@@ -4,8 +4,10 @@ namespace Seafile\Client\Tests\Resource;
 
 use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Http\Client;
+use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Library;
 use Seafile\Client\Tests\TestCase;
+use Seafile\Client\Type\Library as LibraryType;
 
 /**
  * Library resource test
@@ -23,6 +25,7 @@ class LibraryTest extends TestCase
      * Test getAll()
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testGetAll()
     {
@@ -39,7 +42,7 @@ class LibraryTest extends TestCase
         self::assertInternalType('array', $libs);
 
         foreach ($libs as $lib) {
-            self::assertInstanceOf('Seafile\Client\Type\Library', $lib);
+            self::assertInstanceOf(LibraryType::class, $lib);
         }
     }
 
@@ -47,6 +50,7 @@ class LibraryTest extends TestCase
      * getById()
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testGetById()
     {
@@ -58,7 +62,7 @@ class LibraryTest extends TestCase
             )
         ));
 
-        self::assertInstanceOf('Seafile\Client\Type\Library', $libraryResource->getById('some_id'));
+        self::assertInstanceOf(LibraryType::class, $libraryResource->getById('some_id'));
     }
 
     /**
@@ -66,6 +70,7 @@ class LibraryTest extends TestCase
      *
      * @return void
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testDecryptMissingQuery()
     {
@@ -79,6 +84,7 @@ class LibraryTest extends TestCase
      *
      * @return void
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testDecryptMissingPassword()
     {
@@ -92,6 +98,7 @@ class LibraryTest extends TestCase
      *
      * @return void
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testDecryptUnsuccessfully()
     {
@@ -116,6 +123,7 @@ class LibraryTest extends TestCase
      *
      * @return void
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testDecryptSuccessfully()
     {
@@ -140,7 +148,7 @@ class LibraryTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderExists()
+    public static function dataProviderExists(): array
     {
         return [
             [['invalid_value', 'invalid_attribute', false]],
@@ -158,6 +166,7 @@ class LibraryTest extends TestCase
      * @param array $data Test data
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testExists(array $data)
     {
@@ -177,7 +186,7 @@ class LibraryTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderCreateInvalid()
+    public static function dataProviderCreateInvalid(): array
     {
         return [
             [['', false]],
@@ -193,6 +202,7 @@ class LibraryTest extends TestCase
      * @param array $data Test data
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testCreateInvalid(array $data)
     {
@@ -211,6 +221,7 @@ class LibraryTest extends TestCase
      * Test remove(), provide invalid parameters, expect failure
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testRemoveInvalid()
     {
@@ -230,7 +241,7 @@ class LibraryTest extends TestCase
      *
      * @return array
      */
-    public function dataProviderCreate()
+    public static function dataProviderCreate(): array
     {
         return [
             // [[expect response code, expected result, password]]
@@ -248,6 +259,8 @@ class LibraryTest extends TestCase
      * @param array $data Test data
      *
      * @return void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testCreate(array $data)
     {
@@ -257,15 +270,15 @@ class LibraryTest extends TestCase
             file_get_contents(__DIR__ . '/../../assets/LibraryTest_getAll.json')
         );
 
-        $name        = "a";
+        $name = "a";
         $description = "b";
 
         $createResponse = new Response($data[0], ['Content-Type' => 'text/plain']);
 
-        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri    = 'http://example.com/repos/';
+        $expectUri = 'http://example.com/repos/';
         $expectParams = [
             'headers'   => ['Accept' => "application/json"],
             'multipart' => [
@@ -313,7 +326,7 @@ class LibraryTest extends TestCase
          */
         $libraryResource = new Library($mockedClient);
 
-        $lib     = new \Seafile\Client\Type\Library();
+        $lib = new LibraryType();
         $lib->id = 'some-crazy-id';
 
         self::assertSame($data[1], $libraryResource->create($name, $description, $data[2]));
@@ -323,6 +336,8 @@ class LibraryTest extends TestCase
      * Test remove()
      *
      * @return void
+     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testRemove()
     {
@@ -334,10 +349,11 @@ class LibraryTest extends TestCase
 
         $removeResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri    = 'http://example.com/repos/some-crazy-id/';
+        $expectUri = 'http://example.com/repos/some-crazy-id/';
         $expectParams = [
             'headers' => ['Accept' => "application/json"],
         ];
@@ -369,7 +385,7 @@ class LibraryTest extends TestCase
          */
         $libraryResource = new Library($mockedClient);
 
-        $lib     = new \Seafile\Client\Type\Library();
+        $lib = new LibraryType();
         $lib->id = 'some-crazy-id';
 
         self::assertTrue($libraryResource->remove($lib->id));

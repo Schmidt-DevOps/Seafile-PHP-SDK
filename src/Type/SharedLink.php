@@ -10,10 +10,11 @@ namespace Seafile\Client\Type;
  * @copyright 2015-2017 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
+ * @method SharedLink fromJson(\stdClass $jsonResponse)
+ * @method SharedLink fromArray(array $fromArray)
  */
 class SharedLink extends Type
 {
-
     /**
      * Default share type
      */
@@ -27,21 +28,21 @@ class SharedLink extends Type
     /**
      * View count
      *
-     * @var int
+     * @var int|null
      */
     public $viewCnt = null;
 
     /**
      * Token
      *
-     * @var string
+     * @var string|null
      */
     public $token = null;
 
     /**
      * Share link type
      *
-     * @var string
+     * @var string|null
      */
     public $sType = null;
 
@@ -55,28 +56,28 @@ class SharedLink extends Type
     /**
      * Path
      *
-     * @var string
+     * @var string|null
      */
     public $path = null;
 
     /**
      * Repo ID
      *
-     * @var string
+     * @var string|null
      */
     public $repoId = null;
 
     /**
      * User name
      *
-     * @var string
+     * @var string|null
      */
     public $username = null;
 
     /**
      * URL
      *
-     * @var string
+     * @var string|null
      */
     public $url = null;
 }

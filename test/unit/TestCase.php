@@ -4,6 +4,7 @@ namespace Seafile\Client\Tests;
 
 use GuzzleHttp\Psr7\Response;
 use PHPUnit_Framework_MockObject_MockObject;
+use Seafile\Client\Http\Client;
 
 /**
  * Seafile PHP SDK Test Case class
@@ -14,9 +15,8 @@ use PHPUnit_Framework_MockObject_MockObject;
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-class TestCase extends \PHPUnit_Framework_TestCase
+class TestCase extends \PHPUnit\Framework\TestCase
 {
-
     /**
      * Call protected/private method of a class.
      *
@@ -25,11 +25,12 @@ class TestCase extends \PHPUnit_Framework_TestCase
      * @param array  $parameters Array of parameters to pass into method.
      *
      * @return mixed Method return.
+     * @throws \ReflectionException
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = [])
+    public function invokeMethod(&$object, string $methodName, array $parameters = [])
     {
         $reflection = new \ReflectionClass(get_class($object));
-        $method     = $reflection->getMethod($methodName);
+        $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 
         return $method->invokeArgs($object, $parameters);
@@ -40,11 +41,11 @@ class TestCase extends \PHPUnit_Framework_TestCase
      *
      * @param Response $response HTTP Response
      *
-     * @return \Seafile\Client\Http\Client|PHPUnit_Framework_MockObject_MockObject
+     * @return Client|PHPUnit_Framework_MockObject_MockObject
      */
     protected function getMockedClient(Response $response)
     {
-        $mockedClient = $this->getMockBuilder('\Seafile\Client\Http\Client')->getMock();
+        $mockedClient = $this->getMockBuilder(Client::class)->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/index.html');
         $mockedClient->method('request')->willReturn($response);

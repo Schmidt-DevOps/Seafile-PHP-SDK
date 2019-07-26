@@ -27,7 +27,7 @@ class FileResourceStub extends File
      *
      * @return string
      */
-    public function getDownloadUrl(LibraryType $library, DirectoryItem $item, $dir = '/', $reuse = 1)
+    public function getDownloadUrl(LibraryType $library, DirectoryItem $item, string $dir = '/', int $reuse = 1)
     {
         return 'http://download.example.com/';
     }
@@ -40,7 +40,7 @@ class FileResourceStub extends File
      *
      * @return String Upload link
      */
-    public function getUploadUrl(LibraryType $library, $newFile = true)
+    public function getUploadUrl(LibraryType $library, bool $newFile = true)
     {
         return 'http://upload.example.com/';
     }

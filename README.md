@@ -33,8 +33,6 @@ Please note that this SDK currently is under active development and that things 
 
 If you are looking for stability please refer to stable tags.
 
-The next stable version is planned for January 2018.
-
 ## Obtain API token
 
 Have a look at script ```bin/obtain_api_token.sh``` and use it if you feel comfortable with it. Basically, the script does this:
@@ -129,12 +127,12 @@ foreach ($libs as $lib) {
 }
 ```
 
-### List files and directories of a library
+### List directory contents
 
 ```php
 $directoryResource = new Directory($client);
 $lib = $libraryResource->getById('some library ID of yours');
-$items = $directoryResource->getAll($lib);
+$items = $directoryResource->getAll($lib, '/'); // 2nd param is the name of the directory or '/' 
 
 foreach ($items as $item) {
     printf("%s: %s (%d bytes)\n", $item->type, $item->name, $item->size);
@@ -366,6 +364,17 @@ $client = new Client(
     ]
 );
 ```
+## Version history
+
+### Version 2.x (not yet released)
+
+This version will not be backwards compatible with Version 1.x. 
+
+- SEAF-001: Will support PHP >7.0.0 only. In case you require a version that still supports PHP 5.6 let [me](rene+_gth@sdo.sh) know so I can tell you my rates :)
+- SEAF-002: Requires PHPUnit 6.x
+
+### Version 1.0.1
+Latest and last version to support PHP 5.6.
 
 ## Issues
 
@@ -373,7 +382,6 @@ $client = new Client(
 
 ## Dependencies
 
-- PHP >=5.6.29 64 bits (if you require a backport to an older PHP version [contact me](rene+_gth@sdo.sh) for a quote!)
 - PHP >=7.0 64 bits
 - Guzzle 6
 
@@ -390,8 +398,15 @@ $client = new Client(
 | Library/Directory      | :large_blue_circle::large_blue_circle::white_circle::white_circle:       |
 | Library/Multiple Files | :large_blue_circle::large_blue_circle::large_blue_circle::large_blue_circle:          |
 | Avatar                 | :large_blue_circle::large_blue_circle::large_blue_circle::large_blue_circle:          |
-| Events                 | not planned   |
-| Organization           | not planned   |
+| Events                 | Yet to be done, [contact me](rene+_gth@sdo.sh) |
+| Organization           | Yet to be done, [contact me](rene+_gth@sdo.sh) |
+
+
+## Seafile Web API V2.1 Support Matrix
+
+| Resource               | Support grade |
+| ---------------------- | ------------- |
+| Web API v2.1           | Yet to be done, [contact me](rene+_gth@sdo.sh) |
 
 ## Seafile server compatibility
 
@@ -401,12 +416,12 @@ Tested with:
 - ~~Seafile Server 5.1.3 for generic Linux/Debian Wheezy~~
 - ~~Seafile Server 5.1.4 for generic Linux/Ubuntu Xenial~~
 - ~~Seafile Server 6.0.3 for generic Linux/Ubuntu Xenial~~
-- Seafile Server 6.0.7 for generic Linux/Ubuntu Xenial
+- Seafile Server 6.2.x for generic Linux/Ubuntu Xenial
 - If you require a backport for an older Seafile server version [contact me](rene+_gth@sdo.sh) for a quote!
 
 ## Contributing
 
-Please note that this package still is in its infancy. Only a small part of the API has been implemented so far.
+Please note that this package still is in its infancy. Only a part of the API has been implemented so far.
 
 **Pull requests are welcome**. Please adhere to some very basic and simple principles:
 
@@ -417,9 +432,10 @@ Please note that this package still is in its infancy. Only a small part of the 
 ## Links
 
 - https://seafile.com
-- https://www.seafile-server.org/ (Seafile server hosting in Germany)
-- http://manual.seafile.com/develop/web_api.html#seafile-web-api-v2
+- https://manual.seafile.com/develop/web_api.html#seafile-web-api-v2
 - https://sdo.sh
+- https://luckycloud.de/de/ (Seafile server hosting in Germany)
+- https://www.yoursecurecloud.de/ (Seafile server hosting in Germany)
 
 ## License
 

@@ -19,8 +19,10 @@ class Library extends Resource
      * List libraries
      *
      * @return LibraryType[]
+     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getAll()
+    public function getAll(): array
     {
         $response = $this->client->request('GET', $this->client->getConfig('base_uri') . '/repos/');
 
@@ -41,8 +43,10 @@ class Library extends Resource
      * @param string $libraryId Library ID
      *
      * @return LibraryType
+     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getById($libraryId)
+    public function getById($libraryId): LibraryType
     {
         $response = $this->client->request(
             'GET',
@@ -60,14 +64,15 @@ class Library extends Resource
      * @param string $libraryId Library ID
      * @param array  $options   Options
      *
-     * @return Bool Decryption success
+     * @return bool Decryption success
      *
      * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function decrypt($libraryId, array $options)
+    public function decrypt($libraryId, array $options): bool
     {
         $hasQueryParams = array_key_exists('query', $options);
-        $hasPassword    = $hasQueryParams && array_key_exists('password', $options['query']);
+        $hasPassword = $hasQueryParams && array_key_exists('password', $options['query']);
 
         if (!$hasQueryParams || !$hasPassword) {
             throw new \Exception('Password query parameter is required to decrypt library');
@@ -89,8 +94,10 @@ class Library extends Resource
      * @param string $attribute Attribute name of library
      *
      * @return bool
+     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function exists($value, $attribute = 'name')
+    public function exists($value, $attribute = 'name'): bool
     {
         $libraries = $this->getAll();
 
@@ -111,8 +118,10 @@ class Library extends Resource
      * @param string $password    false means no encryption, any other string is used as password
      *
      * @return bool
+     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function create($name, $description = "new repo", $password = '')
+    public function create($name, $description = "new repo", $password = ''): bool
     {
         // only create a library which is not empty to prevent wrong implementation
         if (empty($name)) {
@@ -165,10 +174,11 @@ class Library extends Resource
      * @param string $libraryId Library ID
      *
      * @return bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function remove($libraryId)
+    public function remove($libraryId): bool
     {
-        // do not allow empty id's
+        // do not allow empty IDs
         if (empty($libraryId)) {
             return false;
         }
@@ -191,15 +201,15 @@ class Library extends Resource
     }
 
     /**
-     * Share a library
+     * Share a library, share type is always "personal"
      *
-     * @param string $libraryId Library ID
-     * @param array $users Sharing users
-     * @param string $permission the permission of the shared library
+     * @param string $libraryId  Library ID
+     * @param array  $users      Comma separated list of user email addresses
+     * @param string $permission The permission of the shared library
      *
      * @return bool
      */
-    public function sharePersonal($libraryId, $users, $permission='rw')
+    public function sharePersonal($libraryId, array $users, string $permission = Resource::PERMISSION_R): bool
     {
         $uri = sprintf(
             '%s/shared-repos/%s/?share_type=personal&users=%s&permission=%s',
