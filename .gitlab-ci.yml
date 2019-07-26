@@ -1,0 +1,36 @@
+stages:
+  - test
+
+cache:
+  paths:
+    - vendor
+    - /var/cache/apt/archives
+
+variables:
+  DOCKER_DRIVER: overlay2
+
+before_script:
+  - apt-get update -yqq
+  - apt-get install git -yqq
+  - curl -sS https://getcomposer.org/installer | php
+  - mv composer.phar /usr/local/bin/composer
+  - curl --location --output /usr/local/bin/phpunit https://phar.phpunit.de/phpunit.phar
+  - chmod +x /usr/local/bin/phpunit /usr/local/bin/composer
+  - mv /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+  - echo "memory_limit = -1" > /usr/local/etc/php/conf.d/test.ini
+
+test:php-7.2:
+  stage: test
+  image: php:7.2
+  script:
+    - bash ./bin/prepare_tests.sh && bash ./bin/run_tests.sh
+  tags:
+    - sdo
+
+test:php-7.3:
+  stage: test
+  image: php:7.3
+  script:
+    - bash ./bin/prepare_tests.sh && bash ./bin/run_tests.sh
+  tags:
+    - sdo
