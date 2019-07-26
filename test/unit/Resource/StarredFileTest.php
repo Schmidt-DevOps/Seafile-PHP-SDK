@@ -38,11 +38,9 @@ class StarredFileTest extends TestCase
             )
         ));
 
-        self::assertAttributeNotEmpty('resourceUri', $starredFileResource);
-
         $starredDirItems = $starredFileResource->getAll();
 
-        self::assertInternalType('array', $starredDirItems);
+        self::assertIsArray($starredDirItems);
 
         foreach ($starredDirItems as $starredDirItem) {
             self::assertInstanceOf(DirectoryItem::class, $starredDirItem);

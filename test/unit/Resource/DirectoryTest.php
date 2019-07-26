@@ -40,7 +40,7 @@ class DirectoryTest extends TestCase
 
         $directoryItems = $directoryResource->getAll(new Library());
 
-        self::assertInternalType('array', $directoryItems);
+        self::assertIsArray($directoryItems);
 
         foreach ($directoryItems as $directoryItem) {
             self::assertInstanceOf(DirectoryItem::class, $directoryItem);
@@ -226,7 +226,7 @@ class DirectoryTest extends TestCase
             ->method('request')
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method) use ($getAllResponse) {
+                function () use ($getAllResponse) {
                     return $getAllResponse;
                 }
             ));

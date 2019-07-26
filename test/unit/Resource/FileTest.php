@@ -3,6 +3,7 @@
 namespace Seafile\Client\Tests\Resource;
 
 use GuzzleHttp\Psr7\Response;
+use PHPUnit_Framework_MockObject_MockObject;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Tests\Stubs\FileResourceStub;
@@ -343,7 +344,7 @@ class FileTest extends TestCase
      */
     public function testRemoveInvalidFilename()
     {
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|PHPUnit_Framework_MockObject_MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $fileResource = new File($mockedClient);
@@ -376,14 +377,15 @@ class FileTest extends TestCase
      * @param string $invalidNewFilename Invalid new file name
      *
      * @return void
-     * @expectedException \InvalidArgumentException
      * @dataProvider dataProviderTestRenameInvalidFilename
      * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testRenameInvalidFilename(string $invalidFilePath, string $invalidNewFilename)
     {
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        self::expectException('\InvalidArgumentException');
+
+        /** @var SeafileHttpClient|PHPUnit_Framework_MockObject_MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $fileResource = new File($mockedClient);
@@ -428,7 +430,7 @@ class FileTest extends TestCase
      */
     public function testCopyInvalid(array $data)
     {
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|PHPUnit_Framework_MockObject_MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $fileResource = new File($mockedClient);
@@ -459,7 +461,7 @@ class FileTest extends TestCase
 
         $deleteResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|PHPUnit_Framework_MockObject_MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -516,7 +518,7 @@ class FileTest extends TestCase
         $newFilename = 'test_file_renamed';
         $renameResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|PHPUnit_Framework_MockObject_MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -599,7 +601,7 @@ class FileTest extends TestCase
 
         $response = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
 
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|PHPUnit_Framework_MockObject_MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -658,7 +660,7 @@ class FileTest extends TestCase
      */
     public function testMoveInvalidDestination()
     {
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|PHPUnit_Framework_MockObject_MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $fileResource = new File($mockedClient);
@@ -753,7 +755,7 @@ class FileTest extends TestCase
 
         $fileHistoryItems = $fileResource->getHistory($lib, new DirectoryItem());
 
-        self::assertInternalType('array', $fileHistoryItems);
+        self::assertIsArray($fileHistoryItems);
 
         foreach ($fileHistoryItems as $fileHistoryItem) {
             self::assertInstanceOf(FileHistoryItem::class, $fileHistoryItem);
