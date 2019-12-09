@@ -241,6 +241,6 @@ class Account extends Resource
             $accountType->email
         );
 
-        return $this->client->delete($uri)->getStatusCode() === 200;
+        return $this->client->delete($uri, [])->getStatusCode() === 200;
     }
 }

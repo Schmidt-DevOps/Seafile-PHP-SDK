@@ -2,6 +2,9 @@
 
 namespace Seafile\Client\Http;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UriInterface;
+
 /**
  * Guzzle wrapper
  *
@@ -26,11 +29,11 @@ class Client extends \GuzzleHttp\Client
 
         $config = array_merge(
             [
-                'http_errors'     => true,
+                'http_errors' => true,
                 'request.options' => [
-                    'verify'  => true,
+                    'verify' => true,
                     'headers' => [
-                        'Content-Type'  => 'application/json',
+                        'Content-Type' => 'application/json',
                         'Authorization' => 'Token none',
                     ],
                 ],
@@ -39,5 +42,35 @@ class Client extends \GuzzleHttp\Client
         );
 
         parent::__construct($config);
+    }
+
+    /**
+     * @param string|UriInterface $uri
+     * @param array $args
+     * @return ResponseInterface
+     */
+    public function get($uri, $args): ResponseInterface
+    {
+        return parent::get($uri, $args);
+    }
+
+    /**
+     * @param string|UriInterface $uri
+     * @param array $args
+     * @return ResponseInterface
+     */
+    public function put($uri, $args): ResponseInterface
+    {
+        return parent::put($uri, $args);
+    }
+
+    /**
+     * @param string|UriInterface $uri
+     * @param array $args
+     * @return ResponseInterface
+     */
+    public function delete($uri, $args): ResponseInterface
+    {
+        return parent::delete($uri, $args);
     }
 }

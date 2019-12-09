@@ -3,8 +3,11 @@
 namespace Seafile\Client\Resource;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use http\Env\Request;
+use InvalidArgumentException;
+use Psr\Http\Message\ResponseInterface;
 use Seafile\Client\Type\DirectoryItem;
 use Seafile\Client\Type\FileHistoryItem;
 use \Seafile\Client\Type\Library as LibraryType;
@@ -38,13 +41,13 @@ class File extends Resource
     /**
      * Get download URL of a file
      *
-     * @param LibraryType   $library Library instance
-     * @param DirectoryItem $item    Item instance
-     * @param string        $dir     Dir string
-     * @param int           $reuse   Reuse more than once per hour
+     * @param LibraryType $library Library instance
+     * @param DirectoryItem $item Item instance
+     * @param string $dir Dir string
+     * @param int $reuse Reuse more than once per hour
      *
      * @return string
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getDownloadUrl(LibraryType $library, DirectoryItem $item, string $dir = '/', int $reuse = 1)
     {
@@ -76,15 +79,15 @@ class File extends Resource
     /**
      * Get download URL of a file from a Directory item
      *
-     * @param LibraryType   $library       Library instance
-     * @param DirectoryItem $item          Item instance
-     * @param string        $localFilePath Save file to path
-     * @param string        $dir           Dir string
-     * @param int           $reuse         Reuse more than once per hour
+     * @param LibraryType $library Library instance
+     * @param DirectoryItem $item Item instance
+     * @param string $localFilePath Save file to path
+     * @param string $dir Dir string
+     * @param int $reuse Reuse more than once per hour
      *
-     * @return Response
+     * @return ResponseInterface
      * @throws Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function downloadFromDir(
         LibraryType $library,
@@ -92,7 +95,7 @@ class File extends Resource
         string $localFilePath,
         string $dir,
         int $reuse = 1
-    ): Response {
+    ): ResponseInterface {
         if (is_readable($localFilePath)) {
             throw new Exception('File already exists');
         }
@@ -105,14 +108,14 @@ class File extends Resource
     /**
      * Get download URL of a file
      *
-     * @param LibraryType $library       Library instance
-     * @param string      $filePath      Save file to path
-     * @param string      $localFilePath Local file path
-     * @param int         $reuse         Reuse more than once per hour
+     * @param LibraryType $library Library instance
+     * @param string $filePath Save file to path
+     * @param string $localFilePath Local file path
+     * @param int $reuse Reuse more than once per hour
      *
-     * @return Response
+     * @return ResponseInterface
      * @throws Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function download(LibraryType $library, string $filePath, string $localFilePath, int $reuse = 1)
     {
@@ -127,15 +130,16 @@ class File extends Resource
     /**
      * Update file
      *
-     * @param LibraryType $library       Library instance
-     * @param string      $localFilePath Local file path
-     * @param string      $dir           Library dir
-     * @param mixed       $filename      File name, or false to use the name from $localFilePath
+     * @param LibraryType $library Library instance
+     * @param string $localFilePath Local file path
+     * @param string $dir Library dir
+     * @param mixed $filename File name, or false to use the name from $localFilePath
      *
-     * @return Response
+     * @return ResponseInterface
      * @throws Exception
+     * @throws GuzzleException
      */
-    public function update(LibraryType $library, string $localFilePath, string $dir = '/', $filename = false): Response
+    public function update(LibraryType $library, string $localFilePath, string $dir = '/', $filename = false): ResponseInterface
     {
         return $this->upload($library, $localFilePath, $dir, $filename, false);
     }
@@ -144,10 +148,10 @@ class File extends Resource
      * Get upload URL
      *
      * @param LibraryType $library Library instance
-     * @param bool        $newFile Is new file (=upload) or not (=update)
+     * @param bool $newFile Is new file (=upload) or not (=update)
      *
      * @return String Upload link
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function getUploadUrl(LibraryType $library, bool $newFile = true)
     {
@@ -166,9 +170,9 @@ class File extends Resource
      * Get multipart params for uploading/updating file
      *
      * @param string $localFilePath Local file path
-     * @param string $dir           Library dir
-     * @param bool   $newFile       Is new file (=upload) or not (=update)
-     * @param mixed  $newFilename   New file name, or false to use the name from $localFilePath
+     * @param string $dir Library dir
+     * @param bool $newFile Is new file (=upload) or not (=update)
+     * @param mixed $newFilename New file name, or false to use the name from $localFilePath
      *
      * @return array
      */
@@ -186,28 +190,28 @@ class File extends Resource
 
         $multiPartParams = [
             [
-                'headers'  => ['Content-Type' => 'application/octet-stream'],
-                'name'     => 'file',
+                'headers' => ['Content-Type' => 'application/octet-stream'],
+                'name' => 'file',
                 'contents' => fopen($localFilePath, 'r'),
             ],
             [
-                'name'     => 'name',
+                'name' => 'name',
                 'contents' => $fileBaseName,
             ],
             [
-                'name'     => 'filename',
+                'name' => 'filename',
                 'contents' => $fileBaseName,
             ],
         ];
 
         if ($newFile) {
             $multiPartParams[] = [
-                'name'     => 'parent_dir',
+                'name' => 'parent_dir',
                 'contents' => $dir,
             ];
         } else {
             $multiPartParams[] = [
-                'name'     => 'target_file',
+                'name' => 'target_file',
                 'contents' => rtrim($dir, "/") . "/" . $fileBaseName,
             ];
         }
@@ -218,15 +222,15 @@ class File extends Resource
     /**
      * Upload file
      *
-     * @param LibraryType $library       Library instance
-     * @param string      $localFilePath Local file path
-     * @param string      $dir           Library dir
-     * @param mixed       $newFilename   New file name, or false to use the name from $localFilePath
-     * @param bool        $newFile       Is new file (=upload) or not (=update)
+     * @param LibraryType $library Library instance
+     * @param string $localFilePath Local file path
+     * @param string $dir Library dir
+     * @param mixed $newFilename New file name, or false to use the name from $localFilePath
+     * @param bool $newFile Is new file (=upload) or not (=update)
      *
-     * @return Response
+     * @return ResponseInterface
      * @throws Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function upload(
         LibraryType $library,
@@ -234,7 +238,7 @@ class File extends Resource
         string $dir = '/',
         $newFilename = false,
         bool $newFile = true
-    ): Response {
+    ): ResponseInterface {
         if (!is_readable($localFilePath)) {
             throw new Exception('File ' . $localFilePath . ' could not be read or does not exist');
         }
@@ -243,7 +247,7 @@ class File extends Resource
             'POST',
             $this->getUploadUrl($library, $newFile),
             [
-                'headers'   => ['Accept' => '*/*'],
+                'headers' => ['Accept' => '*/*'],
                 'multipart' => $this->getMultiPartParams($localFilePath, $dir, $newFile, $newFilename),
             ]
         );
@@ -252,11 +256,11 @@ class File extends Resource
     /**
      * Get file detail
      *
-     * @param LibraryType $library        Library instance
-     * @param string      $remoteFilePath Remote file path
+     * @param LibraryType $library Library instance
+     * @param string $remoteFilePath Remote file path
      *
      * @return DirectoryItem
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @throws Exception
      */
     public function getFileDetail(LibraryType $library, string $remoteFilePath): DirectoryItem
@@ -277,11 +281,11 @@ class File extends Resource
     /**
      * Remove a file
      *
-     * @param LibraryType $library  Library object
-     * @param string      $filePath File path
+     * @param LibraryType $library Library object
+     * @param string $filePath File path
      *
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function remove(LibraryType $library, string $filePath): bool
     {
@@ -311,23 +315,23 @@ class File extends Resource
     /**
      * Rename a file
      *
-     * @param LibraryType   $library     Library object
-     * @param DirectoryItem $dirItem     Directory item to rename
-     * @param string        $newFilename New file name
+     * @param LibraryType $library Library object
+     * @param DirectoryItem $dirItem Directory item to rename
+     * @param string $newFilename New file name
      *
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function rename(LibraryType $library, DirectoryItem $dirItem, string $newFilename): bool
     {
         $filePath = $dirItem->dir . $dirItem->name;
 
         if (empty($filePath)) {
-            throw new \InvalidArgumentException('Invalid file path: must not be empty');
+            throw new InvalidArgumentException('Invalid file path: must not be empty');
         }
 
         if (empty($newFilename) || strpos($newFilename, '/') === 0) {
-            throw new \InvalidArgumentException('Invalid new file name: length must be >0 and must not start with /');
+            throw new InvalidArgumentException('Invalid new file name: length must be >0 and must not start with /');
         }
 
         $uri = sprintf(
@@ -341,14 +345,14 @@ class File extends Resource
             'POST',
             $uri,
             [
-                'headers'   => ['Accept' => 'application/json'],
+                'headers' => ['Accept' => 'application/json'],
                 'multipart' => [
                     [
-                        'name'     => 'operation',
+                        'name' => 'operation',
                         'contents' => 'rename',
                     ],
                     [
-                        'name'     => 'newname',
+                        'name' => 'newname',
                         'contents' => $newFilename,
                     ],
                 ],
@@ -367,14 +371,14 @@ class File extends Resource
     /**
      * Copy a file
      *
-     * @param LibraryType $srcLibrary       Source library object
-     * @param string      $srcFilePath      Source file path
-     * @param LibraryType $dstLibrary       Destination library object
-     * @param string      $dstDirectoryPath Destination directory path
-     * @param int         $operation        Operation mode
+     * @param LibraryType $srcLibrary Source library object
+     * @param string $srcFilePath Source file path
+     * @param LibraryType $dstLibrary Destination library object
+     * @param string $dstDirectoryPath Destination directory path
+     * @param int $operation Operation mode
      *
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function copy(
         LibraryType $srcLibrary,
@@ -382,7 +386,8 @@ class File extends Resource
         LibraryType $dstLibrary,
         string $dstDirectoryPath,
         int $operation = self::OPERATION_COPY
-    ): bool {
+    ): bool
+    {
         // do not allow empty paths
         if (empty($srcFilePath) || empty($dstDirectoryPath)) {
             return false;
@@ -407,18 +412,18 @@ class File extends Resource
             'POST',
             $uri,
             [
-                'headers'   => ['Accept' => 'application/json'],
+                'headers' => ['Accept' => 'application/json'],
                 'multipart' => [
                     [
-                        'name'     => 'operation',
+                        'name' => 'operation',
                         'contents' => $operationMode,
                     ],
                     [
-                        'name'     => 'dst_repo',
+                        'name' => 'dst_repo',
                         'contents' => $dstLibrary->id,
                     ],
                     [
-                        'name'     => 'dst_dir',
+                        'name' => 'dst_dir',
                         'contents' => $dstDirectoryPath,
                     ],
                 ],
@@ -431,32 +436,33 @@ class File extends Resource
     /**
      * Move a file
      *
-     * @param LibraryType $srcLibrary       Source library object
-     * @param string      $srcFilePath      Source file path
-     * @param LibraryType $dstLibrary       Destination library object
-     * @param string      $dstDirectoryPath Destination directory path
+     * @param LibraryType $srcLibrary Source library object
+     * @param string $srcFilePath Source file path
+     * @param LibraryType $dstLibrary Destination library object
+     * @param string $dstDirectoryPath Destination directory path
      *
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function move(
         LibraryType $srcLibrary,
         string $srcFilePath,
         LibraryType $dstLibrary,
         string $dstDirectoryPath
-    ): bool {
+    ): bool
+    {
         return $this->copy($srcLibrary, $srcFilePath, $dstLibrary, $dstDirectoryPath, self::OPERATION_MOVE);
     }
 
     /**
      * Get file revision download URL
      *
-     * @param LibraryType     $library         Source library object
-     * @param DirectoryItem   $dirItem         Item instance
+     * @param LibraryType $library Source library object
+     * @param DirectoryItem $dirItem Item instance
      * @param FileHistoryItem $fileHistoryItem FileHistory item instance
      *
-     * @return Response
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return string|string[]
+     * @throws GuzzleException
      */
     public function getFileRevisionDownloadUrl(
         LibraryType $library,
@@ -478,20 +484,21 @@ class File extends Resource
     /**
      * Download file revision
      *
-     * @param LibraryType     $library         Source library object
-     * @param DirectoryItem   $dirItem         Item instance
+     * @param LibraryType $library Source library object
+     * @param DirectoryItem $dirItem Item instance
      * @param FileHistoryItem $fileHistoryItem FileHistory item instance
-     * @param string          $localFilePath   Save file to path. Existing files will be overwritten without warning
+     * @param string $localFilePath Save file to path. Existing files will be overwritten without warning
      *
      * @return Response
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function downloadRevision(
         LibraryType $library,
         DirectoryItem $dirItem,
         FileHistoryItem $fileHistoryItem,
         string $localFilePath
-    ): Response {
+    ): Response
+    {
         $downloadUrl = $this->getFileRevisionDownloadUrl($library, $dirItem, $fileHistoryItem);
 
         return $this->client->request('GET', $downloadUrl, ['save_to' => $localFilePath]);
@@ -500,11 +507,11 @@ class File extends Resource
     /**
      * Get history of a file DirectoryItem
      *
-     * @param LibraryType   $library Library instance
-     * @param DirectoryItem $item    Item instance
+     * @param LibraryType $library Library instance
+     * @param DirectoryItem $item Item instance
      *
      * @return FileHistoryItem[]
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      * @throws Exception
      */
     public function getHistory(LibraryType $library, DirectoryItem $item)
@@ -531,11 +538,11 @@ class File extends Resource
     /**
      * Create empty file on Seafile server
      *
-     * @param LibraryType   $library Library instance
-     * @param DirectoryItem $item    Item instance
+     * @param LibraryType $library Library instance
+     * @param DirectoryItem $item Item instance
      *
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function create(LibraryType $library, DirectoryItem $item): bool
     {
@@ -555,10 +562,10 @@ class File extends Resource
             'POST',
             $uri,
             [
-                'headers'   => ['Accept' => 'application/json'],
+                'headers' => ['Accept' => 'application/json'],
                 'multipart' => [
                     [
-                        'name'     => 'operation',
+                        'name' => 'operation',
                         'contents' => 'create',
                     ],
                 ],

@@ -90,7 +90,7 @@ class AvatarTest extends TestCase
 
         $mockedClient->expects(self::any())
             ->method('get')
-            ->with($baseUri . '/avatars/' . $resource . '/' . $id . '/resized/' . $size . '/')
+            ->with($baseUri . '/avatars/' . $resource . '/' . $id . '/resized/' . $size . '/', [])
             ->willReturn(
                 new Response(
                     200,

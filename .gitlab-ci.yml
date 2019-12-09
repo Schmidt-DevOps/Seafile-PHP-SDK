@@ -34,3 +34,12 @@ test:php-7.3:
     - bash ./bin/prepare_tests.sh && bash ./bin/run_tests.sh
   tags:
     - sdo
+
+test:php-7.4:
+  stage: test
+  image: php:7.4
+  script:
+    - bash ./bin/prepare_tests.sh && bash ./bin/run_tests.sh
+  tags:
+    - sdo
+

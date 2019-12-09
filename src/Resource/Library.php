@@ -219,7 +219,7 @@ class Library extends Resource
             $permission
         );
 
-        $response = $this->client->put($uri);
+        $response = $this->client->put($uri, []);
 
         return $response->getStatusCode() === 200;
     }

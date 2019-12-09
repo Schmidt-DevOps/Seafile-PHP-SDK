@@ -127,7 +127,7 @@ class AccountTest extends TestCase
 
         $accountType = (new AccountType)->fromArray([
             'password' => 'some_password',
-            'email'    => 'my_email@example.com',
+            'email' => 'my_email@example.com',
         ]);
 
         /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
@@ -195,7 +195,7 @@ class AccountTest extends TestCase
 
         $mockedClient->expects(self::any())
             ->method('delete')
-            ->with($baseUri . 'accounts/' . $accountType->email . '/')// trailing slash is mandatory!
+            ->with($baseUri . 'accounts/' . $accountType->email . '/', [])// trailing slash is mandatory!
             ->willReturn(new Response(200));
 
         $mockedClient->expects(self::any())

@@ -102,11 +102,10 @@ class StarredFile extends Resource
     /**
      * Unstar a file
      *
-     * @param LibraryType   $library Library instance
+     * @param LibraryType $library Library instance
      * @param DirectoryItem $dirItem DirectoryItem instance
      *
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function unstar(LibraryType $library, DirectoryItem $dirItem): bool
     {

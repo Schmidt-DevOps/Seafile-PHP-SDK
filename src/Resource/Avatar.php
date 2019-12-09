@@ -22,7 +22,7 @@ class Avatar extends Resource
      * Get user avatar by email address
      *
      * @param string $emailAddress Email address
-     * @param int    $size         Avatar size, defaults to 80 pixels
+     * @param int $size Avatar size, defaults to 80 pixels
      *
      * @return AvatarType
      * @throws \Exception
@@ -36,7 +36,7 @@ class Avatar extends Resource
      * Get user avatar by AccountType instance
      *
      * @param AccountType $accountType AccountType instance
-     * @param int         $size        Avatar size, defaults to 80 pixels
+     * @param int $size Avatar size, defaults to 80 pixels
      *
      * @return AvatarType
      * @throws \Exception
@@ -50,7 +50,7 @@ class Avatar extends Resource
      * Get group avatar
      *
      * @param GroupType $groupType GroupType instance
-     * @param int       $size      Avatar size in pixels
+     * @param int $size Avatar size in pixels
      *
      * @return AvatarType
      * @throws \Exception
@@ -64,7 +64,7 @@ class Avatar extends Resource
      * Get avatar image
      *
      * @param Type|GroupType|AccountType $type Either AccountType or GroupType instance
-     * @param int                        $size Avatar size
+     * @param int $size Avatar size
      *
      * @return AvatarType
      * @throws \Exception
@@ -89,7 +89,8 @@ class Avatar extends Resource
         }
 
         $response = $this->client->get(
-            $this->client->getConfig('base_uri') . '/avatars/' . $resource . '/' . $id . '/resized/' . $size . '/'
+            $this->client->getConfig('base_uri') . '/avatars/' . $resource . '/' . $id . '/resized/' . $size . '/',
+            []
         );
 
         $json = json_decode($response->getBody());
@@ -115,7 +116,7 @@ class Avatar extends Resource
         $response = $this->client->put(
             $uri,
             [
-                'headers'   => ['Accept' => 'application/json; charset=utf-8'],
+                'headers' => ['Accept' => 'application/json; charset=utf-8'],
                 'multipart' => $accountType->toArray(Type::ARRAY_MULTI_PART),
             ]
         );

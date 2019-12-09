@@ -23,7 +23,8 @@
   "require": {
     "php": ">=7.2",
     "guzzlehttp/guzzle": "~6.0",
-    "nabil1337/case-helper": "~0.1"
+    "nabil1337/case-helper": "~0.1",
+    "ext-json": "*"
   },
   "require-dev": {
     "monolog/monolog": "~1.17",
