@@ -22,7 +22,6 @@ class SharedLink extends Resource implements ResourceInterface
      *
      * @return SharedLinkType[]
      * @throws Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getAll(): array
     {
@@ -45,7 +44,6 @@ class SharedLink extends Resource implements ResourceInterface
      * @param SharedLinkType $sharedLinkType SharedLinkType instance
      *
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function remove(SharedLinkType $sharedLinkType): bool
     {
@@ -77,7 +75,6 @@ class SharedLink extends Resource implements ResourceInterface
      *
      * @return SharedLinkType|null
      * @throws Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function create(
         LibraryType $library,

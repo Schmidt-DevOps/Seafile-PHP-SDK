@@ -2,6 +2,8 @@
 
 namespace Seafile\Client\Tests\Resource;
 
+use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit_Framework_MockObject_MockObject;
 use Seafile\Client\Http\Client as SeafileHttpClient;
@@ -28,8 +30,8 @@ class FileTest extends TestCase
      * Test getDownloadUrl()
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
+     * @throws Exception
      */
     public function testGetDownloadUrl()
     {
@@ -86,8 +88,8 @@ class FileTest extends TestCase
      * Test getUploadUrl()
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
+     * @throws Exception
      */
     public function testGetUploadLink()
     {
@@ -105,8 +107,8 @@ class FileTest extends TestCase
      * Download a file, local destination path is already occupied
      *
      * @return void
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     * @throws GuzzleException
      */
     public function testDownloadFromDirFileExists()
     {
@@ -126,8 +128,8 @@ class FileTest extends TestCase
      * Try to upload a non-existent local file
      *
      * @return void
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     * @throws GuzzleException
      */
     public function testUploadDoesNotExist()
     {
@@ -143,8 +145,8 @@ class FileTest extends TestCase
      * Test downloadFromDir()
      *
      * @return void
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     * @throws GuzzleException
      */
     public function testDownloadFromDir()
     {
@@ -158,8 +160,8 @@ class FileTest extends TestCase
      * Test download()
      *
      * @return void
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     * @throws GuzzleException
      */
     public function testDownload()
     {
@@ -174,8 +176,8 @@ class FileTest extends TestCase
      * Test upload()
      *
      * @return void
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     * @throws GuzzleException
      */
     public function testUpload()
     {
@@ -189,7 +191,7 @@ class FileTest extends TestCase
      * Test update()
      *
      * @return void
-     * @throws \Exception
+     * @throws GuzzleException
      */
     public function testUpdate()
     {
@@ -203,8 +205,8 @@ class FileTest extends TestCase
      * test getFileDetail()
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
+     * @throws Exception
      */
     public function testGetFileDetail()
     {
@@ -228,7 +230,7 @@ class FileTest extends TestCase
      * Test getMultiPartParams() for update
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testUpdateMultiPartParams()
     {
@@ -304,7 +306,7 @@ class FileTest extends TestCase
      * Test getMultiPartParams() for upload
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testUploadMultiPartParams()
     {
@@ -339,8 +341,8 @@ class FileTest extends TestCase
      * Test remove() with invalid file name
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
+     * @throws Exception
      */
     public function testRemoveInvalidFilename()
     {
@@ -378,8 +380,8 @@ class FileTest extends TestCase
      *
      * @return void
      * @dataProvider dataProviderTestRenameInvalidFilename
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     * @throws GuzzleException
      */
     public function testRenameInvalidFilename(string $invalidFilePath, string $invalidNewFilename)
     {
@@ -402,7 +404,7 @@ class FileTest extends TestCase
      * Data provider for testCopyInvalid()
      *
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public static function dataProviderCopyInvalid(): array
     {
@@ -426,7 +428,7 @@ class FileTest extends TestCase
      * @param array $data Test data
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function testCopyInvalid(array $data)
     {
@@ -448,8 +450,8 @@ class FileTest extends TestCase
      * Test remove()
      *
      * @return void
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     * @throws GuzzleException
      */
     public function testRemove()
     {
@@ -504,8 +506,8 @@ class FileTest extends TestCase
      * Test rename()
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
+     * @throws Exception
      */
     public function testRename()
     {
@@ -580,7 +582,7 @@ class FileTest extends TestCase
      * @param array $data Data provided
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testCopyMove(array $data)
     {
@@ -655,8 +657,8 @@ class FileTest extends TestCase
      * Test move() with invalid destination dir
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
+     * @throws Exception
      */
     public function testMoveInvalidDestination()
     {
@@ -679,8 +681,8 @@ class FileTest extends TestCase
      * Test getFileRevisionDownloadUrl()
      *
      * @return void
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     * @throws GuzzleException
      */
     public function testGetFileRevisionDownloadUrl()
     {
@@ -710,8 +712,8 @@ class FileTest extends TestCase
      * Test downloadRevision()
      *
      * @return void
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     * @throws GuzzleException
      */
     public function testDownloadRevision()
     {
@@ -737,8 +739,8 @@ class FileTest extends TestCase
      * Test getHistory()
      *
      * @return void
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     * @throws GuzzleException
      */
     public function testGetHistory()
     {
@@ -766,8 +768,8 @@ class FileTest extends TestCase
      * Test create() with invalid DirectoryItem
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
+     * @throws Exception
      */
     public function testCreateInvalid()
     {
@@ -780,8 +782,8 @@ class FileTest extends TestCase
      * Test create() with valid DirectoryItem
      *
      * @return void
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     * @throws GuzzleException
      */
     public function testCreate()
     {

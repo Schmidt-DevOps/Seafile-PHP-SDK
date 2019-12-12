@@ -2,6 +2,8 @@
 
 namespace Seafile\Client\Resource;
 
+use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Seafile\Client\Type\Library as LibraryType;
 
 /**
@@ -19,8 +21,7 @@ class Library extends Resource
      * List libraries
      *
      * @return LibraryType[]
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
      */
     public function getAll(): array
     {
@@ -43,8 +44,7 @@ class Library extends Resource
      * @param string $libraryId Library ID
      *
      * @return LibraryType
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
      */
     public function getById($libraryId): LibraryType
     {
@@ -66,8 +66,7 @@ class Library extends Resource
      *
      * @return bool Decryption success
      *
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
      */
     public function decrypt($libraryId, array $options): bool
     {
@@ -75,7 +74,7 @@ class Library extends Resource
         $hasPassword = $hasQueryParams && array_key_exists('password', $options['query']);
 
         if (!$hasQueryParams || !$hasPassword) {
-            throw new \Exception('Password query parameter is required to decrypt library');
+            throw new Exception('Password query parameter is required to decrypt library');
         }
 
         $response = $this->client->request(
@@ -94,8 +93,8 @@ class Library extends Resource
      * @param string $attribute Attribute name of library
      *
      * @return bool
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     * @throws GuzzleException
      */
     public function exists($value, $attribute = 'name'): bool
     {
@@ -118,8 +117,8 @@ class Library extends Resource
      * @param string $password    false means no encryption, any other string is used as password
      *
      * @return bool
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     * @throws GuzzleException
      */
     public function create($name, $description = "new repo", $password = ''): bool
     {
@@ -174,7 +173,7 @@ class Library extends Resource
      * @param string $libraryId Library ID
      *
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function remove($libraryId): bool
     {

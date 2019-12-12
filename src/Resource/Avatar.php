@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Resource;
 
+use Exception;
 use Seafile\Client\Type\Type;
 use \Seafile\Client\Type\Account as AccountType;
 use \Seafile\Client\Type\Group as GroupType;
@@ -25,7 +26,7 @@ class Avatar extends Resource
      * @param int $size Avatar size, defaults to 80 pixels
      *
      * @return AvatarType
-     * @throws \Exception
+     * @throws Exception
      */
     public function getUserAvatarByEmail(string $emailAddress, int $size = 80)
     {
@@ -39,7 +40,7 @@ class Avatar extends Resource
      * @param int $size Avatar size, defaults to 80 pixels
      *
      * @return AvatarType
-     * @throws \Exception
+     * @throws Exception
      */
     public function getUserAvatar(AccountType $accountType, int $size = 80)
     {
@@ -53,7 +54,7 @@ class Avatar extends Resource
      * @param int $size Avatar size in pixels
      *
      * @return AvatarType
-     * @throws \Exception
+     * @throws Exception
      */
     public function getGroupAvatar(GroupType $groupType, int $size = 80)
     {
@@ -67,12 +68,12 @@ class Avatar extends Resource
      * @param int $size Avatar size
      *
      * @return AvatarType
-     * @throws \Exception
+     * @throws Exception
      */
     protected function getAvatar(Type $type, int $size)
     {
         if (!is_int($size) || $size < 1) {
-            throw new \Exception('Illegal avatar size');
+            throw new Exception('Illegal avatar size');
         }
 
         switch (true) {
@@ -85,7 +86,7 @@ class Avatar extends Resource
                 $resource = 'user';
                 break;
             default:
-                throw new \Exception('Unsupported type to retrieve avatar information for.');
+                throw new Exception('Unsupported type to retrieve avatar information for.');
         }
 
         $response = $this->client->get(
@@ -104,7 +105,7 @@ class Avatar extends Resource
      * @param AccountType $accountType AccountType instance with data for new account
      *
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function createUserAvatar(AccountType $accountType): bool
     {

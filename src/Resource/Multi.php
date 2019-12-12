@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Resource;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Seafile\Client\Type\Library as LibraryType;
 
 /**
@@ -34,7 +35,7 @@ class Multi extends Resource
      * @param string      $dstDirectoryPath Destination directory Path
      *
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function move(
         LibraryType $srcLibrary,
@@ -55,7 +56,7 @@ class Multi extends Resource
      * @param int         $operation        self::OPERATION_COPY or self::OPERATION_MOVE
      *
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function copy(
         LibraryType $srcLibrary,
@@ -147,7 +148,7 @@ class Multi extends Resource
      * @param array       $paths   Array with file and folder paths (they must be in the same folder)
      *
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function delete(LibraryType $library, array $paths): bool
     {

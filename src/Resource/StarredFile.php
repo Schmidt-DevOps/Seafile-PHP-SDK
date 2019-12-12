@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Resource;
 
+use Exception;
 use Seafile\Client\Http\Client;
 use \Seafile\Client\Type\Library as LibraryType;
 use \Seafile\Client\Type\DirectoryItem;
@@ -40,7 +41,7 @@ class StarredFile extends Resource
      * Get all starred files
      *
      * @return DirectoryItem[]
-     * @throws \Exception
+     * @throws Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getAll(): array
@@ -65,13 +66,12 @@ class StarredFile extends Resource
      * @param DirectoryItem $dirItem DirectoryItem instance to star
      *
      * @return string URL of starred file list
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
      */
     public function star(LibraryType $library, DirectoryItem $dirItem): string
     {
         if ($dirItem->type !== 'file') {
-            throw new \Exception('Cannot star other items than files.');
+            throw new Exception('Cannot star other items than files.');
         }
 
         $response = $this->client->request(
@@ -93,7 +93,7 @@ class StarredFile extends Resource
         );
 
         if ($response->getStatusCode() !== 201 || $response->hasHeader('Location') === false) {
-            throw new \Exception('Could not star file');
+            throw new Exception('Could not star file');
         }
 
         return $response->getHeader('Location')[0];

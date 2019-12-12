@@ -489,7 +489,7 @@ class File extends Resource
      * @param FileHistoryItem $fileHistoryItem FileHistory item instance
      * @param string $localFilePath Save file to path. Existing files will be overwritten without warning
      *
-     * @return Response
+     * @return ResponseInterface
      * @throws GuzzleException
      */
     public function downloadRevision(
@@ -497,7 +497,7 @@ class File extends Resource
         DirectoryItem $dirItem,
         FileHistoryItem $fileHistoryItem,
         string $localFilePath
-    ): Response
+    ): ResponseInterface
     {
         $downloadUrl = $this->getFileRevisionDownloadUrl($library, $dirItem, $fileHistoryItem);
 

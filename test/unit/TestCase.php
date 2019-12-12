@@ -41,7 +41,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
      *
      * @param Response $response HTTP Response
      *
-     * @return Client|PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     protected function getMockedClient(Response $response)
     {

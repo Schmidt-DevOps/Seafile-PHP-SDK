@@ -2,6 +2,8 @@
 
 namespace Seafile\Client\Resource;
 
+use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Seafile\Client\Type\Library as LibraryType;
 use \Seafile\Client\Type\DirectoryItem;
 
@@ -23,8 +25,8 @@ class Directory extends Resource
      * @param string      $dir     Directory path
      *
      * @return DirectoryItem[]
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     * @throws GuzzleException
      */
     public function getAll(LibraryType $library, string $dir = '/')
     {
@@ -64,8 +66,8 @@ class Directory extends Resource
      * @param string      $parentDir   Parent directory
      *
      * @return bool
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     * @throws GuzzleException
      */
     public function exists(LibraryType $library, string $dirItemName, string $parentDir = '/')
     {
@@ -83,14 +85,14 @@ class Directory extends Resource
     /**
      * Create directory within $parentDir
      *
-     * @param LibraryType $library   Library instance
-     * @param string      $dirName   Directory name
-     * @param string      $parentDir Parent directory
-     * @param bool        $recursive Recursive create
+     * @param LibraryType $library Library instance
+     * @param string $dirName Directory name
+     * @param string $parentDir Parent directory
+     * @param bool $recursive Recursive create
      *
      * @return bool Success
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     * @throws GuzzleException
      */
     public function create(LibraryType $library, string $dirName, string $parentDir = '/', bool $recursive = false)
     {
@@ -153,7 +155,6 @@ class Directory extends Resource
      * @param string      $directoryPath Directory path
      *
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function remove(LibraryType $library, string $directoryPath)
     {
@@ -188,7 +189,6 @@ class Directory extends Resource
      * @param string      $newDirectoryName New directory name
      *
      * @return bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function rename(LibraryType $library, string $directoryPath, string $newDirectoryName)
     {
