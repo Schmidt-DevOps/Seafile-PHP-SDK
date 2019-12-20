@@ -1,12 +1,17 @@
 <?php
 
 /**
- * This file lists Seafile groups.
+ * This script will call "auth ping" in order to check if the authorization token is valid.
+ * The expected response is "pong".
+ *
+ * @see https://download.seafile.com/published/web-api/home.md#user-content-Quick%20Start
  */
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-use Seafile\Client\Resource\Group;
+use GuzzleHttp\Exception\GuzzleException;
+use Seafile\Client\Resource\Account;
+use Seafile\Client\Type\Account as AccountType;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\MessageFormatter;
@@ -28,6 +33,15 @@ $stack->push(
  * {"token": "your_token"}
  */
 $tokenFile = getenv("HOME") . "/.seafile-php-sdk/api-token.json";
+
+/**
+ * Example:
+ * {
+ *   "baseUri": "https://your.seafile-server.example.com",
+ *   "testLibId": "ID of an encrypted library",
+ *   "testLibPassword": "Password of that encrypted library"
+ * }
+ */
 $cfgFile = getenv("HOME") . "/.seafile-php-sdk/cfg.json";
 
 try {
@@ -45,27 +59,30 @@ try {
     $client = new Client(
         [
             'base_uri' => $cfg->baseUri,
-            'debug'    => true,
-            'handler'  => $stack,
-            'headers'  => [
-                'Content-Type'  => 'application/json',
+            'debug' => true,
+            'handler' => $stack,
+            'headers' => [
+                'Content-Type' => 'application/json',
                 'Authorization' => 'Token ' . $token->token,
             ],
         ]
     );
 
-    $groupResource = new Group($client);
-    $logger->log(Logger::INFO, "#################### Get all groups ");
+    $logger->log(Logger::INFO, "#################### PINGing the API with an authorization token");
 
-    $groups = $groupResource->getAll();
+    $response = $client->request('GET', $client->getConfig('base_uri') . '/auth/ping/');
+    $json = json_decode($response->getBody());
 
-    foreach ($groups as $group) {
-        $logger->log(Logger::INFO, "#################### " . sprintf("Group name: %s", $group->name));
+    if ($json === "pong") {
+        $logger->log(Logger::INFO, "#################### PINGing successful");
+    } else {
+        $logger->log(Logger::ERROR, "#################### Unexpected server response: " . $json);
     }
-} catch (\Exception $e) {
-    $logger->critical($e->getMessage());
-} catch (\GuzzleHttp\Exception\GuzzleException $e) {
-    $logger->critical($e->getMessage());
+
+} catch (Exception $e) {
+    print("Exception: " . $e->getMessage());
+} catch (GuzzleException $e) {
+    print("GuzzleException: " . $e->getMessage());
 }
 
 print(PHP_EOL . 'Done' . PHP_EOL);

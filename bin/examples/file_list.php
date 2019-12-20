@@ -1,5 +1,7 @@
 <?php
 
+/** This script lists files of the test library */
+
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use Seafile\Client\Resource\Directory;

@@ -7,6 +7,7 @@
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
+use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Resource\Directory;
 use Seafile\Client\Resource\File;
 use GuzzleHttp\HandlerStack;
@@ -15,6 +16,7 @@ use GuzzleHttp\MessageFormatter;
 use Monolog\Logger;
 use Seafile\Client\Http\Client;
 use Seafile\Client\Resource\Library;
+use Seafile\Client\Type\DirectoryItem;
 
 try {
     $logger = new Logger('Logger');
@@ -48,10 +50,10 @@ try {
     $client = new Client(
         [
             'base_uri' => $cfg->baseUri,
-            'debug'    => true,
-            'handler'  => $stack,
-            'headers'  => [
-                'Content-Type'  => 'application/json',
+            'debug' => true,
+            'handler' => $stack,
+            'headers' => [
+                'Content-Type' => 'application/json',
                 'Authorization' => 'Token ' . $token->token,
             ],
         ]
@@ -69,11 +71,14 @@ try {
         $success = $libraryResource->decrypt($libId, ['query' => ['password' => $cfg->testLibPassword]]);
     }
 
-
-    $logger->log(Logger::INFO, "#################### GO!");
+    $logger->log(Logger::INFO, "#################### Create file to be renamed later.");
 
     $path = null;
     $fileName = 'test.txt';
+
+    $dirItem = (new DirectoryItem())->fromArray(['path' => '/', 'name' => $fileName]);
+    $success = $fileResource->create($lib, $dirItem);
+
     $newFilename = 'test_' . date('U') . '.txt';
     $dirItem = $fileResource->getFileDetail($lib, $path . $fileName);
 
@@ -91,7 +96,6 @@ try {
     $logger->log(Logger::INFO, "#################### Waiting " . $n . " seconds...");
     sleep($n);
 
-
     $newFilename = 'even_newer_file_name_test_' . date('U') . '.txt';
     $success = $fileResource->rename($lib, $dirItem, $newFilename);
 
@@ -102,7 +106,7 @@ try {
     }
 } catch (\Exception $e) {
     $logger->critical($e->getMessage());
-} catch (\GuzzleHttp\Exception\GuzzleException $e) {
+} catch (GuzzleException $e) {
     $logger->critical($e->getMessage());
 }
 

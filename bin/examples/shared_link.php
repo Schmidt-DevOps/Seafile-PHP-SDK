@@ -7,6 +7,7 @@
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
+use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Resource\Directory;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Resource\Library;
@@ -59,10 +60,10 @@ try {
     $client = new Client(
         [
             'base_uri' => $cfg->baseUri,
-            'debug'    => true,
-            'handler'  => $stack,
-            'headers'  => [
-                'Content-Type'  => 'application/json',
+            'debug' => true,
+            'handler' => $stack,
+            'headers' => [
+                'Content-Type' => 'application/json',
                 'Authorization' => 'Token ' . $token->token,
             ],
         ]
@@ -73,7 +74,7 @@ try {
     $fileResource = new File($client);
     $sharedLinkResource = new SharedLink($client);
 
-// get all libraries available
+    // get all libraries available
     $logger->log(Logger::INFO, "#################### Getting all libraries");
     $libs = $libraryResource->getAll();
 
@@ -83,14 +84,14 @@ try {
 
     $libId = $cfg->testLibId;
 
-// get specific library
+    // get specific library
     $logger->log(Logger::INFO, "#################### Getting lib with ID " . $libId);
     $lib = $libraryResource->getById($libId);
 
     $lib->password = $cfg->testLibPassword; // library is encrypted and thus we provide a password
     $success = $libraryResource->decrypt($libId, ['query' => ['password' => $cfg->testLibPassword]]);
 
-// upload a Hello World file and random file name (note: this seems not to work at this time when you are not logged into the Seafile web frontend).
+    // upload a Hello World file and random file name (note: this seems not to work at this time when you are not logged into the Seafile web frontend).
     $newFilename = './Seafile-PHP-SDK_Test_Upload.txt';
 
     if (!file_exists($newFilename)) {
@@ -100,7 +101,7 @@ try {
     $logger->log(Logger::INFO, "#################### Uploading file " . $newFilename);
     $response = $fileResource->upload($lib, $newFilename, '/');
 
-// create share link for a file
+    // create share link for a file
     $logger->log(Logger::INFO, "#################### Create share link for a file");
 
     $expire = 5;
@@ -129,7 +130,7 @@ try {
     }
 } catch (\Exception $e) {
     $logger->critical($e->getMessage());
-} catch (\GuzzleHttp\Exception\GuzzleException $e) {
+} catch (GuzzleException $e) {
     $logger->critical($e->getMessage());
 }
 

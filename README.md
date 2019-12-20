@@ -35,16 +35,18 @@ If you are looking for stability please refer to stable tags.
 
 ## Obtain API token
 
-Have a look at script ```bin/obtain_api_token.sh``` and use it if you feel comfortable with it. Basically, the script does this:
+Please refer to the [Seafile docs](https://download.seafile.com/published/web-api/home.md#user-content-Quick%20Start) on how to obtain an API token.
 
+Have a look at script ```bin/obtain_api_token.sh``` and use it if you feel comfortable with it. Basically, the script does this:
+    
 ```bash
 mkdir ~/.seafile-php-sdk
-curl -d "username=you@example.com&password=123456" https://your.seafile-server.com/api2/auth-token/ > ~/.seafile-php-sdk/api-token.json
+curl -d username="you@example.com" -d password="123456" https://your.seafile-server.com/api2/auth-token/ > ~/.seafile-php-sdk/api-token.json
 ```
 
-Insert your test user name and test user password. Hint: if user name contains a "+" char, replace the char with "%2B" (hex ascii for "+") or ```urlencode()``` the user name altogether. Just so you know.
+Insert your test user name and test user password. Hint: if user name contains a "+" char, use "--data-urlencode" as describe in the Seafile docs.
 
-The file ```~/.seafile-php-sdk/api-token.json``` will look something like this:
+The file ```~/.seafile-php-sdk/api-token.json``` will look like this:
 
 ```
 {"token": "your_api_token"}
@@ -366,15 +368,7 @@ $client = new Client(
 ```
 ## Version history
 
-### Version 2.x (not yet released)
-
-This version will not be backwards compatible with Version 1.x. 
-
-- SEAF-001: Will support PHP >7.0.0 only. In case you require a version that still supports PHP 5.6 let [me](rene+_gth@sdo.sh) know so I can tell you my rates :)
-- SEAF-002: Requires PHPUnit 6.x
-
-### Version 1.0.1
-Latest and last version to support PHP 5.6.
+See CHANGELOG.md
 
 ## Issues
 
@@ -416,8 +410,7 @@ Tested with:
 - ~~Seafile Server 5.1.3 for generic Linux/Debian Wheezy~~
 - ~~Seafile Server 5.1.4 for generic Linux/Ubuntu Xenial~~
 - ~~Seafile Server 6.0.3 for generic Linux/Ubuntu Xenial~~
-- Seafile Server 6.2.x for generic Linux/Ubuntu Xenial
-- If you require a backport for an older Seafile server version [contact me](rene+_gth@sdo.sh) for a quote!
+- Seafile Server 6.3.4 for generic Linux/Ubuntu Xenial
 
 ## Contributing
 
@@ -432,7 +425,7 @@ Please note that this package still is in its infancy. Only a part of the API ha
 ## Links
 
 - https://seafile.com
-- https://manual.seafile.com/develop/web_api.html#seafile-web-api-v2
+- https://download.seafile.com/published/seafile-manual/develop/web_api_v2.1.md
 - https://sdo.sh
 - https://luckycloud.de/de/ (Seafile server hosting in Germany)
 - https://www.yoursecurecloud.de/ (Seafile server hosting in Germany)

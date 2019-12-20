@@ -7,6 +7,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Resource\Directory;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Resource\Library;
@@ -150,9 +151,9 @@ try {
     $directory = 'a/b/c/d/e/f/g/h/i'; // directory structure
     $recursive = true; // recursive will create parentDir if not already existing
     $success = $directoryResource->create($lib, $directory, $parentDir, $recursive);
-} catch (\Exception $e) {
+} catch (Exception $e) {
     $logger->critical($e->getMessage());
-} catch (\GuzzleHttp\Exception\GuzzleException $e) {
+} catch (GuzzleException $e) {
     $logger->critical($e->getMessage());
 }
 
