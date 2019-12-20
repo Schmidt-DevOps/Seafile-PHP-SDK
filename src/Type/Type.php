@@ -68,6 +68,9 @@ abstract class Type implements TypeInterface
                 case 'mtime_created':
                     $this->{$camelCaseKey} = $this->getDateTime((int)$value);
                     break;
+                case 'expire_date':
+                    $this->{$camelCaseKey} = $this->getDateTime(strtotime($value));
+                    break;
                 default:
                     $this->{$camelCaseKey} = $value;
                     break;
@@ -129,7 +132,7 @@ abstract class Type implements TypeInterface
                     if ($val instanceof DateTime) {
                         $val = $val->format('U');
                     }
-                    
+
                     $multiPart[] = ['name' => $caseHelper->toSnakeCase($key), 'contents' => "$val"];
                 }
 

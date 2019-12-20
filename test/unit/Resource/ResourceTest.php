@@ -7,7 +7,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Seafile\Client\Http\Client;
 use Seafile\Client\Resource\Directory;
 use Seafile\Client\Resource\SharedLink;
-use Seafile\Client\Resource\ShareLink;
+use Seafile\Client\Resource\ShareLinks;
 use Seafile\Client\Tests\TestCase;
 
 /**
@@ -67,12 +67,7 @@ class ResourceTest extends TestCase
             ->method('getConfig')
             ->willReturn('https://example.com/seafile');
 
-        // first we test SharedLink, which uses API v2
-        $sharedLinkResource = new SharedLink($mockedClient);
-        self::assertSame('http://example.com/seafile/api2', $sharedLinkResource->getApiBaseUrl());
-
-        // seccond test is ShareLink (note the missing "d"), which uses API v2.1
-        $shareLinkResource = new ShareLink($mockedClient);
+        $shareLinkResource = new ShareLinks($mockedClient);
         self::assertSame('http://example.com/seafile/api/v2.1', $shareLinkResource->getApiBaseUrl());
     }
 }

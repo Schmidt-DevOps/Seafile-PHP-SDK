@@ -1,0 +1,56 @@
+[
+  {
+    "username": "lian@lian.com",
+    "repo_id": "c474a093-19dc-4ddf-b0b0-72b33214ba33",
+    "ctime": "2017-04-01T02:35:57+00:00",
+    "expire_date": "",
+    "token": "6afa667ff2c248378b70",
+    "view_cnt": 0,
+    "link": "https://cloud.seafile.com/d/6afa667ff2c248378b70/",
+    "obj_name": "/",
+    "path": "/",
+    "is_dir": true,
+    "permissions": {
+      "can_edit": false,
+      "can_download": true
+    },
+    "is_expired": false,
+    "repo_name": "seacloud.cc.124"
+  },
+  {
+    "username": "lian@lian.com",
+    "repo_id": "104f6537-b3a5-4d42-b8b5-8e47e494e4cf",
+    "ctime": "2017-04-01T02:35:29+00:00",
+    "expire_date": "",
+    "token": "0c4eb0cb104a43caaeef",
+    "view_cnt": 0,
+    "link": "https://cloud.seafile.com/d/0c4eb0cb104a43caaeef/",
+    "obj_name": "folder",
+    "path": "/folder/",
+    "is_dir": true,
+    "permissions": {
+      "can_edit": false,
+      "can_download": true
+    },
+    "is_expired": false,
+    "repo_name": "for-test-web-api"
+  },
+  {
+    "username": "lian@lian.com",
+    "repo_id": "104f6537-b3a5-4d42-b8b5-8e47e494e4cf",
+    "ctime": "2017-04-01T02:35:35+00:00",
+    "expire_date": "",
+    "token": "8c05a00c44db4764b3a5",
+    "view_cnt": 0,
+    "link": "https://cloud.seafile.com/f/8c05a00c44db4764b3a5/",
+    "obj_name": "tmp.md",
+    "path": "/tmp.md",
+    "is_dir": false,
+    "permissions": {
+      "can_edit": false,
+      "can_download": true
+    },
+    "is_expired": false,
+    "repo_name": "for-test-web-api"
+  }
+]

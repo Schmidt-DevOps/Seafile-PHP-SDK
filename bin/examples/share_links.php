@@ -11,13 +11,14 @@ use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Resource\Directory;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Resource\Library;
-use Seafile\Client\Resource\SharedLink;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\MessageFormatter;
 use Monolog\Logger;
 use Seafile\Client\Http\Client;
+use Seafile\Client\Resource\ShareLinks;
 use Seafile\Client\Type\SharedLink as SharedLinkType;
+use Seafile\Client\Type\SharedLinkPermissions;
 
 $logger = new Logger('Logger');
 
@@ -72,7 +73,7 @@ try {
     $libraryResource = new Library($client);
     $directoryResource = new Directory($client);
     $fileResource = new File($client);
-    $sharedLinkResource = new SharedLink($client);
+    $shareLinkResource = new ShareLinks($client);
 
     // get all libraries available
     $logger->log(Logger::INFO, "#################### Getting all libraries");
@@ -105,23 +106,23 @@ try {
     $logger->log(Logger::INFO, "#################### Create share link for a file");
 
     $expire = 5;
-    $shareType = SharedLinkType::SHARE_TYPE_DOWNLOAD;
+    $permissions = new SharedLinkPermissions(SharedLinkPermissions::CAN_DOWNLOAD);
     $p = "/" . basename($newFilename);
     $password = 'qwertz123';
 
-    $shareLinkType = $sharedLinkResource->create($lib, $p, $expire, $shareType, $password);
+    $shareLinkType = $shareLinkResource->create($lib, $p, $permissions, $expire, $password);
 
-    var_dump($shareLinkType);
+    var_export($shareLinkType);
 
     $logger->log(Logger::INFO, "#################### Get all shared links");
-    $response = $sharedLinkResource->getAll();
+    $response = $shareLinkResource->getAll();
 
-    var_dump($response);
+    var_export($response);
 
     $logger->log(Logger::INFO, "#################### Sleeping 10s before deleting the shared link");
     sleep(10);
 
-    $success = $sharedLinkResource->remove($shareLinkType);
+    $success = $shareLinkResource->remove($shareLinkType);
 
     if ($success) {
         $logger->log(Logger::INFO, "#################### Shared link deleted");

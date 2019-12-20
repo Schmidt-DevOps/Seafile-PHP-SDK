@@ -2,6 +2,8 @@
 
 namespace Seafile\Client\Type;
 
+use DateTime;
+
 /**
  * SharedLink type class
  *
@@ -16,16 +18,6 @@ namespace Seafile\Client\Type;
 class SharedLink extends Type
 {
     /**
-     * Default share type
-     */
-    const SHARE_TYPE_DOWNLOAD = 'download';
-
-    /**
-     * Alternative share type
-     */
-    const SHARE_TYPE_UPLOAD = 'upload';
-
-    /**
      * View count
      *
      * @var int|null
@@ -38,13 +30,6 @@ class SharedLink extends Type
      * @var string|null
      */
     public $token = null;
-
-    /**
-     * Share link type
-     *
-     * @var string|null
-     */
-    public $sType = null;
 
     /**
      * Creation time
@@ -80,4 +65,37 @@ class SharedLink extends Type
      * @var string|null
      */
     public $url = null;
+
+    /**
+     * Link, same as URL
+     *
+     * @var string|null
+     */
+    public $link = null;
+
+    /**
+     * @var array
+     * @todo Automatically cast to SharedLinkPermissions type
+     */
+    public $permissions = [];
+
+    /**
+     * @var bool
+     */
+    public $isDir = false;
+
+    /**
+     * @var bool
+     */
+    public $isExpired = true;
+
+    /**
+     * @var string
+     */
+    public $objName = "";
+
+    /**
+     * @var DateTime|null
+     */
+    public $expireDate = null;
 }
