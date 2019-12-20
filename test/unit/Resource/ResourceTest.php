@@ -3,7 +3,11 @@
 namespace Seafile\Client\Tests\Resource;
 
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\MockObject\MockObject;
+use Seafile\Client\Http\Client;
 use Seafile\Client\Resource\Directory;
+use Seafile\Client\Resource\SharedLink;
+use Seafile\Client\Resource\ShareLink;
 use Seafile\Client\Tests\TestCase;
 
 /**
@@ -19,7 +23,7 @@ use Seafile\Client\Tests\TestCase;
 class ResourceTest extends TestCase
 {
     /**
-     * test clipUri()
+     * Test that clipUri() will consistently return URIs without trailing slash.
      *
      * @return void
      */
@@ -30,14 +34,45 @@ class ResourceTest extends TestCase
         ));
 
         $uris = [
-            '/'                    => '',
-            ''                     => '',
-            'https://example.com'  => 'https://example.com',
+            '/' => '',
+            '' => '',
+            'https://example.com' => 'https://example.com',
             'https://example.com/' => 'https://example.com',
         ];
 
         foreach ($uris as $uri => $clippedUri) {
             self::assertSame($clippedUri, $directoryResource->clipUri($uri));
         }
+    }
+
+    /**
+     * Test that getApiBaseUrl() returns the actual API base url depending on the resource.
+     *
+     * @return void
+     */
+    public function testGetApiBaseUrl()
+    {
+        /** @var Client|MockObject $mockedClient */
+        $mockedClient = $this->getMockBuilder(Client::class)->getMock();
+
+        $mockedClient->method('getConfig')
+            ->with('base_uri')
+            ->willReturn('http://example.com/seafile');
+
+        $mockedClient->method('request')->willReturn(
+            new Response(200, ['Content-Type' => 'application/json'], '')
+        );
+
+        $mockedClient
+            ->method('getConfig')
+            ->willReturn('https://example.com/seafile');
+
+        // first we test SharedLink, which uses API v2
+        $sharedLinkResource = new SharedLink($mockedClient);
+        self::assertSame('http://example.com/seafile/api2', $sharedLinkResource->getApiBaseUrl());
+
+        // seccond test is ShareLink (note the missing "d"), which uses API v2.1
+        $shareLinkResource = new ShareLink($mockedClient);
+        self::assertSame('http://example.com/seafile/api/v2.1', $shareLinkResource->getApiBaseUrl());
     }
 }

@@ -10,13 +10,12 @@
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use GuzzleHttp\Exception\GuzzleException;
-use Seafile\Client\Resource\Account;
-use Seafile\Client\Type\Account as AccountType;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\MessageFormatter;
 use Monolog\Logger;
 use Seafile\Client\Http\Client;
+use Seafile\Client\Resource\Auth;
 
 $logger = new Logger('Logger');
 
@@ -68,9 +67,11 @@ try {
         ]
     );
 
+    $authResource = new Auth($client);
+
     $logger->log(Logger::INFO, "#################### PINGing the API with an authorization token");
 
-    $response = $client->request('GET', $client->getConfig('base_uri') . '/auth/ping/');
+    $response = $client->request('GET', $authResource->getApiBaseUrl() . '/auth/ping/');
     $json = json_decode($response->getBody());
 
     if ($json === "pong") {

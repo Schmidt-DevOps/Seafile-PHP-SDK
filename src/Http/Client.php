@@ -23,10 +23,6 @@ class Client extends \GuzzleHttp\Client
      */
     public function __construct(array $config = [])
     {
-        if (isset($config['base_uri']) && !preg_match("/\/api(2|\/v2\.1)$/", $config['base_uri'])) {
-            $config['base_uri'] .= '/api2';
-        }
-
         $config = array_merge(
             [
                 'http_errors' => true,

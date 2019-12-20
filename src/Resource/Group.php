@@ -24,7 +24,7 @@ class Group extends Resource
      */
     public function getAll(): array
     {
-        $response = $this->client->request('GET', $this->client->getConfig('base_uri') . '/groups/');
+        $response = $this->client->request('GET', $this->getApiBaseUrl(). '/groups/');
 
         $json = json_decode($response->getBody());
 

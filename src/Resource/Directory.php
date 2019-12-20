@@ -30,7 +30,7 @@ class Directory extends Resource
      */
     public function getAll(LibraryType $library, string $dir = '/')
     {
-        $clippedBaseUri = $this->clipUri($this->client->getConfig('base_uri'));
+        $clippedBaseUri = $this->clipUri($this->getApiBaseUrl());
 
         $response = $this->client->request(
             'GET',
@@ -125,7 +125,7 @@ class Directory extends Resource
 
         $uri = sprintf(
             '%s/repos/%s/dir/?p=%s/%s',
-            $this->clipUri($this->client->getConfig('base_uri')),
+            $this->clipUri($this->getApiBaseUrl()),
             $library->id,
             rtrim($parentDir, '/'),
             $dirName
@@ -165,7 +165,7 @@ class Directory extends Resource
 
         $uri = sprintf(
             '%s/repos/%s/dir/?p=%s',
-            $this->clipUri($this->client->getConfig('base_uri')),
+            $this->clipUri($this->getApiBaseUrl()),
             $library->id,
             rtrim($directoryPath, '/')
         );
@@ -199,7 +199,7 @@ class Directory extends Resource
 
         $uri = sprintf(
             '%s/repos/%s/dir/?p=%s',
-            $this->clipUri($this->client->getConfig('base_uri')),
+            $this->clipUri($this->getApiBaseUrl()),
             $library->id,
             rtrim($directoryPath, '/')
         );

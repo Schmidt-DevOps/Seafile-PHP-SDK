@@ -25,7 +25,7 @@ class Library extends Resource
      */
     public function getAll(): array
     {
-        $response = $this->client->request('GET', $this->client->getConfig('base_uri') . '/repos/');
+        $response = $this->client->request('GET', $this->getApiBaseUrl(). '/repos/');
 
         $json = json_decode($response->getBody());
 
@@ -50,7 +50,7 @@ class Library extends Resource
     {
         $response = $this->client->request(
             'GET',
-            $this->client->getConfig('base_uri') . '/repos/' . $libraryId . '/'
+            $this->getApiBaseUrl(). '/repos/' . $libraryId . '/'
         );
 
         $json = json_decode($response->getBody());
@@ -79,7 +79,7 @@ class Library extends Resource
 
         $response = $this->client->request(
             'POST',
-            $this->client->getConfig('base_uri') . '/repos/' . $libraryId . '/',
+            $this->getApiBaseUrl(). '/repos/' . $libraryId . '/',
             $options
         );
 
@@ -134,7 +134,7 @@ class Library extends Resource
 
         $uri = sprintf(
             '%s/repos/',
-            $this->clipUri($this->client->getConfig('base_uri'))
+            $this->clipUri($this->getApiBaseUrl())
         );
 
         $multipartData = [
@@ -184,7 +184,7 @@ class Library extends Resource
 
         $uri = sprintf(
             '%s/repos/%s/',
-            $this->clipUri($this->client->getConfig('base_uri')),
+            $this->clipUri($this->getApiBaseUrl()),
             $libraryId
         );
 
@@ -212,7 +212,7 @@ class Library extends Resource
     {
         $uri = sprintf(
             '%s/shared-repos/%s/?share_type=personal&users=%s&permission=%s',
-            $this->clipUri($this->client->getConfig('base_uri')),
+            $this->clipUri($this->getApiBaseUrl()),
             $libraryId,
             join(',', $users),
             $permission

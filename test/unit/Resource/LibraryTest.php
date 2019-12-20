@@ -2,7 +2,9 @@
 
 namespace Seafile\Client\Tests\Resource;
 
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\MockObject\MockObject;
 use Seafile\Client\Http\Client;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Library;
@@ -25,7 +27,7 @@ class LibraryTest extends TestCase
      * Test getAll()
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testGetAll()
     {
@@ -50,7 +52,7 @@ class LibraryTest extends TestCase
      * getById()
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testGetById()
     {
@@ -70,7 +72,6 @@ class LibraryTest extends TestCase
      *
      * @return void
      * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testDecryptMissingQuery()
     {
@@ -84,7 +85,6 @@ class LibraryTest extends TestCase
      *
      * @return void
      * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testDecryptMissingPassword()
     {
@@ -98,7 +98,6 @@ class LibraryTest extends TestCase
      *
      * @return void
      * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testDecryptUnsuccessfully()
     {
@@ -123,7 +122,6 @@ class LibraryTest extends TestCase
      *
      * @return void
      * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testDecryptSuccessfully()
     {
@@ -166,7 +164,7 @@ class LibraryTest extends TestCase
      * @param array $data Test data
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function testExists(array $data)
     {
@@ -202,7 +200,7 @@ class LibraryTest extends TestCase
      * @param array $data Test data
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function testCreateInvalid(array $data)
     {
@@ -221,7 +219,7 @@ class LibraryTest extends TestCase
      * Test remove(), provide invalid parameters, expect failure
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function testRemoveInvalid()
     {
@@ -259,8 +257,7 @@ class LibraryTest extends TestCase
      * @param array $data Test data
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
      */
     public function testCreate(array $data)
     {
@@ -278,7 +275,7 @@ class LibraryTest extends TestCase
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/repos/';
+        $expectUri = 'http://example.com/api2/repos/';
         $expectParams = [
             'headers'   => ['Accept' => "application/json"],
             'multipart' => [
@@ -337,7 +334,7 @@ class LibraryTest extends TestCase
      *
      * @return void
      * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function testRemove()
     {
@@ -349,11 +346,11 @@ class LibraryTest extends TestCase
 
         $removeResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/repos/some-crazy-id/';
+        $expectUri = 'http://example.com/api2/repos/some-crazy-id/';
         $expectParams = [
             'headers' => ['Accept' => "application/json"],
         ];

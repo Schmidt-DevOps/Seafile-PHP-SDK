@@ -7,6 +7,7 @@ use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Multi;
 use Seafile\Client\Tests\TestCase;
 use Seafile\Client\Type\Library;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Multi resource test
@@ -29,7 +30,7 @@ class MultiTest extends TestCase
      */
     public function testDeleteEmpty()
     {
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $multiResource = new Multi($mockedClient);
@@ -48,7 +49,7 @@ class MultiTest extends TestCase
      */
     public function testCopyMoveEmpty()
     {
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $multiResource = new Multi($mockedClient);
@@ -123,11 +124,11 @@ class MultiTest extends TestCase
 
         $deleteResponse = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
 
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/repos/some-crazy-id/fileops/delete/?p=/some_dir';
+        $expectUri = 'http://example.com/api2/repos/some-crazy-id/fileops/delete/?p=/some_dir';
         $expectParams = [
             'headers'   => ['Accept' => "application/json"],
             'multipart' => [
@@ -270,11 +271,11 @@ class MultiTest extends TestCase
 
         $deleteResponse = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
 
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
-        $mockedClient->method('getConfig')->willReturn('http://example.com/');
+        $mockedClient->method('getConfig')->willReturn('http://example.com');
 
-        $expectUri = 'http://example.com/repos/some-crazy-id/fileops/' . $data ['operation'] . '/?p=/some_dir';
+        $expectUri = 'http://example.com/api2/repos/some-crazy-id/fileops/' . $data ['operation'] . '/?p=/some_dir';
         $expectParams = [
             'headers'   => ['Accept' => "application/json"],
             'multipart' => [

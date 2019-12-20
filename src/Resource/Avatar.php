@@ -90,7 +90,7 @@ class Avatar extends Resource
         }
 
         $response = $this->client->get(
-            $this->client->getConfig('base_uri') . '/avatars/' . $resource . '/' . $id . '/resized/' . $size . '/',
+            $this->getApiBaseUrl(). '/avatars/' . $resource . '/' . $id . '/resized/' . $size . '/',
             []
         );
 
@@ -111,7 +111,7 @@ class Avatar extends Resource
     {
         $uri = sprintf(
             '%s/accounts/' . $accountType->email . '/',
-            $this->clipUri($this->client->getConfig('base_uri'))
+            $this->clipUri($this->getApiBaseUrl())
         );
 
         $response = $this->client->put(

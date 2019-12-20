@@ -8,6 +8,7 @@ use Seafile\Client\Resource\Directory;
 use Seafile\Client\Tests\TestCase;
 use Seafile\Client\Type\DirectoryItem;
 use Seafile\Client\Type\Library;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Directory resource test
@@ -26,7 +27,6 @@ class DirectoryTest extends TestCase
      *
      * @return void
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
      */
     public function testGetAll()
     {
@@ -52,7 +52,6 @@ class DirectoryTest extends TestCase
      *
      * @return void
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
      */
     public function testGetAllWithDir()
     {
@@ -64,7 +63,7 @@ class DirectoryTest extends TestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
@@ -73,7 +72,7 @@ class DirectoryTest extends TestCase
             ->method('request')
             ->with(
                 self::equalTo('GET'),
-                self::equalTo('http://example.com/repos/some-crazy-id/dir/'),
+                self::equalTo('http://example.com/api2/repos/some-crazy-id/dir/'),
                 self::equalTo(['query' => ['p' => $rootDir]])
             )->willReturn($response);
 
@@ -101,7 +100,7 @@ class DirectoryTest extends TestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
@@ -111,7 +110,7 @@ class DirectoryTest extends TestCase
             ->method('request')
             ->with(
                 self::equalTo('GET'),
-                self::equalTo('http://example.com/repos/some-crazy-id/dir/'),
+                self::equalTo('http://example.com/api2/repos/some-crazy-id/dir/'),
                 self::equalTo(['query' => ['p' => $rootDir]])
             )->willReturn($response);
 
@@ -144,7 +143,6 @@ class DirectoryTest extends TestCase
      * @dataProvider createNonRecursiveDataProvider
      * @return void
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
      */
     public function testCreateNonRecursive(int $expectResponseCode)
     {
@@ -177,7 +175,7 @@ class DirectoryTest extends TestCase
      */
     protected function getDirectoryResource(Response $getAllResponse, Response $mkdirResponse)
     {
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
@@ -207,7 +205,6 @@ class DirectoryTest extends TestCase
      *
      * @return void
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
      */
     public function testCreateDirectoryExists()
     {
@@ -217,7 +214,7 @@ class DirectoryTest extends TestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
@@ -244,11 +241,10 @@ class DirectoryTest extends TestCase
      *
      * @return void
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
      */
     public function testCreateEmptyDirName()
     {
-        $directoryResource = new Directory(new \Seafile\Client\Http\Client());
+        $directoryResource = new Directory(new SeafileHttpClient());
 
         self::assertFalse($directoryResource->create(
             new Library(),
@@ -261,7 +257,6 @@ class DirectoryTest extends TestCase
      *
      * @return void
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
      */
     public function testCreateRecursive()
     {
@@ -284,7 +279,6 @@ class DirectoryTest extends TestCase
      * Test rename(), with invalid directory name
      *
      * @return void
-     * @throws \Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testRenameInvalidDirectoryName()
@@ -301,7 +295,6 @@ class DirectoryTest extends TestCase
      *
      * @return void
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
      */
     public function testRename()
     {
@@ -313,11 +306,11 @@ class DirectoryTest extends TestCase
 
         $mkdirResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/repos/some-crazy-id/dir/?p=test_dir';
+        $expectUri = 'http://example.com/api2/repos/some-crazy-id/dir/?p=test_dir';
         $expectParams = [
             'headers'   => ['Accept' => "application/json"],
             'multipart' => [
@@ -367,7 +360,6 @@ class DirectoryTest extends TestCase
      *
      * @return void
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
      */
     public function testRemoveInvalidDirectoryName()
     {
@@ -383,7 +375,6 @@ class DirectoryTest extends TestCase
      *
      * @return void
      * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
      */
     public function testRemove()
     {
@@ -395,11 +386,11 @@ class DirectoryTest extends TestCase
 
         $mkdirResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/repos/some-crazy-id/dir/?p=test_dir';
+        $expectUri = 'http://example.com/api2/repos/some-crazy-id/dir/?p=test_dir';
         $expectParams = [
             'headers' => ['Accept' => "application/json"],
         ];

@@ -9,6 +9,7 @@ use Seafile\Client\Type\Library as LibraryType;
 use Seafile\Client\Type\Group as GroupType;
 use Seafile\Client\Resource\Avatar as AvatarResource;
 use Seafile\Client\Tests\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Avatar resource test
@@ -29,7 +30,7 @@ class AvatarTest extends TestCase
      */
     public function testGetUserAvatarByEmail()
     {
-        $baseUri = 'https://example.com/';
+        $baseUri = 'https://example.com';
         $resource = 'user';
         $email = 'someone@example.com';
         $size = 80;
@@ -44,7 +45,7 @@ class AvatarTest extends TestCase
      */
     public function testGetAvatarIllegalSize()
     {
-        $baseUri = 'https://example.com/';
+        $baseUri = 'https://example.com';
         $resource = 'user';
         $email = 'someone@example.com';
         $size = -1;
@@ -62,7 +63,7 @@ class AvatarTest extends TestCase
      */
     public function testGetGroupAvatarByEmail()
     {
-        $baseUri = 'https://example.com/';
+        $baseUri = 'https://example.com';
         $resource = 'group';
         $id = '1';
         $size = 80;
@@ -83,14 +84,14 @@ class AvatarTest extends TestCase
      */
     protected function doGetAvatar(string $method, string $baseUri, string $resource, $entity, string $size)
     {
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->createPartialMock(SeafileHttpClient::class, ['get', 'getConfig']);
 
         $id = ($entity instanceof GroupType ? $entity->id : $entity);
 
         $mockedClient->expects(self::any())
             ->method('get')
-            ->with($baseUri . '/avatars/' . $resource . '/' . $id . '/resized/' . $size . '/', [])
+            ->with($baseUri . '/api2/avatars/' . $resource . '/' . $id . '/resized/' . $size . '/', [])
             ->willReturn(
                 new Response(
                     200,
@@ -121,9 +122,9 @@ class AvatarTest extends TestCase
      */
     public function testGetAvatarIllegalType()
     {
-        $baseUri = 'https://example.com/';
+        $baseUri = 'https://example.com';
 
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $libraryType = new LibraryType();

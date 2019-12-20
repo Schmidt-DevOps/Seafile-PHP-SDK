@@ -25,7 +25,7 @@ class SharedLink extends Resource implements ResourceInterface
      */
     public function getAll(): array
     {
-        $response = $this->client->request('GET', $this->client->getConfig('base_uri') . '/shared-links/');
+        $response = $this->client->request('GET', $this->getApiBaseUrl(). '/shared-links/');
 
         $json = json_decode($response->getBody());
 
@@ -49,7 +49,7 @@ class SharedLink extends Resource implements ResourceInterface
     {
         $uri = sprintf(
             '%s/shared-links/?t=%s',
-            $this->clipUri($this->client->getConfig('base_uri')),
+            $this->clipUri($this->getApiBaseUrl()),
             basename($sharedLinkType->url)
         );
 
@@ -85,7 +85,7 @@ class SharedLink extends Resource implements ResourceInterface
     ): ?SharedLinkType {
         $uri = sprintf(
             '%s/repos/%s/file/shared-link/',
-            $this->clipUri($this->client->getConfig('base_uri')),
+            $this->clipUri($this->getApiBaseUrl()),
             $library->id
         );
 

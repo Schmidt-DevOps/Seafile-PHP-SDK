@@ -8,6 +8,7 @@ use Seafile\Client\Resource\SharedLink;
 use Seafile\Client\Tests\TestCase;
 use Seafile\Client\Type\Library as LibraryType;
 use Seafile\Client\Type\SharedLink as SharedLinkType;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * SharedLink resource test
@@ -58,20 +59,15 @@ class SharedLinkTest extends TestCase
     {
         $removeResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
-
-        $expectUri = 'http://example.com/repos/some-crazy-id/';
-        $expectParams = [
-            'headers' => ['Accept' => "application/json"],
-        ];
 
         // @todo: Test more thoroughly. For example make sure request() gets called with POST twice (a, then b)
         $mockedClient->expects(self::any())
             ->method('request')
             ->will(self::returnCallback(
-                function () use ($removeResponse, $expectUri, $expectParams) {
+                function () use ($removeResponse) {
                     return $removeResponse;
                 }
             ));
@@ -140,7 +136,7 @@ class SharedLinkTest extends TestCase
 
         $createResponse = new Response($data['createResponseCode'], $headers);
 
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())

@@ -51,7 +51,7 @@ class File extends Resource
      */
     public function getDownloadUrl(LibraryType $library, DirectoryItem $item, string $dir = '/', int $reuse = 1)
     {
-        $url = $this->client->getConfig('base_uri')
+        $url = $this->getApiBaseUrl()
             . '/repos/'
             . $library->id
             . '/file/'
@@ -155,7 +155,7 @@ class File extends Resource
      */
     public function getUploadUrl(LibraryType $library, bool $newFile = true)
     {
-        $url = $this->client->getConfig('base_uri')
+        $url = $this->getApiBaseUrl()
             . '/repos/'
             . $library->id
             . '/' . ($newFile ? 'upload' : 'update') . '-link/';
@@ -265,7 +265,7 @@ class File extends Resource
      */
     public function getFileDetail(LibraryType $library, string $remoteFilePath): DirectoryItem
     {
-        $url = $this->client->getConfig('base_uri')
+        $url = $this->getApiBaseUrl()
             . '/repos/'
             . $library->id
             . '/file/detail/'
@@ -296,7 +296,7 @@ class File extends Resource
 
         $uri = sprintf(
             '%s/repos/%s/file/?p=%s',
-            $this->clipUri($this->client->getConfig('base_uri')),
+            $this->clipUri($this->getApiBaseUrl()),
             $library->id,
             $this->urlEncodePath($filePath)
         );
@@ -336,7 +336,7 @@ class File extends Resource
 
         $uri = sprintf(
             '%s/repos/%s/file/?p=%s',
-            $this->clipUri($this->client->getConfig('base_uri')),
+            $this->clipUri($this->getApiBaseUrl()),
             $library->id,
             $this->urlEncodePath($filePath)
         );
@@ -403,7 +403,7 @@ class File extends Resource
 
         $uri = sprintf(
             '%s/repos/%s/file/?p=%s',
-            $this->clipUri($this->client->getConfig('base_uri')),
+            $this->clipUri($this->getApiBaseUrl()),
             $srcLibrary->id,
             $this->urlEncodePath($srcFilePath)
         );
@@ -469,7 +469,7 @@ class File extends Resource
         DirectoryItem $dirItem,
         FileHistoryItem $fileHistoryItem
     ) {
-        $url = $this->client->getConfig('base_uri')
+        $url = $this->getApiBaseUrl()
             . '/repos/'
             . $library->id
             . '/file/revision/'
@@ -516,7 +516,7 @@ class File extends Resource
      */
     public function getHistory(LibraryType $library, DirectoryItem $item)
     {
-        $url = $this->client->getConfig('base_uri')
+        $url = $this->getApiBaseUrl()
             . '/repos/'
             . $library->id
             . '/file/history/'
@@ -553,7 +553,7 @@ class File extends Resource
 
         $uri = sprintf(
             '%s/repos/%s/file/?p=%s',
-            $this->clipUri($this->client->getConfig('base_uri')),
+            $this->clipUri($this->getApiBaseUrl()),
             $library->id,
             $this->urlEncodePath($item->path . $item->name)
         );
@@ -592,7 +592,7 @@ class File extends Resource
 //
 //        $uri = sprintf(
 //            '%s/repos/%s/file/',
-//            $this->clipUri($this->client->getConfig('base_uri')),
+//            $this->clipUri($this->getApiBaseUrl()),
 //            $library->id
 //        );
 //

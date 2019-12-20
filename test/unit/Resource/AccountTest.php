@@ -3,6 +3,7 @@
 namespace Seafile\Client\Tests\Resource;
 
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\MockObject\MockObject;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Account;
 use Seafile\Client\Type\Account as AccountType;
@@ -25,6 +26,7 @@ class AccountTest extends TestCase
      *
      * @return void
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function testGetAll()
     {
@@ -123,19 +125,19 @@ class AccountTest extends TestCase
      */
     public function testCreateUpdate(array $data)
     {
-        $baseUri = 'https://example.com/';
+        $baseUri = 'https://example.com';
 
         $accountType = (new AccountType)->fromArray([
             'password' => 'some_password',
             'email' => 'my_email@example.com',
         ]);
 
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->createPartialMock(SeafileHttpClient::class, ['put', 'getConfig']);
 
         $mockedClient->expects(self::any())
             ->method('put')
-            ->with($baseUri . 'accounts/' . $accountType->{'email'} . '/')// trailing slash is mandatory!
+            ->with($baseUri . '/api2/accounts/' . $accountType->{'email'} . '/')// trailing slash is mandatory!
             ->willReturn(new Response($data['responseCode']));
 
         $mockedClient->expects(self::any())
@@ -185,17 +187,17 @@ class AccountTest extends TestCase
      */
     public function testRemove(array $data)
     {
-        $baseUri = 'https://example.com/';
+        $baseUri = 'https://example.com';
 
         $accountType = new AccountType();
         $accountType->email = $data['email'];
 
-        /** @var SeafileHttpClient|\PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->createPartialMock(SeafileHttpClient::class, ['delete', 'getConfig']);
 
         $mockedClient->expects(self::any())
             ->method('delete')
-            ->with($baseUri . 'accounts/' . $accountType->email . '/', [])// trailing slash is mandatory!
+            ->with($baseUri . '/api2/accounts/' . $accountType->email . '/', [])// trailing slash is mandatory!
             ->willReturn(new Response(200));
 
         $mockedClient->expects(self::any())

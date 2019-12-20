@@ -34,7 +34,7 @@ class StarredFile extends Resource
     {
         parent::__construct($client);
 
-        $this->resourceUri = $this->clipUri($client->getConfig('base_uri')) . '/starredfiles/';
+        $this->resourceUri = $this->clipUri($this->getApiBaseUrl()) . '/starredfiles/';
     }
 
     /**

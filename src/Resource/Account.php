@@ -29,7 +29,7 @@ class Account extends Resource
      */
     public function getAll(): array
     {
-        $response = $this->client->request('GET', $this->client->getConfig('base_uri') . '/accounts/');
+        $response = $this->client->request('GET', $this->getApiBaseUrl(). '/accounts/');
 
         $json = json_decode($response->getBody());
 
@@ -57,7 +57,7 @@ class Account extends Resource
         $response = $this->client->request(
             'GET',
             // $emailAddress must not be urlencoded
-            $this->client->getConfig('base_uri') . '/accounts/' . $emailAddress . '/'
+            $this->getApiBaseUrl(). '/accounts/' . $emailAddress . '/'
         );
 
         $json = json_decode($response->getBody());
@@ -77,7 +77,7 @@ class Account extends Resource
     {
         $response = $this->client->request(
             'GET',
-            $this->client->getConfig('base_uri') . '/accounts/' . $emailAddress . '/'
+            $this->getApiBaseUrl(). '/accounts/' . $emailAddress . '/'
         );
 
         $json = json_decode($response->getBody());
@@ -108,7 +108,7 @@ class Account extends Resource
 
         $uri = sprintf(
             '%s/accounts/' . $accountType->email . '/',
-            $this->clipUri($this->client->getConfig('base_uri'))
+            $this->getApiBaseUrl()
         );
 
         $response = $this->client->put(
@@ -146,7 +146,7 @@ class Account extends Resource
 
         $uri = sprintf(
             '%s/accounts/' . $accountType->email . '/',
-            $this->clipUri($this->client->getConfig('base_uri'))
+            $this->getApiBaseUrl()
         );
 
         $response = $this->client->put(
@@ -181,7 +181,7 @@ class Account extends Resource
 //
 //        $uri = sprintf(
 //            '%s/accounts/' . $fromAccountType->email . '/',
-//            $this->clipUri($this->client->getConfig('base_uri'))
+//            $this->clipUri($this->getApiBaseUrl())
 //        );
 //
 //        $response = $this->client->put(
@@ -236,7 +236,7 @@ class Account extends Resource
 
         $uri = sprintf(
             '%s/accounts/%s/',
-            $this->clipUri($this->client->getConfig('base_uri')),
+            $this->clipUri($this->getApiBaseUrl()),
             $accountType->email
         );
 

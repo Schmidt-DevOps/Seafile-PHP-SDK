@@ -5,7 +5,7 @@ namespace Seafile\Client\Tests\Resource;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Tests\Stubs\FileResourceStub;
@@ -31,7 +31,6 @@ class FileTest extends TestCase
      *
      * @return void
      * @throws GuzzleException
-     * @throws Exception
      */
     public function testGetDownloadUrl()
     {
@@ -89,7 +88,6 @@ class FileTest extends TestCase
      *
      * @return void
      * @throws GuzzleException
-     * @throws Exception
      */
     public function testGetUploadLink()
     {
@@ -107,7 +105,6 @@ class FileTest extends TestCase
      * Download a file, local destination path is already occupied
      *
      * @return void
-     * @throws Exception
      * @throws GuzzleException
      */
     public function testDownloadFromDirFileExists()
@@ -128,7 +125,6 @@ class FileTest extends TestCase
      * Try to upload a non-existent local file
      *
      * @return void
-     * @throws Exception
      * @throws GuzzleException
      */
     public function testUploadDoesNotExist()
@@ -145,7 +141,6 @@ class FileTest extends TestCase
      * Test downloadFromDir()
      *
      * @return void
-     * @throws Exception
      * @throws GuzzleException
      */
     public function testDownloadFromDir()
@@ -160,7 +155,6 @@ class FileTest extends TestCase
      * Test download()
      *
      * @return void
-     * @throws Exception
      * @throws GuzzleException
      */
     public function testDownload()
@@ -176,7 +170,6 @@ class FileTest extends TestCase
      * Test upload()
      *
      * @return void
-     * @throws Exception
      * @throws GuzzleException
      */
     public function testUpload()
@@ -206,7 +199,6 @@ class FileTest extends TestCase
      *
      * @return void
      * @throws GuzzleException
-     * @throws Exception
      */
     public function testGetFileDetail()
     {
@@ -230,7 +222,6 @@ class FileTest extends TestCase
      * Test getMultiPartParams() for update
      *
      * @return void
-     * @throws Exception
      */
     public function testUpdateMultiPartParams()
     {
@@ -306,7 +297,6 @@ class FileTest extends TestCase
      * Test getMultiPartParams() for upload
      *
      * @return void
-     * @throws Exception
      */
     public function testUploadMultiPartParams()
     {
@@ -342,11 +332,10 @@ class FileTest extends TestCase
      *
      * @return void
      * @throws GuzzleException
-     * @throws Exception
      */
     public function testRemoveInvalidFilename()
     {
-        /** @var SeafileHttpClient|PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $fileResource = new File($mockedClient);
@@ -375,19 +364,19 @@ class FileTest extends TestCase
     /**
      * Test rename() with invalid file name
      *
-     * @param string $invalidFilePath    Invalid file path
+     * @param string $invalidFilePath Invalid file path
      * @param string $invalidNewFilename Invalid new file name
      *
      * @return void
      * @dataProvider dataProviderTestRenameInvalidFilename
-     * @throws Exception
      * @throws GuzzleException
+     * @throws Exception
      */
     public function testRenameInvalidFilename(string $invalidFilePath, string $invalidNewFilename)
     {
         self::expectException('\InvalidArgumentException');
 
-        /** @var SeafileHttpClient|PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $fileResource = new File($mockedClient);
@@ -404,7 +393,6 @@ class FileTest extends TestCase
      * Data provider for testCopyInvalid()
      *
      * @return array
-     * @throws Exception
      */
     public static function dataProviderCopyInvalid(): array
     {
@@ -432,7 +420,7 @@ class FileTest extends TestCase
      */
     public function testCopyInvalid(array $data)
     {
-        /** @var SeafileHttpClient|PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $fileResource = new File($mockedClient);
@@ -450,7 +438,6 @@ class FileTest extends TestCase
      * Test remove()
      *
      * @return void
-     * @throws Exception
      * @throws GuzzleException
      */
     public function testRemove()
@@ -463,11 +450,11 @@ class FileTest extends TestCase
 
         $deleteResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /** @var SeafileHttpClient|PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=test_dir';
+        $expectUri = 'http://example.com/api2/repos/some-crazy-id/file/?p=test_dir';
         $expectParams = [
             'headers' => ['Accept' => "application/json"],
         ];
@@ -511,7 +498,7 @@ class FileTest extends TestCase
      */
     public function testRename()
     {
-        $getAllResponse = new Response(
+        new Response(
             200,
             ['Content-Type' => 'application/json'],
             file_get_contents(__DIR__ . '/../../assets/FileTest_getAll.json')
@@ -520,11 +507,11 @@ class FileTest extends TestCase
         $newFilename = 'test_file_renamed';
         $renameResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /** @var SeafileHttpClient|PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=/test_file';
+        $expectUri = 'http://example.com/api2/repos/some-crazy-id/file/?p=/test_file';
         $expectParams = [
             'headers'   => ['Accept' => "application/json"],
             'multipart' => [
@@ -544,7 +531,7 @@ class FileTest extends TestCase
             ->method('request')
             ->with(self::equalTo('POST'))
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $renameResponse, $expectUri, $expectParams) {
+                function ($method, $uri, $params) use ($renameResponse, $expectUri, $expectParams) {
                     if ($expectUri === $uri && $expectParams === $params && $method === 'POST') {
                         return $renameResponse;
                     }
@@ -582,7 +569,6 @@ class FileTest extends TestCase
      * @param array $data Data provided
      *
      * @return void
-     * @throws Exception
      */
     public function testCopyMove(array $data)
     {
@@ -603,11 +589,11 @@ class FileTest extends TestCase
 
         $response = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
 
-        /** @var SeafileHttpClient|PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/repos/some-crazy-id/file/?p=' . $srcPath;
+        $expectUri = 'http://example.com/api2/repos/some-crazy-id/file/?p=' . $srcPath;
         $expectParams = [
             'headers'   => ['Accept' => 'application/json'],
             'multipart' => [
@@ -658,11 +644,10 @@ class FileTest extends TestCase
      *
      * @return void
      * @throws GuzzleException
-     * @throws Exception
      */
     public function testMoveInvalidDestination()
     {
-        /** @var SeafileHttpClient|PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $fileResource = new File($mockedClient);
@@ -681,7 +666,6 @@ class FileTest extends TestCase
      * Test getFileRevisionDownloadUrl()
      *
      * @return void
-     * @throws Exception
      * @throws GuzzleException
      */
     public function testGetFileRevisionDownloadUrl()
@@ -712,7 +696,6 @@ class FileTest extends TestCase
      * Test downloadRevision()
      *
      * @return void
-     * @throws Exception
      * @throws GuzzleException
      */
     public function testDownloadRevision()
@@ -739,7 +722,6 @@ class FileTest extends TestCase
      * Test getHistory()
      *
      * @return void
-     * @throws Exception
      * @throws GuzzleException
      */
     public function testGetHistory()
@@ -769,7 +751,6 @@ class FileTest extends TestCase
      *
      * @return void
      * @throws GuzzleException
-     * @throws Exception
      */
     public function testCreateInvalid()
     {
@@ -782,7 +763,6 @@ class FileTest extends TestCase
      * Test create() with valid DirectoryItem
      *
      * @return void
-     * @throws Exception
      * @throws GuzzleException
      */
     public function testCreate()
@@ -799,7 +779,7 @@ class FileTest extends TestCase
             ->method('request')
             ->with(
                 self::equalTo('POST'),
-                'http://example.com/index.html/repos/123/file/?p=/some_name.txt'
+                'http://example.com/index.html/api2/repos/123/file/?p=/some_name.txt'
             )
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnValue(new Response(

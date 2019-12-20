@@ -86,7 +86,7 @@ class Multi extends Resource
 
         $uri = sprintf(
             '%s/repos/%s/fileops/%s/?p=%s',
-            $this->clipUri($this->client->getConfig('base_uri')),
+            $this->clipUri($this->getApiBaseUrl()),
             $srcLibrary->id,
             $operationMode,
             $srcFolderPath
@@ -171,7 +171,7 @@ class Multi extends Resource
 
         $uri = sprintf(
             '%s/repos/%s/fileops/delete/?p=%s',
-            $this->clipUri($this->client->getConfig('base_uri')),
+            $this->clipUri($this->getApiBaseUrl()),
             $library->id,
             $folderPath
         );

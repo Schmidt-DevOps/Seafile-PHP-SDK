@@ -3,7 +3,7 @@
 namespace Seafile\Client\Tests\Resource;
 
 use GuzzleHttp\Psr7\Response;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockObject;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\StarredFile;
 use Seafile\Client\Type\DirectoryItem;
@@ -91,7 +91,7 @@ class StarredFileTest extends TestCase
             ]
         );
 
-        /** @var SeafileHttpClient|PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())
@@ -121,7 +121,7 @@ class StarredFileTest extends TestCase
                     if ($hasParams
                         && $hasContents
                         && $method === 'POST'
-                        && $uri === 'https://example.com/test/starredfiles/'
+                        && $uri === 'https://example.com/test/api2/starredfiles/'
                     ) {
                         return $starResponse;
                     }
@@ -163,7 +163,7 @@ class StarredFileTest extends TestCase
             ]
         );
 
-        /** @var SeafileHttpClient|PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())
@@ -187,9 +187,9 @@ class StarredFileTest extends TestCase
     /**
      * Test star() with missing location
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
      * @return void
+     * @throws \Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testStarErrorMissingLocation()
     {
@@ -200,7 +200,7 @@ class StarredFileTest extends TestCase
         $dirItem->type = 'file';
         $dirItem->path = '/some/path';
 
-        /** @var SeafileHttpClient|PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())
@@ -263,7 +263,7 @@ class StarredFileTest extends TestCase
         $dirItem->type = 'file';
         $dirItem->path = '/some/path';
 
-        /** @var SeafileHttpClient|PHPUnit_Framework_MockObject_MockObject $mockedClient */
+        /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())

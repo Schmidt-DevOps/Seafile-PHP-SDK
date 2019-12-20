@@ -36,6 +36,6 @@ class ClientTest extends TestCase
     public function testBaseUriNotEmpty()
     {
         $client = new Client(['base_uri' => 'http://example.com']);
-        self::assertSame('http://example.com/api2', (string)$client->getConfig('base_uri'));
+        self::assertSame('http://example.com', (string)$client->getConfig('base_uri'));
     }
 }
