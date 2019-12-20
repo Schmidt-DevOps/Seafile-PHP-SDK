@@ -4,7 +4,9 @@ namespace Seafile\Client\Type;
 
 use DateTime;
 use CaseHelper\CaseHelperFactory;
+use Exception;
 use \Seafile\Client\Type\Account as AccountType;
+use stdClass;
 
 /**
  * Abstract type class
@@ -32,7 +34,7 @@ abstract class Type implements TypeInterface
      *
      * @param array $fromArray Create from array
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(array $fromArray = [])
     {
@@ -47,7 +49,7 @@ abstract class Type implements TypeInterface
      * @param array $fromArray Create from array
      *
      * @return self
-     * @throws \Exception
+     * @throws Exception
      */
     public function fromArray(array $fromArray) // type is given in derived class
     {
@@ -100,12 +102,12 @@ abstract class Type implements TypeInterface
     /**
      * Create from jsonResponse
      *
-     * @param \stdClass $jsonResponse Json response
+     * @param stdClass $jsonResponse Json response
      *
      * @return self
-     * @throws \Exception
+     * @throws Exception
      */
-    public function fromJson(\stdClass $jsonResponse) // type is given in derived class
+    public function fromJson(stdClass $jsonResponse) // type is given in derived class
     {
         $this->fromArray((array)$jsonResponse);
 
@@ -118,7 +120,7 @@ abstract class Type implements TypeInterface
      * @param int $mode Array mode
      *
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function toArray(int $mode = self::ARRAY_ASSOC): array
     {

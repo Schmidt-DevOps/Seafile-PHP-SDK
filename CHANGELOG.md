@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 This version will not be backwards compatible with Version 1.x. 
 
+### Todo
+- Abstract SharedLinkPermissions
+- Switch to .env instead of JSON config
+
 ### Added
 - Will support PHP 7.2+ only.
 - Requires PHPUnit 8+
@@ -24,7 +28,7 @@ This version will not be backwards compatible with Version 1.x.
 - SharedLinkType updated for Web API v2.1
 
 ### Removed
-- Removed `obtain_api_token.sh` script
+- `obtain_api_token.sh` script
 - Support for Shared-Link API resource (succeeded by Share-Links API resource)
 
 ## [1.0.1] - 2017-06-23

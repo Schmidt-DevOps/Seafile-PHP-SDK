@@ -3,7 +3,6 @@
 namespace Seafile\Client\Resource;
 
 use Exception;
-use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Type\Type;
 use \Seafile\Client\Type\Account as AccountType;
 use Seafile\Client\Type\TypeInterface;

@@ -3,6 +3,8 @@
 namespace Seafile\Client\Type;
 
 use DateTime;
+use Exception;
+use stdClass;
 
 /**
  * Interface TypeInterface
@@ -16,7 +18,7 @@ interface TypeInterface
      * @param array $fromArray Create from array
      *
      * @return self
-     * @throws \Exception
+     * @throws Exception
      */
     public function fromArray(array $fromArray); // type is given in implementing class
 
@@ -33,12 +35,12 @@ interface TypeInterface
     /**
      * Create from jsonResponse
      *
-     * @param \stdClass $jsonResponse Json response
+     * @param stdClass $jsonResponse Json response
      *
      * @return self
-     * @throws \Exception
+     * @throws Exception
      */
-    public function fromJson(\stdClass $jsonResponse); // type is given in implementing class
+    public function fromJson(stdClass $jsonResponse); // type is given in implementing class
 
     /**
      * Return instance as array
@@ -46,7 +48,7 @@ interface TypeInterface
      * @param int $mode Array mode
      *
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function toArray(int $mode = Type::ARRAY_ASSOC): array;
 

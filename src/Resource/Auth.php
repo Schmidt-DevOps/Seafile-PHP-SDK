@@ -2,10 +2,6 @@
 
 namespace Seafile\Client\Resource;
 
-use \Exception;
-use \Seafile\Client\Type\SharedLink as SharedLinkType;
-use \Seafile\Client\Type\Library as LibraryType;
-
 /**
  * This is currently just a "facade" for the auth endpoint
  *
