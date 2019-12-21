@@ -35,6 +35,7 @@ This version will not be backwards compatible with Version 1.x.
 ### Removed
 - `obtain_api_token.sh` script
 - Support for Shared-Link API resource (succeeded by Share-Links API resource)
+- Many example scripts (please refer to the functional tests instead)
 
 ## [1.0.1] - 2017-06-23
 

@@ -4,11 +4,11 @@ This is a PHP package for accessing [Seafile Web API](https://www.seafile.com/).
 
 ## German Web Application Developer Available for Hire!
 
-No marketing skills whatsoever, but low rates, nearly 20 years of experience, and german work attitude.
+No marketing skills whatsoever, but low rates, 20+ years of experience, and "german work attitude" -- whatever you associate with that.
 
 Get in touch now: https://sdo.sh/DevOps/#contact
 
-[![Build Status](https://api.travis-ci.org/rene-s/Seafile-PHP-SDK.svg)](https://travis-ci.org/Schmidt-DevOps/Seafile-PHP-SDK)
+[![Build Status](https://api.travis-ci.org/rene-s/Seafile-PHP-SDK.svg)](https://api.travis-ci.org/Schmidt-DevOps/Seafile-PHP-SDK.svg?branch=develop)
 [![Test Coverage](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/badges/coverage.svg)](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/coverage)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -52,7 +52,7 @@ curl -sS https://getcomposer.org/installer | php
 Next, run the Composer command to install the latest stable version of seafile-php-sdk:
 
 ```bash
-composer.phar require rsd/seafile-php-sdk
+composer.phar require sdo/seafile-php-sdk
 # composer.phar dump-autoload -o # not required anymore
 ```
 
@@ -62,7 +62,7 @@ After installing, you need to require Composer's autoloader:
 require 'vendor/autoload.php';
 ```
 
-You can then later update seafile-php-sdk using composer:
+You can then later update seafile-php-sdk using Composer:
 
  ```bash
 composer.phar update
@@ -71,23 +71,19 @@ composer.phar update
 
 ## Using Seafile PHP SDK
 
-Hint: Have a look at ```bin/example.php``` -- everything this SDK can do is covered there!
+~~Hint: Have a look at ```bin/example.php``` -- everything this SDK can do is covered there!~~
 
 ### Connecting to Seafile
 
 First, you need to include the API token (see above):
 
 ```php
-$tokenFile = getenv("HOME") . "/.seafile-php-sdk/api-token.json";
-
-$token = json_decode(file_get_contents($tokenFile));
-
 $client = new Client(
     [
         'base_uri' => 'https://your.seafile-server.com',
         'debug' => false,
         'headers' => [
-            'Authorization' => 'Token ' . $token->token
+            'Authorization' => 'Token ' . $token
         ]
     ]
 );
@@ -278,18 +274,20 @@ print_r($avatarResource->getUserAvatarByEmail('someone@example.com')->toArray())
 $libraryResource = new Library($client);
 $directoryResource = new Directory($client);
 $fileResource = new File($client);
-$sharedLinkResource = new SharedLink($client);
+$shareLinkResource = new ShareLinks($client);
 
 // create share link for a file
 $expire = 5;
-$shareType = SharedLinkType::SHARE_TYPE_DOWNLOAD;
 $p = "/" . basename($newFilename);
 $password = 'qwertz123';
 
-$shareLinkType = $sharedLinkResource->create($lib, $p, $expire, $shareType, $password);
+$defaultPermissions = new SharedLinkPermissions(SharedLinkPermissions::CAN_DOWNLOAD);
+$extendedPermissions = new SharedLinkPermissions(SharedLinkPermissions::CAN_DOWNLOAD | SharedLinkPermissions::CAN_EDIT);
+
+$shareLinkType = $shareLinkResource->create($lib, $p, $defaultPermissions, $expire, $password);
 
 // remove shared link
-$success = $sharedLinkResource->remove($shareLinkType);
+$success = $shareLinkResource->remove($shareLinkType);
 ```
 
 ### Get all starred files, star and unstar file
@@ -319,7 +317,6 @@ foreach ($dirItems as $dirItem) {
 This example requires monolog. Log entries and Guzzle debug info will be written to stdout.
 
 ```php
-
 $logger = new Logger('Logger');
 
 $stack = HandlerStack::create();
@@ -336,7 +333,7 @@ $client = new Client(
         'debug' => true,
         'handler' => $stack,
         'headers' => [
-            'Authorization' => 'Token ' . $token->token
+            'Authorization' => 'Token ' . $token
         ]
     ]
 );
@@ -364,15 +361,15 @@ $client = new Client(
 | Library/Directory      | :large_blue_circle::large_blue_circle::white_circle::white_circle:       |
 | Library/Multiple Files | :large_blue_circle::large_blue_circle::large_blue_circle::large_blue_circle:          |
 | Avatar                 | :large_blue_circle::large_blue_circle::large_blue_circle::large_blue_circle:          |
-| Events                 | Yet to be done, [contact me](rene+_gth@sdo.sh) |
-| Organization           | Yet to be done, [contact me](rene+_gth@sdo.sh) |
+| Events                 | Yet to be done, [contact me](mailto:rene+_gth@sdo.sh) |
+| Organization           | Yet to be done, [contact me](mailto:rene+_gth@sdo.sh) |
 
 
 ## Seafile Web API V2.1 Support Matrix
 
 | Resource               | Support grade |
 | ---------------------- | ------------- |
-| Web API v2.1           | Yet to be done, [contact me](rene+_gth@sdo.sh) |
+| Web API v2.1           | Basic         |
 
 ## Seafile server compatibility
 
