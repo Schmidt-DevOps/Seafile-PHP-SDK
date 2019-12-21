@@ -1,5 +1,5 @@
 {
-  "name": "rsd/seafile-php-sdk",
+  "name": "sdo/seafile-php-sdk",
   "description": "This is a PHP package for accessing Seafile Web API",
   "homepage": "https://github.com/rene-s/Seafile-PHP-SDK",
   "license": "MIT",

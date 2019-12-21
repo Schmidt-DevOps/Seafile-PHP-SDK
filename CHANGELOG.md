@@ -29,6 +29,8 @@ This version will not be backwards compatible with Version 1.x.
 - Restructured the tests
 - Restructured test configuration
 - `phpunit.xml.dist` massively updated -- if you have a custom one, please also update. Otherwise the tests will be broken.
+- Renamed package from `rsd/seafile-php-sdk` to `sdo/seafile-php-sdk`
+- Moved git repository from https://github.com/rene-s to https://github.com/Schmidt-DevOps
 
 ### Removed
 - `obtain_api_token.sh` script
