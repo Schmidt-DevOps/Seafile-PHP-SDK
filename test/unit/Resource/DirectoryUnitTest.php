@@ -1,11 +1,11 @@
 <?php
 
-namespace Seafile\Client\Tests\Resource;
+namespace Seafile\Client\Tests\Unit\Resource;
 
 use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Directory;
-use Seafile\Client\Tests\TestCase;
+use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\DirectoryItem;
 use Seafile\Client\Type\Library;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -20,7 +20,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\Directory
  */
-class DirectoryTest extends TestCase
+class DirectoryUnitTest extends UnitTestCase
 {
     /**
      * Test getAll()

@@ -37,32 +37,7 @@ If you are looking for stability please refer to stable tags.
 
 Please refer to the [Seafile docs](https://download.seafile.com/published/web-api/home.md#user-content-Quick%20Start) on how to obtain an API token.
 
-Have a look at script ```bin/obtain_api_token.sh``` and use it if you feel comfortable with it. Basically, the script does this:
-    
-```bash
-mkdir ~/.seafile-php-sdk
-curl -d username="you@example.com" -d password="123456" https://your.seafile-server.com/api2/auth-token/ > ~/.seafile-php-sdk/api-token.json
-```
-
-Insert your test user name and test user password. Hint: if user name contains a "+" char, use "--data-urlencode" as describe in the Seafile docs.
-
-The file ```~/.seafile-php-sdk/api-token.json``` will look like this:
-
-```
-{"token": "your_api_token"}
-```
-
-The example script will assume a config file ```~/.seafile-php-sdk/cfg.json``` that looks like this:
-
-Have a look at script ```bin/create_test_cfg.sh``` and use it if you feel comfortable with it. Basically, the script does this:
-
-```
-{
-        "baseUri": "https://your-seafile-server.example.com",
-        "testLibId": "test-library-id",
-        "testLibPassword": "test-library-password"
-}
-```
+This also applies to the token required for functional tests (`TEST_SERVER_AUTHORIZATION_TOKEN`).
 
 ## Installing Seafile-PHP-SDK
 
@@ -366,9 +341,6 @@ $client = new Client(
     ]
 );
 ```
-## Version history
-
-See CHANGELOG.md
 
 ## Issues
 
@@ -421,6 +393,13 @@ Please note that this package still is in its infancy. Only a part of the API ha
 - Follow "separation of concern" on all levels: 1 issue == 1 pull request. Do not cover multiple issues in a pull request.
 - Unit tests raise the chance of your pull request getting accepted.
 - The same goes for [PHPDoc](https://en.wikipedia.org/wiki/PHPDoc) blocks.
+
+## Tests
+
+There are two types of tests:
+
+1. Unit tests that test a code unit without external dependencies and no data manipulation. Please always provide at least unit tests when contributing.
+1. Functional tests that run against a live server instance (=may have external dependencies) and also alter data. Disabled and thus skipped by default. Please refer to `/phpunit/php` in `phpunit.xml.dist` for information on how to enable functional tests.
 
 ## Links
 

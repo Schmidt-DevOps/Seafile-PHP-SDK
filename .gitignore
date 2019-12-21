@@ -37,6 +37,7 @@ vendor/
 /.idea
 
 # Stuff
+.env
 bin/run_tests_*.sh
 internal_requests/
 .phpunit.result.cache

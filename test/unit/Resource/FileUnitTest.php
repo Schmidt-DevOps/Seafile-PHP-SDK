@@ -1,6 +1,6 @@
 <?php
 
-namespace Seafile\Client\Tests\Resource;
+namespace Seafile\Client\Tests\Unit\Resource;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
@@ -8,8 +8,8 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\File;
-use Seafile\Client\Tests\Stubs\FileResourceStub;
-use Seafile\Client\Tests\TestCase;
+use Seafile\Client\Tests\Unit\Stubs\FileResourceStub;
+use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\DirectoryItem;
 use Seafile\Client\Type\FileHistoryItem;
 use Seafile\Client\Type\Library;
@@ -24,7 +24,7 @@ use Seafile\Client\Type\Library;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\File
  */
-class FileTest extends TestCase
+class FileUnitTest extends UnitTestCase
 {
     /**
      * Test getDownloadUrl()

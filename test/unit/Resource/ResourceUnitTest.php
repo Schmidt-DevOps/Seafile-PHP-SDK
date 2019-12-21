@@ -1,6 +1,6 @@
 <?php
 
-namespace Seafile\Client\Tests\Resource;
+namespace Seafile\Client\Tests\Unit\Resource;
 
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -8,7 +8,7 @@ use Seafile\Client\Http\Client;
 use Seafile\Client\Resource\Directory;
 use Seafile\Client\Resource\SharedLink;
 use Seafile\Client\Resource\ShareLinks;
-use Seafile\Client\Tests\TestCase;
+use Seafile\Client\Tests\Unit\UnitTestCase;
 
 /**
  * Resource test
@@ -20,7 +20,7 @@ use Seafile\Client\Tests\TestCase;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\Resource
  */
-class ResourceTest extends TestCase
+class ResourceUnitTest extends UnitTestCase
 {
     /**
      * Test that clipUri() will consistently return URIs without trailing slash.

@@ -1,13 +1,13 @@
 <?php
 
-namespace Seafile\Client\Tests\Resource;
+namespace Seafile\Client\Tests\Unit\Resource;
 
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\StarredFile;
 use Seafile\Client\Type\DirectoryItem;
-use Seafile\Client\Tests\TestCase;
+use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\Library as LibraryType;
 
 /**
@@ -20,7 +20,7 @@ use Seafile\Client\Type\Library as LibraryType;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\StarredFile
  */
-class StarredFileTest extends TestCase
+class StarredFileUnitTest extends UnitTestCase
 {
     /**
      * Test getAll()

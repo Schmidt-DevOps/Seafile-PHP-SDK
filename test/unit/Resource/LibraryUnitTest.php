@@ -1,6 +1,6 @@
 <?php
 
-namespace Seafile\Client\Tests\Resource;
+namespace Seafile\Client\Tests\Unit\Resource;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
@@ -8,7 +8,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Seafile\Client\Http\Client;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Library;
-use Seafile\Client\Tests\TestCase;
+use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\Library as LibraryType;
 
 /**
@@ -21,7 +21,7 @@ use Seafile\Client\Type\Library as LibraryType;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\Library
  */
-class LibraryTest extends TestCase
+class LibraryUnitTest extends UnitTestCase
 {
     /**
      * Test getAll()

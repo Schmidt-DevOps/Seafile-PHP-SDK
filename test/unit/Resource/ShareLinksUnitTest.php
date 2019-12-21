@@ -1,13 +1,13 @@
 <?php
 
-namespace Seafile\Client\Tests\Resource;
+namespace Seafile\Client\Tests\Unit\Resource;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\ShareLinks;
-use Seafile\Client\Tests\TestCase;
+use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\Library as LibraryType;
 use Seafile\Client\Type\SharedLink;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -23,7 +23,7 @@ use Seafile\Client\Type\SharedLinkPermissions;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\ShareLinks
  */
-class ShareLinksTest extends TestCase
+class ShareLinksUnitTest extends UnitTestCase
 {
     /**
      * Test getAll()

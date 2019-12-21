@@ -1,10 +1,10 @@
 <?php
 
-namespace Seafile\Client\Tests\Resource;
+namespace Seafile\Client\Tests\Unit\Resource;
 
 use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Resource\Group;
-use Seafile\Client\Tests\TestCase;
+use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\Group as GroupType;
 
 /**
@@ -17,7 +17,7 @@ use Seafile\Client\Type\Group as GroupType;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\Group
  */
-class GroupTest extends TestCase
+class GroupUnitTest extends UnitTestCase
 {
     /**
      * Test getAll()

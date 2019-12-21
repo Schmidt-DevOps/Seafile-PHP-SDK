@@ -1,8 +1,8 @@
 <?php
 
-namespace Seafile\Client\Tests\Type;
+namespace Seafile\Client\Tests\Unit\Type;
 
-use Seafile\Client\Tests\TestCase;
+use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\Account;
 use Seafile\Client\Type\Type;
 use Seafile\Client\Type\DirectoryItem;
@@ -19,7 +19,7 @@ use Seafile\Client\Type\Group as GroupType;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Type\Type
  */
-class TypeTest extends TestCase
+class TypeUnitTest extends UnitTestCase
 {
     /**
      * Test fromArray()

@@ -1,6 +1,6 @@
 <?php
 
-namespace Seafile\Client\Tests;
+namespace Seafile\Client\Tests\Unit;
 
 use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Http\Client;
@@ -14,7 +14,7 @@ use Seafile\Client\Http\Client;
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/rene-s/seafile-php-sdk
  */
-class TestCase extends \PHPUnit\Framework\TestCase
+class UnitTestCase extends \PHPUnit\Framework\TestCase
 {
     /**
      * Call protected/private method of a class.

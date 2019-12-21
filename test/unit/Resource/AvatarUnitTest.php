@@ -1,6 +1,6 @@
 <?php
 
-namespace Seafile\Client\Tests\Resource;
+namespace Seafile\Client\Tests\Unit\Resource;
 
 use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Http\Client as SeafileHttpClient;
@@ -8,7 +8,7 @@ use Seafile\Client\Type\Avatar;
 use Seafile\Client\Type\Library as LibraryType;
 use Seafile\Client\Type\Group as GroupType;
 use Seafile\Client\Resource\Avatar as AvatarResource;
-use Seafile\Client\Tests\TestCase;
+use Seafile\Client\Tests\Unit\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -21,7 +21,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\Avatar
  */
-class AvatarTest extends TestCase
+class AvatarUnitTest extends UnitTestCase
 {
     /**
      * Test getUserAvatarByEmail()

@@ -1,11 +1,11 @@
 <?php
 
-namespace Seafile\Client\Tests\Resource;
+namespace Seafile\Client\Tests\Unit\Resource;
 
 use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Multi;
-use Seafile\Client\Tests\TestCase;
+use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\Library;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -19,7 +19,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\Multi
  */
-class MultiTest extends TestCase
+class MultiUnitTest extends UnitTestCase
 {
     /**
      * Test delete() with empty paths

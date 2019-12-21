@@ -1,9 +1,9 @@
 <?php
 
-namespace Seafile\Client\Tests\Http;
+namespace Seafile\Client\Tests\Unit\Http;
 
 use Seafile\Client\Http\Client;
-use Seafile\Client\Tests\TestCase;
+use Seafile\Client\Tests\Unit\UnitTestCase;
 
 /**
  * Client test
@@ -15,7 +15,7 @@ use Seafile\Client\Tests\TestCase;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Http\Client
  */
-class ClientTest extends TestCase
+class ClientUnitTest extends UnitTestCase
 {
     /**
      * Test that base_uri is empty by default.

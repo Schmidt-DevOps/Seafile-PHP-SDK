@@ -1,13 +1,13 @@
 <?php
 
-namespace Seafile\Client\Tests\Resource;
+namespace Seafile\Client\Tests\Unit\Resource;
 
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Account;
 use Seafile\Client\Type\Account as AccountType;
-use Seafile\Client\Tests\TestCase;
+use Seafile\Client\Tests\Unit\UnitTestCase;
 
 /**
  * Account resource test
@@ -19,7 +19,7 @@ use Seafile\Client\Tests\TestCase;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\Account
  */
-class AccountTest extends TestCase
+class AccountUnitTest extends UnitTestCase
 {
     /**
      * Test getAll()
