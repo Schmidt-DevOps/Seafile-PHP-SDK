@@ -20,7 +20,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\Directory
  */
-class DirectoryUnitTest extends UnitTestCase
+class DirectoryTest extends UnitTestCase
 {
     /**
      * Test getAll()

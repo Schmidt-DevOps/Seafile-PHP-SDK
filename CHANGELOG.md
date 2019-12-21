@@ -12,20 +12,23 @@ This version will not be backwards compatible with Version 1.x.
 
 ### Todo
 - Abstract SharedLinkPermissions
-- Switch to .env instead of JSON config
 
 ### Added
-- Will support PHP 7.2+ only.
-- Requires PHPUnit 8+
-- Added CHANGELOG.md
-- Added `auth_ping.php` for testing the authorization token
-- Started supporting Web API v2.1
-- Added support for Share-Links API resource
-- Added support for multiple permissions for shared links via sdo/bitmask
+- CHANGELOG.md
+- `auth_ping.php` for testing the authorization token
+- Basic support for Web API v2.1
+- Support for Share-Links API resource
+- Support for multiple permissions for Share-Links API resource
+- Functional tests
 
 ### Changed
-- Updated the docs regarding obtaining an authorization token
+- Now supports PHP 7.2+ only.
+- Now requires PHPUnit 8+
+- Docs regarding obtaining an authorization token
 - SharedLinkType updated for Web API v2.1
+- Restructured the tests
+- Restructured test configuration
+- `phpunit.xml.dist` massively updated -- if you have a custom one, please also update. Otherwise the tests will be broken.
 
 ### Removed
 - `obtain_api_token.sh` script

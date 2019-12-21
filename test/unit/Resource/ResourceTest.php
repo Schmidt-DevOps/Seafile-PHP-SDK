@@ -20,7 +20,7 @@ use Seafile\Client\Tests\Unit\UnitTestCase;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\Resource
  */
-class ResourceUnitTest extends UnitTestCase
+class ResourceTest extends UnitTestCase
 {
     /**
      * Test that clipUri() will consistently return URIs without trailing slash.

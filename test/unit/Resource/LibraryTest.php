@@ -21,7 +21,7 @@ use Seafile\Client\Type\Library as LibraryType;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\Library
  */
-class LibraryUnitTest extends UnitTestCase
+class LibraryTest extends UnitTestCase
 {
     /**
      * Test getAll()

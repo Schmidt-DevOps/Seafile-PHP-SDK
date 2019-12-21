@@ -19,7 +19,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\Multi
  */
-class MultiUnitTest extends UnitTestCase
+class MultiTest extends UnitTestCase
 {
     /**
      * Test delete() with empty paths

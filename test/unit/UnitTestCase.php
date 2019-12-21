@@ -3,10 +3,12 @@
 namespace Seafile\Client\Tests\Unit;
 
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\MockObject\MockObject;
+use ReflectionException;
 use Seafile\Client\Http\Client;
 
 /**
- * Seafile PHP SDK Test Case class
+ * Seafile PHP SDK Unit Test Case class
  *
  * @package   Seafile\Tests
  * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
@@ -24,7 +26,7 @@ class UnitTestCase extends \PHPUnit\Framework\TestCase
      * @param array  $parameters Array of parameters to pass into method.
      *
      * @return mixed Method return.
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function invokeMethod(&$object, string $methodName, array $parameters = [])
     {
@@ -40,7 +42,7 @@ class UnitTestCase extends \PHPUnit\Framework\TestCase
      *
      * @param Response $response HTTP Response
      *
-     * @return \PHPUnit\Framework\MockObject\MockObject|Client
+     * @return MockObject|Client
      */
     protected function getMockedClient(Response $response)
     {

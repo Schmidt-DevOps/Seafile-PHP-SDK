@@ -21,7 +21,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\Avatar
  */
-class AvatarUnitTest extends UnitTestCase
+class AvatarTest extends UnitTestCase
 {
     /**
      * Test getUserAvatarByEmail()

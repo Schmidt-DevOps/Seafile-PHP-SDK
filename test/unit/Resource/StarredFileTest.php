@@ -20,7 +20,7 @@ use Seafile\Client\Type\Library as LibraryType;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\StarredFile
  */
-class StarredFileUnitTest extends UnitTestCase
+class StarredFileTest extends UnitTestCase
 {
     /**
      * Test getAll()

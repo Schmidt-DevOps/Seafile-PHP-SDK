@@ -17,7 +17,7 @@ use Seafile\Client\Type\Group as GroupType;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\Group
  */
-class GroupUnitTest extends UnitTestCase
+class GroupTest extends UnitTestCase
 {
     /**
      * Test getAll()

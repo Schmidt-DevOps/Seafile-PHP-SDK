@@ -24,7 +24,7 @@ use Seafile\Client\Type\Library;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\File
  */
-class FileUnitTest extends UnitTestCase
+class FileTest extends UnitTestCase
 {
     /**
      * Test getDownloadUrl()

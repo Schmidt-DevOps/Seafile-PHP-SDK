@@ -19,9 +19,10 @@
         using `export $(cat .env | xargs)` before running the functional tests -->
         <env name="ALLOW_LIVE_DATA_MANIPULATION_ON_TEST_SERVER" value="0" force="false"/><!-- 1=enabled -->
         <env name="TEST_SERVER_AUTHORIZATION_TOKEN" value="not_set" force="false"/><!-- see README.md-->
-        <env name="TEST_SERVER" value="https://seafile-server.example.com" force="false"/>
+        <env name="TEST_SERVER" value="https://not-set.example.com" force="false"/>
         <env name="TEST_LIB_ID" value="not_set" force="false"/>
         <env name="TEST_LIB_PASSWORD" value="not_set" force="false"/>
+        <env name="GUZZLE_DEBUG_TO_STDOUT" value="0" force="false"/>
     </php>
     <testsuites>
         <testsuite name="SeafilePhpSdk Unit Test Suite">
@@ -38,8 +39,7 @@
     </filter>
     <logging>
         <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
-        <!--
-                <log type="coverage-clover" target="/tmp/seafile-php-sdk-clover.xml"/>
-                <log type="coverage-html" target="/tmp/phpunit-result/seafile-php-sdk-current" showUncoveredFiles="true"/>   -->
+        <log type="coverage-clover" target="./build/seafile-php-sdk-clover.xml"/>
+        <log type="coverage-html" target="./build/phpunit-result/seafile-php-sdk-current" showUncoveredFiles="true"/>
     </logging>
 </phpunit>

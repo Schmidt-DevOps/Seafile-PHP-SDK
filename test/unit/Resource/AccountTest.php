@@ -19,7 +19,7 @@ use Seafile\Client\Tests\Unit\UnitTestCase;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\Account
  */
-class AccountUnitTest extends UnitTestCase
+class AccountTest extends UnitTestCase
 {
     /**
      * Test getAll()

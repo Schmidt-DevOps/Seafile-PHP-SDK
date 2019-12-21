@@ -23,7 +23,7 @@ use Seafile\Client\Type\SharedLinkPermissions;
  * @link      https://github.com/rene-s/seafile-php-sdk
  * @covers    \Seafile\Client\Resource\ShareLinks
  */
-class ShareLinksUnitTest extends UnitTestCase
+class ShareLinksTest extends UnitTestCase
 {
     /**
      * Test getAll()
