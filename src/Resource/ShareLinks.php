@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Resource;
 
+use Exception;
 use Seafile\Client\Type\Library as LibraryType;
 use Seafile\Client\Type\SharedLink as SharedLinkType;
 use Seafile\Client\Type\SharedLinkPermissions;
@@ -23,7 +24,7 @@ class ShareLinks extends Resource implements ResourceInterface
      * List shared links
      *
      * @return SharedLinkType[]
-     * @throws \Exception
+     * @throws Exception
      */
     public function getAll(): array
     {
@@ -82,7 +83,7 @@ class ShareLinks extends Resource implements ResourceInterface
      * @param string $password Optional password string
      *
      * @return SharedLinkType|null
-     * @throws \Exception
+     * @throws Exception
      */
     public function create(
         LibraryType $library,
@@ -100,8 +101,13 @@ class ShareLinks extends Resource implements ResourceInterface
         $multiPartParams = [
             ['name' => 'repo_id', 'contents' => $library->id],
             ['name' => 'path', 'contents' => $path],
-            ['name' => 'can_edit', 'contents' => $permissions->is(SharedLinkPermissions::CAN_EDIT) ? 'true' : 'false'],
-            ['name' => 'can_download', 'contents' => $permissions->is(SharedLinkPermissions::CAN_DOWNLOAD) ? 'true' : 'false']
+            [
+                'name' => 'permissions',
+                'contents' => json_encode([
+                    'can_edit' => $permissions->is(SharedLinkPermissions::CAN_EDIT),
+                    'can_download' => $permissions->is(SharedLinkPermissions::CAN_DOWNLOAD)
+                ])
+            ]
         ];
 
         if (!is_null($expire)) {
