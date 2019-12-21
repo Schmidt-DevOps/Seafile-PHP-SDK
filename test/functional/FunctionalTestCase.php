@@ -3,6 +3,11 @@
 namespace Seafile\Client\Tests\Functional;
 
 use Exception;
+use Faker\Factory as FakerFactory;
+use Faker\Generator;
+use Faker\Provider\Internet;
+use Faker\Provider\Lorem;
+use Faker\Provider\Person;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
@@ -31,6 +36,9 @@ class FunctionalTestCase extends \PHPUnit\Framework\TestCase
 
     /** @var LibraryType|null */
     protected $testLib = null;
+
+    /** @var Generator|null|Internet|Lorem|Person */
+    protected $faker = null;
 
     /**
      * Skip functional tests when they do not have been set up correctly. Please refer to README.md on how to set them up.
@@ -97,6 +105,22 @@ class FunctionalTestCase extends \PHPUnit\Framework\TestCase
     {
         $this->getLogger();
         $this->getClient();
+        $this->getFaker();
+    }
+
+    /**
+     * @return Generator
+     * @throws Exception
+     */
+    protected function getFaker(): Generator
+    {
+        if (is_null($this->faker)) {
+            $this->faker = FakerFactory::create();
+            $this->faker->seed($GLOBALS['FAKER_SEED']);
+            $this->getLogger()->info("Random generator seed: {$GLOBALS['FAKER_SEED']}");
+        }
+
+        return $this->faker;
     }
 
     /**

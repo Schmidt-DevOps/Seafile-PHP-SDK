@@ -43,3 +43,9 @@ $GLOBALS['RUN_FUNCTIONAL_TESTS'] = (
     && $functionalTestsCredentialsValid
     && $functionalTestsTestLibCleaned
 );
+
+try {
+    $GLOBALS['FAKER_SEED'] = random_int(0, 1000000);
+} catch (Exception $e) {
+    die($e->getMessage());
+}

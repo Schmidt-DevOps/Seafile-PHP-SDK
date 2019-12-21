@@ -33,7 +33,8 @@
     "phpunit/php-token-stream": "~3.0",
     "sebastian/phpcpd": "~4.0",
     "squizlabs/php_codesniffer": "~3.2",
-    "phpunit/php-timer": "~2.0"
+    "phpunit/php-timer": "~2.0",
+    "fzaninotto/faker": "^1.9"
   },
   "type": "library",
   "autoload": {
