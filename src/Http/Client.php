@@ -10,9 +10,9 @@ use Psr\Http\Message\UriInterface;
  *
  * @package   Seafile\Http
  * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2017 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
+ * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
  * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/rene-s/seafile-php-sdk
+ * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class Client extends \GuzzleHttp\Client
 {

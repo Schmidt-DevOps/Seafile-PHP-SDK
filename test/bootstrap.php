@@ -45,7 +45,7 @@ $GLOBALS['RUN_FUNCTIONAL_TESTS'] = (
 );
 
 try {
-    $GLOBALS['FAKER_SEED'] = random_int(0, 1000000);
+    $GLOBALS['FAKER_SEED'] = random_int(0, 1000000); // @todo Make tests repeatable
 } catch (Exception $e) {
     die($e->getMessage());
 }

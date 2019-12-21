@@ -10,9 +10,9 @@ use Seafile\Client\Tests\Unit\UnitTestCase;
  *
  * @package   Seafile\Resource
  * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2017 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
+ * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
  * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/rene-s/seafile-php-sdk
+ * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
  * @covers    \Seafile\Client\Http\Client
  */
 class ClientUnitTest extends UnitTestCase

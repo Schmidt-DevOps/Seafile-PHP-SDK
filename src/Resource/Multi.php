@@ -12,7 +12,7 @@ use \Seafile\Client\Type\Library as LibraryType;
  * @author    Christoph Haas <christoph.h@sprinternet.at>
  * @copyright 2015 Christoph Haas <christoph.h@sprinternet.at>
  * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/rene-s/seafile-php-sdk
+ * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class Multi extends Resource
 {

@@ -8,7 +8,7 @@ No marketing skills whatsoever, but low rates, nearly 20 years of experience, an
 
 Get in touch now: https://sdo.sh/DevOps/#contact
 
-[![Build Status](https://api.travis-ci.org/rene-s/Seafile-PHP-SDK.svg)](https://travis-ci.org/rene-s/Seafile-PHP-SDK)
+[![Build Status](https://api.travis-ci.org/rene-s/Seafile-PHP-SDK.svg)](https://travis-ci.org/Schmidt-DevOps/Seafile-PHP-SDK)
 [![Test Coverage](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/badges/coverage.svg)](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/coverage)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
