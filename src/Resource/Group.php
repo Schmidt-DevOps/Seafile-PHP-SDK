@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Resource;
 
+use Exception;
 use \Seafile\Client\Type\Group as GroupType;
 
 /**
@@ -19,12 +20,11 @@ class Group extends Resource
      * List groups
      *
      * @return GroupType[]
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
      */
     public function getAll(): array
     {
-        $response = $this->client->request('GET', $this->getApiBaseUrl(). '/groups/');
+        $response = $this->client->request('GET', $this->getApiBaseUrl() . '/groups/');
 
         $json = json_decode($response->getBody());
 

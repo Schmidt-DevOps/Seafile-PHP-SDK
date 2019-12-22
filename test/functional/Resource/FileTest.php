@@ -64,7 +64,7 @@ class FileTest extends FunctionalTestCase
      * 5. Test getting file history.
      * 6. Test getting a historic file revision.
      *
-     * Note that this test is basically the old example script, wrapped as a functional test. Obviously this
+     * Note that this test is basically the old example script, transformed into a functional test. Obviously this
      * needs to be broken up in smaller pieces. This is not trivial when the tests are supposed to run repeatedly
      * and successfully so that's postponed for now.
      *
@@ -155,6 +155,7 @@ class FileTest extends FunctionalTestCase
 
         foreach ($items as $item) {
             $this->logger->debug(sprintf("(%s) %s/%s (%d bytes)\n", $item->type, $item->path, $item->name, $item->size));
+            self::assertInstanceOf(DirectoryItem::class, $item);
         }
     }
 
@@ -165,7 +166,7 @@ class FileTest extends FunctionalTestCase
      * 2. Test that files can be unstarred.
      * 3. Test files can be starred.
      *
-     * Note that this test is basically the old example script, wrapped as a functional test. Obviously this
+     * Note that this test is basically the old example script, transformed into a functional test. Obviously this
      * needs to be broken up in smaller pieces. This is not trivial when the tests are supposed to run repeatedly
      * and successfully so that's postponed for now.
      *
@@ -185,6 +186,7 @@ class FileTest extends FunctionalTestCase
 
         foreach ($dirItems as $dirItem) {
             $this->logger->debug("#################### Dir Item: {$dirItem->id}");
+            self::assertInstanceOf(DirectoryItem::class, $dirItem);
         }
 
         $this->logger->debug("#################### Unstarring files...");

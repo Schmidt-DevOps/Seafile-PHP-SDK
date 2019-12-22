@@ -348,28 +348,21 @@ $client = new Client(
 - PHP >=7.0 64 bits
 - Guzzle 6
 
-## Seafile Web API V2 Support Matrix
+## Seafile Web API Support Matrix
 
-| Resource               | Support grade |
-| ---------------------- | ------------- |
-| Account                | :large_blue_circle::large_blue_circle::large_blue_circle::white_circle: |
-| Starred Files          | :large_blue_circle::large_blue_circle::large_blue_circle::large_blue_circle:          |
-| Group                  | :large_blue_circle::white_circle::white_circle::white_circle:   |
-| File Share Link        | :large_blue_circle::large_blue_circle::white_circle::white_circle:       |
-| Library/Library        | :large_blue_circle::large_blue_circle::white_circle::white_circle:       |
-| Library/File           | :large_blue_circle::large_blue_circle::white_circle::white_circle:       |
-| Library/Directory      | :large_blue_circle::large_blue_circle::white_circle::white_circle:       |
-| Library/Multiple Files | :large_blue_circle::large_blue_circle::large_blue_circle::large_blue_circle:          |
-| Avatar                 | :large_blue_circle::large_blue_circle::large_blue_circle::large_blue_circle:          |
-| Events                 | Yet to be done, [contact me](mailto:rene+_gth@sdo.sh) |
-| Organization           | Yet to be done, [contact me](mailto:rene+_gth@sdo.sh) |
-
-
-## Seafile Web API V2.1 Support Matrix
-
-| Resource               | Support grade |
-| ---------------------- | ------------- |
-| Web API v2.1           | Basic         |
+| Resource               | Web API Version | Support grade |
+| ---------------------- | --------------- | ------------- |
+| Account                | v2              | ★★★☆          |
+| Starred Files          | v2              | ★★★★          |
+| Group                  | v2              | ★☆☆☆          |
+| File Share Link        | v2.1            | ★★★☆          |
+| Library/Library        | v2              | ★★☆☆          |
+| Library/File           | v2              | ★★☆☆          |
+| Library/Directory      | v2              | ★★☆☆          |
+| Library/Multiple Files | v2              | ★★★★          |
+| Avatar                 | v2              | ★★★★          |
+| Events                 | v2              | Yet to be done, [contact me](mailto:rene+_gth@sdo.sh) |
+| Organization           | v2              | Yet to be done, [contact me](mailto:rene+_gth@sdo.sh) |
 
 ## Seafile server compatibility
 

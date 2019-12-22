@@ -44,7 +44,7 @@ class AccountTest extends FunctionalTestCase
      * 3. Test that an AccountType instance can be retrieved by an email address.
      * 4. Test that Account info by can retrieved by an email address
      *
-     * Note that this test is basically the old example script, wrapped as a functional test. Obviously this
+     * Note that this test is basically the old example script, transformed into a functional test. Obviously this
      * needs to be broken up in smaller pieces. This is not trivial when the tests are supposed to run repeatedly
      * and successfully so that's postponed for now.
      *
@@ -60,7 +60,9 @@ class AccountTest extends FunctionalTestCase
 
         foreach ($accountTypes as $accountType) {
             $this->logger->debug($accountType->email);
-            $this->assertIsString(
+
+            self::assertInstanceOf(AccountType::class, $accountType);
+            self::assertIsString(
                 filter_var($accountType->email, FILTER_VALIDATE_EMAIL),
                 "Expected a valid email address but got '{$accountType->email}'"
             );
