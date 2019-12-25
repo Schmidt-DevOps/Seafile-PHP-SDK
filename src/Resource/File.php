@@ -181,7 +181,8 @@ class File extends Resource
         string $dir,
         bool $newFile = true,
         $newFilename = false
-    ): array {
+    ): array
+    {
         if ($newFilename === false) {
             $fileBaseName = basename($localFilePath);
         } else {
@@ -238,7 +239,8 @@ class File extends Resource
         string $dir = '/',
         $newFilename = false,
         bool $newFile = true
-    ): ResponseInterface {
+    ): ResponseInterface
+    {
         if (!is_readable($localFilePath)) {
             throw new Exception('File ' . $localFilePath . ' could not be read or does not exist');
         }
@@ -468,7 +470,8 @@ class File extends Resource
         LibraryType $library,
         DirectoryItem $dirItem,
         FileHistoryItem $fileHistoryItem
-    ) {
+    )
+    {
         $url = $this->getApiBaseUrl()
             . '/repos/'
             . $library->id
@@ -547,7 +550,7 @@ class File extends Resource
     public function create(LibraryType $library, DirectoryItem $item): bool
     {
         // do not allow empty paths
-        if (empty($item->path) || empty($item->name)) {
+        if (empty($item->path)) {
             return false;
         }
 
@@ -571,7 +574,7 @@ class File extends Resource
                 ],
             ]
         );
-
+// @todo Return the actual response instead of bool
         return $response->getStatusCode() === 201;
     }
 

@@ -7,7 +7,6 @@ use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Resource\Directory;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Resource\Library;
-use Seafile\Client\Resource\StarredFile;
 use Seafile\Client\Tests\Functional\FunctionalTestCase;
 use Seafile\Client\Type\DirectoryItem;
 
@@ -156,50 +155,6 @@ class FileTest extends FunctionalTestCase
         foreach ($items as $item) {
             $this->logger->debug(sprintf("(%s) %s/%s (%d bytes)\n", $item->type, $item->path, $item->name, $item->size));
             self::assertInstanceOf(DirectoryItem::class, $item);
-        }
-    }
-
-    /**
-     * Generic starred files test. Goals:
-     *
-     * 1. Test getting starred files.
-     * 2. Test that files can be unstarred.
-     * 3. Test files can be starred.
-     *
-     * Note that this test is basically the old example script, transformed into a functional test. Obviously this
-     * needs to be broken up in smaller pieces. This is not trivial when the tests are supposed to run repeatedly
-     * and successfully so that's postponed for now.
-     *
-     * @throws GuzzleException
-     * @throws Exception
-     */
-    public function testGetStarredFiles()
-    {
-        $libraryResource = new Library($this->client);
-        $starredFileResource = new StarredFile($this->client);
-
-        $this->logger->debug("#################### Getting all starred files");
-        $dirItems = $starredFileResource->getAll();
-
-        self::assertIsArray($dirItems);
-        self::assertTrue(count($dirItems) > 0);
-
-        foreach ($dirItems as $dirItem) {
-            $this->logger->debug("#################### Dir Item: {$dirItem->id}");
-            self::assertInstanceOf(DirectoryItem::class, $dirItem);
-        }
-
-        $this->logger->debug("#################### Unstarring files...");
-
-        foreach ($dirItems as $dirItem) {
-            $lib = $libraryResource->getById($dirItem->repo);
-            self::assertTrue($starredFileResource->unstar($lib, $dirItem));
-        }
-
-        foreach ($dirItems as $dirItem) {
-            $lib = $libraryResource->getById($dirItem->repo);
-            $result = $starredFileResource->star($lib, $dirItem);
-            self::assertIsString($result);
         }
     }
 }

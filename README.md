@@ -8,7 +8,7 @@ No marketing skills whatsoever, but low rates, 20+ years of experience, and "ger
 
 Get in touch now: https://sdo.sh/DevOps/#contact
 
-[![Build Status](https://api.travis-ci.org/rene-s/Seafile-PHP-SDK.svg)](https://api.travis-ci.org/Schmidt-DevOps/Seafile-PHP-SDK.svg?branch=develop)
+[![Build Status](https://travis-ci.org/Schmidt-DevOps/Seafile-PHP-SDK.svg?branch=develop)](https://travis-ci.org/Schmidt-DevOps/Seafile-PHP-SDK)
 [![Test Coverage](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/badges/coverage.svg)](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/coverage)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -353,16 +353,16 @@ $client = new Client(
 | Resource               | Web API Version | Support grade |
 | ---------------------- | --------------- | ------------- |
 | Account                | v2              | ★★★☆          |
-| Starred Files          | v2              | ★★★★          |
-| Group                  | v2              | ★☆☆☆          |
-| File Share Link        | v2.1            | ★★★☆          |
-| Library/Library        | v2              | ★★☆☆          |
-| Library/File           | v2              | ★★☆☆          |
-| Library/Directory      | v2              | ★★☆☆          |
-| Library/Multiple Files | v2              | ★★★★          |
 | Avatar                 | v2              | ★★★★          |
 | Events                 | v2              | Yet to be done, [contact me](mailto:rene+_gth@sdo.sh) |
+| File Share Link        | v2.1            | ★★★☆          |
+| Group                  | v2              | ★☆☆☆          |
+| Library/Directory      | v2              | ★★☆☆          |
+| Library/File           | v2              | ★★☆☆          |
+| Library/Library        | v2              | ★★☆☆          |
+| Library/Multiple Files | v2              | ★★★★          |
 | Organization           | v2              | Yet to be done, [contact me](mailto:rene+_gth@sdo.sh) |
+| Starred Files          | v2              | ★★★★          |
 
 ## Seafile server compatibility
 
