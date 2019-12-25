@@ -64,7 +64,7 @@ class FileTest extends UnitTestCase
     /**
      * Test urlencodePath()
      *
-     * @param string $path              Path to encode
+     * @param string $path Path to encode
      * @param string $expectEncodedPath Expected encoded path
      *
      * @return void
@@ -109,7 +109,7 @@ class FileTest extends UnitTestCase
      */
     public function testDownloadFromDirFileExists()
     {
-        $newFilename = tempnam(sys_get_temp_dir(), uniqid());
+        $newFilename = tempnam($GLOBALS['BUILD_TMP'], uniqid());
         $fileResource = new File($this->getMockedClient(new Response()));
 
         try {
@@ -175,7 +175,7 @@ class FileTest extends UnitTestCase
     public function testUpload()
     {
         $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
-        $response = $fileResource->upload(new Library(), sys_get_temp_dir(), '/');
+        $response = $fileResource->upload(new Library(), $GLOBALS['BUILD_TMP'], '/');
 
         self::assertInstanceOf(Response::class, $response);
     }
@@ -189,7 +189,7 @@ class FileTest extends UnitTestCase
     public function testUpdate()
     {
         $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
-        $response = $fileResource->update(new Library(), sys_get_temp_dir(), '/');
+        $response = $fileResource->update(new Library(), $GLOBALS['BUILD_TMP'], '/');
 
         self::assertInstanceOf(Response::class, $response);
     }
@@ -225,7 +225,7 @@ class FileTest extends UnitTestCase
      */
     public function testUpdateMultiPartParams()
     {
-        $localFilePath = sys_get_temp_dir() . '/' . uniqid('test_', true) . '.txt';
+        $localFilePath = $GLOBALS['BUILD_TMP'] . '/' . uniqid('test_', true) . '.txt';
         file_put_contents($localFilePath, '0');
 
         try {
@@ -233,14 +233,14 @@ class FileTest extends UnitTestCase
             $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
             self::assertContains(
                 [
-                    'name'     => 'parent_dir',
+                    'name' => 'parent_dir',
                     'contents' => $dir,
                 ],
                 $fileResource->getMultiPartParams($localFilePath, $dir, true)
             );
             self::assertNotContains(
                 [
-                    'name'     => 'target_file',
+                    'name' => 'target_file',
                     'contents' => $dir . basename($localFilePath),
                 ],
                 $fileResource->getMultiPartParams($localFilePath, $dir, true)
@@ -260,9 +260,9 @@ class FileTest extends UnitTestCase
     public function testUpdateMultiPartParamsNewFilename()
     {
         $dir = '/';
-        $localFilePath = sys_get_temp_dir() . '/' . uniqid('test_', true) . '.txt';
+        $localFilePath = $GLOBALS['BUILD_TMP'] . '/' . uniqid('test_', true) . '.txt';
         $fileResource = new File($this->getMockedClient(new Response()));
-        $newFilename = sys_get_temp_dir() . '/' . uniqid('test_', true) . '.txt';
+        $newFilename = $GLOBALS['BUILD_TMP'] . '/' . uniqid('test_', true) . '.txt';
         file_put_contents($localFilePath, 'abc');
 
         $params = $fileResource->getMultiPartParams($localFilePath, $dir, true, $newFilename);
@@ -272,20 +272,20 @@ class FileTest extends UnitTestCase
         self::assertEquals(
             [
                 [
-                    'headers'  => ['Content-Type' => 'application/octet-stream'],
-                    'name'     => 'file',
+                    'headers' => ['Content-Type' => 'application/octet-stream'],
+                    'name' => 'file',
                     'contents' => 'stream',
                 ],
                 [
-                    'name'     => 'name',
+                    'name' => 'name',
                     'contents' => $newFilename,
                 ],
                 [
-                    'name'     => 'filename',
+                    'name' => 'filename',
                     'contents' => $newFilename,
                 ],
                 [
-                    'name'     => 'parent_dir',
+                    'name' => 'parent_dir',
                     'contents' => '/',
                 ],
             ],
@@ -300,7 +300,7 @@ class FileTest extends UnitTestCase
      */
     public function testUploadMultiPartParams()
     {
-        $localFilePath = sys_get_temp_dir() . '/' . uniqid('test_', true) . '.txt';
+        $localFilePath = $GLOBALS['BUILD_TMP'] . '/' . uniqid('test_', true) . '.txt';
         file_put_contents($localFilePath, '0');
 
         try {
@@ -308,14 +308,14 @@ class FileTest extends UnitTestCase
             $fileResource = new FileResourceStub($this->getMockedClient(new Response()));
             self::assertNotContains(
                 [
-                    'name'     => 'parent_dir',
+                    'name' => 'parent_dir',
                     'contents' => $dir,
                 ],
                 $fileResource->getMultiPartParams($localFilePath, $dir, false)
             );
             self::assertContains(
                 [
-                    'name'     => 'target_file',
+                    'name' => 'target_file',
                     'contents' => $dir . basename($localFilePath),
                 ],
                 $fileResource->getMultiPartParams($localFilePath, $dir, false)
@@ -513,14 +513,14 @@ class FileTest extends UnitTestCase
 
         $expectUri = 'http://example.com/api2/repos/some-crazy-id/file/?p=/test_file';
         $expectParams = [
-            'headers'   => ['Accept' => "application/json"],
+            'headers' => ['Accept' => "application/json"],
             'multipart' => [
                 [
-                    'name'     => 'operation',
+                    'name' => 'operation',
                     'contents' => 'rename',
                 ],
                 [
-                    'name'     => 'newname',
+                    'name' => 'newname',
                     'contents' => $newFilename,
                 ],
             ],
@@ -595,18 +595,18 @@ class FileTest extends UnitTestCase
 
         $expectUri = 'http://example.com/api2/repos/some-crazy-id/file/?p=' . $srcPath;
         $expectParams = [
-            'headers'   => ['Accept' => 'application/json'],
+            'headers' => ['Accept' => 'application/json'],
             'multipart' => [
                 [
-                    'name'     => 'operation',
+                    'name' => 'operation',
                     'contents' => $data['operation'],
                 ],
                 [
-                    'name'     => 'dst_repo',
+                    'name' => 'dst_repo',
                     'contents' => $destLib->id,
                 ],
                 [
-                    'name'     => 'dst_dir',
+                    'name' => 'dst_dir',
                     'contents' => $dstPath,
                 ],
             ],

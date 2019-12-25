@@ -71,7 +71,7 @@ class ShareLinksTest extends FunctionalTestCase
         }
 
         // upload a Hello World file and random file name (note: this seems not to work at this time when you are not logged into the Seafile web frontend).
-        $newFilename = './Seafile-PHP-SDK_Test_Upload.txt';
+        $newFilename = $GLOBALS['BUILD_TMP'] . '/Seafile-PHP-SDK_Test_Upload.txt';
 
         if (!file_exists($newFilename)) {
             file_put_contents($newFilename, 'Hello World: ' . date('Y-m-d H:i:s'));

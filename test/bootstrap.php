@@ -38,6 +38,12 @@ if ($functionalTestsCredentialsValid) {
     $functionalTestsTestLibCleaned = true; // @todo Implement test lib cleanup later
 }
 
+// Keep it simple for the time being. Later we'd maybe want to mock FS operations.
+$GLOBALS['BUILD_TMP'] = __DIR__ . '/../build/tmp';
+if (!file_exists($GLOBALS['BUILD_TMP'])) {
+    mkdir($GLOBALS['BUILD_TMP']);
+}
+
 $GLOBALS['RUN_FUNCTIONAL_TESTS'] = (
     $functionalTestsCredentialsComplete
     && $functionalTestsCredentialsValid

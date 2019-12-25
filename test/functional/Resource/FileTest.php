@@ -77,7 +77,7 @@ class FileTest extends FunctionalTestCase
         $this->logger->debug("#################### Getting lib with ID " . $lib->id);
 
         // upload a Hello World file and random file name (note: this seems not to work at this time when you are not logged into the Seafile web frontend).
-        $newFilename = tempnam('.', 'Seafile-PHP-SDK_Test_File_History_Upload_');
+        $newFilename = tempnam($GLOBALS['BUILD_TMP'], 'Seafile-PHP-SDK_Test_File_History_Upload_');
         rename($newFilename, $newFilename . '.txt');
         $newFilename .= '.txt';
         file_put_contents($newFilename, 'Hello World: ' . date('Y-m-d H:i:s'));
@@ -116,20 +116,14 @@ class FileTest extends FunctionalTestCase
 
         $firstFileRevision = array_slice($fileHistoryItems, -1)[0];
 
-        $localFilePath = '/tmp/yo.txt';
+        $localFilePath = $GLOBALS['BUILD_TMP'] . '/yo.txt';
         $response = $this->fileResource->downloadRevision($lib, $dirItem, $firstFileRevision, $localFilePath);
 
         self::assertSame(200, $response->getStatusCode());
 
-        if ($response->getStatusCode() == 200) {
-            $this->logger->debug(
-                "#### First file revision of " . $dirItem->name . " downloaded to " . $localFilePath
-            );
-        } else {
-            $this->logger->alert(
-                "#### Got HTTP status code " . $response->getStatusCode()
-            );
-        }
+        $this->logger->debug(
+            "#### First file revision of " . $dirItem->name . " downloaded to " . $localFilePath
+        );
     }
 
     /**
@@ -156,5 +150,46 @@ class FileTest extends FunctionalTestCase
             $this->logger->debug(sprintf("(%s) %s/%s (%d bytes)\n", $item->type, $item->path, $item->name, $item->size));
             self::assertInstanceOf(DirectoryItem::class, $item);
         }
+    }
+
+    /**
+     * Test rename() actually renames files
+     *
+     * @throws Exception
+     * @throws GuzzleException
+     */
+    public function testRename()
+    {
+        $libId = $_ENV['TEST_LIB_ID'];
+        $lib = $this->getTestLibraryType();
+
+        if ($lib->encrypted === true && isset($cfg->testLibPassword)) {
+            $success = $this->libraryResource->decrypt($libId, ['query' => ['password' => $_ENV['TEST_LIB_PASSWORD']]]);
+            self::assertTrue($success);
+        }
+
+        $this->logger->debug("#################### Create file to be renamed later.");
+
+        $path = null;
+        $fileName = 'test.txt';
+
+        $dirItem = (new DirectoryItem())->fromArray(['path' => '/', 'name' => $fileName]);
+        $success = $this->fileResource->create($lib, $dirItem);
+        self::assertTrue($success);
+
+        $newFilename = 'test_' . date('U') . '.txt';
+        $dirItem = $this->fileResource->getFileDetail($lib, $path . $fileName);
+
+        $this->logger->debug("#################### File to be renamed: " . $path . $dirItem->name);
+
+        $success = $this->fileResource->rename($lib, $dirItem, $newFilename);
+        self::assertTrue($success);
+        $this->logger->debug("#################### File renamed from " . $path . $fileName . ' to ' . $newFilename);
+
+        $newFilename = 'even_newer_file_name_test_' . date('U') . '.txt';
+        $success = $this->fileResource->rename($lib, $dirItem, $newFilename);
+
+        self::assertTrue($success);
+        $this->logger->debug("#################### File renamed from " . $dirItem->name . ' to ' . $newFilename);
     }
 }

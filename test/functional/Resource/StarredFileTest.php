@@ -3,6 +3,7 @@
 namespace Seafile\Client\Tests\Functional\Resource;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Resource\Directory;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Resource\Library;
@@ -43,7 +44,7 @@ class StarredFileTest extends FunctionalTestCase
      * and successfully so that's postponed for now.
      *
      * @throws Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function testStarFile()
     {
