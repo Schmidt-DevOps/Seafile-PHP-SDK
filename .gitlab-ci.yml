@@ -25,7 +25,7 @@ test:php-7.2:
   script:
     - bash ./bin/prepare_tests.sh && bash ./bin/run_tests.sh
   tags:
-    - sdo
+    - sdo-docker-runner
 
 test:php-7.3:
   stage: test
@@ -33,7 +33,7 @@ test:php-7.3:
   script:
     - bash ./bin/prepare_tests.sh && bash ./bin/run_tests.sh
   tags:
-    - sdo
+    - sdo-docker-runner
 
 test:php-7.4:
   stage: test
@@ -41,5 +41,5 @@ test:php-7.4:
   script:
     - bash ./bin/prepare_tests.sh && bash ./bin/run_tests.sh
   tags:
-    - sdo
+    - sdo-docker-runner
 
