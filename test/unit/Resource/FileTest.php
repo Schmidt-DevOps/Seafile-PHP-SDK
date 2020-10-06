@@ -75,7 +75,7 @@ class FileTest extends UnitTestCase
     {
         $fileResource = $this->getMockBuilder(File::class)
             ->disableOriginalConstructor()
-            ->setMethods(null)
+            ->addMethods([])
             ->getMock();
 
         $actualEncodedPath = $this->invokeMethod($fileResource, 'urlencodePath', [$path]);
@@ -98,6 +98,40 @@ class FileTest extends UnitTestCase
         $uploadUrl = $fileResource->getUploadUrl(new Library());
 
         // encapsulating quotes must be gone
+        self::assertSame('https://some.example.com/some/url', $uploadUrl);
+    }
+
+    /**
+     * Test getUploadUrl() with subdirectory. Expect the mocked client's `request` gets called with the parent_dir
+     * parameter "p".
+     *
+     * @return void
+     * @throws GuzzleException
+     * @throws Exception
+     */
+    public function testGetUploadLinkWithSubDirectory()
+    {
+        $libId = "lib_id";
+        $uploadDir = "/Somedir";
+
+        /** @var SeafileHttpClient|MockObject $mockedClient */
+        $mockedClient = $this->getMockedClient(
+            new Response(200, ['Content-Type' => 'application/json'], '"https://some.example.com/some/url"')
+        );
+
+        $mockedClient->expects(self::any())
+            ->method('request')
+            ->with(
+                self::equalTo('GET'),
+                self::equalTo('http://example.com/index.html/api2/repos/' . $libId . '/upload-link/?p=' . $uploadDir)
+            );
+
+        $fileResource = new File($mockedClient);
+
+        $lib = new Library(['id' => $libId]);
+
+        $uploadUrl = $fileResource->getUploadUrl($lib, true, $uploadDir);
+
         self::assertSame('https://some.example.com/some/url', $uploadUrl);
     }
 

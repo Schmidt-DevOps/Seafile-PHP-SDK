@@ -69,6 +69,7 @@ class FunctionalTestCase extends \PHPUnit\Framework\TestCase
 
     /**
      * @return Client
+     * @throws Exception
      */
     protected function getClient(): Client
     {

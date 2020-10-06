@@ -95,7 +95,8 @@ class File extends Resource
         string $localFilePath,
         string $dir,
         int $reuse = 1
-    ): ResponseInterface {
+    ): ResponseInterface
+    {
         if (is_readable($localFilePath)) {
             throw new Exception('File already exists');
         }
@@ -149,16 +150,18 @@ class File extends Resource
      *
      * @param LibraryType $library Library instance
      * @param bool $newFile Is new file (=upload) or not (=update)
+     * @param string $dir Directory to upload to
      *
      * @return String Upload link
      * @throws GuzzleException
      */
-    public function getUploadUrl(LibraryType $library, bool $newFile = true)
+    public function getUploadUrl(LibraryType $library, bool $newFile = true, string $dir = "/"): string
     {
         $url = $this->getApiBaseUrl()
             . '/repos/'
             . $library->id
-            . '/' . ($newFile ? 'upload' : 'update') . '-link/';
+            . '/' . ($newFile ? 'upload' : 'update') . '-link/'
+            . '?p=' . $dir;
 
         $response = $this->client->request('GET', $url);
         $uploadLink = (string)$response->getBody();
@@ -247,7 +250,7 @@ class File extends Resource
 
         return $this->client->request(
             'POST',
-            $this->getUploadUrl($library, $newFile),
+            $this->getUploadUrl($library, $newFile, $dir),
             [
                 'headers' => ['Accept' => '*/*'],
                 'multipart' => $this->getMultiPartParams($localFilePath, $dir, $newFile, $newFilename),

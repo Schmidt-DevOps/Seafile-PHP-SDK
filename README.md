@@ -156,14 +156,14 @@ $success = $libraryResource->decrypt($libId, ['query' => ['password' => $passwor
 $fileToUpload = '/path/to/file/to/be/uploaded.zip';
 $dir = '/'; // directory in the library to save the file in
 $response = $fileResource->upload($lib, $fileToUpload, $dir);
-$uploadedFileId = json_decode((string)$response->getBody());
+$uploadedFileId = (string)$response->getBody();
 ```
 
 ### Update file
 
 ```php
 $response = $fileResource->update($lib, $newFilename, '/');
-$updatedFileId = json_decode((string)$response->getBody());
+$updatedFileId = (string)$response->getBody();
 ```
 
 ### Get file details
