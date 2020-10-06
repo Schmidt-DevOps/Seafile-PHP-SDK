@@ -20,8 +20,7 @@ Get in touch now: https://sdo.sh/DevOps/#contact
 
 ## How to get Started
 
-To get started with Seafile PHP SDK, you may either set up your own private Seafile server (see [https://www.seafile.com/en/product/private_server/](https://www.seafile.com/en/product/private_server/)) or obtain seacloud.cc account
-[https://seacloud.cc](https://seacloud.cc). Because the SDK is in its infancy it's highly recommended to set up a test server or create a test account.
+To get started with Seafile PHP SDK, you may either set up your own private Seafile server (see [https://www.seafile.com/en/product/private_server/](https://www.seafile.com/en/product/private_server/)) or obtain a cloud account. Because the SDK is in its infancy it's highly recommended to set up a test server or create a test account.
 
 It's not advisable yet to use your real server/account if you already got one.
 
@@ -80,7 +79,7 @@ First, you need to include the API token (see above):
 ```php
 $client = new Client(
     [
-        'base_uri' => 'https://your.seafile-server.com',
+        'base_uri' => 'https://your-seafile-server.example.com',
         'debug' => false,
         'headers' => [
             'Authorization' => 'Token ' . $token
@@ -329,7 +328,7 @@ $stack->push(
 
 $client = new Client(
     [
-        'base_uri' => 'https://your.seafile-server.com',
+        'base_uri' => 'https://your-seafile-server.example.com',
         'debug' => true,
         'handler' => $stack,
         'headers' => [
@@ -341,7 +340,7 @@ $client = new Client(
 
 ## Issues
 
-- Please let me know of issues.
+- `File::upload()`: Parameter `$newFilename` actually does not set a new file name when uploading a file (thanks to https://github.com/FlorientR) 
 
 ## Dependencies
 
@@ -372,7 +371,7 @@ Tested with:
 - ~~Seafile Server 5.1.3 for generic Linux/Debian Wheezy~~
 - ~~Seafile Server 5.1.4 for generic Linux/Ubuntu Xenial~~
 - ~~Seafile Server 6.0.3 for generic Linux/Ubuntu Xenial~~
-- Seafile Server 6.3.4 for generic Linux/Ubuntu Xenial
+- Seafile Server 7.1.4 for generic Ubuntu 20.04 LTS
 
 ## Contributing
 
@@ -401,4 +400,4 @@ There are two types of tests:
 
 ## License
 
-[MIT](https://raw.githubusercontent.com/rene-s/seafile-php-sdk/master/LICENSE) &copy; 2015-2017 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG
+[MIT](https://raw.githubusercontent.com/rene-s/seafile-php-sdk/master/LICENSE) &copy; 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG

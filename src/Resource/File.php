@@ -319,7 +319,7 @@ class File extends Resource
      *
      * @param LibraryType $library Library object
      * @param DirectoryItem $dirItem Directory item to rename
-     * @param string $newFilename New file name
+     * @param string $newFilename New file name; see "Issues" in the readme
      *
      * @return bool
      * @throws GuzzleException
