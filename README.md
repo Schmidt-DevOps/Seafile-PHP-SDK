@@ -344,7 +344,7 @@ $client = new Client(
 
 ## Dependencies
 
-- PHP >=7.0 64 bits
+- PHP >=7.3 64 bits
 - Guzzle 6
 
 ## Seafile Web API Support Matrix
