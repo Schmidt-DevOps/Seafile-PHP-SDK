@@ -32,7 +32,7 @@ class AccountTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->emailAddress = 'a' . (string)random_int(0, 1000) . $this->faker->safeEmail;
+        $this->emailAddress = 'seafile_php_sdk_functional_test_' . (string)random_int(0, 1000) . $this->faker->safeEmail;
         $this->accountResource = new Account($this->client);
     }
 

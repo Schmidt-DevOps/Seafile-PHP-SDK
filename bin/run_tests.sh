@@ -1,5 +1,5 @@
 #!/bin/sh
-# run tests locally or on Jenkins
+# run tests locally or in CI/CD pipeline
 
 mkdir -p ./build/logs
 
@@ -13,7 +13,14 @@ if [ ! -f $file ] || [ $size -eq 0 ]; then
 fi
 
 if [ -f $file ]; then
-    ./vendor/bin/phpcs --report=checkstyle --report-file=./build/logs/checkstyle.xml --standard=./build/phpcs.xml -v ./src ./test --ignore=./test/bootstrap.php --ignore=./test/ui --standard=$file
+    ./vendor/bin/phpcs \
+    --report=checkstyle \
+    --report-file=./build/logs/checkstyle.xml \
+    --standard=./build/phpcs.xml \
+    -v ./src ./test \
+    --ignore=./test/bootstrap.php \
+    --ignore=./test/ui \
+    --standard=$file
 fi
 
 ./vendor/bin/phpcpd ./src ./test --exclude=./test/ui

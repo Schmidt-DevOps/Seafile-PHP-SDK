@@ -4,6 +4,8 @@ namespace Seafile\Client\Tests\Unit;
 
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use ReflectionException;
 use Seafile\Client\Http\Client;
 
@@ -16,21 +18,21 @@ use Seafile\Client\Http\Client;
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
-class UnitTestCase extends \PHPUnit\Framework\TestCase
+class UnitTestCase extends TestCase
 {
     /**
      * Call protected/private method of a class.
      *
-     * @param object $object     Instantiated object that we will run method on.
+     * @param object $object Instantiated object that we will run method on.
      * @param string $methodName Method name to call
-     * @param array  $parameters Array of parameters to pass into method.
+     * @param array $parameters Array of parameters to pass into method.
      *
      * @return mixed Method return.
      * @throws ReflectionException
      */
     public function invokeMethod(&$object, string $methodName, array $parameters = [])
     {
-        $reflection = new \ReflectionClass(get_class($object));
+        $reflection = new ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 

@@ -13,6 +13,7 @@ use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use PHPUnit\Framework\TestCase;
 use Seafile\Client\Http\Client;
 use Seafile\Client\Resource\Library;
 use Seafile\Client\Type\Library as LibraryType;
@@ -26,7 +27,7 @@ use Seafile\Client\Type\Library as LibraryType;
  * @license   https://opensource.org/licenses/MIT MIT
  * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
-class FunctionalTestCase extends \PHPUnit\Framework\TestCase
+class FunctionalTestCase extends TestCase
 {
     /** @var Client|null */
     protected $client = null;
@@ -131,12 +132,23 @@ class FunctionalTestCase extends \PHPUnit\Framework\TestCase
     protected function getTestLibraryType(): LibraryType
     {
         if (is_null($this->testLib)) {
-            $libId = $_ENV['TEST_LIB_ID'];
+            $libId = $_ENV['TEST_LIB_ENCRYPTED_ID'];
             $libraryResource = new Library($this->client);
             $this->testLib = $libraryResource->getById($libId);
 
-            if ($this->testLib->encrypted === true && array_key_exists('TEST_LIB_PASSWORD', $_ENV)) {
-                self::assertTrue($libraryResource->decrypt($libId, ['query' => ['password' => $_ENV['TEST_LIB_PASSWORD']]]));
+            if ($this->testLib->encrypted === true && array_key_exists('TEST_LIB_ENCRYPTED_PASSWORD', $_ENV)) {
+                self::assertTrue($libraryResource->decrypt(
+                    $libId,
+                    [
+                        'query' => ['password' => $_ENV['TEST_LIB_ENCRYPTED_PASSWORD']],
+                        'multipart' => [
+                            [
+                                'name' => 'password',
+                                'contents' => $_ENV['TEST_LIB_ENCRYPTED_PASSWORD']
+                            ]
+                        ]
+                    ]
+                ));
             }
         }
 

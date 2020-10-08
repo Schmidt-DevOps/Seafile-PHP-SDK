@@ -1,1 +1,5 @@
-{"url": "https://seafile.example.com/seafmedia/avatars/groups/default.png", "is_default": true, "mtime": 0}
+{
+  "url": "https://seafile.example.com/seafmedia/avatars/groups/default.png",
+  "is_default": true,
+  "mtime": 0
+}

@@ -35,7 +35,7 @@ class SharedLink extends Type
     /**
      * Creation time
      *
-     * @var \DateTime|null
+     * @var DateTime|null
      */
     public $ctime = null;
 

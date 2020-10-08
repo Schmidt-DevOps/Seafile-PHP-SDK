@@ -352,7 +352,7 @@ $client = new Client(
 | Resource               | Web API Version | Support grade |
 | ---------------------- | --------------- | ------------- |
 | Account                | v2              | ★★★☆          |
-| Avatar                 | v2              | ★★★★          |
+| Avatar                 | v2.1            | ★★★★          |
 | Events                 | v2              | Yet to be done, [contact me](mailto:rene+_gth@sdo.sh) |
 | File Share Link        | v2.1            | ★★★☆          |
 | Group                  | v2              | ★☆☆☆          |
@@ -371,7 +371,7 @@ Tested with:
 - ~~Seafile Server 5.1.3 for generic Linux/Debian Wheezy~~
 - ~~Seafile Server 5.1.4 for generic Linux/Ubuntu Xenial~~
 - ~~Seafile Server 6.0.3 for generic Linux/Ubuntu Xenial~~
-- Seafile Server 7.1.4 for generic Ubuntu 20.04 LTS
+- Seafile Server 7.1.4 for Ubuntu 20.04 LTS
 
 ## Contributing
 

@@ -18,6 +18,8 @@ use Seafile\Client\Type\TypeInterface;
  */
 class Account extends Resource
 {
+    const API_VERSION = '2';
+
     /**
      * List accounts
      *
@@ -28,7 +30,7 @@ class Account extends Resource
      */
     public function getAll(): array
     {
-        $response = $this->client->request('GET', $this->getApiBaseUrl(). '/accounts/');
+        $response = $this->client->request('GET', $this->getApiBaseUrl() . '/accounts/');
 
         $json = json_decode($response->getBody());
 
@@ -56,7 +58,7 @@ class Account extends Resource
         $response = $this->client->request(
             'GET',
             // $emailAddress must not be urlencoded
-            $this->getApiBaseUrl(). '/accounts/' . $emailAddress . '/'
+            $this->getApiBaseUrl() . '/accounts/' . $emailAddress . '/'
         );
 
         $json = json_decode($response->getBody());
@@ -76,7 +78,7 @@ class Account extends Resource
     {
         $response = $this->client->request(
             'GET',
-            $this->getApiBaseUrl(). '/accounts/' . $emailAddress . '/'
+            $this->getApiBaseUrl() . '/accounts/' . $emailAddress . '/'
         );
 
         $json = json_decode($response->getBody());
@@ -113,7 +115,7 @@ class Account extends Resource
         $response = $this->client->put(
             $uri,
             [
-                'headers'   => ['Accept' => 'application/json; charset=utf-8'],
+                'headers' => ['Accept' => 'application/json; charset=utf-8'],
                 'multipart' => $accountType->toArray(Type::ARRAY_MULTI_PART),
             ]
         );
@@ -151,7 +153,7 @@ class Account extends Resource
         $response = $this->client->put(
             $uri,
             [
-                'headers'   => ['Accept' => 'application/json; charset=utf-8'],
+                'headers' => ['Accept' => 'application/json; charset=utf-8'],
                 'multipart' => $accountType->toArray(Type::ARRAY_MULTI_PART),
             ]
         );
@@ -165,7 +167,7 @@ class Account extends Resource
      * Requires admin permissions
      *
      * @param AccountType $fromAccountType AccountType instance to update from
-     * @param AccountType $toAccountType   AccountType instance to update to
+     * @param AccountType $toAccountType AccountType instance to update to
      *
      * @return bool
      */

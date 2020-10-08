@@ -3,6 +3,7 @@
 namespace Seafile\Client\Type;
 
 use DateTime;
+use Exception;
 use stdClass;
 
 /**
@@ -71,7 +72,7 @@ class DirectoryItem extends Type
      * @param array $fromArray Create from array
      *
      * @return DirectoryItem
-     * @throws \Exception
+     * @throws Exception
      */
     public function fromArray(array $fromArray): DirectoryItem
     {

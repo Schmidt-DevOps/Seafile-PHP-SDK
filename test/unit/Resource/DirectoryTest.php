@@ -2,6 +2,8 @@
 
 namespace Seafile\Client\Tests\Unit\Resource;
 
+use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Directory;
@@ -26,7 +28,7 @@ class DirectoryTest extends UnitTestCase
      * Test getAll()
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function testGetAll()
     {
@@ -51,7 +53,7 @@ class DirectoryTest extends UnitTestCase
      * Test getAll() with directory path
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function testGetAllWithDir()
     {
@@ -72,7 +74,7 @@ class DirectoryTest extends UnitTestCase
             ->method('request')
             ->with(
                 self::equalTo('GET'),
-                self::equalTo('http://example.com/api2/repos/some-crazy-id/dir/'),
+                self::equalTo('http://example.com/api' . Directory::API_VERSION . '/repos/some-crazy-id/dir/'),
                 self::equalTo(['query' => ['p' => $rootDir]])
             )->willReturn($response);
 
@@ -87,8 +89,8 @@ class DirectoryTest extends UnitTestCase
      * Test exists()
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
+     * @throws Exception
      */
     public function testExists()
     {
@@ -110,7 +112,7 @@ class DirectoryTest extends UnitTestCase
             ->method('request')
             ->with(
                 self::equalTo('GET'),
-                self::equalTo('http://example.com/api2/repos/some-crazy-id/dir/'),
+                self::equalTo('http://example.com/api' . Directory::API_VERSION . '/repos/some-crazy-id/dir/'),
                 self::equalTo(['query' => ['p' => $rootDir]])
             )->willReturn($response);
 
@@ -142,7 +144,7 @@ class DirectoryTest extends UnitTestCase
      *
      * @dataProvider createNonRecursiveDataProvider
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function testCreateNonRecursive(int $expectResponseCode)
     {
@@ -169,7 +171,7 @@ class DirectoryTest extends UnitTestCase
      * Get directory resource
      *
      * @param Response $getAllResponse Response on "get all" request
-     * @param Response $mkdirResponse  Response on actual operation
+     * @param Response $mkdirResponse Response on actual operation
      *
      * @return Directory
      */
@@ -204,7 +206,7 @@ class DirectoryTest extends UnitTestCase
      * Test create() non-recursively, directory exists. Must yield boolean false.
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function testCreateDirectoryExists()
     {
@@ -240,7 +242,7 @@ class DirectoryTest extends UnitTestCase
      * test create() with empty dirName. Must yield boolean false.
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function testCreateEmptyDirName()
     {
@@ -256,7 +258,7 @@ class DirectoryTest extends UnitTestCase
      * Test create() recursively
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function testCreateRecursive()
     {
@@ -279,7 +281,7 @@ class DirectoryTest extends UnitTestCase
      * Test rename(), with invalid directory name
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function testRenameInvalidDirectoryName()
     {
@@ -294,7 +296,7 @@ class DirectoryTest extends UnitTestCase
      * Test rename()
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function testRename()
     {
@@ -310,16 +312,16 @@ class DirectoryTest extends UnitTestCase
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/api2/repos/some-crazy-id/dir/?p=test_dir';
+        $expectUri = 'http://example.com/api' . Directory::API_VERSION . '/repos/some-crazy-id/dir/?p=test_dir';
         $expectParams = [
-            'headers'   => ['Accept' => "application/json"],
+            'headers' => ['Accept' => "application/json"],
             'multipart' => [
                 [
-                    'name'     => "operation",
+                    'name' => "operation",
                     'contents' => "rename",
                 ],
                 [
-                    'name'     => "newname",
+                    'name' => "newname",
                     'contents' => "test_dir_renamed",
                 ],
             ],
@@ -359,7 +361,7 @@ class DirectoryTest extends UnitTestCase
      * Test remove(), with invalid directory name
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function testRemoveInvalidDirectoryName()
     {
@@ -374,7 +376,7 @@ class DirectoryTest extends UnitTestCase
      * Test remove()
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function testRemove()
     {
@@ -390,7 +392,7 @@ class DirectoryTest extends UnitTestCase
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/api2/repos/some-crazy-id/dir/?p=test_dir';
+        $expectUri = 'http://example.com/api' . Directory::API_VERSION . '/repos/some-crazy-id/dir/?p=test_dir';
         $expectParams = [
             'headers' => ['Accept' => "application/json"],
         ];

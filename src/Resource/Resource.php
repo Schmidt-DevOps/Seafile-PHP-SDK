@@ -15,7 +15,7 @@ use Seafile\Client\Http\Client;
  */
 abstract class Resource implements ResourceInterface
 {
-    const API_VERSION = '2';
+    const API_VERSION = '2.1';
 
     /** Represents 'read' permission (in whatever context) */
     const PERMISSION_R = 'r';
@@ -45,7 +45,7 @@ abstract class Resource implements ResourceInterface
      */
     public function getApiBaseUrl(): string
     {
-        return $this->clipUri($this->client->getConfig('base_uri')) . (static::API_VERSION === '2' ? '/api2' : '/api/v2.1');
+        return $this->clipUri($this->client->getConfig('base_uri')) . (static::API_VERSION === '2' ? '/api2' : '/api/v' . static::API_VERSION);
     }
 
     /**

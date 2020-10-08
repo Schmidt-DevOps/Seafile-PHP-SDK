@@ -21,6 +21,8 @@ use \Seafile\Client\Type\DirectoryItem;
  */
 class StarredFile extends Resource
 {
+    const API_VERSION = '2';
+
     /**
      * @var string
      */
@@ -63,7 +65,7 @@ class StarredFile extends Resource
     /**
      * Create directory within $parentDir
      *
-     * @param LibraryType   $library Library instance
+     * @param LibraryType $library Library instance
      * @param DirectoryItem $dirItem DirectoryItem instance to star
      *
      * @return string URL of starred file list
@@ -79,14 +81,14 @@ class StarredFile extends Resource
             'POST',
             $this->resourceUri,
             [
-                'headers'   => ['Accept' => 'application/json'],
+                'headers' => ['Accept' => 'application/json'],
                 'multipart' => [
                     [
-                        'name'     => 'repo_id',
+                        'name' => 'repo_id',
                         'contents' => $library->id,
                     ],
                     [
-                        'name'     => 'p',
+                        'name' => 'p',
                         'contents' => $dirItem->path,
                     ],
                 ],

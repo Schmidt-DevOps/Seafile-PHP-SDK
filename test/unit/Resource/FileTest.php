@@ -2,10 +2,12 @@
 
 namespace Seafile\Client\Tests\Unit\Resource;
 
+use DateTime;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
+use ReflectionException;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Tests\Unit\Stubs\FileResourceStub;
@@ -69,7 +71,7 @@ class FileTest extends UnitTestCase
      *
      * @return void
      * @dataProvider dataProviderTestUrlEncodePath
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function testUrlEncodePath(string $path, string $expectEncodedPath)
     {
@@ -123,7 +125,7 @@ class FileTest extends UnitTestCase
             ->method('request')
             ->with(
                 self::equalTo('GET'),
-                self::equalTo('http://example.com/index.html/api2/repos/' . $libId . '/upload-link/?p=' . $uploadDir)
+                self::equalTo('http://example.com/index.html/api' . File::API_VERSION . '/repos/' . $libId . '/upload-link/?p=' . $uploadDir)
             );
 
         $fileResource = new File($mockedClient);
@@ -246,7 +248,7 @@ class FileTest extends UnitTestCase
         $response = $fileResource->getFileDetail(new Library(), '/Seafile-PHP-SDK_Test_Upload_jt64pq.txt');
 
         self::assertInstanceOf(DirectoryItem::class, $response);
-        self::assertInstanceOf(\DateTime::class, $response->mtime);
+        self::assertInstanceOf(DateTime::class, $response->mtime);
         self::assertSame('Seafile-PHP-SDK_Test_Upload_jt64pq.txt', $response->name);
         self::assertSame('file', $response->type);
         self::assertequals('32', $response->size);
@@ -488,7 +490,7 @@ class FileTest extends UnitTestCase
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/api2/repos/some-crazy-id/file/?p=test_dir';
+        $expectUri = 'http://example.com/api' . File::API_VERSION . '/repos/some-crazy-id/file/?p=test_dir';
         $expectParams = [
             'headers' => ['Accept' => "application/json"],
         ];
@@ -545,7 +547,7 @@ class FileTest extends UnitTestCase
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/api2/repos/some-crazy-id/file/?p=/test_file';
+        $expectUri = 'http://example.com/api' . File::API_VERSION . '/repos/some-crazy-id/file/?p=/test_file';
         $expectParams = [
             'headers' => ['Accept' => "application/json"],
             'multipart' => [
@@ -627,7 +629,7 @@ class FileTest extends UnitTestCase
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/api2/repos/some-crazy-id/file/?p=' . $srcPath;
+        $expectUri = 'http://example.com/api' . File::API_VERSION . '/repos/some-crazy-id/file/?p=' . $srcPath;
         $expectParams = [
             'headers' => ['Accept' => 'application/json'],
             'multipart' => [
@@ -813,7 +815,7 @@ class FileTest extends UnitTestCase
             ->method('request')
             ->with(
                 self::equalTo('POST'),
-                'http://example.com/index.html/api2/repos/123/file/?p=/some_name.txt'
+                'http://example.com/index.html/api' . File::API_VERSION . '/repos/123/file/?p=/some_name.txt'
             )
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnValue(new Response(

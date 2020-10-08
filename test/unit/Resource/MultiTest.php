@@ -2,6 +2,8 @@
 
 namespace Seafile\Client\Tests\Unit\Resource;
 
+use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Multi;
@@ -25,8 +27,8 @@ class MultiTest extends UnitTestCase
      * Test delete() with empty paths
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
+     * @throws Exception
      */
     public function testDeleteEmpty()
     {
@@ -44,8 +46,8 @@ class MultiTest extends UnitTestCase
      * Test copy() and move() with empty paths
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
+     * @throws Exception
      */
     public function testCopyMoveEmpty()
     {
@@ -71,30 +73,30 @@ class MultiTest extends UnitTestCase
         return [
             [
                 [
-                    'fileNames'    => [
+                    'fileNames' => [
                         'some_file_1',
                         'some_file_2',
                     ],
-                    'deletePaths'  => [
+                    'deletePaths' => [
                         '/some_dir/some_file_1',
                         '/some_dir/some_file_2',
                     ],
                     'responseCode' => 200,
-                    'assert'       => true,
+                    'assert' => true,
                 ],
             ],
             [
                 [
-                    'fileNames'    => [
+                    'fileNames' => [
                         'some_file_1',
                         'some_file_2',
                     ],
-                    'deletePaths'  => [
+                    'deletePaths' => [
                         '/some_dir/some_file_1',
                         '/some_other_invalid_dir/some_file_2',
                     ],
                     'responseCode' => 200,
-                    'assert'       => false // because the files are in different folders which is illegal
+                    'assert' => false // because the files are in different folders which is illegal
                 ],
             ],
         ];
@@ -108,8 +110,8 @@ class MultiTest extends UnitTestCase
      * @param array $data DataProvider data
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
+     * @throws Exception
      */
     public function testDelete(array $data)
     {
@@ -128,12 +130,12 @@ class MultiTest extends UnitTestCase
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/api2/repos/some-crazy-id/fileops/delete/?p=/some_dir';
+        $expectUri = 'http://example.com/api' . Multi::API_VERSION . '/repos/some-crazy-id/fileops/delete/?p=/some_dir';
         $expectParams = [
-            'headers'   => ['Accept' => "application/json"],
+            'headers' => ['Accept' => "application/json"],
             'multipart' => [
                 [
-                    'name'     => 'file_names',
+                    'name' => 'file_names',
                     'contents' => implode(':', $fileNames),
                 ],
             ],
@@ -179,62 +181,62 @@ class MultiTest extends UnitTestCase
         return [
             [
                 [
-                    'operation'    => 'copy',
-                    'fileNames'    => [
+                    'operation' => 'copy',
+                    'fileNames' => [
                         'some_file_1',
                         'some_file_2',
                     ],
-                    'filePaths'    => [
+                    'filePaths' => [
                         '/some_dir/some_file_1',
                         '/some_dir/some_file_2',
                     ],
                     'responseCode' => 200,
-                    'assert'       => true,
+                    'assert' => true,
                 ],
             ],
             [
                 [
-                    'operation'    => 'copy',
-                    'fileNames'    => [
+                    'operation' => 'copy',
+                    'fileNames' => [
                         'some_file_1',
                         'some_file_2',
                     ],
-                    'filePaths'    => [
+                    'filePaths' => [
                         '/some_dir/some_file_1',
                         '/some_other_invalid_dir/some_file_2',
                     ],
                     'responseCode' => 200,
-                    'assert'       => false // because the files are in different folders which is illegal
+                    'assert' => false // because the files are in different folders which is illegal
                 ],
             ],
             [
                 [
-                    'operation'    => 'move',
-                    'fileNames'    => [
+                    'operation' => 'move',
+                    'fileNames' => [
                         'some_file_1',
                         'some_file_2',
                     ],
-                    'filePaths'    => [
+                    'filePaths' => [
                         '/some_dir/some_file_1',
                         '/some_dir/some_file_2',
                     ],
                     'responseCode' => 200,
-                    'assert'       => true,
+                    'assert' => true,
                 ],
             ],
             [
                 [
-                    'operation'    => 'move',
-                    'fileNames'    => [
+                    'operation' => 'move',
+                    'fileNames' => [
                         'some_file_1',
                         'some_file_2',
                     ],
-                    'filePaths'    => [
+                    'filePaths' => [
                         '/some_dir/some_file_1',
                         '/some_other_invalid_dir/some_file_2',
                     ],
                     'responseCode' => 200,
-                    'assert'       => false // because the files are in different folders which is illegal
+                    'assert' => false // because the files are in different folders which is illegal
                 ],
             ],
         ];
@@ -248,8 +250,8 @@ class MultiTest extends UnitTestCase
      * @param array $data DataProvider data
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
+     * @throws Exception
      */
     public function testCopyMove(array $data)
     {
@@ -275,20 +277,20 @@ class MultiTest extends UnitTestCase
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com');
 
-        $expectUri = 'http://example.com/api2/repos/some-crazy-id/fileops/' . $data ['operation'] . '/?p=/some_dir';
+        $expectUri = 'http://example.com/api' . Multi::API_VERSION . '/repos/some-crazy-id/fileops/' . $data ['operation'] . '/?p=/some_dir';
         $expectParams = [
-            'headers'   => ['Accept' => "application/json"],
+            'headers' => ['Accept' => "application/json"],
             'multipart' => [
                 [
-                    'name'     => 'file_names',
+                    'name' => 'file_names',
                     'contents' => implode(':', $fileNames),
                 ],
                 [
-                    'name'     => 'dst_repo',
+                    'name' => 'dst_repo',
                     'contents' => $dstLib->id,
                 ],
                 [
-                    'name'     => 'dst_dir',
+                    'name' => 'dst_dir',
                     'contents' => $destDir,
                 ],
             ],

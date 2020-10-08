@@ -23,6 +23,8 @@ use \Seafile\Client\Type\Library as LibraryType;
  */
 class File extends Resource
 {
+    const API_VERSION = '2';
+
     /**
      * Mode of operation: copy
      */
