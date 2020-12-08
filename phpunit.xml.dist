@@ -7,7 +7,7 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="false"
+         stopOnFailure="true"
          timeoutForSmallTests="1"
          timeoutForMediumTests="3"
          timeoutForLargeTests="9"
@@ -20,8 +20,9 @@
         <env name="ALLOW_LIVE_DATA_MANIPULATION_ON_TEST_SERVER" value="0" force="false"/><!-- 1=enabled -->
         <env name="TEST_SERVER_AUTHORIZATION_TOKEN" value="not_set" force="false"/><!-- see README.md-->
         <env name="TEST_SERVER" value="https://not-set.example.com" force="false"/>
-        <env name="TEST_LIB_ID" value="not_set" force="false"/>
-        <env name="TEST_LIB_PASSWORD" value="not_set" force="false"/>
+        <env name="TEST_LIB_UNENCRYPTED_ID" value="not_set" force="false"/>
+        <env name="TEST_LIB_ENCRYPTED_ID" value="not_set" force="false"/>
+        <env name="TEST_LIB_ENCRYPTED_PASSWORD" value="not_set" force="false"/>
         <env name="GUZZLE_DEBUG_TO_STDOUT" value="0" force="false"/>
     </php>
     <testsuites>

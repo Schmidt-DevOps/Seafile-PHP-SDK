@@ -58,17 +58,11 @@ class ShareLinksTest extends FunctionalTestCase
             $this->logger->debug(sprintf("Name: %s, ID: %s, is encrypted: %s\n", $lib->name, $lib->id, $lib->encrypted ? 'YES' : 'NO'));
         }
 
-        $libId = $_ENV['TEST_LIB_ID'];
+        $libId = $_ENV['TEST_LIB_UNENCRYPTED_ID'];
 
         // get specific library
         $this->logger->debug("#################### Getting lib with ID " . $libId);
         $lib = $libraryResource->getById($libId);
-
-        if ($lib->encrypted) {
-            $lib->password = $_ENV['TEST_LIB_PASSWORD']; // library is encrypted and thus we provide a password
-            $success = $libraryResource->decrypt($libId, ['query' => ['password' => $_ENV['TEST_LIB_PASSWORD']]]);
-            self::assertTrue($success);
-        }
 
         // upload a Hello World file and random file name (note: this seems not to work at this time when you are not logged into the Seafile web frontend).
         $newFilename = $GLOBALS['BUILD_TMP'] . '/Seafile-PHP-SDK_Test_Upload.txt';
@@ -87,9 +81,13 @@ class ShareLinksTest extends FunctionalTestCase
         $expire = 5;
         $permissions = new SharedLinkPermissions(SharedLinkPermissions::CAN_DOWNLOAD);
         $p = "/" . basename($newFilename);
-        $password = 'qwertz123';
 
-        $shareLinkType = $this->shareLinksResource->create($lib, $p, $permissions, $expire, $password);
+        if ($lib->encrypted) {
+            $shareLinkType = $this->shareLinksResource->create($lib, $p, $permissions, $expire, $lib->password);
+        } else {
+            $shareLinkType = $this->shareLinksResource->create($lib, $p, $permissions, $expire);
+        }
+
         self::assertInstanceOf(SharedLink::class, $shareLinkType);
 
         $this->logger->debug("#################### Get all shared links");

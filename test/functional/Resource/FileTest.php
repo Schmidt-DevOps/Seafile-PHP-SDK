@@ -34,7 +34,6 @@ class FileTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->libraryResource = new Library($this->client);
         $this->fileResource = new File($this->client);
     }
 
@@ -160,11 +159,12 @@ class FileTest extends FunctionalTestCase
      */
     public function testRename()
     {
-        $libId = $_ENV['TEST_LIB_ID'];
+        $this->libraryResource = $this->getTestLibraryType();
+        $libId = $_ENV['TEST_LIB_ENCRYPTED_ID'];
         $lib = $this->getTestLibraryType();
 
         if ($lib->encrypted === true && isset($cfg->testLibPassword)) {
-            $success = $this->libraryResource->decrypt($libId, ['query' => ['password' => $_ENV['TEST_LIB_PASSWORD']]]);
+            $success = $this->libraryResource->decrypt($libId, ['query' => ['password' => $_ENV['TEST_LIB_ENCRYPTED_PASSWORD']]]);
             self::assertTrue($success);
         }
 

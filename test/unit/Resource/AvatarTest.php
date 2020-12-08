@@ -2,6 +2,8 @@
 
 namespace Seafile\Client\Tests\Unit\Resource;
 
+use DateTime;
+use Exception;
 use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Type\Avatar;
@@ -59,7 +61,7 @@ class AvatarTest extends UnitTestCase
      * Test getGroupAvatarByEmail()
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testGetGroupAvatarByEmail()
     {
@@ -74,11 +76,11 @@ class AvatarTest extends UnitTestCase
     /**
      * Do actual "get avatar" request
      *
-     * @param string           $method   Method name
-     * @param string           $baseUri  Base URI
-     * @param string           $resource Resource string
-     * @param string|GroupType $entity   Resource entity
-     * @param string           $size     Avatar size in pixels
+     * @param string $method Method name
+     * @param string $baseUri Base URI
+     * @param string $resource Resource string
+     * @param string|GroupType $entity Resource entity
+     * @param string $size Avatar size in pixels
      *
      * @return void
      */
@@ -91,7 +93,7 @@ class AvatarTest extends UnitTestCase
 
         $mockedClient->expects(self::any())
             ->method('get')
-            ->with($baseUri . '/api2/avatars/' . $resource . '/' . $id . '/resized/' . $size . '/', [])
+            ->with($baseUri . '/api/v' . AvatarResource::API_VERSION . '/avatars/' . $resource . '/' . $id . '/resized/' . $size . '/', [])
             ->willReturn(
                 new Response(
                     200,
@@ -110,7 +112,7 @@ class AvatarTest extends UnitTestCase
         $avatarType = $avatarResource->{$method}($entity, $size);
 
         self::assertInstanceOf(Avatar::class, $avatarType);
-        self::assertInstanceOf(\DateTime::class, $avatarType->mtime);
+        self::assertInstanceOf(DateTime::class, $avatarType->mtime);
         self::assertSame('1970-01-01T00:00:00+0000', $avatarType->mtime->format(DATE_ISO8601));
     }
 
@@ -118,7 +120,7 @@ class AvatarTest extends UnitTestCase
      * Test getAvatar() with illegal type instance
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testGetAvatarIllegalType()
     {

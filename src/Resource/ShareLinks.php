@@ -3,6 +3,8 @@
 namespace Seafile\Client\Resource;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Type\Library as LibraryType;
 use Seafile\Client\Type\SharedLink as SharedLinkType;
 use Seafile\Client\Type\SharedLinkPermissions;
@@ -18,8 +20,6 @@ use Seafile\Client\Type\SharedLinkPermissions;
  */
 class ShareLinks extends Resource implements ResourceInterface
 {
-    const API_VERSION = '2.1';
-
     /**
      * List shared links
      *
@@ -79,10 +79,11 @@ class ShareLinks extends Resource implements ResourceInterface
      * @param LibraryType $library Library instance
      * @param string $path Path
      * @param SharedLinkPermissions $permissions
-     * @param int $expire Expire in such many days
-     * @param string $password Optional password string
+     * @param int|null $expire Expire in such many days
+     * @param string|null $password Optional password string
      *
      * @return SharedLinkType|null
+     * @throws GuzzleException
      * @throws Exception
      */
     public function create(
