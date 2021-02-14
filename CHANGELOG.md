@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.0.0]
+### [3.0.0] - 2021-MM-DD
+
+- Supports PHP ~v8.0 only.
+
+## [2.0.1] - 2020-10-06
 
 This version will not be backwards compatible with Version 1.x. 
 
