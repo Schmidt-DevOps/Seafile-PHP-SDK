@@ -35,3 +35,11 @@ test:php-7.4:
   tags:
     - sdo-docker-runner
 
+test:php-8.0:
+  stage: test
+  image: php:8.0
+  script:
+    - bash ./bin/prepare_tests.sh && bash ./bin/run_tests.sh
+  tags:
+    - sdo-docker-runner
+
