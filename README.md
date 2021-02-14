@@ -344,8 +344,8 @@ $client = new Client(
 
 ## Dependencies
 
-- PHP >=7.3 64 bits
-- Guzzle 6
+- PHP >=8.0 64 bits
+- Guzzle 7.2
 
 ## Seafile Web API Support Matrix
 
@@ -371,7 +371,7 @@ Tested with:
 - ~~Seafile Server 5.1.3 for generic Linux/Debian Wheezy~~
 - ~~Seafile Server 5.1.4 for generic Linux/Ubuntu Xenial~~
 - ~~Seafile Server 6.0.3 for generic Linux/Ubuntu Xenial~~
-- Seafile Server 7.1.4 for Ubuntu 20.04 LTS
+- Seafile Server 7.x+ for Ubuntu 20.04 LTS
 
 ## Contributing
 
