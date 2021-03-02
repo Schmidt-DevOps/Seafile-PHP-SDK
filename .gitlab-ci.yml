@@ -14,6 +14,8 @@ before_script:
   - apt-get install git iputils-ping -yqq
   - ping -c 1 1.1.1.1
   - ping -c 1 example.com
+  - ping -c 1 github.com
+  - ping -c 1 dl-cdn.alpinelinux.org
   - curl -sS https://getcomposer.org/installer | php
   - mv composer.phar /usr/local/bin/composer
   - curl --location --output /usr/local/bin/phpunit https://phar.phpunit.de/phpunit.phar
