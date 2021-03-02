@@ -10,6 +10,8 @@ variables:
   DOCKER_DRIVER: overlay2
 
 before_script:
+  - ping -c 1 1.1.1.1
+  - ping -c 1 example.com
   - apt-get update -yqq
   - apt-get install git -yqq
   - curl -sS https://getcomposer.org/installer | php
