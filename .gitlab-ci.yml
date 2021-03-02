@@ -11,7 +11,7 @@ variables:
 
 before_script:
   - apt-get update -yqq
-  - apt-get install git iputils-pign -yqq
+  - apt-get install git iputils-ping -yqq
   - ping -c 1 1.1.1.1
   - ping -c 1 example.com
   - curl -sS https://getcomposer.org/installer | php
