@@ -331,7 +331,7 @@ class File extends Resource
      */
     public function rename(LibraryType $library, DirectoryItem $dirItem, string $newFilename): bool
     {
-        $filePath = $dirItem->dir . $dirItem->name;
+        $filePath = $dirItem->dir . '/' . $dirItem->name;
 
         if (empty($filePath)) {
             throw new InvalidArgumentException('Invalid file path: must not be empty');
