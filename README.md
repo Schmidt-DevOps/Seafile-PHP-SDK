@@ -6,7 +6,7 @@ This is a PHP package for accessing [Seafile Web API](https://www.seafile.com/).
 
 No marketing skills whatsoever, but low rates, 20+ years of experience, and "german work attitude" -- whatever you associate with that.
 
-Get in touch now: https://sdo.sh/DevOps/#contact
+Get in touch now: https://sdo.sh/#contact
 
 [![Build Status](https://travis-ci.org/Schmidt-DevOps/Seafile-PHP-SDK.svg?branch=develop)](https://travis-ci.org/Schmidt-DevOps/Seafile-PHP-SDK)
 [![Test Coverage](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/badges/coverage.svg)](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/coverage)
@@ -373,6 +373,10 @@ Tested with:
 - ~~Seafile Server 6.0.3 for generic Linux/Ubuntu Xenial~~
 - Seafile Server 7.x+ for Ubuntu 20.04 LTS
 
+## Support
+
+I'd be happy to implement new features for you at a competitive hourly rate. Get in touch now: https://sdo.sh/#contact
+
 ## Contributing
 
 Please note that this package still is in its infancy. Only a part of the API has been implemented so far.
@@ -400,4 +404,4 @@ There are two types of tests:
 
 ## License
 
-[MIT](https://raw.githubusercontent.com/rene-s/seafile-php-sdk/master/LICENSE) &copy; 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG
+[MIT](https://raw.githubusercontent.com/rene-s/seafile-php-sdk/master/LICENSE) &copy; 2015-2021 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG
