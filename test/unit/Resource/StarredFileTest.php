@@ -2,6 +2,8 @@
 
 namespace Seafile\Client\Tests\Unit\Resource;
 
+use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use Seafile\Client\Http\Client as SeafileHttpClient;
@@ -26,8 +28,8 @@ class StarredFileTest extends UnitTestCase
      * Test getAll()
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
+     * @throws Exception
      */
     public function testGetAll()
     {
@@ -52,8 +54,8 @@ class StarredFileTest extends UnitTestCase
      * Test star() with wrong DirItem type
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
+     * @throws Exception
      */
     public function testStarWrongType()
     {
@@ -69,8 +71,8 @@ class StarredFileTest extends UnitTestCase
      * Test star()
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
+     * @throws Exception
      */
     public function testStar()
     {
@@ -86,7 +88,7 @@ class StarredFileTest extends UnitTestCase
         $starResponse = new Response(
             201,
             [
-                'Accept'   => 'application/json',
+                'Accept' => 'application/json',
                 'Location' => $responseUrl,
             ]
         );
@@ -121,7 +123,7 @@ class StarredFileTest extends UnitTestCase
                     if ($hasParams
                         && $hasContents
                         && $method === 'POST'
-                        && $uri === 'https://example.com/test/api2/starredfiles/'
+                        && $uri === 'https://example.com/test/api' . StarredFile::API_VERSION . '/starredfiles/'
                     ) {
                         return $starResponse;
                     }
@@ -140,9 +142,9 @@ class StarredFileTest extends UnitTestCase
     /**
      * Test star() with error response
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
      * @return void
+     * @throws Exception
+     * @throws GuzzleException
      */
     public function testStarErrorStatusCode()
     {
@@ -158,7 +160,7 @@ class StarredFileTest extends UnitTestCase
         $starResponse = new Response(
             500,
             [
-                'Accept'   => 'application/json',
+                'Accept' => 'application/json',
                 'Location' => $responseUrl,
             ]
         );
@@ -188,8 +190,8 @@ class StarredFileTest extends UnitTestCase
      * Test star() with missing location
      *
      * @return void
-     * @throws \Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exception
+     * @throws GuzzleException
      */
     public function testStarErrorMissingLocation()
     {
@@ -232,13 +234,13 @@ class StarredFileTest extends UnitTestCase
             [
                 [
                     'responseCode' => 200,
-                    'result'       => true,
+                    'result' => true,
                 ],
             ],
             [
                 [
                     'responseCode' => 500,
-                    'result'       => false,
+                    'result' => false,
                 ],
             ],
         ];
@@ -250,8 +252,8 @@ class StarredFileTest extends UnitTestCase
      * @param array $data Data provider array
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
+     * @throws Exception
      * @dataProvider dataProviderUnstar
      */
     public function testUnstar(array $data)

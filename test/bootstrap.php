@@ -9,8 +9,9 @@ $functionalTestsCredentialsComplete = (
     $_ENV['ALLOW_LIVE_DATA_MANIPULATION_ON_TEST_SERVER'] === '1'
     && $_ENV['TEST_SERVER_AUTHORIZATION_TOKEN'] != 'not_set'
     && $_ENV['TEST_SERVER'] != 'https://not-set.example.com'
-    && $_ENV['TEST_LIB_ID'] != 'not_set'
-    && $_ENV['TEST_LIB_PASSWORD'] != 'not_set'
+    && $_ENV['TEST_LIB_UNENCRYPTED_ID'] != 'not_set'
+    && $_ENV['TEST_LIB_ENCRYPTED_ID'] != 'not_set'
+    && $_ENV['TEST_LIB_ENCRYPTED_PASSWORD'] != 'not_set'
 );
 $functionalTestsCredentialsValid = false;
 $functionalTestsTestLibCleaned = false;

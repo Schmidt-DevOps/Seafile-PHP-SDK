@@ -6,7 +6,7 @@ This is a PHP package for accessing [Seafile Web API](https://www.seafile.com/).
 
 No marketing skills whatsoever, but low rates, 20+ years of experience, and "german work attitude" -- whatever you associate with that.
 
-Get in touch now: https://sdo.sh/DevOps/#contact
+Get in touch now: https://sdo.sh/#contact
 
 [![Build Status](https://travis-ci.org/Schmidt-DevOps/Seafile-PHP-SDK.svg?branch=develop)](https://travis-ci.org/Schmidt-DevOps/Seafile-PHP-SDK)
 [![Test Coverage](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/badges/coverage.svg)](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/coverage)
@@ -20,8 +20,7 @@ Get in touch now: https://sdo.sh/DevOps/#contact
 
 ## How to get Started
 
-To get started with Seafile PHP SDK, you may either set up your own private Seafile server (see [https://www.seafile.com/en/product/private_server/](https://www.seafile.com/en/product/private_server/)) or obtain seacloud.cc account
-[https://seacloud.cc](https://seacloud.cc). Because the SDK is in its infancy it's highly recommended to set up a test server or create a test account.
+To get started with Seafile PHP SDK, you may either set up your own private Seafile server (see [https://www.seafile.com/en/product/private_server/](https://www.seafile.com/en/product/private_server/)) or obtain a cloud account. Because the SDK is in its infancy it's highly recommended to set up a test server or create a test account.
 
 It's not advisable yet to use your real server/account if you already got one.
 
@@ -80,7 +79,7 @@ First, you need to include the API token (see above):
 ```php
 $client = new Client(
     [
-        'base_uri' => 'https://your.seafile-server.com',
+        'base_uri' => 'https://your-seafile-server.example.com',
         'debug' => false,
         'headers' => [
             'Authorization' => 'Token ' . $token
@@ -157,14 +156,14 @@ $success = $libraryResource->decrypt($libId, ['query' => ['password' => $passwor
 $fileToUpload = '/path/to/file/to/be/uploaded.zip';
 $dir = '/'; // directory in the library to save the file in
 $response = $fileResource->upload($lib, $fileToUpload, $dir);
-$uploadedFileId = json_decode((string)$response->getBody());
+$uploadedFileId = (string)$response->getBody();
 ```
 
 ### Update file
 
 ```php
 $response = $fileResource->update($lib, $newFilename, '/');
-$updatedFileId = json_decode((string)$response->getBody());
+$updatedFileId = (string)$response->getBody();
 ```
 
 ### Get file details
@@ -329,7 +328,7 @@ $stack->push(
 
 $client = new Client(
     [
-        'base_uri' => 'https://your.seafile-server.com',
+        'base_uri' => 'https://your-seafile-server.example.com',
         'debug' => true,
         'handler' => $stack,
         'headers' => [
@@ -341,19 +340,19 @@ $client = new Client(
 
 ## Issues
 
-- Please let me know of issues.
+- `File::upload()`: Parameter `$newFilename` actually does not set a new file name when uploading a file (thanks to https://github.com/FlorientR) 
 
 ## Dependencies
 
-- PHP >=7.0 64 bits
-- Guzzle 6
+- PHP >=8.0 64 bits
+- Guzzle 7.2
 
 ## Seafile Web API Support Matrix
 
 | Resource               | Web API Version | Support grade |
 | ---------------------- | --------------- | ------------- |
 | Account                | v2              | ★★★☆          |
-| Avatar                 | v2              | ★★★★          |
+| Avatar                 | v2.1            | ★★★★          |
 | Events                 | v2              | Yet to be done, [contact me](mailto:rene+_gth@sdo.sh) |
 | File Share Link        | v2.1            | ★★★☆          |
 | Group                  | v2              | ★☆☆☆          |
@@ -372,7 +371,11 @@ Tested with:
 - ~~Seafile Server 5.1.3 for generic Linux/Debian Wheezy~~
 - ~~Seafile Server 5.1.4 for generic Linux/Ubuntu Xenial~~
 - ~~Seafile Server 6.0.3 for generic Linux/Ubuntu Xenial~~
-- Seafile Server 6.3.4 for generic Linux/Ubuntu Xenial
+- Seafile Server 7.x+ for Ubuntu 20.04 LTS
+
+## Support
+
+I'd be happy to implement new features for you at a competitive hourly rate. Get in touch now: https://sdo.sh/#contact
 
 ## Contributing
 
@@ -401,4 +404,4 @@ There are two types of tests:
 
 ## License
 
-[MIT](https://raw.githubusercontent.com/rene-s/seafile-php-sdk/master/LICENSE) &copy; 2015-2017 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG
+[MIT](https://raw.githubusercontent.com/rene-s/seafile-php-sdk/master/LICENSE) &copy; 2015-2021 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG

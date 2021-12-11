@@ -2,6 +2,8 @@
 
 namespace Seafile\Client\Tests\Unit\Type;
 
+use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\DirectoryItem;
 
@@ -28,13 +30,13 @@ class DirectoryItemUnitTest extends UnitTestCase
             // [[expect response code, expected result, password]]
             [
                 [
-                    'dir'  => true,
+                    'dir' => true,
                     'type' => 'dir',
                 ],
             ],
             [
                 [
-                    'dir'  => false,
+                    'dir' => false,
                     'type' => 'file',
                 ],
             ],
@@ -48,8 +50,8 @@ class DirectoryItemUnitTest extends UnitTestCase
      *
      * @return void
      * @dataProvider dataFromArray
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
+     * @throws Exception
      */
     public function testFromArray(array $data)
     {

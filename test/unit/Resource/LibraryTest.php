@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Tests\Unit\Resource;
 
+use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -27,7 +28,7 @@ class LibraryTest extends UnitTestCase
      * Test getAll()
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testGetAll()
     {
@@ -52,7 +53,7 @@ class LibraryTest extends UnitTestCase
      * getById()
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testGetById()
     {
@@ -71,7 +72,7 @@ class LibraryTest extends UnitTestCase
      * Try to decrypt without query parameters. Must fail of course.
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testDecryptMissingQuery()
     {
@@ -84,7 +85,7 @@ class LibraryTest extends UnitTestCase
      * Try to decrypt without password. Must fail of course.
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testDecryptMissingPassword()
     {
@@ -97,7 +98,7 @@ class LibraryTest extends UnitTestCase
      * Decryption fails
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testDecryptUnsuccessfully()
     {
@@ -121,7 +122,7 @@ class LibraryTest extends UnitTestCase
      * Decryption succeeds
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testDecryptSuccessfully()
     {
@@ -275,16 +276,16 @@ class LibraryTest extends UnitTestCase
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/api2/repos/';
+        $expectUri = 'http://example.com/api' . Library::API_VERSION . '/repos/';
         $expectParams = [
-            'headers'   => ['Accept' => "application/json"],
+            'headers' => ['Accept' => "application/json"],
             'multipart' => [
                 [
-                    'name'     => 'name',
+                    'name' => 'name',
                     'contents' => $name,
                 ],
                 [
-                    'name'     => 'desc',
+                    'name' => 'desc',
                     'contents' => $description,
                 ],
             ],
@@ -292,7 +293,7 @@ class LibraryTest extends UnitTestCase
 
         if ($data[2]) {
             $expectParams['multipart'][] = [
-                'name'     => 'passwd',
+                'name' => 'passwd',
                 'contents' => $data[2],
             ];
         }
@@ -333,7 +334,7 @@ class LibraryTest extends UnitTestCase
      * Test remove()
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      * @throws GuzzleException
      */
     public function testRemove()
@@ -350,7 +351,7 @@ class LibraryTest extends UnitTestCase
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/api2/repos/some-crazy-id/';
+        $expectUri = 'http://example.com/api' . Library::API_VERSION . '/repos/some-crazy-id/';
         $expectParams = [
             'headers' => ['Accept' => "application/json"],
         ];

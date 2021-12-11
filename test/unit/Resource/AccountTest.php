@@ -2,6 +2,9 @@
 
 namespace Seafile\Client\Tests\Unit\Resource;
 
+use DateTime;
+use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use Seafile\Client\Http\Client as SeafileHttpClient;
@@ -25,8 +28,8 @@ class AccountTest extends UnitTestCase
      * Test getAll()
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
+     * @throws GuzzleException
+     * @throws Exception
      */
     public function testGetAll()
     {
@@ -70,7 +73,7 @@ class AccountTest extends UnitTestCase
 
         self::assertInstanceOf(AccountType::class, $accountType);
         self::assertSame($email, $accountType->email);
-        self::assertInstanceOf(\DateTime::class, $accountType->createTime);
+        self::assertInstanceOf(DateTime::class, $accountType->createTime);
         self::assertSame('2016-01-08T19:42:50+0000', $accountType->createTime->format(DATE_ISO8601));
     }
 
@@ -88,7 +91,7 @@ class AccountTest extends UnitTestCase
      * Test create() with missing attribute values
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testCreateIllegal()
     {
@@ -121,7 +124,7 @@ class AccountTest extends UnitTestCase
      * @param array $data DataProvider data
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testCreateUpdate(array $data)
     {
@@ -137,7 +140,7 @@ class AccountTest extends UnitTestCase
 
         $mockedClient->expects(self::any())
             ->method('put')
-            ->with($baseUri . '/api2/accounts/' . $accountType->{'email'} . '/')// trailing slash is mandatory!
+            ->with($baseUri . '/api' . Account::API_VERSION . '/accounts/' . $accountType->{'email'} . '/')// trailing slash is mandatory!
             ->willReturn(new Response($data['responseCode']));
 
         $mockedClient->expects(self::any())
@@ -154,7 +157,7 @@ class AccountTest extends UnitTestCase
      * Test update() with missing attribute values
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testUpdateIllegal()
     {
@@ -183,7 +186,7 @@ class AccountTest extends UnitTestCase
      * @param array $data DataProvider data
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testRemove(array $data)
     {
@@ -197,7 +200,7 @@ class AccountTest extends UnitTestCase
 
         $mockedClient->expects(self::any())
             ->method('delete')
-            ->with($baseUri . '/api2/accounts/' . $accountType->email . '/', [])// trailing slash is mandatory!
+            ->with($baseUri . '/api' . Account::API_VERSION . '/accounts/' . $accountType->email . '/', [])// trailing slash is mandatory!
             ->willReturn(new Response(200));
 
         $mockedClient->expects(self::any())

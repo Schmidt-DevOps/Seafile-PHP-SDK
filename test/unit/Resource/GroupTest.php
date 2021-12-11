@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Tests\Unit\Resource;
 
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Resource\Group;
 use Seafile\Client\Tests\Unit\UnitTestCase;
@@ -23,7 +24,7 @@ class GroupTest extends UnitTestCase
      * Test getAll()
      *
      * @return void
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function testGetAll()
     {
