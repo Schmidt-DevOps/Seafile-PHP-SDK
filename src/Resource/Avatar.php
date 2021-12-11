@@ -90,7 +90,7 @@ class Avatar extends Resource
         }
 
         $response = $this->client->get(
-            $this->getApiBaseUrl(). '/avatars/' . $resource . '/' . $id . '/resized/' . $size . '/',
+            $this->getApiBaseUrl() . '/avatars/' . $resource . '/' . $id . '/resized/' . $size . '/',
             []
         );
 

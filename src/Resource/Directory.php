@@ -18,11 +18,13 @@ use \Seafile\Client\Type\DirectoryItem;
  */
 class Directory extends Resource
 {
+    const API_VERSION = '2';
+
     /**
      * Get all items of a directory in a library
      *
      * @param LibraryType $library Library type
-     * @param string      $dir     Directory path
+     * @param string $dir Directory path
      *
      * @return DirectoryItem[]
      * @throws Exception
@@ -61,9 +63,9 @@ class Directory extends Resource
     /**
      * Check if $dirName exists within $parentDir
      *
-     * @param LibraryType $library     Library instance
-     * @param string      $dirItemName DirectoryItem name
-     * @param string      $parentDir   Parent directory
+     * @param LibraryType $library Library instance
+     * @param string $dirItemName DirectoryItem name
+     * @param string $parentDir Parent directory
      *
      * @return bool
      * @throws Exception
@@ -135,10 +137,10 @@ class Directory extends Resource
             'POST',
             $uri,
             [
-                'headers'   => ['Accept' => 'application/json'],
+                'headers' => ['Accept' => 'application/json'],
                 'multipart' => [
                     [
-                        'name'     => 'operation',
+                        'name' => 'operation',
                         'contents' => 'mkdir',
                     ],
                 ],
@@ -151,8 +153,8 @@ class Directory extends Resource
     /**
      * Remove a directory
      *
-     * @param LibraryType $library       Library instance
-     * @param string      $directoryPath Directory path
+     * @param LibraryType $library Library instance
+     * @param string $directoryPath Directory path
      *
      * @return bool
      */
@@ -184,9 +186,9 @@ class Directory extends Resource
     /**
      * Rename a directory
      *
-     * @param LibraryType $library          Library object
-     * @param string      $directoryPath    Directory path
-     * @param string      $newDirectoryName New directory name
+     * @param LibraryType $library Library object
+     * @param string $directoryPath Directory path
+     * @param string $newDirectoryName New directory name
      *
      * @return bool
      */
@@ -208,14 +210,14 @@ class Directory extends Resource
             'POST',
             $uri,
             [
-                'headers'   => ['Accept' => 'application/json'],
+                'headers' => ['Accept' => 'application/json'],
                 'multipart' => [
                     [
-                        'name'     => 'operation',
+                        'name' => 'operation',
                         'contents' => 'rename',
                     ],
                     [
-                        'name'     => 'newname',
+                        'name' => 'newname',
                         'contents' => $newDirectoryName,
                     ],
                 ],

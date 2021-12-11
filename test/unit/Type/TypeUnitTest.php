@@ -2,6 +2,8 @@
 
 namespace Seafile\Client\Tests\Unit\Type;
 
+use DateTime;
+use Exception;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\Account;
 use Seafile\Client\Type\Type;
@@ -25,12 +27,12 @@ class TypeUnitTest extends UnitTestCase
      * Test fromArray()
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testFromArray()
     {
         $dirItem = new DirectoryItem([
-            'id'   => 1,
+            'id' => 1,
             'size' => 2,
             'name' => 'my name',
             'type' => 'my type',
@@ -46,29 +48,29 @@ class TypeUnitTest extends UnitTestCase
      * Test fromArray() with a non-existing property
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testFromArrayPropertyMissing()
     {
         $dirItem = new DirectoryItem([
-            'id'             => 1,
-            'size'           => 2,
-            'name'           => 'my name',
-            'type'           => 'my type',
+            'id' => 1,
+            'size' => 2,
+            'name' => 'my name',
+            'type' => 'my type',
             'does_not_exist' => '123',
         ]);
 
         self::assertEquals(
             [
-                'id'    => 1,
-                'size'  => 2,
-                'name'  => 'my name',
-                'type'  => 'my type',
+                'id' => 1,
+                'size' => 2,
+                'name' => 'my name',
+                'type' => 'my type',
                 'mtime' => null,
-                'dir'   => '/',
-                'org'   => null,
-                'path'  => null,
-                'repo'  => null,
+                'dir' => '/',
+                'org' => null,
+                'path' => null,
+                'repo' => null,
             ],
             (array)$dirItem
         );
@@ -78,7 +80,7 @@ class TypeUnitTest extends UnitTestCase
      * Test fromArray() with create_time property
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testFromArrayCreateTime()
     {
@@ -86,14 +88,14 @@ class TypeUnitTest extends UnitTestCase
             'create_time' => '1452202279000000',
         ]);
 
-        self::assertSame('2016-01-07T21:31:19+0000', $accountType->createTime->format(\DateTime::ISO8601));
+        self::assertSame('2016-01-07T21:31:19+0000', $accountType->createTime->format(DateTime::ISO8601));
     }
 
     /**
      * Test fromJson() with create_time property
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testFromJsonCreateTime()
     {
@@ -103,14 +105,14 @@ class TypeUnitTest extends UnitTestCase
             'create_time' => '1452202279000000',
         ])));
 
-        self::assertSame('2016-01-07T21:31:19+0000', $accountType->createTime->format(\DateTime::ISO8601));
+        self::assertSame('2016-01-07T21:31:19+0000', $accountType->createTime->format(DateTime::ISO8601));
     }
 
     /**
      * Test toJson()
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testJson()
     {
@@ -152,7 +154,7 @@ class TypeUnitTest extends UnitTestCase
      *
      * @return void
      * @dataProvider dataProviderTestToArrayAssoc
-     * @throws \Exception
+     * @throws Exception
      */
     public function testToArrayAssoc(array $data)
     {
@@ -192,7 +194,7 @@ class TypeUnitTest extends UnitTestCase
      *
      * @return void
      * @dataProvider dataProviderTestToArrayMultiPart
-     * @throws \Exception
+     * @throws Exception
      */
     public function testToArrayMultiPart(array $data)
     {
@@ -207,7 +209,7 @@ class TypeUnitTest extends UnitTestCase
      * Must yield AccountType instance
      *
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function testFromArrayCreator()
     {

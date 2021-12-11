@@ -17,6 +17,8 @@ use \Seafile\Client\Type\Library as LibraryType;
  */
 class Library extends Resource
 {
+    const API_VERSION = '2';
+
     /**
      * List libraries
      *
@@ -25,7 +27,7 @@ class Library extends Resource
      */
     public function getAll(): array
     {
-        $response = $this->client->request('GET', $this->getApiBaseUrl(). '/repos/');
+        $response = $this->client->request('GET', $this->getApiBaseUrl() . '/repos/');
 
         $json = json_decode($response->getBody());
 
@@ -50,7 +52,7 @@ class Library extends Resource
     {
         $response = $this->client->request(
             'GET',
-            $this->getApiBaseUrl(). '/repos/' . $libraryId . '/'
+            $this->getApiBaseUrl() . '/repos/' . $libraryId . '/'
         );
 
         $json = json_decode($response->getBody());
@@ -62,7 +64,7 @@ class Library extends Resource
      * Decrypt library
      *
      * @param string $libraryId Library ID
-     * @param array  $options   Options
+     * @param array $options Options
      *
      * @return bool Decryption success
      *
@@ -79,7 +81,7 @@ class Library extends Resource
 
         $response = $this->client->request(
             'POST',
-            $this->getApiBaseUrl(). '/repos/' . $libraryId . '/',
+            $this->getApiBaseUrl() . '/repos/' . $libraryId . '/',
             $options
         );
 
@@ -89,7 +91,7 @@ class Library extends Resource
     /**
      * Check if library with certain attribute value exists
      *
-     * @param string $value     Library name
+     * @param string $value Library name
      * @param string $attribute Attribute name of library
      *
      * @return bool
@@ -112,9 +114,9 @@ class Library extends Resource
     /**
      * Create a new library
      *
-     * @param string $name        Library name
+     * @param string $name Library name
      * @param string $description Library description
-     * @param string $password    false means no encryption, any other string is used as password
+     * @param string $password false means no encryption, any other string is used as password
      *
      * @return bool
      * @throws Exception
@@ -127,7 +129,7 @@ class Library extends Resource
             return false;
         }
 
-        // Do not create libraries that already exist
+        // Do not create libraries that already exists
         if ($this->exists($name)) {
             return false;
         }
@@ -137,20 +139,20 @@ class Library extends Resource
             $this->clipUri($this->getApiBaseUrl())
         );
 
-        $multipartData = [
+        $multiPartData = [
             [
-                'name'     => 'name',
+                'name' => 'name',
                 'contents' => $name,
             ],
             [
-                'name'     => 'desc',
+                'name' => 'desc',
                 'contents' => $description,
             ],
         ];
 
         if ($password !== '') {
-            $multipartData[] = [
-                'name'     => 'passwd',
+            $multiPartData[] = [
+                'name' => 'passwd',
                 'contents' => $password,
             ];
         }
@@ -159,8 +161,8 @@ class Library extends Resource
             'POST',
             $uri,
             [
-                'headers'   => ['Accept' => 'application/json'],
-                'multipart' => $multipartData,
+                'headers' => ['Accept' => 'application/json'],
+                'multipart' => $multiPartData,
             ]
         );
 
@@ -202,8 +204,8 @@ class Library extends Resource
     /**
      * Share a library, share type is always "personal"
      *
-     * @param string $libraryId  Library ID
-     * @param array  $users      Comma separated list of user email addresses
+     * @param string $libraryId Library ID
+     * @param array $users Comma separated list of user email addresses
      * @param string $permission The permission of the shared library
      *
      * @return bool

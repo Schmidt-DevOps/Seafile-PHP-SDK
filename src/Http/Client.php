@@ -45,9 +45,9 @@ class Client extends \GuzzleHttp\Client
      * @param array $args Request args
      * @return ResponseInterface
      */
-    public function get($uri, $args): ResponseInterface
+    public function get($uri, array $options = []): ResponseInterface
     {
-        return parent::get($uri, $args);
+        return parent::get($uri, $options);
     }
 
     /**
@@ -55,9 +55,9 @@ class Client extends \GuzzleHttp\Client
      * @param array $args Request args
      * @return ResponseInterface
      */
-    public function put($uri, $args): ResponseInterface
+    public function put($uri, array $options = []): ResponseInterface
     {
-        return parent::put($uri, $args);
+        return parent::put($uri, $options);
     }
 
     /**
@@ -65,8 +65,8 @@ class Client extends \GuzzleHttp\Client
      * @param array $args Request args
      * @return ResponseInterface
      */
-    public function delete($uri, $args): ResponseInterface
+    public function delete($uri, array $options = []): ResponseInterface
     {
-        return parent::delete($uri, $args);
+        return parent::delete($uri, $options);
     }
 }

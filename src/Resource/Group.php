@@ -16,6 +16,8 @@ use \Seafile\Client\Type\Group as GroupType;
  */
 class Group extends Resource
 {
+    const API_VERSION = '2';
+
     /**
      * List groups
      *

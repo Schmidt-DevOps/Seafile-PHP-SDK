@@ -16,6 +16,8 @@ use \Seafile\Client\Type\Library as LibraryType;
  */
 class Multi extends Resource
 {
+    const API_VERSION = '2';
+
     /**
      * Mode of operation: copy
      */
@@ -29,10 +31,10 @@ class Multi extends Resource
     /**
      * Move multiple files or folders
      *
-     * @param LibraryType $srcLibrary       Source library object
-     * @param array       $srcPaths         Array with file/folder paths
-     * @param LibraryType $dstLibrary       Destination library object
-     * @param string      $dstDirectoryPath Destination directory Path
+     * @param LibraryType $srcLibrary Source library object
+     * @param array $srcPaths Array with file/folder paths
+     * @param LibraryType $dstLibrary Destination library object
+     * @param string $dstDirectoryPath Destination directory Path
      *
      * @return bool
      * @throws GuzzleException
@@ -42,18 +44,19 @@ class Multi extends Resource
         array $srcPaths,
         LibraryType $dstLibrary,
         string $dstDirectoryPath
-    ): bool {
+    ): bool
+    {
         return $this->copy($srcLibrary, $srcPaths, $dstLibrary, $dstDirectoryPath, self::OPERATION_MOVE);
     }
 
     /**
      * Copy multiple files or folders
      *
-     * @param LibraryType $srcLibrary       Source library object
-     * @param array       $srcPaths         Array with file/folder paths (they must be in the same folder)
-     * @param LibraryType $dstLibrary       Destination library object
-     * @param string      $dstDirectoryPath Destination directory Path
-     * @param int         $operation        self::OPERATION_COPY or self::OPERATION_MOVE
+     * @param LibraryType $srcLibrary Source library object
+     * @param array $srcPaths Array with file/folder paths (they must be in the same folder)
+     * @param LibraryType $dstLibrary Destination library object
+     * @param string $dstDirectoryPath Destination directory Path
+     * @param int $operation self::OPERATION_COPY or self::OPERATION_MOVE
      *
      * @return bool
      * @throws GuzzleException
@@ -64,7 +67,8 @@ class Multi extends Resource
         LibraryType $dstLibrary,
         string $dstDirectoryPath,
         int $operation = self::OPERATION_COPY
-    ): bool {
+    ): bool
+    {
         // do not allow empty paths
         if (empty($srcPaths) || empty($dstDirectoryPath)) {
             return false;
@@ -96,18 +100,18 @@ class Multi extends Resource
             'POST',
             $uri,
             [
-                'headers'   => ['Accept' => 'application/json'],
+                'headers' => ['Accept' => 'application/json'],
                 'multipart' => [
                     [
-                        'name'     => 'file_names',
+                        'name' => 'file_names',
                         'contents' => $dstFileNames,
                     ],
                     [
-                        'name'     => 'dst_repo',
+                        'name' => 'dst_repo',
                         'contents' => $dstLibrary->id,
                     ],
                     [
-                        'name'     => 'dst_dir',
+                        'name' => 'dst_dir',
                         'contents' => $dstDirectoryPath,
                     ],
                 ],
@@ -120,8 +124,8 @@ class Multi extends Resource
     /**
      * check source folders paths and build the file_names string
      *
-     * @param string $folder    Folder path
-     * @param array  $paths     Paths of files
+     * @param string $folder Folder path
+     * @param array $paths Paths of files
      * @param string $fileNames Optional file names
      *
      * @return string
@@ -145,7 +149,7 @@ class Multi extends Resource
      * Delete multiple files or folders
      *
      * @param LibraryType $library Library object
-     * @param array       $paths   Array with file and folder paths (they must be in the same folder)
+     * @param array $paths Array with file and folder paths (they must be in the same folder)
      *
      * @return bool
      * @throws GuzzleException
@@ -180,10 +184,10 @@ class Multi extends Resource
             'POST',
             $uri,
             [
-                'headers'   => ['Accept' => 'application/json'],
+                'headers' => ['Accept' => 'application/json'],
                 'multipart' => [
                     [
-                        'name'     => 'file_names',
+                        'name' => 'file_names',
                         'contents' => $fileNames,
                     ],
                 ],
