@@ -23,14 +23,13 @@
   "require": {
     "php": ">=8.0",
     "guzzlehttp/guzzle": "~7.2",
-    "nabil1337/case-helper": "~0.1",
+    "marcusball/case-helper": "~0.1",
     "ext-json": "*",
     "sdo/bitmask": "~1.0"
   },
   "require-dev": {
     "monolog/monolog": " ~2.2",
     "phpunit/phpunit": "~9.5",
-    "phpunit/php-token-stream": "~4.0",
     "sebastian/phpcpd": "~6.0",
     "squizlabs/php_codesniffer": "~3.5",
     "phpunit/php-timer": "~5.0",
