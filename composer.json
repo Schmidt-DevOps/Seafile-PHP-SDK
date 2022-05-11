@@ -46,5 +46,9 @@
       "Seafile\\Client\\Tests\\Functional\\": "test/functional",
       "Seafile\\Client\\Tests\\Unit\\": "test/unit"
     }
+  },
+  "scripts": {
+    "tests_prepare": "./bin/prepare_tests.sh",
+    "tests_run": "./bin/run_tests.sh"
   }
 }
