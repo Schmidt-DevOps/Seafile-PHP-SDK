@@ -5,6 +5,7 @@ php:
   # using major version aliases
 
   - 8.0
+  - 8.1
 
 install:
   - sh ./bin/prepare_tests.sh
