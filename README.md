@@ -8,7 +8,7 @@ No marketing skills whatsoever, but low rates, 20+ years of experience, and "ger
 
 Get in touch now: https://sdo.sh/#contact
 
-[![Build Status](https://travis-ci.org/Schmidt-DevOps/Seafile-PHP-SDK.svg?branch=develop)](https://travis-ci.org/Schmidt-DevOps/Seafile-PHP-SDK)
+[![PHP Composer](https://github.com/Schmidt-DevOps/Seafile-PHP-SDK/actions/workflows/php.yml/badge.svg?branch=develop)](https://github.com/Schmidt-DevOps/Seafile-PHP-SDK/actions/workflows/php.yml)
 [![Test Coverage](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/badges/coverage.svg)](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/coverage)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
