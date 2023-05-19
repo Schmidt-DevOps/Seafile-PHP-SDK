@@ -213,6 +213,10 @@ class File extends Resource
         if ($newFile) {
             $multiPartParams[] = [
                 'name' => 'parent_dir',
+                'contents' => '/',
+            ];
+            $multiPartParams[] = [
+                'name' => 'relative_path',
                 'contents' => $dir,
             ];
         } else {
@@ -252,7 +256,7 @@ class File extends Resource
 
         return $this->client->request(
             'POST',
-            $this->getUploadUrl($library, $newFile, $dir),
+            $this->getUploadUrl($library, $newFile, '/'),
             [
                 'headers' => ['Accept' => '*/*'],
                 'multipart' => $this->getMultiPartParams($localFilePath, $dir, $newFile, $newFilename),

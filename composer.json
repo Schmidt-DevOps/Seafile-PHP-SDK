@@ -1,5 +1,5 @@
 {
-  "name": "sdo/seafile-php-sdk",
+  "name": "cyhello/seafile-php-sdk",
   "description": "This is a PHP package for accessing Seafile Web API",
   "homepage": "https://github.com/Schmidt-DevOps/seafile-php-sdk",
   "license": "MIT",
@@ -50,5 +50,6 @@
   "scripts": {
     "tests_prepare": "./bin/prepare_tests.sh",
     "tests_run": "./bin/run_tests.sh"
-  }
+  },
+  "version": "0.0.1"
 }
