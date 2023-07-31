@@ -41,9 +41,9 @@ class Multi extends Resource
      */
     public function move(
         LibraryType $srcLibrary,
-        array $srcPaths,
+        array       $srcPaths,
         LibraryType $dstLibrary,
-        string $dstDirectoryPath
+        string      $dstDirectoryPath
     ): bool
     {
         return $this->copy($srcLibrary, $srcPaths, $dstLibrary, $dstDirectoryPath, self::OPERATION_MOVE);
@@ -63,10 +63,10 @@ class Multi extends Resource
      */
     public function copy(
         LibraryType $srcLibrary,
-        array $srcPaths,
+        array       $srcPaths,
         LibraryType $dstLibrary,
-        string $dstDirectoryPath,
-        int $operation = self::OPERATION_COPY
+        string      $dstDirectoryPath,
+        int         $operation = self::OPERATION_COPY
     ): bool
     {
         // do not allow empty paths

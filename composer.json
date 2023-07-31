@@ -21,20 +21,19 @@
     "encrypted"
   ],
   "require": {
-    "php": ">=7.3",
-    "guzzlehttp/guzzle": "~6.0|~7.0",
-    "nabil1337/case-helper": "~0.1",
+    "php": ">=8.2",
+    "guzzlehttp/guzzle": "~7.7",
+    "marcusball/case-helper": "~0.2",
     "ext-json": "*",
-    "sdo/bitmask": "^1.0"
+    "sdo/bitmask": "~1.0"
   },
   "require-dev": {
-    "monolog/monolog": "~1.17",
-    "phpunit/phpunit": "~8.0",
-    "phpunit/php-token-stream": "~3.0",
-    "sebastian/phpcpd": "~4.0",
-    "squizlabs/php_codesniffer": "~3.2",
-    "phpunit/php-timer": "~2.0",
-    "fzaninotto/faker": "^1.9"
+    "monolog/monolog": " ~2.9",
+    "phpunit/phpunit": "~9.6",
+    "sebastian/phpcpd": "~6.0",
+    "squizlabs/php_codesniffer": "~3.7",
+    "phpunit/php-timer": "~5.0",
+    "fzaninotto/faker": "~1.5"
   },
   "type": "library",
   "autoload": {
@@ -47,5 +46,9 @@
       "Seafile\\Client\\Tests\\Functional\\": "test/functional",
       "Seafile\\Client\\Tests\\Unit\\": "test/unit"
     }
+  },
+  "scripts": {
+    "tests_prepare": "./bin/prepare_tests.sh",
+    "tests_run": "./bin/run_tests.sh"
   }
 }

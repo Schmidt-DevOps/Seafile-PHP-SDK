@@ -9,7 +9,6 @@ size=`stat --printf="%s" $file 2>/dev/null`
 
 if [ ! -f $file ] || [ $size -eq 0 ]; then
     wget $url -O $file
-
 fi
 
 if [ -f $file ]; then

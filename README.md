@@ -6,10 +6,9 @@ This is a PHP package for accessing [Seafile Web API](https://www.seafile.com/).
 
 No marketing skills whatsoever, but low rates, 20+ years of experience, and "german work attitude" -- whatever you associate with that.
 
-Get in touch now: https://sdo.sh/DevOps/#contact
+Get in touch now: https://sdo.sh/#contact
 
-[![Build Status](https://travis-ci.org/Schmidt-DevOps/Seafile-PHP-SDK.svg?branch=develop)](https://travis-ci.org/Schmidt-DevOps/Seafile-PHP-SDK)
-[![Test Coverage](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/badges/coverage.svg)](https://codeclimate.com/github/rene-s/Seafile-PHP-SDK/coverage)
+[![Unit tests](https://github.com/Schmidt-DevOps/Seafile-PHP-SDK/actions/workflows/tests.yml/badge.svg)](https://github.com/Schmidt-DevOps/Seafile-PHP-SDK/actions/workflows/tests.yml)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## What is Seafile?
@@ -344,24 +343,24 @@ $client = new Client(
 
 ## Dependencies
 
-- PHP >=7.3 64 bits
-- Guzzle 6
+- PHP >=8.0 64 bits
+- Guzzle 7.2
 
 ## Seafile Web API Support Matrix
 
-| Resource               | Web API Version | Support grade |
-| ---------------------- | --------------- | ------------- |
-| Account                | v2              | ★★★☆          |
-| Avatar                 | v2.1            | ★★★★          |
+| Resource               | Web API Version | Support grade                                         |
+|------------------------|-----------------|-------------------------------------------------------|
+| Account                | v2              | ★★★☆                                                  |
+| Avatar                 | v2.1            | ★★★★                                                  |
 | Events                 | v2              | Yet to be done, [contact me](mailto:rene+_gth@sdo.sh) |
-| File Share Link        | v2.1            | ★★★☆          |
-| Group                  | v2              | ★☆☆☆          |
-| Library/Directory      | v2              | ★★☆☆          |
-| Library/File           | v2              | ★★☆☆          |
-| Library/Library        | v2              | ★★☆☆          |
-| Library/Multiple Files | v2              | ★★★★          |
+| File Share Link        | v2.1            | ★★★☆                                                  |
+| Group                  | v2              | ★☆☆☆                                                  |
+| Library/Directory      | v2              | ★★☆☆                                                  |
+| Library/File           | v2              | ★★☆☆                                                  |
+| Library/Library        | v2              | ★★☆☆                                                  |
+| Library/Multiple Files | v2              | ★★★★                                                  |
 | Organization           | v2              | Yet to be done, [contact me](mailto:rene+_gth@sdo.sh) |
-| Starred Files          | v2              | ★★★★          |
+| Starred Files          | v2              | ★★★★                                                  |
 
 ## Seafile server compatibility
 
@@ -371,7 +370,11 @@ Tested with:
 - ~~Seafile Server 5.1.3 for generic Linux/Debian Wheezy~~
 - ~~Seafile Server 5.1.4 for generic Linux/Ubuntu Xenial~~
 - ~~Seafile Server 6.0.3 for generic Linux/Ubuntu Xenial~~
-- Seafile Server 7.1.4 for Ubuntu 20.04 LTS
+- Seafile Server 7.x+ for Ubuntu 20.04 LTS
+
+## Support
+
+I'd be happy to implement new features for you at a competitive hourly rate. Get in touch now: https://sdo.sh/#contact
 
 ## Contributing
 
@@ -388,7 +391,7 @@ Please note that this package still is in its infancy. Only a part of the API ha
 There are two types of tests:
 
 1. Unit tests that test a code unit without external dependencies and no data manipulation. Please always provide at least unit tests when contributing.
-1. Functional tests that run against a live server instance (=may have external dependencies) and also alter data. Disabled and thus skipped by default. Please refer to `/phpunit/php` in `phpunit.xml.dist` for information on how to enable functional tests.
+2. Functional tests that run against a live server instance (=may have external dependencies) and also alter data. Disabled and thus skipped by default. Please refer to `/phpunit/php` in `phpunit.xml.dist` for information on how to enable functional tests.
 
 ## Links
 
@@ -400,4 +403,4 @@ There are two types of tests:
 
 ## License
 
-[MIT](https://raw.githubusercontent.com/rene-s/seafile-php-sdk/master/LICENSE) &copy; 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG
+[MIT](https://raw.githubusercontent.com/rene-s/seafile-php-sdk/master/LICENSE) &copy; 2015-2023 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG
