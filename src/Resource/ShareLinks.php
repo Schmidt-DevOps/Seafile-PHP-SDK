@@ -87,11 +87,11 @@ class ShareLinks extends Resource implements ResourceInterface
      * @throws Exception
      */
     public function create(
-        LibraryType $library,
-        string $path,
+        LibraryType           $library,
+        string                $path,
         SharedLinkPermissions $permissions,
-        int $expire = null,
-        string $password = null
+        int                   $expire = null,
+        string                $password = null
     ): ?SharedLinkType
     {
         $uri = sprintf(

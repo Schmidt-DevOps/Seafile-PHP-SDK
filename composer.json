@@ -21,17 +21,17 @@
     "encrypted"
   ],
   "require": {
-    "php": ">=8.0",
-    "guzzlehttp/guzzle": "~7.2",
-    "marcusball/case-helper": "~0.1",
+    "php": ">=8.2",
+    "guzzlehttp/guzzle": "~7.7",
+    "marcusball/case-helper": "~0.2",
     "ext-json": "*",
     "sdo/bitmask": "~1.0"
   },
   "require-dev": {
-    "monolog/monolog": " ~2.2",
-    "phpunit/phpunit": "~9.5",
+    "monolog/monolog": " ~2.9",
+    "phpunit/phpunit": "~9.6",
     "sebastian/phpcpd": "~6.0",
-    "squizlabs/php_codesniffer": "~3.5",
+    "squizlabs/php_codesniffer": "~3.7",
     "phpunit/php-timer": "~5.0",
     "fzaninotto/faker": "~1.5"
   },
