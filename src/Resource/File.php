@@ -92,11 +92,11 @@ class File extends Resource
      * @throws GuzzleException
      */
     public function downloadFromDir(
-        LibraryType $library,
+        LibraryType   $library,
         DirectoryItem $item,
-        string $localFilePath,
-        string $dir,
-        int $reuse = 1
+        string        $localFilePath,
+        string        $dir,
+        int           $reuse = 1
     ): ResponseInterface
     {
         if (is_readable($localFilePath)) {
@@ -184,8 +184,8 @@ class File extends Resource
     public function getMultiPartParams(
         string $localFilePath,
         string $dir,
-        bool $newFile = true,
-        $newFilename = false
+        bool   $newFile = true,
+               $newFilename = false
     ): array
     {
         if ($newFilename === false) {
@@ -240,10 +240,10 @@ class File extends Resource
      */
     public function upload(
         LibraryType $library,
-        string $localFilePath,
-        string $dir = '/',
-        $newFilename = false,
-        bool $newFile = true
+        string      $localFilePath,
+        string      $dir = '/',
+                    $newFilename = false,
+        bool        $newFile = true
     ): ResponseInterface
     {
         if (!is_readable($localFilePath)) {
@@ -389,10 +389,10 @@ class File extends Resource
      */
     public function copy(
         LibraryType $srcLibrary,
-        string $srcFilePath,
+        string      $srcFilePath,
         LibraryType $dstLibrary,
-        string $dstDirectoryPath,
-        int $operation = self::OPERATION_COPY
+        string      $dstDirectoryPath,
+        int         $operation = self::OPERATION_COPY
     ): bool
     {
         // do not allow empty paths
@@ -453,9 +453,9 @@ class File extends Resource
      */
     public function move(
         LibraryType $srcLibrary,
-        string $srcFilePath,
+        string      $srcFilePath,
         LibraryType $dstLibrary,
-        string $dstDirectoryPath
+        string      $dstDirectoryPath
     ): bool
     {
         return $this->copy($srcLibrary, $srcFilePath, $dstLibrary, $dstDirectoryPath, self::OPERATION_MOVE);
@@ -472,8 +472,8 @@ class File extends Resource
      * @throws GuzzleException
      */
     public function getFileRevisionDownloadUrl(
-        LibraryType $library,
-        DirectoryItem $dirItem,
+        LibraryType     $library,
+        DirectoryItem   $dirItem,
         FileHistoryItem $fileHistoryItem
     )
     {
@@ -501,10 +501,10 @@ class File extends Resource
      * @throws GuzzleException
      */
     public function downloadRevision(
-        LibraryType $library,
-        DirectoryItem $dirItem,
+        LibraryType     $library,
+        DirectoryItem   $dirItem,
         FileHistoryItem $fileHistoryItem,
-        string $localFilePath
+        string          $localFilePath
     ): ResponseInterface
     {
         $downloadUrl = $this->getFileRevisionDownloadUrl($library, $dirItem, $fileHistoryItem);
