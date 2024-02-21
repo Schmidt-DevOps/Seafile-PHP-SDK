@@ -1,6 +1,6 @@
 # Seafile PHP SDK
 
-This is a PHP package for accessing [Seafile Web API](https://www.seafile.com/).
+This is a PHP package for accessing [Seafile Web API](https://download.seafile.com/published/web-api/home.md).
 
 ## German Web Application Developer Available for Hire!
 
