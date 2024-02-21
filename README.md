@@ -1,10 +1,10 @@
 # Seafile PHP SDK
 
-This is a PHP package for accessing [Seafile Web API](https://www.seafile.com/).
+This is a PHP package for accessing [Seafile Web API](https://download.seafile.com/published/web-api/home.md).
 
 ## German Web Application Developer Available for Hire!
 
-No marketing skills whatsoever, but low rates, 20+ years of experience, and "german work attitude" -- whatever you associate with that.
+No marketing skills whatsoever, but low rates, 20+ years of experience, and "german work attitude".
 
 Get in touch now: https://sdo.sh/#contact
 
