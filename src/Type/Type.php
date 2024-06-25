@@ -22,12 +22,12 @@ abstract class Type implements TypeInterface
     /**
      * Associative array mode
      */
-    const ARRAY_ASSOC = 1;
+    public const ARRAY_ASSOC = 1;
 
     /**
      * Multipart array mode
      */
-    const ARRAY_MULTI_PART = 2;
+    public const ARRAY_MULTI_PART = 2;
 
     /**
      * Constructor
@@ -38,7 +38,7 @@ abstract class Type implements TypeInterface
      */
     public function __construct(array $fromArray = [])
     {
-        if (is_array($fromArray) && !empty($fromArray)) {
+        if ($fromArray !== []) {
             $this->fromArray($fromArray);
         }
     }
@@ -87,8 +87,6 @@ abstract class Type implements TypeInterface
      * it's microseconds. You never know.
      *
      * @param int $value Int time stamp, either seconds or microseconds
-     *
-     * @return DateTime
      */
     public function getDateTime(int $value): DateTime
     {
@@ -119,7 +117,6 @@ abstract class Type implements TypeInterface
      *
      * @param int $mode Array mode
      *
-     * @return array
      * @throws Exception
      */
     public function toArray(int $mode = self::ARRAY_ASSOC): array
@@ -135,7 +132,7 @@ abstract class Type implements TypeInterface
                         $val = $val->format('U');
                     }
 
-                    $multiPart[] = ['name' => $caseHelper->toSnakeCase($key), 'contents' => "$val"];
+                    $multiPart[] = ['name' => $caseHelper->toSnakeCase($key), 'contents' => $val];
                 }
 
                 $array = $multiPart;

@@ -36,11 +36,6 @@ parameters:
 			path: src/Resource/File.php
 
 		-
-			message: "#^Parameter \\#2 \\$uri of method GuzzleHttp\\\\Client\\:\\:request\\(\\) expects Psr\\\\Http\\\\Message\\\\UriInterface\\|string, array\\<string\\>\\|string given\\.$#"
-			count: 1
-			path: src/Resource/File.php
-
-		-
 			message: "#^Method Seafile\\\\Client\\\\Resource\\\\Library\\:\\:decrypt\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Resource/Library.php
@@ -69,11 +64,6 @@ parameters:
 			message: "#^Method Seafile\\\\Client\\\\Resource\\\\Multi\\:\\:preparePaths\\(\\) has parameter \\$paths with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Resource/Multi.php
-
-		-
-			message: "#^PHPDoc tag @return with type mixed is not subtype of native type string\\.$#"
-			count: 1
-			path: src/Resource/Resource.php
 
 		-
 			message: "#^PHPDoc tag @return with type mixed is not subtype of native type string\\.$#"

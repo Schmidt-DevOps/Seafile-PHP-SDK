@@ -45,8 +45,6 @@ class ShareLinks extends Resource implements ResourceInterface
      * Remove shared link
      *
      * @param SharedLinkType $sharedLinkType SharedLinkType instance
-     *
-     * @return bool
      */
     public function remove(SharedLinkType $sharedLinkType): bool
     {
@@ -76,20 +74,18 @@ class ShareLinks extends Resource implements ResourceInterface
     /**
      * Create share link
      *
-     * @param LibraryType $library Library instance
+     * @param LibraryType $libraryType Library instance
      * @param string $path Path
-     * @param SharedLinkPermissions $permissions
      * @param int|null $expire Expire in such many days
      * @param string|null $password Optional password string
      *
-     * @return SharedLinkType|null
      * @throws GuzzleException
      * @throws Exception
      */
     public function create(
-        LibraryType           $library,
+        LibraryType           $libraryType,
         string                $path,
-        SharedLinkPermissions $permissions,
+        SharedLinkPermissions $sharedLinkPermissions,
         int                   $expire = null,
         string                $password = null
     ): ?SharedLinkType
@@ -100,19 +96,19 @@ class ShareLinks extends Resource implements ResourceInterface
         );
 
         $multiPartParams = [
-            ['name' => 'repo_id', 'contents' => $library->id],
+            ['name' => 'repo_id', 'contents' => $libraryType->id],
             ['name' => 'path', 'contents' => $path],
             [
                 'name' => 'permissions',
                 'contents' => json_encode([
-                    'can_edit' => $permissions->is(SharedLinkPermissions::CAN_EDIT),
-                    'can_download' => $permissions->is(SharedLinkPermissions::CAN_DOWNLOAD)
+                    'can_edit' => $sharedLinkPermissions->is(SharedLinkPermissions::CAN_EDIT),
+                    'can_download' => $sharedLinkPermissions->is(SharedLinkPermissions::CAN_DOWNLOAD)
                 ])
             ]
         ];
 
         if (!is_null($expire)) {
-            $multiPartParams[] = ['name' => 'expire_days', 'contents' => "$expire"];
+            $multiPartParams[] = ['name' => 'expire_days', 'contents' => '' . $expire];
         }
 
         if (!is_null($password)) {

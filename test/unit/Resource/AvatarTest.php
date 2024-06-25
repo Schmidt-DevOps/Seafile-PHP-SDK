@@ -27,10 +27,8 @@ class AvatarTest extends UnitTestCase
 {
     /**
      * Test getUserAvatarByEmail()
-     *
-     * @return void
      */
-    public function testGetUserAvatarByEmail()
+    public function testGetUserAvatarByEmail(): void
     {
         $baseUri = 'https://example.com';
         $resource = 'user';
@@ -42,10 +40,8 @@ class AvatarTest extends UnitTestCase
 
     /**
      * Test getAvatar() with illegal avatar size
-     *
-     * @return void
      */
-    public function testGetAvatarIllegalSize()
+    public function testGetAvatarIllegalSize(): void
     {
         $baseUri = 'https://example.com';
         $resource = 'user';
@@ -60,10 +56,9 @@ class AvatarTest extends UnitTestCase
     /**
      * Test getGroupAvatarByEmail()
      *
-     * @return void
      * @throws Exception
      */
-    public function testGetGroupAvatarByEmail()
+    public function testGetGroupAvatarByEmail(): void
     {
         $baseUri = 'https://example.com';
         $resource = 'group';
@@ -107,9 +102,9 @@ class AvatarTest extends UnitTestCase
             ->with('base_uri')
             ->willReturn($baseUri);
 
-        $avatarResource = new AvatarResource($mockedClient);
+        $avatar = new AvatarResource($mockedClient);
 
-        $avatarType = $avatarResource->{$method}($entity, $size);
+        $avatarType = $avatar->{$method}($entity, $size);
 
         self::assertInstanceOf(Avatar::class, $avatarType);
         self::assertInstanceOf(DateTime::class, $avatarType->mtime);
@@ -119,28 +114,27 @@ class AvatarTest extends UnitTestCase
     /**
      * Test getAvatar() with illegal type instance
      *
-     * @return void
      * @throws Exception
      */
-    public function testGetAvatarIllegalType()
+    public function testGetAvatarIllegalType(): void
     {
         $baseUri = 'https://example.com';
 
         /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
-        $libraryType = new LibraryType();
+        $library = new LibraryType();
 
         $mockedClient->expects(self::any())
             ->method('getConfig')
             ->with('base_uri')
             ->willReturn($baseUri);
 
-        $avatarResource = new AvatarResource($mockedClient);
+        $avatar = new AvatarResource($mockedClient);
 
         $this->expectException('Exception');
         $this->expectExceptionMessage('Unsupported type to retrieve avatar information for.');
 
-        $this->invokeMethod($avatarResource, 'getAvatar', [$libraryType, 80]);
+        $this->invokeMethod($avatar, 'getAvatar', [$library, 80]);
     }
 }

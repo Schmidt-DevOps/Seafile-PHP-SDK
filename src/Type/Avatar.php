@@ -21,15 +21,15 @@ class Avatar extends Type
     /**
      * @var string|null
      */
-    public $url = null;
+    public $url;
 
     /**
      * @var bool|null
      */
-    public $isDefault = null;
+    public $isDefault;
 
     /**
      * @var DateTime|null
      */
-    public $mtime = null;
+    public $mtime;
 }

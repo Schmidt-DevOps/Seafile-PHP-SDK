@@ -15,33 +15,25 @@ use Seafile\Client\Http\Client;
  */
 abstract class Resource implements ResourceInterface
 {
-    const API_VERSION = '2.1';
+    public const API_VERSION = '2.1';
 
     /** Represents 'read' permission (in whatever context) */
-    const PERMISSION_R = 'r';
+    public const PERMISSION_R = 'r';
 
     /** Represents 'read and write' permission (in whatever context) */
-    const PERMISSION_RW = 'rw';
-
-    /**
-     * @var Client
-     */
-    protected $client;
+    public const PERMISSION_RW = 'rw';
 
     /**
      * Constructor
      *
      * @param Client $client Client instance
      */
-    public function __construct(Client $client)
+    public function __construct(protected Client $client)
     {
-        $this->client = $client;
     }
 
     /**
      * Get the actual API base URL depending on the resource
-     *
-     * @return string
      */
     public function getApiBaseUrl(): string
     {
@@ -52,8 +44,6 @@ abstract class Resource implements ResourceInterface
      * Clip tailing slash
      *
      * @param string $uri URI string
-     *
-     * @return mixed|string
      */
     public function clipUri(string $uri): string
     {

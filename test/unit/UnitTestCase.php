@@ -32,11 +32,11 @@ class UnitTestCase extends TestCase
      */
     public function invokeMethod(&$object, string $methodName, array $parameters = [])
     {
-        $reflection = new ReflectionClass(get_class($object));
-        $method = $reflection->getMethod($methodName);
-        $method->setAccessible(true);
+        $reflectionClass = new ReflectionClass($object::class);
+        $reflectionMethod = $reflectionClass->getMethod($methodName);
+        $reflectionMethod->setAccessible(true);
 
-        return $method->invokeArgs($object, $parameters);
+        return $reflectionMethod->invokeArgs($object, $parameters);
     }
 
     /**

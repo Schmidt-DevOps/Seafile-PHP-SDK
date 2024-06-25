@@ -3,7 +3,7 @@
 use Seafile\Client\Http\Client;
 use Seafile\Client\Resource\Auth;
 
-require_once 'vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 $functionalTestsCredentialsComplete = (
     $_ENV['ALLOW_LIVE_DATA_MANIPULATION_ON_TEST_SERVER'] === '1'
@@ -53,6 +53,6 @@ $GLOBALS['RUN_FUNCTIONAL_TESTS'] = (
 
 try {
     $GLOBALS['FAKER_SEED'] = random_int(0, 1000000); // @todo Make tests repeatable
-} catch (Exception $e) {
-    die($e->getMessage());
+} catch (Exception $exception) {
+    die($exception->getMessage());
 }

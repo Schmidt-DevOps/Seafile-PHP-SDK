@@ -18,17 +18,16 @@ use Seafile\Client\Type\Group as GroupType;
  */
 class GroupTest extends FunctionalTestCase
 {
-    /** @var Group|null */
-    private $groupResource = null;
+    private ?Group $group;
 
     /**
      * @throws Exception
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->groupResource = new Group($this->client);
+        $this->group = new Group($this->client);
     }
 
     /**
@@ -36,14 +35,14 @@ class GroupTest extends FunctionalTestCase
      *
      * @throws Exception
      */
-    public function testGetAll()
+    public function testGetAll(): void
     {
         $this->logger->debug("#################### Get all groups ");
 
-        $groups = $this->groupResource->getAll();
+        $groups = $this->group->getAll();
 
         self::assertIsArray($groups);
-        self::assertTrue(count($groups) > 0);
+        self::assertTrue($groups !== []);
 
         foreach ($groups as $group) {
             $this->logger->debug("#################### " . sprintf("Group name: %s", $group->name));
