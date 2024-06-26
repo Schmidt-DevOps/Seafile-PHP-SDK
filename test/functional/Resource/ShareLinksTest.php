@@ -2,7 +2,6 @@
 
 namespace Seafile\Client\Tests\Functional\Resource;
 
-use Carbon\Carbon;
 use Exception;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Resource\Library;
@@ -43,6 +42,7 @@ class ShareLinksTest extends FunctionalTestCase
      * and successfully so that's postponed for now.
      *
      * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testShareLinks(): void
     {
@@ -68,7 +68,7 @@ class ShareLinksTest extends FunctionalTestCase
         $newFilename = $GLOBALS['BUILD_TMP'] . '/Seafile-PHP-SDK_Test_Upload.txt';
 
         if (!file_exists($newFilename)) {
-            file_put_contents($newFilename, 'Hello World: ' . Carbon::now()->format('Y-m-d H:i:s'));
+            file_put_contents($newFilename, 'Hello World: ' . (new \DateTime)->format('Y-m-d H:i:s'));
         }
 
         $this->logger->debug("#################### Uploading file " . $newFilename);

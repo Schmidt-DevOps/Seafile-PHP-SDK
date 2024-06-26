@@ -29,17 +29,10 @@ use Seafile\Client\Type\Library as LibraryType;
  */
 class FunctionalTestCase extends TestCase
 {
-    /** @var Client|null */
-    protected $client;
-
-    /** @var Logger|null */
-    protected $logger;
-
-    /** @var LibraryType|null */
-    protected $testLib;
-
-    /** @var Generator|null|Internet|Lorem|Person */
-    protected $faker;
+    protected ?Client $client;
+    protected ?Logger $logger;
+    protected ?LibraryType $testLib;
+    protected Internet|Lorem|null|Generator|Person $faker;
 
     /**
      * Skip functional tests when they do not have been set up correctly. Please refer to README.md on how to set them up.
@@ -132,7 +125,7 @@ class FunctionalTestCase extends TestCase
             $library = new Library($this->client);
             $this->testLib = $library->getById($libId);
 
-            if ($this->testLib->encrypted === true && array_key_exists('TEST_LIB_ENCRYPTED_PASSWORD', $_ENV)) {
+            if ($this->testLib->encrypted && array_key_exists('TEST_LIB_ENCRYPTED_PASSWORD', $_ENV)) {
                 self::assertTrue($library->decrypt(
                     $libId,
                     [

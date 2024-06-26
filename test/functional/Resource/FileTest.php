@@ -2,12 +2,10 @@
 
 namespace Seafile\Client\Tests\Functional\Resource;
 
-use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Resource\Directory;
 use Seafile\Client\Resource\File;
-use Seafile\Client\Resource\Library;
 use Seafile\Client\Tests\Functional\FunctionalTestCase;
 use Seafile\Client\Type\DirectoryItem;
 
@@ -78,7 +76,7 @@ class FileTest extends FunctionalTestCase
         $newFilename = tempnam($GLOBALS['BUILD_TMP'], 'Seafile-PHP-SDK_Test_File_History_Upload_');
         rename($newFilename, $newFilename . '.txt');
         $newFilename .= '.txt';
-        file_put_contents($newFilename, 'Hello World: ' . Carbon::now()->format('Y-m-d H:i:s'));
+        file_put_contents($newFilename, 'Hello World: ' . (new \DateTime)->format('Y-m-d H:i:s'));
 
         $this->logger->debug("#################### Uploading file " . $newFilename);
 
@@ -162,7 +160,7 @@ class FileTest extends FunctionalTestCase
         $libId = $_ENV['TEST_LIB_ENCRYPTED_ID'];
         $library = $this->getTestLibraryType();
 
-        if ($library->encrypted === true && isset($cfg->testLibPassword)) {
+        if ($library->encrypted && isset($cfg->testLibPassword)) {
             $success = $this->library->decrypt($libId, ['query' => ['password' => $_ENV['TEST_LIB_ENCRYPTED_PASSWORD']]]);
             self::assertTrue($success);
         }
@@ -176,7 +174,7 @@ class FileTest extends FunctionalTestCase
         $success = $this->file->create($library, $dirItem);
         self::assertTrue($success);
 
-        $newFilename = 'test_' . Carbon::now()->format('U') . '.txt';
+        $newFilename = 'test_' . (new \DateTime)->format('U') . '.txt';
         $dirItem = $this->file->getFileDetail($library, $path . $fileName);
 
         $this->logger->debug("#################### File to be renamed: " . $path . $dirItem->name);
@@ -185,7 +183,7 @@ class FileTest extends FunctionalTestCase
         self::assertTrue($success);
         $this->logger->debug("#################### File renamed from " . $path . $fileName . ' to ' . $newFilename);
 
-        $newFilename = 'even_newer_file_name_test_' . Carbon::now()->format('U') . '.txt';
+        $newFilename = 'even_newer_file_name_test_' . (new \DateTime)->format('U') . '.txt';
         $success = $this->file->rename($library, $dirItem, $newFilename);
 
         self::assertTrue($success);

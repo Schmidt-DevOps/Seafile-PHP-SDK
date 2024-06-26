@@ -105,8 +105,7 @@ class StarredFileTest extends UnitTestCase
             )
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, array $params) use ($starResponse, $library, $directoryItem): Response|\Response {
-
+                function ($method, $uri, array $params) use ($starResponse, $library, $directoryItem): Response {
                     $hasParams = array_key_exists('headers', $params)
                         && array_key_exists('multipart', $params)
                         && array_key_exists('name', $params['multipart'][0])
