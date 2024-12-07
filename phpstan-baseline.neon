@@ -36,11 +36,6 @@ parameters:
 			path: src/Resource/File.php
 
 		-
-			message: "#^Parameter \\#2 \\$uri of method GuzzleHttp\\\\Client\\:\\:request\\(\\) expects Psr\\\\Http\\\\Message\\\\UriInterface\\|string, array\\<string\\>\\|string given\\.$#"
-			count: 1
-			path: src/Resource/File.php
-
-		-
 			message: "#^Method Seafile\\\\Client\\\\Resource\\\\Library\\:\\:decrypt\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Resource/Library.php
@@ -69,11 +64,6 @@ parameters:
 			message: "#^Method Seafile\\\\Client\\\\Resource\\\\Multi\\:\\:preparePaths\\(\\) has parameter \\$paths with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Resource/Multi.php
-
-		-
-			message: "#^PHPDoc tag @return with type mixed is not subtype of native type string\\.$#"
-			count: 1
-			path: src/Resource/Resource.php
 
 		-
 			message: "#^PHPDoc tag @return with type mixed is not subtype of native type string\\.$#"
@@ -156,37 +146,7 @@ parameters:
 			path: test/functional/Resource/AccountTest.php
 
 		-
-			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Functional\\\\Resource\\\\AccountTest\\:\\:testAccount\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: test/functional/Resource/AccountTest.php
-
-		-
 			message: "#^Call to an undefined method Seafile\\\\Client\\\\Type\\\\Library\\:\\:decrypt\\(\\)\\.$#"
-			count: 1
-			path: test/functional/Resource/FileTest.php
-
-		-
-			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Functional\\\\Resource\\\\FileTest\\:\\:testCreate\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: test/functional/Resource/FileTest.php
-
-		-
-			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Functional\\\\Resource\\\\FileTest\\:\\:testHistory\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: test/functional/Resource/FileTest.php
-
-		-
-			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Functional\\\\Resource\\\\FileTest\\:\\:testList\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: test/functional/Resource/FileTest.php
-
-		-
-			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Functional\\\\Resource\\\\FileTest\\:\\:testRename\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: test/functional/Resource/FileTest.php
-
-		-
-			message: "#^Property Seafile\\\\Client\\\\Tests\\\\Functional\\\\Resource\\\\FileTest\\:\\:\\$libraryResource \\(Seafile\\\\Client\\\\Resource\\\\Library\\|null\\) does not accept Seafile\\\\Client\\\\Type\\\\Library\\.$#"
 			count: 1
 			path: test/functional/Resource/FileTest.php
 
@@ -196,29 +156,9 @@ parameters:
 			path: test/functional/Resource/FileTest.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between string and true will always evaluate to false\\.$#"
-			count: 1
-			path: test/functional/Resource/FileTest.php
-
-		-
 			message: "#^Variable \\$cfg in isset\\(\\) is never defined\\.$#"
 			count: 1
 			path: test/functional/Resource/FileTest.php
-
-		-
-			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Functional\\\\Resource\\\\GroupTest\\:\\:testGetAll\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: test/functional/Resource/GroupTest.php
-
-		-
-			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Functional\\\\Resource\\\\ShareLinksTest\\:\\:testShareLinks\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: test/functional/Resource/ShareLinksTest.php
-
-		-
-			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Functional\\\\Resource\\\\StarredFileTest\\:\\:testStarFile\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: test/functional/Resource/StarredFileTest.php
 
 		-
 			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client\\:\\:expects\\(\\)\\.$#"

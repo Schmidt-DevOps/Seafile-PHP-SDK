@@ -41,17 +41,17 @@ class DirectoryItem extends Type
     /**
      * @var int|null
      */
-    public $org = null;
+    public $org;
 
     /**
      * @var string|null
      */
-    public $path = null;
+    public $path;
 
     /**
      * @var string|null
      */
-    public $repo = null;
+    public $repo;
 
     /**
      * @var string
@@ -63,15 +63,15 @@ class DirectoryItem extends Type
      */
     public $type = "";
 
-    const TYPE_DIR = 'dir';
-    const TYPE_FILE = 'file';
+    public const TYPE_DIR = 'dir';
+
+    public const TYPE_FILE = 'file';
 
     /**
      * Populate from array
      *
      * @param array $fromArray Create from array
      *
-     * @return DirectoryItem
      * @throws Exception
      */
     public function fromArray(array $fromArray): DirectoryItem
@@ -79,15 +79,15 @@ class DirectoryItem extends Type
         $typeExists = array_key_exists('type', $fromArray);
         $dirExists = array_key_exists('dir', $fromArray);
 
-        if ($typeExists === false && $dirExists === true && is_bool($fromArray['dir'])) {
-            $fromArray['type'] = $fromArray['dir'] === true ? self::TYPE_DIR : self::TYPE_FILE;
+        if ($typeExists === false && $dirExists && is_bool($fromArray['dir'])) {
+            $fromArray['type'] = $fromArray['dir'] ? self::TYPE_DIR : self::TYPE_FILE;
         }
 
         /**
-         * @var self $dirItem
+         * @var self $type
          */
-        $dirItem = parent::fromArray($fromArray);
+        $type = parent::fromArray($fromArray);
 
-        return $dirItem;
+        return $type;
     }
 }

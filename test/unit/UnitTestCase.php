@@ -25,18 +25,17 @@ class UnitTestCase extends TestCase
      *
      * @param object $object Instantiated object that we will run method on.
      * @param string $methodName Method name to call
-     * @param array $parameters Array of parameters to pass into method.
+     * @param array<int, int|\Seafile\Client\Type\Library>|array<int, string> $parameters Params to pass to method.
      *
      * @return mixed Method return.
      * @throws ReflectionException
      */
-    public function invokeMethod(&$object, string $methodName, array $parameters = [])
+    public function invokeMethod(object &$object, string $methodName, array $parameters = []): mixed
     {
-        $reflection = new ReflectionClass(get_class($object));
-        $method = $reflection->getMethod($methodName);
-        $method->setAccessible(true);
+        $reflectionClass = new ReflectionClass($object::class);
+        $reflectionMethod = $reflectionClass->getMethod($methodName);
 
-        return $method->invokeArgs($object, $parameters);
+        return $reflectionMethod->invokeArgs($object, $parameters);
     }
 
     /**

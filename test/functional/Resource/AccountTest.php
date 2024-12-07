@@ -4,6 +4,7 @@ namespace Seafile\Client\Tests\Functional\Resource;
 
 use DateTime;
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Resource\Account;
 use Seafile\Client\Type\Account as AccountType;
 use Seafile\Client\Tests\Functional\FunctionalTestCase;
@@ -19,21 +20,19 @@ use Seafile\Client\Tests\Functional\FunctionalTestCase;
  */
 class AccountTest extends FunctionalTestCase
 {
-    /** @var string */
-    private $emailAddress = '';
+    private string $emailAddress = '';
 
-    /** @var Account|null */
-    private $accountResource = null;
+    private ?Account $account;
 
     /**
      * @throws Exception
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->emailAddress = 'seafile_php_sdk_functional_test_' . (string)random_int(0, 1000) . $this->faker->safeEmail;
-        $this->accountResource = new Account($this->client);
+        $this->emailAddress = 'seafile_php_sdk_functional_test_' . random_int(0, 1000) . $this->faker->safeEmail;
+        $this->account = new Account($this->client);
     }
 
     /**
@@ -49,14 +48,15 @@ class AccountTest extends FunctionalTestCase
      * and successfully so that's postponed for now.
      *
      * @throws Exception
+     * @throws GuzzleException
      */
-    public function testAccount()
+    public function testAccount(): void
     {
         $this->logger->debug("#################### Get all users");
-        $accountTypes = $this->accountResource->getAll();
+        $accountTypes = $this->account->getAll();
 
         self::assertIsArray($accountTypes);
-        self::assertTrue(count($accountTypes) > 0);
+        self::assertTrue($accountTypes !== []);
 
         foreach ($accountTypes as $accountType) {
             $this->logger->debug($accountType->email);
@@ -64,14 +64,14 @@ class AccountTest extends FunctionalTestCase
             self::assertInstanceOf(AccountType::class, $accountType);
             self::assertIsString(
                 filter_var($accountType->email, FILTER_VALIDATE_EMAIL),
-                "Expected a valid email address but got '{$accountType->email}'"
+                sprintf("Expected a valid email address but got '%s'", $accountType->email)
             );
         }
 
         $fullUserName = $this->faker->name();
         $note = $this->faker->sentence();
 
-        $this->logger->debug("#################### Create random account: {$this->emailAddress}");
+        $this->logger->debug('#################### Create random account: ' . $this->emailAddress);
 
         $newAccountType = (new AccountType)->fromArray([
             'email' => $this->emailAddress,
@@ -82,11 +82,11 @@ class AccountTest extends FunctionalTestCase
             //'institution' => 'Duff Beer Inc.',
         ]);
 
-        self::assertTrue($this->accountResource->create($newAccountType));
+        self::assertTrue($this->account->create($newAccountType));
 
         // get info on specific user
-        $this->logger->debug("#################### Get AccountType instance by email address: {$this->emailAddress}");
-        $accountType = $this->accountResource->getByEmail($this->emailAddress);
+        $this->logger->debug('#################### Get AccountType instance by email address: ' . $this->emailAddress);
+        $accountType = $this->account->getByEmail($this->emailAddress);
 
         self::assertInstanceOf(AccountType::class, $accountType);
         self::assertSame($this->emailAddress, $accountType->email);
@@ -99,8 +99,8 @@ class AccountTest extends FunctionalTestCase
             }
         }
 
-        $this->logger->debug("#################### Get Account info by email address: {$this->emailAddress}");
-        $accountType = $this->accountResource->getInfo($this->emailAddress);
+        $this->logger->debug('#################### Get Account info by email address: ' . $this->emailAddress);
+        $accountType = $this->account->getInfo($this->emailAddress);
 
         self::assertInstanceOf(AccountType::class, $accountType);
         self::assertSame($this->emailAddress, $accountType->email);

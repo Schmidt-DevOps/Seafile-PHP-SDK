@@ -6,7 +6,6 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Resource\Directory;
 use Seafile\Client\Resource\File;
-use Seafile\Client\Resource\Library;
 use Seafile\Client\Tests\Functional\FunctionalTestCase;
 use Seafile\Client\Type\DirectoryItem;
 
@@ -21,20 +20,18 @@ use Seafile\Client\Type\DirectoryItem;
  */
 class FileTest extends FunctionalTestCase
 {
-    /** @var File|null */
-    private $fileResource = null;
+    private ?File $file;
 
-    /** @var Library|null */
-    private $libraryResource = null;
+    private ?\Seafile\Client\Type\Library $library = null;
 
     /**
      * @throws Exception
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->fileResource = new File($this->client);
+        $this->file = new File($this->client);
     }
 
     /**
@@ -43,13 +40,13 @@ class FileTest extends FunctionalTestCase
      * @throws Exception
      * @throws GuzzleException
      */
-    public function testCreate()
+    public function testCreate(): void
     {
         $this->logger->debug("#################### Create empty file on Seafile server.");
 
-        $dirItem = (new DirectoryItem())->fromArray(['path' => '/', 'name' => uniqid('some_name_', true) . '.txt']);
+        $directoryItem = (new DirectoryItem())->fromArray(['path' => '/', 'name' => uniqid('some_name_', true) . '.txt']);
 
-        self::assertTrue($this->fileResource->create($this->getTestLibraryType(), $dirItem));
+        self::assertTrue($this->file->create($this->getTestLibraryType(), $directoryItem));
     }
 
     /**
@@ -69,41 +66,41 @@ class FileTest extends FunctionalTestCase
      * @throws GuzzleException
      * @throws Exception
      */
-    public function testHistory()
+    public function testHistory(): void
     {
-        $lib = $this->getTestLibraryType();
+        $library = $this->getTestLibraryType();
 
-        $this->logger->debug("#################### Getting lib with ID " . $lib->id);
+        $this->logger->debug("#################### Getting lib with ID " . $library->id);
 
         // upload a Hello World file and random file name (note: this seems not to work at this time when you are not logged into the Seafile web frontend).
         $newFilename = tempnam($GLOBALS['BUILD_TMP'], 'Seafile-PHP-SDK_Test_File_History_Upload_');
         rename($newFilename, $newFilename . '.txt');
         $newFilename .= '.txt';
-        file_put_contents($newFilename, 'Hello World: ' . date('Y-m-d H:i:s'));
+        file_put_contents($newFilename, 'Hello World: ' . (new \DateTime)->format('Y-m-d H:i:s'));
 
         $this->logger->debug("#################### Uploading file " . $newFilename);
 
-        $response = $this->fileResource->upload($lib, $newFilename, '/');
+        $response = $this->file->upload($library, $newFilename, '/');
         self::assertSame(200, $response->getStatusCode());
 
         // Update file
         $this->logger->debug("#################### Updating file " . $newFilename);
         file_put_contents($newFilename, ' - UPDATED!', FILE_APPEND);
-        $response = $this->fileResource->update($lib, $newFilename, '/');
+        $response = $this->file->update($library, $newFilename, '/');
 
         self::assertSame(200, $response->getStatusCode());
 
         // Get file detail
         $this->logger->debug("#################### Getting file detail of " . $newFilename);
-        $dirItem = $this->fileResource->getFileDetail($lib, basename($newFilename));
+        $directoryItem = $this->file->getFileDetail($library, basename($newFilename));
 
-        if ($dirItem->path === null) {
-            $dirItem->path = '/';
+        if ($directoryItem->path === null) {
+            $directoryItem->path = '/';
         }
 
         // Get file history
         $this->logger->debug("#################### Getting file history of " . $newFilename);
-        $fileHistoryItems = $this->fileResource->getHistory($lib, $dirItem);
+        $fileHistoryItems = $this->file->getHistory($library, $directoryItem);
 
         $this->logger->debug("#################### Listing file history of " . $newFilename);
 
@@ -116,12 +113,12 @@ class FileTest extends FunctionalTestCase
         $firstFileRevision = array_slice($fileHistoryItems, -1)[0];
 
         $localFilePath = $GLOBALS['BUILD_TMP'] . '/yo.txt';
-        $response = $this->fileResource->downloadRevision($lib, $dirItem, $firstFileRevision, $localFilePath);
+        $response = $this->file->downloadRevision($library, $directoryItem, $firstFileRevision, $localFilePath);
 
         self::assertSame(200, $response->getStatusCode());
 
         $this->logger->debug(
-            "#### First file revision of " . $dirItem->name . " downloaded to " . $localFilePath
+            "#### First file revision of " . $directoryItem->name . " downloaded to " . $localFilePath
         );
     }
 
@@ -131,19 +128,19 @@ class FileTest extends FunctionalTestCase
      * @throws GuzzleException
      * @throws Exception
      */
-    public function testList()
+    public function testList(): void
     {
         $desiredDirectoryPath = '/';
-        $lib = $this->getTestLibraryType();
+        $library = $this->getTestLibraryType();
 
         // get all directory items and list them one by one.
         $directory = new Directory($this->client);
-        $items = $directory->getAll($lib, $desiredDirectoryPath);
+        $items = $directory->getAll($library, $desiredDirectoryPath);
 
         $this->logger->debug("############################################### Result:");
 
         self::assertIsArray($items);
-        self::assertTrue(count($items) > 0);
+        self::assertTrue($items !== []);
 
         foreach ($items as $item) {
             $this->logger->debug(sprintf("(%s) %s/%s (%d bytes)\n", $item->type, $item->path, $item->name, $item->size));
@@ -157,14 +154,14 @@ class FileTest extends FunctionalTestCase
      * @throws Exception
      * @throws GuzzleException
      */
-    public function testRename()
+    public function testRename(): void
     {
-        $this->libraryResource = $this->getTestLibraryType();
+        $this->library = $this->getTestLibraryType();
         $libId = $_ENV['TEST_LIB_ENCRYPTED_ID'];
-        $lib = $this->getTestLibraryType();
+        $library = $this->getTestLibraryType();
 
-        if ($lib->encrypted === true && isset($cfg->testLibPassword)) {
-            $success = $this->libraryResource->decrypt($libId, ['query' => ['password' => $_ENV['TEST_LIB_ENCRYPTED_PASSWORD']]]);
+        if ($library->encrypted && isset($cfg->testLibPassword)) {
+            $success = $this->library->decrypt($libId, ['query' => ['password' => $_ENV['TEST_LIB_ENCRYPTED_PASSWORD']]]);
             self::assertTrue($success);
         }
 
@@ -174,20 +171,20 @@ class FileTest extends FunctionalTestCase
         $fileName = 'test.txt';
 
         $dirItem = (new DirectoryItem())->fromArray(['path' => '/', 'name' => $fileName]);
-        $success = $this->fileResource->create($lib, $dirItem);
+        $success = $this->file->create($library, $dirItem);
         self::assertTrue($success);
 
-        $newFilename = 'test_' . date('U') . '.txt';
-        $dirItem = $this->fileResource->getFileDetail($lib, $path . $fileName);
+        $newFilename = 'test_' . (new \DateTime)->format('U') . '.txt';
+        $dirItem = $this->file->getFileDetail($library, $path . $fileName);
 
         $this->logger->debug("#################### File to be renamed: " . $path . $dirItem->name);
 
-        $success = $this->fileResource->rename($lib, $dirItem, $newFilename);
+        $success = $this->file->rename($library, $dirItem, $newFilename);
         self::assertTrue($success);
         $this->logger->debug("#################### File renamed from " . $path . $fileName . ' to ' . $newFilename);
 
-        $newFilename = 'even_newer_file_name_test_' . date('U') . '.txt';
-        $success = $this->fileResource->rename($lib, $dirItem, $newFilename);
+        $newFilename = 'even_newer_file_name_test_' . (new \DateTime)->format('U') . '.txt';
+        $success = $this->file->rename($library, $dirItem, $newFilename);
 
         self::assertTrue($success);
         $this->logger->debug("#################### File renamed from " . $dirItem->name . ' to ' . $newFilename);

@@ -29,17 +29,10 @@ use Seafile\Client\Type\Library as LibraryType;
  */
 class FunctionalTestCase extends TestCase
 {
-    /** @var Client|null */
-    protected $client = null;
-
-    /** @var Logger|null */
-    protected $logger = null;
-
-    /** @var LibraryType|null */
-    protected $testLib = null;
-
-    /** @var Generator|null|Internet|Lorem|Person */
-    protected $faker = null;
+    protected ?Client $client;
+    protected ?Logger $logger;
+    protected ?LibraryType $testLib;
+    protected Internet|Lorem|null|Generator|Person $faker;
 
     /**
      * Skip functional tests when they do not have been set up correctly. Please refer to README.md on how to set them up.
@@ -48,7 +41,7 @@ class FunctionalTestCase extends TestCase
      *
      * @beforeClass
      */
-    public static function checkFunctionalTestsSetUpCorrectly()
+    public static function checkFunctionalTestsSetUpCorrectly(): void
     {
         if ($GLOBALS['RUN_FUNCTIONAL_TESTS'] !== true) {
             self::markTestSkipped();
@@ -56,7 +49,6 @@ class FunctionalTestCase extends TestCase
     }
 
     /**
-     * @return Logger
      * @throws Exception
      */
     protected function getLogger(): Logger
@@ -69,7 +61,6 @@ class FunctionalTestCase extends TestCase
     }
 
     /**
-     * @return Client
      * @throws Exception
      */
     protected function getClient(): Client
@@ -79,7 +70,7 @@ class FunctionalTestCase extends TestCase
             $stack->push(
                 Middleware::log(
                     $this->getLogger(),
-                    new MessageFormatter("{hostname} {req_header_Authorization} - {req_header_User-Agent} - [{date_common_log}] \"{method} {host}{target} HTTP/{version}\" {code} {res_header_Content-Length} req_body: {req_body} response_body: {res_body}")
+                    new MessageFormatter('{hostname} {req_header_Authorization} - {req_header_User-Agent} - [{date_common_log}] "{method} {host}{target} HTTP/{version}" {code} {res_header_Content-Length} req_body: {req_body} response_body: {res_body}')
                 )
             );
 
@@ -111,7 +102,6 @@ class FunctionalTestCase extends TestCase
     }
 
     /**
-     * @return Generator
      * @throws Exception
      */
     protected function getFaker(): Generator
@@ -119,25 +109,24 @@ class FunctionalTestCase extends TestCase
         if (is_null($this->faker)) {
             $this->faker = FakerFactory::create();
             $this->faker->seed($GLOBALS['FAKER_SEED']);
-            $this->getLogger()->info("Random generator seed: {$GLOBALS['FAKER_SEED']}");
+            $this->getLogger()->info('Random generator seed: ' . $GLOBALS['FAKER_SEED']);
         }
 
         return $this->faker;
     }
 
     /**
-     * @return LibraryType
      * @throws Exception
      */
     protected function getTestLibraryType(): LibraryType
     {
         if (is_null($this->testLib)) {
             $libId = $_ENV['TEST_LIB_ENCRYPTED_ID'];
-            $libraryResource = new Library($this->client);
-            $this->testLib = $libraryResource->getById($libId);
+            $library = new Library($this->client);
+            $this->testLib = $library->getById($libId);
 
-            if ($this->testLib->encrypted === true && array_key_exists('TEST_LIB_ENCRYPTED_PASSWORD', $_ENV)) {
-                self::assertTrue($libraryResource->decrypt(
+            if ($this->testLib->encrypted && array_key_exists('TEST_LIB_ENCRYPTED_PASSWORD', $_ENV)) {
+                self::assertTrue($library->decrypt(
                     $libId,
                     [
                         'query' => ['password' => $_ENV['TEST_LIB_ENCRYPTED_PASSWORD']],

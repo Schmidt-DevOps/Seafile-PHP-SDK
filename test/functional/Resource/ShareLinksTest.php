@@ -22,17 +22,16 @@ use Seafile\Client\Type\Library as LibraryType;
  */
 class ShareLinksTest extends FunctionalTestCase
 {
-    /** @var ShareLinksAlias|null */
-    private $shareLinksResource = null;
+    private ?ShareLinksAlias $shareLinksAlias;
 
     /**
      * @throws Exception
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->shareLinksResource = new ShareLinksAlias($this->client);
+        $this->shareLinksAlias = new ShareLinksAlias($this->client);
     }
 
     /**
@@ -43,15 +42,16 @@ class ShareLinksTest extends FunctionalTestCase
      * and successfully so that's postponed for now.
      *
      * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function testShareLinks()
+    public function testShareLinks(): void
     {
-        $libraryResource = new Library($this->client);
-        $fileResource = new File($this->client);
+        $library = new Library($this->client);
+        $file = new File($this->client);
 
         // get all libraries available
         $this->logger->debug("#################### Getting all libraries");
-        $libs = $libraryResource->getAll();
+        $libs = $library->getAll();
 
         foreach ($libs as $lib) {
             self::assertInstanceOf(LibraryType::class, $lib);
@@ -62,43 +62,43 @@ class ShareLinksTest extends FunctionalTestCase
 
         // get specific library
         $this->logger->debug("#################### Getting lib with ID " . $libId);
-        $lib = $libraryResource->getById($libId);
+        $lib = $library->getById($libId);
 
         // upload a Hello World file and random file name (note: this seems not to work at this time when you are not logged into the Seafile web frontend).
         $newFilename = $GLOBALS['BUILD_TMP'] . '/Seafile-PHP-SDK_Test_Upload.txt';
 
         if (!file_exists($newFilename)) {
-            file_put_contents($newFilename, 'Hello World: ' . date('Y-m-d H:i:s'));
+            file_put_contents($newFilename, 'Hello World: ' . (new \DateTime)->format('Y-m-d H:i:s'));
         }
 
         $this->logger->debug("#################### Uploading file " . $newFilename);
-        $response = $fileResource->upload($lib, $newFilename, '/');
+        $response = $file->upload($lib, $newFilename, '/');
         self::assertSame(200, $response->getStatusCode());
 
         // create share link for a file
         $this->logger->debug("#################### Create share link for a file");
 
         $expire = 5;
-        $permissions = new SharedLinkPermissions(SharedLinkPermissions::CAN_DOWNLOAD);
+        $sharedLinkPermissions = new SharedLinkPermissions(SharedLinkPermissions::CAN_DOWNLOAD);
         $p = "/" . basename($newFilename);
 
         if ($lib->encrypted) {
-            $shareLinkType = $this->shareLinksResource->create($lib, $p, $permissions, $expire, $lib->password);
+            $shareLinkType = $this->shareLinksAlias->create($lib, $p, $sharedLinkPermissions, $expire, $lib->password);
         } else {
-            $shareLinkType = $this->shareLinksResource->create($lib, $p, $permissions, $expire);
+            $shareLinkType = $this->shareLinksAlias->create($lib, $p, $sharedLinkPermissions, $expire);
         }
 
         self::assertInstanceOf(SharedLink::class, $shareLinkType);
 
         $this->logger->debug("#################### Get all shared links");
-        $shareLinks = $this->shareLinksResource->getAll();
+        $shareLinks = $this->shareLinksAlias->getAll();
 
         self::assertIsArray($shareLinks);
 
         $this->logger->debug("#################### Sleeping 10s before deleting the shared link");
         sleep(1);
 
-        $success = $this->shareLinksResource->remove($shareLinkType);
+        $success = $this->shareLinksAlias->remove($shareLinkType);
         self::assertTrue($success);
 
         $this->logger->debug("#################### Shared link deleted");

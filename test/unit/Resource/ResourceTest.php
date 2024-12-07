@@ -24,12 +24,10 @@ class ResourceTest extends UnitTestCase
 {
     /**
      * Test that clipUri() will consistently return URIs without trailing slash.
-     *
-     * @return void
      */
-    public function testClipUri()
+    public function testClipUri(): void
     {
-        $directoryResource = new Directory($this->getMockedClient(
+        $directory = new Directory($this->getMockedClient(
             new Response(200, ['Content-Type' => 'application/json'], '')
         ));
 
@@ -41,16 +39,14 @@ class ResourceTest extends UnitTestCase
         ];
 
         foreach ($uris as $uri => $clippedUri) {
-            self::assertSame($clippedUri, $directoryResource->clipUri($uri));
+            self::assertSame($clippedUri, $directory->clipUri($uri));
         }
     }
 
     /**
      * Test that getApiBaseUrl() returns the actual API base url depending on the resource.
-     *
-     * @return void
      */
-    public function testGetApiBaseUrl()
+    public function testGetApiBaseUrl(): void
     {
         /** @var Client|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(Client::class)->getMock();
@@ -67,7 +63,7 @@ class ResourceTest extends UnitTestCase
             ->method('getConfig')
             ->willReturn('https://example.com/seafile');
 
-        $shareLinkResource = new ShareLinks($mockedClient);
-        self::assertSame('http://example.com/seafile/api/v2.1', $shareLinkResource->getApiBaseUrl());
+        $shareLinks = new ShareLinks($mockedClient);
+        self::assertSame('http://example.com/seafile/api/v2.1', $shareLinks->getApiBaseUrl());
     }
 }

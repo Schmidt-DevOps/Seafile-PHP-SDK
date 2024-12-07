@@ -13,5 +13,5 @@ namespace Seafile\Client\Resource;
  */
 class Auth extends Resource implements ResourceInterface
 {
-    const API_VERSION = '2';
+    public const API_VERSION = '2';
 }

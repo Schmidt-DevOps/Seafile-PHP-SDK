@@ -23,10 +23,9 @@ class GroupTest extends UnitTestCase
     /**
      * Test getAll()
      *
-     * @return void
      * @throws GuzzleException
      */
-    public function testGetAll()
+    public function testGetAll(): void
     {
         $groupResource = new Group($this->getMockedClient(
             new Response(

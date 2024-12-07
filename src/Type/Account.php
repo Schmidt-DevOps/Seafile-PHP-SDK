@@ -18,83 +18,68 @@ use stdClass;
  */
 class Account extends Type
 {
-    /**
-     * @var string|null
-     */
-    public $contactEmail = null;
+    public ?string $contactEmail = null;
 
-    /**
-     * @var DateTime|null
-     */
-    public $createTime = null;
+    public ?DateTime $createTime = null;
 
-    /**
-     * @var string|null
-     */
-    public $department = null;
+    public ?string $department = null;
+
+    public ?string $email = null;
+
+    public ?int $id = null;
 
     /**
      * @var string|null
      */
-    public $email = null;
-
-    /**
-     * @var int|null
-     */
-    public $id = null;
-
-    /**
-     * @var string|null
-     */
-    public $institution = null;
+    public $institution;
 
     /**
      * @var bool|null
      */
-    public $isStaff = null;
+    public $isStaff;
 
     /**
      * @var bool|null
      */
-    public $isActive = null;
+    public $isActive;
 
     /**
      * @var string|null
      */
-    public $loginId = null;
+    public $loginId;
 
     /**
      * @var string|null
      */
-    public $name = null;
+    public $name;
 
     /**
      * @var string|null
      */
-    public $note = null;
+    public $note;
 
     /**
      * @var string|null
      */
-    public $password = null;
+    public $password;
 
     /**
      * @var int|null
      */
-    public $storage = null;
+    public $storage;
 
     /**
      * @var int|null
      */
-    public $spaceQuota = null;
+    public $spaceQuota;
 
     /**
      * @var int|null
      */
-    public $total = null;
+    public $total;
 
     /**
      * @var int|null
      */
-    public $usage = null;
+    public $usage;
 }

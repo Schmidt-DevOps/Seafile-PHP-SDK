@@ -21,10 +21,8 @@ class DirectoryItemUnitTest extends UnitTestCase
 {
     /**
      * DataProvider for testFromArray()
-     *
-     * @return array
      */
-    public function dataFromArray()
+    public function dataFromArray(): array
     {
         return [
             // [[expect response code, expected result, password]]
@@ -48,18 +46,17 @@ class DirectoryItemUnitTest extends UnitTestCase
      *
      * @param array $data Dataprovider array
      *
-     * @return void
      * @dataProvider dataFromArray
      * @throws GuzzleException
      * @throws Exception
      */
-    public function testFromArray(array $data)
+    public function testFromArray(array $data): void
     {
-        $dirItem = new DirectoryItem([
+        $directoryItem = new DirectoryItem([
             'dir' => $data['dir'],
         ]);
 
-        self::assertSame($data['dir'], $dirItem->dir);
-        self::assertSame($data['type'], $dirItem->type);
+        self::assertSame($data['dir'], $directoryItem->dir);
+        self::assertSame($data['type'], $directoryItem->type);
     }
 }

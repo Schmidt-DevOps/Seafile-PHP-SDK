@@ -21,30 +21,30 @@ class Group extends Type
     /**
      * @var int|null
      */
-    public $ctime = null;
+    public $ctime;
 
     /**
      * @var AccountType|null
      */
-    public $creator = null;
+    public $creator;
 
     /**
      * @var int|null
      */
-    public $msgnum = null;
+    public $msgnum;
 
     /**
      * @var int|null
      */
-    public $mtime = null;
+    public $mtime;
 
     /**
      * @var int|null
      */
-    public $id = null;
+    public $id;
 
     /**
      * @var string|null
      */
-    public $name = null;
+    public $name;
 }

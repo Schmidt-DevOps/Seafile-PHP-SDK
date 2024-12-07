@@ -4,8 +4,6 @@ namespace Seafile\Client\Resource;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Psr7\Response;
-use http\Env\Request;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Seafile\Client\Type\DirectoryItem;
@@ -23,77 +21,73 @@ use \Seafile\Client\Type\Library as LibraryType;
  */
 class File extends Resource
 {
-    const API_VERSION = '2';
+    public const API_VERSION = '2';
 
     /**
      * Mode of operation: copy
      */
-    const OPERATION_COPY = 1;
+    public const OPERATION_COPY = 1;
 
     /**
      * Mode of operation: move
      */
-    const OPERATION_MOVE = 2;
+    public const OPERATION_MOVE = 2;
 
     /**
      * Mode of operation: create
      */
-    const OPERATION_CREATE = 3;
+    public const OPERATION_CREATE = 3;
 
     /**
      * Get download URL of a file
      *
-     * @param LibraryType $library Library instance
-     * @param DirectoryItem $item Item instance
+     * @param LibraryType $libraryType Library instance
+     * @param DirectoryItem $directoryItem Item instance
      * @param string $dir Dir string
      * @param int $reuse Reuse more than once per hour
      *
-     * @return string
      * @throws GuzzleException
      */
-    public function getDownloadUrl(LibraryType $library, DirectoryItem $item, string $dir = '/', int $reuse = 1)
+    public function getDownloadUrl(LibraryType $libraryType, DirectoryItem $directoryItem, string $dir = '/', int $reuse = 1): ?string
     {
         $url = $this->getApiBaseUrl()
             . '/repos/'
-            . $library->id
+            . $libraryType->id
             . '/file/'
             . '?reuse=' . $reuse
-            . '&p=' . $this->urlEncodePath($dir . $item->name);
+            . '&p=' . $this->urlEncodePath($dir . $directoryItem->name);
 
         $response = $this->client->request('GET', $url);
         $downloadUrl = (string)$response->getBody();
 
-        return preg_replace("/\"/", '', $downloadUrl);
+        return preg_replace('/"/', '', $downloadUrl);
     }
 
     /**
      * URL-encode path string
      *
      * @param string $path Path string
-     *
-     * @return string
      */
-    protected function urlEncodePath(string $path)
+    protected function urlEncodePath(string $path): string
     {
-        return implode('/', array_map('rawurlencode', explode('/', (string)$path)));
+        return implode('/', array_map('rawurlencode', explode('/', $path)));
     }
 
     /**
      * Get download URL of a file from a Directory item
      *
-     * @param LibraryType $library Library instance
-     * @param DirectoryItem $item Item instance
+     * @param LibraryType $libraryType Library instance
+     * @param DirectoryItem $directoryItem Item instance
      * @param string $localFilePath Save file to path
      * @param string $dir Dir string
      * @param int $reuse Reuse more than once per hour
      *
-     * @return ResponseInterface
      * @throws Exception
      * @throws GuzzleException
      */
     public function downloadFromDir(
-        LibraryType   $library,
-        DirectoryItem $item,
+        LibraryType   $libraryType,
+        DirectoryItem $directoryItem,
         string        $localFilePath,
         string        $dir,
         int           $reuse = 1
@@ -103,7 +97,7 @@ class File extends Resource
             throw new Exception('File already exists');
         }
 
-        $downloadUrl = $this->getDownloadUrl($library, $item, $dir, $reuse);
+        $downloadUrl = $this->getDownloadUrl($libraryType, $directoryItem, $dir, $reuse);
 
         return $this->client->request('GET', $downloadUrl, ['save_to' => $localFilePath]);
     }
@@ -111,64 +105,62 @@ class File extends Resource
     /**
      * Get download URL of a file
      *
-     * @param LibraryType $library Library instance
+     * @param LibraryType $libraryType Library instance
      * @param string $filePath Save file to path
      * @param string $localFilePath Local file path
      * @param int $reuse Reuse more than once per hour
      *
-     * @return ResponseInterface
      * @throws Exception
      * @throws GuzzleException
      */
-    public function download(LibraryType $library, string $filePath, string $localFilePath, int $reuse = 1)
+    public function download(LibraryType $libraryType, string $filePath, string $localFilePath, int $reuse = 1): ResponseInterface
     {
-        $item = new DirectoryItem();
-        $item->name = basename($filePath);
+        $directoryItem = new DirectoryItem();
+        $directoryItem->name = basename($filePath);
 
         $dir = str_replace("\\", "/", dirname($filePath)); // compatibility for windows
 
-        return $this->downloadFromDir($library, $item, $localFilePath, $dir, $reuse);
+        return $this->downloadFromDir($libraryType, $directoryItem, $localFilePath, $dir, $reuse);
     }
 
     /**
      * Update file
      *
-     * @param LibraryType $library Library instance
+     * @param LibraryType $libraryType Library instance
      * @param string $localFilePath Local file path
      * @param string $dir Library dir
      * @param mixed $filename File name, or false to use the name from $localFilePath
      *
-     * @return ResponseInterface
      * @throws Exception
      * @throws GuzzleException
      */
-    public function update(LibraryType $library, string $localFilePath, string $dir = '/', $filename = false): ResponseInterface
+    public function update(LibraryType $libraryType, string $localFilePath, string $dir = '/', mixed $filename = false): ResponseInterface
     {
-        return $this->upload($library, $localFilePath, $dir, $filename, false);
+        return $this->upload($libraryType, $localFilePath, $dir, $filename, false);
     }
 
     /**
      * Get upload URL
      *
-     * @param LibraryType $library Library instance
+     * @param LibraryType $libraryType Library instance
      * @param bool $newFile Is new file (=upload) or not (=update)
      * @param string $dir Directory to upload to
      *
      * @return String Upload link
      * @throws GuzzleException
      */
-    public function getUploadUrl(LibraryType $library, bool $newFile = true, string $dir = "/"): string
+    public function getUploadUrl(LibraryType $libraryType, bool $newFile = true, string $dir = "/"): string
     {
         $url = $this->getApiBaseUrl()
             . '/repos/'
-            . $library->id
+            . $libraryType->id
             . '/' . ($newFile ? 'upload' : 'update') . '-link/'
             . '?p=' . $dir;
 
         $response = $this->client->request('GET', $url);
         $uploadLink = (string)$response->getBody();
 
-        return preg_replace("/\"/", '', $uploadLink);
+        return preg_replace('/"/', '', $uploadLink);
     }
 
     /**
@@ -178,21 +170,15 @@ class File extends Resource
      * @param string $dir Library dir
      * @param bool $newFile Is new file (=upload) or not (=update)
      * @param mixed $newFilename New file name, or false to use the name from $localFilePath
-     *
-     * @return array
      */
     public function getMultiPartParams(
         string $localFilePath,
         string $dir,
         bool   $newFile = true,
-               $newFilename = false
+               mixed $newFilename = false
     ): array
     {
-        if ($newFilename === false) {
-            $fileBaseName = basename($localFilePath);
-        } else {
-            $fileBaseName = $newFilename;
-        }
+        $fileBaseName = $newFilename === false ? basename($localFilePath) : $newFilename;
 
         $multiPartParams = [
             [
@@ -228,21 +214,20 @@ class File extends Resource
     /**
      * Upload file
      *
-     * @param LibraryType $library Library instance
+     * @param LibraryType $libraryType Library instance
      * @param string $localFilePath Local file path
      * @param string $dir Library dir
      * @param mixed $newFilename New file name, or false to use the name from $localFilePath
      * @param bool $newFile Is new file (=upload) or not (=update)
      *
-     * @return ResponseInterface
      * @throws Exception
      * @throws GuzzleException
      */
     public function upload(
-        LibraryType $library,
+        LibraryType $libraryType,
         string      $localFilePath,
         string      $dir = '/',
-                    $newFilename = false,
+                    mixed $newFilename = false,
         bool        $newFile = true
     ): ResponseInterface
     {
@@ -252,7 +237,7 @@ class File extends Resource
 
         return $this->client->request(
             'POST',
-            $this->getUploadUrl($library, $newFile, $dir),
+            $this->getUploadUrl($libraryType, $newFile, $dir),
             [
                 'headers' => ['Accept' => '*/*'],
                 'multipart' => $this->getMultiPartParams($localFilePath, $dir, $newFile, $newFilename),
@@ -263,18 +248,17 @@ class File extends Resource
     /**
      * Get file detail
      *
-     * @param LibraryType $library Library instance
+     * @param LibraryType $libraryType Library instance
      * @param string $remoteFilePath Remote file path
      *
-     * @return DirectoryItem
      * @throws GuzzleException
      * @throws Exception
      */
-    public function getFileDetail(LibraryType $library, string $remoteFilePath): DirectoryItem
+    public function getFileDetail(LibraryType $libraryType, string $remoteFilePath): DirectoryItem
     {
         $url = $this->getApiBaseUrl()
             . '/repos/'
-            . $library->id
+            . $libraryType->id
             . '/file/detail/'
             . '?p=' . $this->urlEncodePath($remoteFilePath);
 
@@ -288,23 +272,22 @@ class File extends Resource
     /**
      * Remove a file
      *
-     * @param LibraryType $library Library object
+     * @param LibraryType $libraryType Library object
      * @param string $filePath File path
      *
-     * @return bool
      * @throws GuzzleException
      */
-    public function remove(LibraryType $library, string $filePath): bool
+    public function remove(LibraryType $libraryType, string $filePath): bool
     {
         // do not allow empty paths
-        if (empty($filePath)) {
+        if ($filePath === '' || $filePath === '0') {
             return false;
         }
 
         $uri = sprintf(
             '%s/repos/%s/file/?p=%s',
             $this->clipUri($this->getApiBaseUrl()),
-            $library->id,
+            $libraryType->id,
             $this->urlEncodePath($filePath)
         );
 
@@ -322,29 +305,28 @@ class File extends Resource
     /**
      * Rename a file
      *
-     * @param LibraryType $library Library object
-     * @param DirectoryItem $dirItem Directory item to rename
+     * @param LibraryType $libraryType Library object
+     * @param DirectoryItem $directoryItem Directory item to rename
      * @param string $newFilename New file name; see "Issues" in the readme
      *
-     * @return bool
      * @throws GuzzleException
      */
-    public function rename(LibraryType $library, DirectoryItem $dirItem, string $newFilename): bool
+    public function rename(LibraryType $libraryType, DirectoryItem $directoryItem, string $newFilename): bool
     {
-        $filePath = $dirItem->dir . $dirItem->name;
+        $filePath = $directoryItem->dir . $directoryItem->name;
 
-        if (empty($filePath)) {
+        if ($filePath === '' || $filePath === '0') {
             throw new InvalidArgumentException('Invalid file path: must not be empty');
         }
 
-        if (empty($newFilename) || strpos($newFilename, '/') === 0) {
+        if ($newFilename === '' || $newFilename === '0' || str_starts_with($newFilename, '/')) {
             throw new InvalidArgumentException('Invalid new file name: length must be >0 and must not start with /');
         }
 
         $uri = sprintf(
             '%s/repos/%s/file/?p=%s',
             $this->clipUri($this->getApiBaseUrl()),
-            $library->id,
+            $libraryType->id,
             $this->urlEncodePath($filePath)
         );
 
@@ -369,7 +351,7 @@ class File extends Resource
         $success = $response->getStatusCode() === 200;
 
         if ($success) {
-            $dirItem->name = $newFilename;
+            $directoryItem->name = $newFilename;
         }
 
         return $success;
@@ -384,7 +366,6 @@ class File extends Resource
      * @param string $dstDirectoryPath Destination directory path
      * @param int $operation Operation mode
      *
-     * @return bool
      * @throws GuzzleException
      */
     public function copy(
@@ -396,7 +377,7 @@ class File extends Resource
     ): bool
     {
         // do not allow empty paths
-        if (empty($srcFilePath) || empty($dstDirectoryPath)) {
+        if ($srcFilePath === '' || $srcFilePath === '0' || ($dstDirectoryPath === '' || $dstDirectoryPath === '0')) {
             return false;
         }
 
@@ -448,7 +429,6 @@ class File extends Resource
      * @param LibraryType $dstLibrary Destination library object
      * @param string $dstDirectoryPath Destination directory path
      *
-     * @return bool
      * @throws GuzzleException
      */
     public function move(
@@ -464,50 +444,48 @@ class File extends Resource
     /**
      * Get file revision download URL
      *
-     * @param LibraryType $library Source library object
-     * @param DirectoryItem $dirItem Item instance
+     * @param LibraryType $libraryType Source library object
+     * @param DirectoryItem $directoryItem Item instance
      * @param FileHistoryItem $fileHistoryItem FileHistory item instance
      *
-     * @return string|string[]
      * @throws GuzzleException
      */
     public function getFileRevisionDownloadUrl(
-        LibraryType     $library,
-        DirectoryItem   $dirItem,
+        LibraryType     $libraryType,
+        DirectoryItem   $directoryItem,
         FileHistoryItem $fileHistoryItem
-    )
+    ): ?string
     {
         $url = $this->getApiBaseUrl()
             . '/repos/'
-            . $library->id
+            . $libraryType->id
             . '/file/revision/'
-            . '?p=' . $this->urlEncodePath($dirItem->path . $dirItem->name)
+            . '?p=' . $this->urlEncodePath($directoryItem->path . $directoryItem->name)
             . '&commit_id=' . $fileHistoryItem->id;
 
         $response = $this->client->request('GET', $url);
 
-        return preg_replace("/\"/", '', (string)$response->getBody());
+        return preg_replace('/"/', '', (string)$response->getBody());
     }
 
     /**
      * Download file revision
      *
-     * @param LibraryType $library Source library object
-     * @param DirectoryItem $dirItem Item instance
+     * @param LibraryType $libraryType Source library object
+     * @param DirectoryItem $directoryItem Item instance
      * @param FileHistoryItem $fileHistoryItem FileHistory item instance
      * @param string $localFilePath Save file to path. Existing files will be overwritten without warning
      *
-     * @return ResponseInterface
      * @throws GuzzleException
      */
     public function downloadRevision(
-        LibraryType     $library,
-        DirectoryItem   $dirItem,
+        LibraryType     $libraryType,
+        DirectoryItem   $directoryItem,
         FileHistoryItem $fileHistoryItem,
         string          $localFilePath
     ): ResponseInterface
     {
-        $downloadUrl = $this->getFileRevisionDownloadUrl($library, $dirItem, $fileHistoryItem);
+        $downloadUrl = $this->getFileRevisionDownloadUrl($libraryType, $directoryItem, $fileHistoryItem);
 
         return $this->client->request('GET', $downloadUrl, ['save_to' => $localFilePath]);
     }
@@ -515,20 +493,20 @@ class File extends Resource
     /**
      * Get history of a file DirectoryItem
      *
-     * @param LibraryType $library Library instance
-     * @param DirectoryItem $item Item instance
+     * @param LibraryType $libraryType Library instance
+     * @param DirectoryItem $directoryItem Item instance
      *
      * @return FileHistoryItem[]
      * @throws GuzzleException
      * @throws Exception
      */
-    public function getHistory(LibraryType $library, DirectoryItem $item)
+    public function getHistory(LibraryType $libraryType, DirectoryItem $directoryItem): array
     {
         $url = $this->getApiBaseUrl()
             . '/repos/'
-            . $library->id
+            . $libraryType->id
             . '/file/history/'
-            . '?p=' . $this->urlEncodePath($item->path . $item->name);
+            . '?p=' . $this->urlEncodePath($directoryItem->path . $directoryItem->name);
 
         $response = $this->client->request('GET', $url);
 
@@ -546,24 +524,23 @@ class File extends Resource
     /**
      * Create empty file on Seafile server
      *
-     * @param LibraryType $library Library instance
-     * @param DirectoryItem $item Item instance
+     * @param LibraryType $libraryType Library instance
+     * @param DirectoryItem $directoryItem Item instance
      *
-     * @return bool
      * @throws GuzzleException
      */
-    public function create(LibraryType $library, DirectoryItem $item): bool
+    public function create(LibraryType $libraryType, DirectoryItem $directoryItem): bool
     {
         // do not allow empty paths
-        if (empty($item->path)) {
+        if (empty($directoryItem->path)) {
             return false;
         }
 
         $uri = sprintf(
             '%s/repos/%s/file/?p=%s',
             $this->clipUri($this->getApiBaseUrl()),
-            $library->id,
-            $this->urlEncodePath($item->path . $item->name)
+            $libraryType->id,
+            $this->urlEncodePath($directoryItem->path . $directoryItem->name)
         );
 
         $response = $this->client->request(

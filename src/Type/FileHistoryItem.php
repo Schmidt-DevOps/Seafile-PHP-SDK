@@ -31,7 +31,7 @@ class FileHistoryItem extends Type
     /**
      * @var DateTime|null
      */
-    public $ctime = null;
+    public $ctime;
 
     /**
      * @var string
@@ -95,5 +95,5 @@ class FileHistoryItem extends Type
     /**
      * @var int|null
      */
-    public $secondParentId = null;
+    public $secondParentId;
 }

@@ -26,33 +26,31 @@ class TypeUnitTest extends UnitTestCase
     /**
      * Test fromArray()
      *
-     * @return void
      * @throws Exception
      */
-    public function testFromArray()
+    public function testFromArray(): void
     {
-        $dirItem = new DirectoryItem([
+        $directoryItem = new DirectoryItem([
             'id' => 1,
             'size' => 2,
             'name' => 'my name',
             'type' => 'my type',
         ]);
 
-        self::assertSame(1, $dirItem->id);
-        self::assertSame(2, $dirItem->size);
-        self::assertSame('my name', $dirItem->name);
-        self::assertSame('my type', $dirItem->type);
+        self::assertSame(1, $directoryItem->id);
+        self::assertSame(2, $directoryItem->size);
+        self::assertSame('my name', $directoryItem->name);
+        self::assertSame('my type', $directoryItem->type);
     }
 
     /**
      * Test fromArray() with a non-existing property
      *
-     * @return void
      * @throws Exception
      */
-    public function testFromArrayPropertyMissing()
+    public function testFromArrayPropertyMissing(): void
     {
-        $dirItem = new DirectoryItem([
+        $directoryItem = new DirectoryItem([
             'id' => 1,
             'size' => 2,
             'name' => 'my name',
@@ -72,53 +70,49 @@ class TypeUnitTest extends UnitTestCase
                 'path' => null,
                 'repo' => null,
             ],
-            (array)$dirItem
+            (array)$directoryItem
         );
     }
 
     /**
      * Test fromArray() with create_time property
      *
-     * @return void
      * @throws Exception
      */
-    public function testFromArrayCreateTime()
+    public function testFromArrayCreateTime(): void
     {
-        $accountType = new AccountType([
+        $account = new AccountType([
             'create_time' => '1452202279000000',
         ]);
 
-        self::assertSame('2016-01-07T21:31:19+0000', $accountType->createTime->format(DateTime::ISO8601));
+        self::assertSame('2016-01-07T21:31:19+00:00', $account->createTime->format(\DateTimeInterface::ATOM));
     }
 
     /**
      * Test fromJson() with create_time property
      *
-     * @return void
      * @throws Exception
      */
-    public function testFromJsonCreateTime()
+    public function testFromJsonCreateTime(): void
     {
-        $accountType = new AccountType();
+        $account = new AccountType();
 
-        $accountType->fromJson(json_decode(json_encode([
+        $account->fromJson(json_decode(json_encode([
             'create_time' => '1452202279000000',
         ])));
 
-        self::assertSame('2016-01-07T21:31:19+0000', $accountType->createTime->format(DateTime::ISO8601));
+        self::assertSame('2016-01-07T21:31:19+00:00', $account->createTime->format(\DateTimeInterface::ATOM));
     }
 
     /**
      * Test toJson()
      *
-     * @return void
      * @throws Exception
      */
-    public function testJson()
+    public function testJson(): void
     {
-        $accountType = new AccountType();
-
-        $jsonString = $accountType->toJson();
+        $account = new AccountType();
+        $jsonString = $account->toJson();
 
         self::assertStringStartsWith('{"contactEmail":null', $jsonString);
         self::assertStringEndsWith('"total":null,"usage":null}', $jsonString);
@@ -126,8 +120,6 @@ class TypeUnitTest extends UnitTestCase
 
     /**
      * Data provider for testToArrayAssoc()
-     *
-     * @return array
      */
     public static function dataProviderTestToArrayAssoc(): array
     {
@@ -140,8 +132,8 @@ class TypeUnitTest extends UnitTestCase
             ],
             [
                 [
-                    ['createTime' => 1452202279000000],
-                    ['createTime' => 1452202279000000] // no empty values
+                    ['create_time' => 1452202279000000],
+                    ['createTime' => DateTime::createFromFormat(\DateTimeInterface::ATOM, '2016-01-07T21:31:19+0000')] // no empty values
                 ],
             ],
         ];
@@ -152,22 +144,18 @@ class TypeUnitTest extends UnitTestCase
      *
      * @param array $data Data provider array
      *
-     * @return void
      * @dataProvider dataProviderTestToArrayAssoc
      * @throws Exception
      */
-    public function testToArrayAssoc(array $data)
+    public function testToArrayAssoc(array $data): void
     {
         $accountType = (new AccountType())->fromArray($data[0]);
-
         self::assertEquals($data[1], $accountType->toArray());
     }
 
 
     /**
      * Data provider for testToArrayMultiPart()
-     *
-     * @return array
      */
     public static function dataProviderTestToArrayMultiPart(): array
     {
@@ -180,8 +168,8 @@ class TypeUnitTest extends UnitTestCase
             ],
             [
                 [
-                    ['createTime' => 1452202279000000],
-                    [['name' => 'create_time', 'contents' => '1452202279000000']] // no empty values
+                    ['create_time' => 1452202279000000],
+                    [['name' => 'create_time', 'contents' => '1452202279']] // no empty values
                 ],
             ],
         ];
@@ -192,11 +180,10 @@ class TypeUnitTest extends UnitTestCase
      *
      * @param array $data Data provider array
      *
-     * @return void
      * @dataProvider dataProviderTestToArrayMultiPart
      * @throws Exception
      */
-    public function testToArrayMultiPart(array $data)
+    public function testToArrayMultiPart(array $data): void
     {
         $accountType = (new AccountType())->fromArray($data[0]);
 
@@ -208,14 +195,13 @@ class TypeUnitTest extends UnitTestCase
      *
      * Must yield AccountType instance
      *
-     * @return void
      * @throws Exception
      */
-    public function testFromArrayCreator()
+    public function testFromArrayCreator(): void
     {
         $email = 'someone@example.com';
         $groupType = (new GroupType())->fromArray(['creator' => $email]);
-        self::assertInstanceOf(Account::class, $groupType->creator);
+        self::assertInstanceOf(AccountType::class, $groupType->creator);
         self::assertSame($email, $groupType->creator->email);
     }
 }

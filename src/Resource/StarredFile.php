@@ -21,12 +21,9 @@ use \Seafile\Client\Type\DirectoryItem;
  */
 class StarredFile extends Resource
 {
-    const API_VERSION = '2';
+    public const API_VERSION = '2';
 
-    /**
-     * @var string
-     */
-    protected $resourceUri = '';
+    protected string $resourceUri;
 
     /**
      * Constructor
@@ -65,15 +62,15 @@ class StarredFile extends Resource
     /**
      * Create directory within $parentDir
      *
-     * @param LibraryType $library Library instance
-     * @param DirectoryItem $dirItem DirectoryItem instance to star
+     * @param LibraryType $libraryType Library instance
+     * @param DirectoryItem $directoryItem DirectoryItem instance to star
      *
      * @return string URL of starred file list
      * @throws Exception
      */
-    public function star(LibraryType $library, DirectoryItem $dirItem): string
+    public function star(LibraryType $libraryType, DirectoryItem $directoryItem): string
     {
-        if ($dirItem->type !== 'file') {
+        if ($directoryItem->type !== 'file') {
             throw new Exception('Cannot star other items than files.');
         }
 
@@ -85,11 +82,11 @@ class StarredFile extends Resource
                 'multipart' => [
                     [
                         'name' => 'repo_id',
-                        'contents' => $library->id,
+                        'contents' => $libraryType->id,
                     ],
                     [
                         'name' => 'p',
-                        'contents' => $dirItem->path,
+                        'contents' => $directoryItem->path,
                     ],
                 ],
             ]
@@ -105,18 +102,16 @@ class StarredFile extends Resource
     /**
      * Unstar a file
      *
-     * @param LibraryType $library Library instance
-     * @param DirectoryItem $dirItem DirectoryItem instance
-     *
-     * @return bool
+     * @param LibraryType $libraryType Library instance
+     * @param DirectoryItem $directoryItem DirectoryItem instance
      */
-    public function unstar(LibraryType $library, DirectoryItem $dirItem): bool
+    public function unstar(LibraryType $libraryType, DirectoryItem $directoryItem): bool
     {
         $uri = sprintf(
             '%s/?repo_id=%s&p=%s',
             $this->resourceUri,
-            $library->id,
-            $dirItem->path
+            $libraryType->id,
+            $directoryItem->path
         );
 
         $response = $this->client->request('DELETE', $uri);

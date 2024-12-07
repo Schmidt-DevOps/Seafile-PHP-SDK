@@ -16,17 +16,17 @@ use \Seafile\Client\Type\Library as LibraryType;
  */
 class Multi extends Resource
 {
-    const API_VERSION = '2';
+    public const API_VERSION = '2';
 
     /**
      * Mode of operation: copy
      */
-    const OPERATION_COPY = 1;
+    public const OPERATION_COPY = 1;
 
     /**
      * Mode of operation: move
      */
-    const OPERATION_MOVE = 2;
+    public const OPERATION_MOVE = 2;
 
     /**
      * Move multiple files or folders
@@ -36,7 +36,6 @@ class Multi extends Resource
      * @param LibraryType $dstLibrary Destination library object
      * @param string $dstDirectoryPath Destination directory Path
      *
-     * @return bool
      * @throws GuzzleException
      */
     public function move(
@@ -58,7 +57,6 @@ class Multi extends Resource
      * @param string $dstDirectoryPath Destination directory Path
      * @param int $operation self::OPERATION_COPY or self::OPERATION_MOVE
      *
-     * @return bool
      * @throws GuzzleException
      */
     public function copy(
@@ -70,7 +68,7 @@ class Multi extends Resource
     ): bool
     {
         // do not allow empty paths
-        if (empty($srcPaths) || empty($dstDirectoryPath)) {
+        if ($srcPaths === [] || ($dstDirectoryPath === '' || $dstDirectoryPath === '0')) {
             return false;
         }
 
@@ -78,11 +76,11 @@ class Multi extends Resource
 
         // get the source folder path
         // this path must be the same for all files!
-        $srcFolderPath = dirname($srcPaths[0]);
+        $srcFolderPath = dirname((string) $srcPaths[0]);
 
         $dstFileNames = $this->preparePaths($srcFolderPath, $srcPaths);
 
-        if (empty($dstFileNames)) {
+        if ($dstFileNames === '' || $dstFileNames === '0') {
             return false;
         }
 
@@ -127,19 +125,19 @@ class Multi extends Resource
      * @param string $folder Folder path
      * @param array $paths Paths of files
      * @param string $fileNames Optional file names
-     *
-     * @return string
      */
     protected function preparePaths(string $folder, array $paths, string $fileNames = ''): string
     {
         foreach ($paths as $path) {
-            if (dirname($path) != $folder) {
+            if (dirname((string) $path) !== $folder) {
                 return ''; // all source paths must be the same
             }
-            if ($fileNames != '') {
+
+            if ($fileNames !== '') {
                 $fileNames .= ':';
             }
-            $fileNames .= basename($path);
+
+            $fileNames .= basename((string) $path);
         }
 
         return $fileNames;
@@ -148,26 +146,25 @@ class Multi extends Resource
     /**
      * Delete multiple files or folders
      *
-     * @param LibraryType $library Library object
+     * @param LibraryType $libraryType Library object
      * @param array $paths Array with file and folder paths (they must be in the same folder)
      *
-     * @return bool
      * @throws GuzzleException
      */
-    public function delete(LibraryType $library, array $paths): bool
+    public function delete(LibraryType $libraryType, array $paths): bool
     {
         // do not allow empty paths
-        if (empty($paths)) {
+        if ($paths === []) {
             return false;
         }
 
         // get the folder path
         // this path must be the same for all files!
-        $folderPath = dirname($paths[0]);
+        $folderPath = dirname((string) $paths[0]);
 
         $fileNames = $this->preparePaths($folderPath, $paths);
 
-        if (empty($fileNames)) {
+        if ($fileNames === '' || $fileNames === '0') {
             return false;
         }
 
@@ -176,7 +173,7 @@ class Multi extends Resource
         $uri = sprintf(
             '%s/repos/%s/fileops/delete/?p=%s',
             $this->clipUri($this->getApiBaseUrl()),
-            $library->id,
+            $libraryType->id,
             $folderPath
         );
 

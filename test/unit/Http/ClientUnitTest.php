@@ -19,10 +19,8 @@ class ClientUnitTest extends UnitTestCase
 {
     /**
      * Test that base_uri is empty by default.
-     *
-     * @return void
      */
-    public function testBaseUriEmpty()
+    public function testBaseUriEmpty(): void
     {
         $client = new Client();
         self::assertEmpty((string)$client->getConfig('base_uri'));
@@ -30,10 +28,8 @@ class ClientUnitTest extends UnitTestCase
 
     /**
      * Test that base_uri not empty when a value has been set.
-     *
-     * @return void
      */
-    public function testBaseUriNotEmpty()
+    public function testBaseUriNotEmpty(): void
     {
         $client = new Client(['base_uri' => 'http://example.com']);
         self::assertSame('http://example.com', (string)$client->getConfig('base_uri'));

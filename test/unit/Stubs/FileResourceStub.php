@@ -20,35 +20,27 @@ class FileResourceStub extends File
     /**
      * Get download URL of a file
      *
-     * @param LibraryType $library Library instance
-     * @param DirectoryItem $item Item instance
+     * @param LibraryType $libraryType Library instance
+     * @param DirectoryItem $directoryItem Item instance
      * @param string $dir Dir string
      * @param int $reuse Reuse more than once per hour
-     *
-     * @return string
      */
-    public function getDownloadUrl(LibraryType $library, DirectoryItem $item, string $dir = '/', int $reuse = 1)
+    public function getDownloadUrl(LibraryType $libraryType, DirectoryItem $directoryItem, string $dir = '/', int $reuse = 1): string
     {
-        $library = null;
-        $item = null;
-        $dir = null;
-        $reuse = null;
         return 'http://download.example.com/';
     }
 
     /**
      * Get upload URL
      *
-     * @param LibraryType $library Library instance
+     * @param LibraryType $libraryType Library instance
      * @param bool $newFile Is new file (=upload) or not (=update)
      * @param string $dir Directory to upload to
      *
      * @return String Upload link
      */
-    public function getUploadUrl(LibraryType $library, bool $newFile = true, string $dir = "/"): string
+    public function getUploadUrl(LibraryType $libraryType, bool $newFile = true, string $dir = "/"): string
     {
-        $library = null;
-        $newFile = null;
         return 'http://upload.example.com/';
     }
 }

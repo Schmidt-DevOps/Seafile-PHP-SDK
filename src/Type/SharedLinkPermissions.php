@@ -12,6 +12,7 @@ use Sdo\Bitmask\AbstractBitmask;
  */
 class SharedLinkPermissions extends AbstractBitmask
 {
-    const CAN_DOWNLOAD = 1;
-    const CAN_EDIT = 2;
+    public const CAN_DOWNLOAD = 1;
+
+    public const CAN_EDIT = 2;
 }

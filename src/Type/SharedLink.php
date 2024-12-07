@@ -23,56 +23,56 @@ class SharedLink extends Type
      *
      * @var int|null
      */
-    public $viewCnt = null;
+    public $viewCnt;
 
     /**
      * Token
      *
      * @var string|null
      */
-    public $token = null;
+    public $token;
 
     /**
      * Creation time
      *
      * @var DateTime|null
      */
-    public $ctime = null;
+    public $ctime;
 
     /**
      * Path
      *
      * @var string|null
      */
-    public $path = null;
+    public $path;
 
     /**
      * Repo ID
      *
      * @var string|null
      */
-    public $repoId = null;
+    public $repoId;
 
     /**
      * User name
      *
      * @var string|null
      */
-    public $username = null;
+    public $username;
 
     /**
      * URL
      *
      * @var string|null
      */
-    public $url = null;
+    public $url;
 
     /**
      * Link, same as URL
      *
      * @var string|null
      */
-    public $link = null;
+    public $link;
 
     /**
      * @var array
@@ -98,5 +98,5 @@ class SharedLink extends Type
     /**
      * @var DateTime|null
      */
-    public $expireDate = null;
+    public $expireDate;
 }

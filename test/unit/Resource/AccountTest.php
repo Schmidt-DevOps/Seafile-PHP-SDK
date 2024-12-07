@@ -3,6 +3,7 @@
 namespace Seafile\Client\Tests\Unit\Resource;
 
 use DateTime;
+use DateTimeInterface;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
@@ -27,13 +28,12 @@ class AccountTest extends UnitTestCase
     /**
      * Test getAll()
      *
-     * @return void
      * @throws GuzzleException
      * @throws Exception
      */
-    public function testGetAll()
+    public function testGetAll(): void
     {
-        $accountResource = new Account($this->getMockedClient(
+        $account = new Account($this->getMockedClient(
             new Response(
                 200,
                 ['Content-Type' => 'application/json'],
@@ -41,7 +41,7 @@ class AccountTest extends UnitTestCase
             )
         ));
 
-        $libs = $accountResource->getAll();
+        $libs = $account->getAll();
 
         self::assertIsArray($libs);
 
@@ -54,12 +54,10 @@ class AccountTest extends UnitTestCase
      * Test getByEmail()
      *
      * @param string $method Name of method to be tested
-     *
-     * @return void
      */
-    public function testGetByEmail(string $method = 'getByEmail')
+    public function testGetByEmail(string $method = 'getByEmail'): void
     {
-        $accountResource = new Account($this->getMockedClient(
+        $account = new Account($this->getMockedClient(
             new Response(
                 200,
                 ['Content-Type' => 'application/json'],
@@ -69,20 +67,18 @@ class AccountTest extends UnitTestCase
 
         $email = 'test-5690113abbceb4.93776759@example.com';
 
-        $accountType = $accountResource->{$method}($email);
+        $accountType = $account->{$method}($email);
 
         self::assertInstanceOf(AccountType::class, $accountType);
         self::assertSame($email, $accountType->email);
         self::assertInstanceOf(DateTime::class, $accountType->createTime);
-        self::assertSame('2016-01-08T19:42:50+0000', $accountType->createTime->format(DATE_ISO8601));
+        self::assertSame('2016-01-08T19:42:50+00:00', $accountType->createTime->format(DateTimeInterface::ATOM));
     }
 
     /**
      * Test getInfo()
-     *
-     * @return void
      */
-    public function testGetInfo()
+    public function testGetInfo(): void
     {
         $this->testGetByEmail('getInfo');
     }
@@ -90,19 +86,16 @@ class AccountTest extends UnitTestCase
     /**
      * Test create() with missing attribute values
      *
-     * @return void
      * @throws Exception
      */
-    public function testCreateIllegal()
+    public function testCreateIllegal(): void
     {
-        $accountResource = new Account($this->getMockedClient(new Response(200)));
-        self::assertFalse($accountResource->create(new AccountType()));
+        $account = new Account($this->getMockedClient(new Response(200)));
+        self::assertFalse($account->create(new AccountType()));
     }
 
     /**
      * Data Provider for testCreate()
-     *
-     * @return array
      */
     public static function dataProviderCreateUpdate(): array
     {
@@ -123,10 +116,9 @@ class AccountTest extends UnitTestCase
      *
      * @param array $data DataProvider data
      *
-     * @return void
      * @throws Exception
      */
-    public function testCreateUpdate(array $data)
+    public function testCreateUpdate(array $data): void
     {
         $baseUri = 'https://example.com';
 
@@ -148,27 +140,24 @@ class AccountTest extends UnitTestCase
             ->with('base_uri')
             ->willReturn($baseUri);
 
-        $accountResource = new Account($mockedClient);
+        $account = new Account($mockedClient);
 
-        self::assertSame($data['result'], $accountResource->{$data['method']}($accountType));
+        self::assertSame($data['result'], $account->{$data['method']}($accountType));
     }
 
     /**
      * Test update() with missing attribute values
      *
-     * @return void
      * @throws Exception
      */
-    public function testUpdateIllegal()
+    public function testUpdateIllegal(): void
     {
-        $accountResource = new Account($this->getMockedClient(new Response(200)));
-        self::assertFalse($accountResource->update(new AccountType()));
+        $account = new Account($this->getMockedClient(new Response(200)));
+        self::assertFalse($account->update(new AccountType()));
     }
 
     /**
      * Data Provider for testRemove()
-     *
-     * @return array
      */
     public static function dataProviderRemove(): array
     {
@@ -185,10 +174,9 @@ class AccountTest extends UnitTestCase
      *
      * @param array $data DataProvider data
      *
-     * @return void
      * @throws Exception
      */
-    public function testRemove(array $data)
+    public function testRemove(array $data): void
     {
         $baseUri = 'https://example.com';
 

@@ -27,13 +27,12 @@ class StarredFileTest extends UnitTestCase
     /**
      * Test getAll()
      *
-     * @return void
      * @throws GuzzleException
      * @throws Exception
      */
-    public function testGetAll()
+    public function testGetAll(): void
     {
-        $starredFileResource = new StarredFile($this->getMockedClient(
+        $starredFile = new StarredFile($this->getMockedClient(
             new Response(
                 200,
                 ['Content-Type' => 'application/json'],
@@ -41,7 +40,7 @@ class StarredFileTest extends UnitTestCase
             )
         ));
 
-        $starredDirItems = $starredFileResource->getAll();
+        $starredDirItems = $starredFile->getAll();
 
         self::assertIsArray($starredDirItems);
 
@@ -53,35 +52,33 @@ class StarredFileTest extends UnitTestCase
     /**
      * Test star() with wrong DirItem type
      *
-     * @return void
      * @throws GuzzleException
      * @throws Exception
      */
-    public function testStarWrongType()
+    public function testStarWrongType(): void
     {
-        $starredFileResource = new StarredFile($this->getMockedClient(new Response()));
+        $starredFile = new StarredFile($this->getMockedClient(new Response()));
 
         $this->expectException('Exception');
         $this->expectExceptionMessage('Cannot star other items than files.');
 
-        $starredFileResource->star(new LibraryType(), new DirectoryItem());
+        $starredFile->star(new LibraryType(), new DirectoryItem());
     }
 
     /**
      * Test star()
      *
-     * @return void
      * @throws GuzzleException
      * @throws Exception
      */
-    public function testStar()
+    public function testStar(): void
     {
-        $lib = new LibraryType();
-        $lib->id = 123;
+        $library = new LibraryType();
+        $library->id = 123;
 
-        $dirItem = new DirectoryItem();
-        $dirItem->type = 'file';
-        $dirItem->path = '/some/path';
+        $directoryItem = new DirectoryItem();
+        $directoryItem->type = 'file';
+        $directoryItem->path = '/some/path';
 
         $responseUrl = 'https://example.com/test/';
 
@@ -108,8 +105,7 @@ class StarredFileTest extends UnitTestCase
             )
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($starResponse, $lib, $dirItem) {
-
+                function ($method, $uri, array $params) use ($starResponse, $library, $directoryItem): Response {
                     $hasParams = array_key_exists('headers', $params)
                         && array_key_exists('multipart', $params)
                         && array_key_exists('name', $params['multipart'][0])
@@ -117,8 +113,8 @@ class StarredFileTest extends UnitTestCase
                         && array_key_exists('name', $params['multipart'][1])
                         && array_key_exists('contents', $params['multipart'][1]);
 
-                    $hasContents = $params['multipart'][0]['contents'] === $lib->id
-                        && $params['multipart'][1]['contents'] === $dirItem->path;
+                    $hasContents = $params['multipart'][0]['contents'] === $library->id
+                        && $params['multipart'][1]['contents'] === $directoryItem->path;
 
                     if ($hasParams
                         && $hasContents
@@ -132,9 +128,9 @@ class StarredFileTest extends UnitTestCase
                 }
             ));
 
-        $starredFileResource = new StarredFile($mockedClient);
+        $starredFile = new StarredFile($mockedClient);
 
-        $result = $starredFileResource->star($lib, $dirItem);
+        $result = $starredFile->star($library, $directoryItem);
 
         self::assertSame($responseUrl, $result);
     }
@@ -142,18 +138,17 @@ class StarredFileTest extends UnitTestCase
     /**
      * Test star() with error response
      *
-     * @return void
      * @throws Exception
      * @throws GuzzleException
      */
-    public function testStarErrorStatusCode()
+    public function testStarErrorStatusCode(): void
     {
-        $lib = new LibraryType();
-        $lib->id = 123;
+        $library = new LibraryType();
+        $library->id = 123;
 
-        $dirItem = new DirectoryItem();
-        $dirItem->type = 'file';
-        $dirItem->path = '/some/path';
+        $directoryItem = new DirectoryItem();
+        $directoryItem->type = 'file';
+        $directoryItem->path = '/some/path';
 
         $responseUrl = 'https://example.com/test/';
 
@@ -178,29 +173,28 @@ class StarredFileTest extends UnitTestCase
             ->with('POST')
             ->willReturn($starResponse);
 
-        $starredFileResource = new StarredFile($mockedClient);
+        $starredFile = new StarredFile($mockedClient);
 
         $this->expectException('Exception');
         $this->expectExceptionMessage('Could not star file');
 
-        $starredFileResource->star($lib, $dirItem);
+        $starredFile->star($library, $directoryItem);
     }
 
     /**
      * Test star() with missing location
      *
-     * @return void
      * @throws Exception
      * @throws GuzzleException
      */
-    public function testStarErrorMissingLocation()
+    public function testStarErrorMissingLocation(): void
     {
-        $lib = new LibraryType();
-        $lib->id = 123;
+        $library = new LibraryType();
+        $library->id = 123;
 
-        $dirItem = new DirectoryItem();
-        $dirItem->type = 'file';
-        $dirItem->path = '/some/path';
+        $directoryItem = new DirectoryItem();
+        $directoryItem->type = 'file';
+        $directoryItem->path = '/some/path';
 
         /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
@@ -215,18 +209,16 @@ class StarredFileTest extends UnitTestCase
             ->with('POST')
             ->willReturn(new Response(500));
 
-        $starredFileResource = new StarredFile($mockedClient);
+        $starredFile = new StarredFile($mockedClient);
 
         $this->expectException('Exception');
         $this->expectExceptionMessage('Could not star file');
 
-        $starredFileResource->star($lib, $dirItem);
+        $starredFile->star($library, $directoryItem);
     }
 
     /**
      * DataProvider for unstar()
-     *
-     * @return array
      */
     public static function dataProviderUnstar(): array
     {
@@ -251,19 +243,18 @@ class StarredFileTest extends UnitTestCase
      *
      * @param array $data Data provider array
      *
-     * @return void
      * @throws GuzzleException
      * @throws Exception
      * @dataProvider dataProviderUnstar
      */
-    public function testUnstar(array $data)
+    public function testUnstar(array $data): void
     {
-        $lib = new LibraryType();
-        $lib->id = 123;
+        $library = new LibraryType();
+        $library->id = 123;
 
-        $dirItem = new DirectoryItem();
-        $dirItem->type = 'file';
-        $dirItem->path = '/some/path';
+        $directoryItem = new DirectoryItem();
+        $directoryItem->type = 'file';
+        $directoryItem->path = '/some/path';
 
         /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
@@ -280,11 +271,11 @@ class StarredFileTest extends UnitTestCase
                 new Response($data['responseCode'])
             );
 
-        $starredFileResource = new StarredFile($mockedClient);
+        $starredFile = new StarredFile($mockedClient);
 
         self::assertSame(
             $data['result'],
-            $starredFileResource->unstar($lib, $dirItem)
+            $starredFile->unstar($library, $directoryItem)
         );
     }
 }
