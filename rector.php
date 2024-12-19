@@ -9,6 +9,7 @@ use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Naming\Rector\Assign\RenameVariableToMatchMethodCallReturnTypeRector;
 use Rector\Php54\Rector\Array_\LongArrayToShortArrayRector;
 use Rector\Php70\Rector\FunctionLike\ExceptionHandlerTypehintRector;
+use Rector\Php80\Rector\Switch_\ChangeSwitchToMatchRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\Symfony\Set\FOSRestSetList;
@@ -22,10 +23,10 @@ return static function (RectorConfig $rectorConfig): void {
         __DIR__ . '/test',
     ]);
 
-    $rectorConfig->phpVersion(PhpVersion::PHP_82);
+    $rectorConfig->phpVersion(PhpVersion::PHP_84);
 
     $rectorConfig->sets([
-        LevelSetList::UP_TO_PHP_82,
+        LevelSetList::UP_TO_PHP_84,
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
         SetList::DEAD_CODE,
@@ -50,6 +51,12 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->importNames();
     $rectorConfig->autoloadPaths([
         __DIR__ . '/vendor/autoload.php',
+    ]);
+
+    $rectorConfig->skip([
+        ChangeSwitchToMatchRector::class => [
+            __DIR__ . '/src/Type/Type.php',
+        ],
     ]);
 
     $rectorConfig->parallel();

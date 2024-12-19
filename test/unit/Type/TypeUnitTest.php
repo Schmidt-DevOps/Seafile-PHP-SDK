@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Tests\Unit\Type;
 
+use DateTimeInterface;
 use DateTime;
 use Exception;
 use Seafile\Client\Tests\Unit\UnitTestCase;
@@ -85,7 +86,7 @@ class TypeUnitTest extends UnitTestCase
             'create_time' => '1452202279000000',
         ]);
 
-        self::assertSame('2016-01-07T21:31:19+00:00', $account->createTime->format(\DateTimeInterface::ATOM));
+        self::assertSame('2016-01-07T21:31:19+00:00', $account->createTime->format(DateTimeInterface::ATOM));
     }
 
     /**
@@ -101,7 +102,7 @@ class TypeUnitTest extends UnitTestCase
             'create_time' => '1452202279000000',
         ])));
 
-        self::assertSame('2016-01-07T21:31:19+00:00', $account->createTime->format(\DateTimeInterface::ATOM));
+        self::assertSame('2016-01-07T21:31:19+00:00', $account->createTime->format(DateTimeInterface::ATOM));
     }
 
     /**
@@ -133,7 +134,7 @@ class TypeUnitTest extends UnitTestCase
             [
                 [
                     ['create_time' => 1452202279000000],
-                    ['createTime' => DateTime::createFromFormat(\DateTimeInterface::ATOM, '2016-01-07T21:31:19+0000')] // no empty values
+                    ['createTime' => DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-01-07T21:31:19+0000')] // no empty values
                 ],
             ],
         ];

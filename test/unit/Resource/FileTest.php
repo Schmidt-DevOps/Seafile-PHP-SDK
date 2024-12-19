@@ -110,19 +110,19 @@ class FileTest extends UnitTestCase
         $libId = "lib_id";
         $uploadDir = "/Somedir";
 
-        /** @var SeafileHttpClient|MockObject $mockedClient */
-        $mockedClient = $this->getMockedClient(
+        /** @var SeafileHttpClient|MockObject $mockObject */
+        $mockObject = $this->getMockedClient(
             new Response(200, ['Content-Type' => 'application/json'], '"https://some.example.com/some/url"')
         );
 
-        $mockedClient->expects(self::any())
+        $mockObject->expects(self::any())
             ->method('request')
             ->with(
                 self::equalTo('GET'),
                 self::equalTo('http://example.com/index.html/api' . File::API_VERSION . '/repos/' . $libId . '/upload-link/?p=' . $uploadDir)
             );
 
-        $file = new File($mockedClient);
+        $file = new File($mockObject);
 
         $library = new Library(['id' => $libId]);
 
@@ -477,7 +477,7 @@ class FileTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $deleteResponse, $expectUri, $expectParams) {
+                function ($method, $uri, $params) use ($getAllResponse, $deleteResponse, $expectUri, $expectParams): Response {
                     if ($method === 'GET') {
                         return $getAllResponse;
                     }
@@ -539,7 +539,7 @@ class FileTest extends UnitTestCase
             ->method('request')
             ->with(self::equalTo('POST'))
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($renameResponse, $expectUri, $expectParams) {
+                function ($method, $uri, $params) use ($renameResponse, $expectUri, $expectParams): Response {
                     if ($expectUri === $uri && $expectParams === $params && $method === 'POST') {
                         return $renameResponse;
                     }
@@ -625,7 +625,7 @@ class FileTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $response, $expectUri, $expectParams) {
+                function ($method, $uri, $params) use ($getAllResponse, $response, $expectUri, $expectParams): Response {
                     if ($method === 'GET') {
                         return $getAllResponse;
                     }
@@ -765,7 +765,7 @@ class FileTest extends UnitTestCase
      */
     public function testCreate(): void
     {
-        $clientMock = $this->getMockedClient(
+        $mockObject = $this->getMockedClient(
             new Response(
                 201,
                 ['Content-Type' => 'application/json'],
@@ -773,7 +773,7 @@ class FileTest extends UnitTestCase
             )
         );
 
-        $clientMock->expects(self::any())
+        $mockObject->expects(self::any())
             ->method('request')
             ->with(
                 self::equalTo('POST'),
@@ -786,7 +786,7 @@ class FileTest extends UnitTestCase
                 'success'
             )));
 
-        $file = new File($clientMock);
+        $file = new File($mockObject);
 
         $library = new Library;
         $library->id = 123;

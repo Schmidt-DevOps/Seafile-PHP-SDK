@@ -3,5 +3,6 @@
 
 mkdir -p ./build/logs
 
-./vendor/bin/phpstan analyse --configuration phpstan.neon src test
-./vendor/bin/phpunit --log-junit ./build/logs/junit.xml test
+composer run rector
+composer run phpstan
+composer run phpunit

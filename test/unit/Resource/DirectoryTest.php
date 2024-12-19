@@ -182,7 +182,7 @@ class DirectoryTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method) use ($getAllResponse, $mkdirResponse) {
+                function ($method) use ($getAllResponse, $mkdirResponse): Response {
                     if ($method === 'GET') {
                         return $getAllResponse;
                     }
@@ -321,7 +321,7 @@ class DirectoryTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $mkdirResponse, $expectUri, $expectParams) {
+                function ($method, $uri, $params) use ($getAllResponse, $mkdirResponse, $expectUri, $expectParams): Response {
                     if ($method === 'GET') {
                         return $getAllResponse;
                     }
@@ -389,7 +389,7 @@ class DirectoryTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $mkdirResponse, $expectUri, $expectParams) {
+                function ($method, $uri, $params) use ($getAllResponse, $mkdirResponse, $expectUri, $expectParams): Response {
                     if ($method === 'GET') {
                         return $getAllResponse;
                     }

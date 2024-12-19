@@ -21,7 +21,7 @@
     "encrypted"
   ],
   "require": {
-    "php": ">=8.2",
+    "php": ">=8.3",
     "guzzlehttp/guzzle": "~7.7",
     "marcusball/case-helper": "~0.2",
     "ext-json": "*",
@@ -34,7 +34,7 @@
     "phpunit/php-timer": "~5.0",
     "fzaninotto/faker": "~1.5",
     "phpstan/phpstan": "^1.11",
-    "rector/rector": "^1.1"
+    "rector/rector": "^1.2"
   },
   "type": "library",
   "autoload": {
@@ -49,6 +49,9 @@
     }
   },
   "scripts": {
+    "phpstan": "./vendor/bin/phpstan analyse --memory-limit 2G --configuration phpstan.neon src test",
+    "phpunit": "./vendor/bin/phpunit --log-junit ./build/logs/junit.xml test",
+    "rector": "./vendor/bin/rector --no-ansi --no-progress-bar",
     "tests_prepare": "./bin/prepare_tests.sh",
     "tests_run": "./bin/run_tests.sh"
   }
