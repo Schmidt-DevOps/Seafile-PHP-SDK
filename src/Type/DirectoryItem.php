@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Type;
 
+use Override;
 use DateTime;
 use Exception;
 use stdClass;
@@ -74,6 +75,7 @@ class DirectoryItem extends Type
      *
      * @throws Exception
      */
+    #[Override]
     public function fromArray(array $fromArray): DirectoryItem
     {
         $typeExists = array_key_exists('type', $fromArray);

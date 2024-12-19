@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Resource;
 
+use Override;
 use Seafile\Client\Http\Client;
 
 /**
@@ -45,6 +46,7 @@ abstract class Resource implements ResourceInterface
      *
      * @param string $uri URI string
      */
+    #[Override]
     public function clipUri(string $uri): string
     {
         return preg_replace("/\/$/", '', $uri);

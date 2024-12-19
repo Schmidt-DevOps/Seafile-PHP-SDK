@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Tests\Unit\Stubs;
 
+use Override;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Type\Library as LibraryType;
 use Seafile\Client\Type\DirectoryItem;
@@ -25,6 +26,7 @@ class FileResourceStub extends File
      * @param string $dir Dir string
      * @param int $reuse Reuse more than once per hour
      */
+    #[Override]
     public function getDownloadUrl(LibraryType $libraryType, DirectoryItem $directoryItem, string $dir = '/', int $reuse = 1): string
     {
         return 'http://download.example.com/';
@@ -39,6 +41,7 @@ class FileResourceStub extends File
      *
      * @return String Upload link
      */
+    #[Override]
     public function getUploadUrl(LibraryType $libraryType, bool $newFile = true, string $dir = "/"): string
     {
         return 'http://upload.example.com/';

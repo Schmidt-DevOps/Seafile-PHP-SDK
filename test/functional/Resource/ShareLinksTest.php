@@ -2,6 +2,9 @@
 
 namespace Seafile\Client\Tests\Functional\Resource;
 
+use Override;
+use DateTime;
+use GuzzleHttp\Exception\GuzzleException;
 use Exception;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Resource\Library;
@@ -27,6 +30,7 @@ class ShareLinksTest extends FunctionalTestCase
     /**
      * @throws Exception
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -42,7 +46,7 @@ class ShareLinksTest extends FunctionalTestCase
      * and successfully so that's postponed for now.
      *
      * @throws Exception
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     public function testShareLinks(): void
     {
@@ -55,7 +59,7 @@ class ShareLinksTest extends FunctionalTestCase
 
         foreach ($libs as $lib) {
             self::assertInstanceOf(LibraryType::class, $lib);
-            $this->logger->debug(sprintf("Name: %s, ID: %s, is encrypted: %s\n", $lib->name, $lib->id, $lib->encrypted ? 'YES' : 'NO'));
+            $this->logger->debug(sprintf("Name: %s, ID: %s, is encrypted: %s\n", $lib->name, $lib->id, $lib->encrypted !== '' && $lib->encrypted !== '0' ? 'YES' : 'NO'));
         }
 
         $libId = $_ENV['TEST_LIB_UNENCRYPTED_ID'];
@@ -68,7 +72,7 @@ class ShareLinksTest extends FunctionalTestCase
         $newFilename = $GLOBALS['BUILD_TMP'] . '/Seafile-PHP-SDK_Test_Upload.txt';
 
         if (!file_exists($newFilename)) {
-            file_put_contents($newFilename, 'Hello World: ' . (new \DateTime)->format('Y-m-d H:i:s'));
+            file_put_contents($newFilename, 'Hello World: ' . (new DateTime)->format('Y-m-d H:i:s'));
         }
 
         $this->logger->debug("#################### Uploading file " . $newFilename);
@@ -82,7 +86,7 @@ class ShareLinksTest extends FunctionalTestCase
         $sharedLinkPermissions = new SharedLinkPermissions(SharedLinkPermissions::CAN_DOWNLOAD);
         $p = "/" . basename($newFilename);
 
-        if ($lib->encrypted) {
+        if ($lib->encrypted !== '' && $lib->encrypted !== '0') {
             $shareLinkType = $this->shareLinksAlias->create($lib, $p, $sharedLinkPermissions, $expire, $lib->password);
         } else {
             $shareLinkType = $this->shareLinksAlias->create($lib, $p, $sharedLinkPermissions, $expire);

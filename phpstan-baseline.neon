@@ -111,6 +111,11 @@ parameters:
 			path: src/Type/Type.php
 
 		-
+			message: "#^Parameter \\#1 \\$value of method Seafile\\\\Client\\\\Type\\\\Type\\:\\:getDateTime\\(\\) expects int, int\\|false given\\.$#"
+			count: 1
+			path: src/Type/Type.php
+
+		-
 			message: "#^Parameter \\#2 \\$datetime of static method DateTime\\:\\:createFromFormat\\(\\) expects string, float\\|int\\<min, 9999999999\\> given\\.$#"
 			count: 1
 			path: src/Type/Type.php
@@ -186,8 +191,13 @@ parameters:
 			path: test/unit/Resource/AccountTest.php
 
 		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Account constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
+			count: 4
+			path: test/unit/Resource/AccountTest.php
+
+		-
 			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Account constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client given\\.$#"
-			count: 6
+			count: 2
 			path: test/unit/Resource/AccountTest.php
 
 		-
@@ -231,8 +241,13 @@ parameters:
 			path: test/unit/Resource/DirectoryTest.php
 
 		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Directory constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
+			count: 1
+			path: test/unit/Resource/DirectoryTest.php
+
+		-
 			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Directory constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client given\\.$#"
-			count: 7
+			count: 6
 			path: test/unit/Resource/DirectoryTest.php
 
 		-
@@ -242,7 +257,7 @@ parameters:
 
 		-
 			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client\\:\\:expects\\(\\)\\.$#"
-			count: 5
+			count: 4
 			path: test/unit/Resource/FileTest.php
 
 		-
@@ -281,12 +296,17 @@ parameters:
 			path: test/unit/Resource/FileTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\File constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client given\\.$#"
-			count: 18
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\File constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
+			count: 10
 			path: test/unit/Resource/FileTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Tests\\\\Unit\\\\Stubs\\\\FileResourceStub constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client given\\.$#"
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\File constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client given\\.$#"
+			count: 8
+			path: test/unit/Resource/FileTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Tests\\\\Unit\\\\Stubs\\\\FileResourceStub constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
 			count: 7
 			path: test/unit/Resource/FileTest.php
 
@@ -306,7 +326,7 @@ parameters:
 			path: test/unit/Resource/FileTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Group constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client given\\.$#"
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Group constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
 			count: 1
 			path: test/unit/Resource/GroupTest.php
 
@@ -356,7 +376,7 @@ parameters:
 			path: test/unit/Resource/LibraryTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Library constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client given\\.$#"
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Library constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
 			count: 9
 			path: test/unit/Resource/LibraryTest.php
 
@@ -411,7 +431,7 @@ parameters:
 			path: test/unit/Resource/ResourceTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Directory constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client given\\.$#"
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Directory constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
 			count: 1
 			path: test/unit/Resource/ResourceTest.php
 
@@ -441,8 +461,13 @@ parameters:
 			path: test/unit/Resource/ShareLinksTest.php
 
 		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\ShareLinks constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
+			count: 1
+			path: test/unit/Resource/ShareLinksTest.php
+
+		-
 			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\ShareLinks constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client given\\.$#"
-			count: 3
+			count: 2
 			path: test/unit/Resource/ShareLinksTest.php
 
 		-
@@ -471,8 +496,13 @@ parameters:
 			path: test/unit/Resource/StarredFileTest.php
 
 		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\StarredFile constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
+			count: 2
+			path: test/unit/Resource/StarredFileTest.php
+
+		-
 			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\StarredFile constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client given\\.$#"
-			count: 6
+			count: 4
 			path: test/unit/Resource/StarredFileTest.php
 
 		-
@@ -519,3 +549,8 @@ parameters:
 			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
 			count: 1
 			path: test/unit/Type/TypeUnitTest.php
+
+		-
+			message: "#^PHPDoc tag @return with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
+			count: 1
+			path: test/unit/UnitTestCase.php

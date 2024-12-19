@@ -290,7 +290,7 @@ class LibraryTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $createResponse, $expectUri, $expectParams) {
+                function ($method, $uri, $params) use ($getAllResponse, $createResponse, $expectUri, $expectParams): Response {
                     if ($method === 'GET') {
                         return $getAllResponse;
                     }
@@ -348,7 +348,7 @@ class LibraryTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $removeResponse, $expectUri, $expectParams) {
+                function ($method, $uri, $params) use ($getAllResponse, $removeResponse, $expectUri, $expectParams): Response {
                     if ($method === 'GET') {
                         return $getAllResponse;
                     }

@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Tests\Functional\Resource;
 
+use Override;
 use Exception;
 use Seafile\Client\Resource\Group;
 use Seafile\Client\Tests\Functional\FunctionalTestCase;
@@ -23,6 +24,7 @@ class GroupTest extends FunctionalTestCase
     /**
      * @throws Exception
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -86,8 +86,8 @@ class ShareLinks extends Resource implements ResourceInterface
         LibraryType           $libraryType,
         string                $path,
         SharedLinkPermissions $sharedLinkPermissions,
-        int                   $expire = null,
-        string                $password = null
+        ?int                   $expire = null,
+        ?string                $password = null
     ): ?SharedLinkType
     {
         $uri = sprintf(
