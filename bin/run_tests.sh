@@ -3,6 +3,6 @@
 
 mkdir -p ./build/logs
 
-./vendor/bin/rector --no-ansi --no-progress-bar
-./vendor/bin/phpstan analyse --memory-limit 2G --configuration phpstan.neon src test
-./vendor/bin/phpunit --log-junit ./build/logs/junit.xml test
+composer run rector
+composer run phpstan
+composer run phpunit
