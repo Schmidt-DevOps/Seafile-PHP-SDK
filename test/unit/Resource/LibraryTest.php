@@ -27,12 +27,11 @@ class LibraryTest extends UnitTestCase
     /**
      * Test getAll()
      *
-     * @return void
      * @throws Exception
      */
-    public function testGetAll()
+    public function testGetAll(): void
     {
-        $libraryResource = new Library($this->getMockedClient(
+        $library = new Library($this->getMockedClient(
             new Response(
                 200,
                 ['Content-Type' => 'application/json'],
@@ -40,7 +39,7 @@ class LibraryTest extends UnitTestCase
             )
         ));
 
-        $libs = $libraryResource->getAll();
+        $libs = $library->getAll();
 
         self::assertIsArray($libs);
 
@@ -52,12 +51,11 @@ class LibraryTest extends UnitTestCase
     /**
      * getById()
      *
-     * @return void
      * @throws Exception
      */
-    public function testGetById()
+    public function testGetById(): void
     {
-        $libraryResource = new Library($this->getMockedClient(
+        $library = new Library($this->getMockedClient(
             new Response(
                 200,
                 ['Content-Type' => 'application/json'],
@@ -65,16 +63,15 @@ class LibraryTest extends UnitTestCase
             )
         ));
 
-        self::assertInstanceOf(LibraryType::class, $libraryResource->getById('some_id'));
+        self::assertInstanceOf(LibraryType::class, $library->getById('some_id'));
     }
 
     /**
      * Try to decrypt without query parameters. Must fail of course.
      *
-     * @return void
      * @throws Exception
      */
-    public function testDecryptMissingQuery()
+    public function testDecryptMissingQuery(): void
     {
         $library = new Library($this->getMockedClient(new Response));
         $this->expectException('Exception');
@@ -84,10 +81,9 @@ class LibraryTest extends UnitTestCase
     /**
      * Try to decrypt without password. Must fail of course.
      *
-     * @return void
      * @throws Exception
      */
-    public function testDecryptMissingPassword()
+    public function testDecryptMissingPassword(): void
     {
         $library = new Library($this->getMockedClient(new Response));
         $this->expectException('Exception');
@@ -97,10 +93,9 @@ class LibraryTest extends UnitTestCase
     /**
      * Decryption fails
      *
-     * @return void
      * @throws Exception
      */
-    public function testDecryptUnsuccessfully()
+    public function testDecryptUnsuccessfully(): void
     {
         $library = new Library($this->getMockedClient(
             new Response(
@@ -121,10 +116,9 @@ class LibraryTest extends UnitTestCase
     /**
      * Decryption succeeds
      *
-     * @return void
      * @throws Exception
      */
-    public function testDecryptSuccessfully()
+    public function testDecryptSuccessfully(): void
     {
         $library = new Library($this->getMockedClient(
             new Response(
@@ -144,8 +138,6 @@ class LibraryTest extends UnitTestCase
 
     /**
      * Data provider for testExists()
-     *
-     * @return array
      */
     public static function dataProviderExists(): array
     {
@@ -164,12 +156,11 @@ class LibraryTest extends UnitTestCase
      *
      * @param array $data Test data
      *
-     * @return void
      * @throws GuzzleException
      */
-    public function testExists(array $data)
+    public function testExists(array $data): void
     {
-        $libraryResource = new Library($this->getMockedClient(
+        $library = new Library($this->getMockedClient(
             new Response(
                 200,
                 ['Content-Type' => 'application/json'],
@@ -177,13 +168,11 @@ class LibraryTest extends UnitTestCase
             )
         ));
 
-        self::assertSame($data[2], $libraryResource->exists($data[0], $data[1]));
+        self::assertSame($data[2], $library->exists($data[0], $data[1]));
     }
 
     /**
      * DataProvider for testCreateInvalid()
-     *
-     * @return array
      */
     public static function dataProviderCreateInvalid(): array
     {
@@ -200,12 +189,11 @@ class LibraryTest extends UnitTestCase
      *
      * @param array $data Test data
      *
-     * @return void
      * @throws GuzzleException
      */
-    public function testCreateInvalid(array $data)
+    public function testCreateInvalid(array $data): void
     {
-        $libraryResource = new Library($this->getMockedClient(
+        $library = new Library($this->getMockedClient(
             new Response(
                 200,
                 ['Content-Type' => 'application/json'],
@@ -213,18 +201,17 @@ class LibraryTest extends UnitTestCase
             )
         ));
 
-        self::assertSame($data[1], $libraryResource->create($data[0]));
+        self::assertSame($data[1], $library->create($data[0]));
     }
 
     /**
      * Test remove(), provide invalid parameters, expect failure
      *
-     * @return void
      * @throws GuzzleException
      */
-    public function testRemoveInvalid()
+    public function testRemoveInvalid(): void
     {
-        $libraryResource = new Library($this->getMockedClient(
+        $library = new Library($this->getMockedClient(
             new Response(
                 200,
                 ['Content-Type' => 'application/json'],
@@ -232,13 +219,11 @@ class LibraryTest extends UnitTestCase
             )
         ));
 
-        self::assertFalse($libraryResource->remove(''));
+        self::assertFalse($library->remove(''));
     }
 
     /**
      * DataProvider for create()
-     *
-     * @return array
      */
     public static function dataProviderCreate(): array
     {
@@ -257,10 +242,9 @@ class LibraryTest extends UnitTestCase
      *
      * @param array $data Test data
      *
-     * @return void
      * @throws GuzzleException
      */
-    public function testCreate(array $data)
+    public function testCreate(array $data): void
     {
         $getAllResponse = new Response(
             200,
@@ -306,7 +290,7 @@ class LibraryTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $createResponse, $expectUri, $expectParams) {
+                function ($method, $uri, $params) use ($getAllResponse, $createResponse, $expectUri, $expectParams): Response {
                     if ($method === 'GET') {
                         return $getAllResponse;
                     }
@@ -333,11 +317,10 @@ class LibraryTest extends UnitTestCase
     /**
      * Test remove()
      *
-     * @return void
      * @throws Exception
      * @throws GuzzleException
      */
-    public function testRemove()
+    public function testRemove(): void
     {
         $getAllResponse = new Response(
             200,
@@ -365,7 +348,7 @@ class LibraryTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $removeResponse, $expectUri, $expectParams) {
+                function ($method, $uri, $params) use ($getAllResponse, $removeResponse, $expectUri, $expectParams): Response {
                     if ($method === 'GET') {
                         return $getAllResponse;
                     }

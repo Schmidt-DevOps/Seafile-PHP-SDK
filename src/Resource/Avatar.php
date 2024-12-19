@@ -72,7 +72,7 @@ class Avatar extends Resource
      */
     protected function getAvatar(Type $type, int $size)
     {
-        if (!is_int($size) || $size < 1) {
+        if ($size < 1) {
             throw new Exception('Illegal avatar size');
         }
 
@@ -104,7 +104,6 @@ class Avatar extends Resource
      *
      * @param AccountType $accountType AccountType instance with data for new account
      *
-     * @return bool
      * @throws Exception
      */
     public function createUserAvatar(AccountType $accountType): bool

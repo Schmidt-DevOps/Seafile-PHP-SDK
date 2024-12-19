@@ -1,0 +1,556 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Class Seafile\\\\Client\\\\Http\\\\Client extends @final class GuzzleHttp\\\\Client\\.$#"
+			count: 1
+			path: src/Http/Client.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Http\\\\Client\\:\\:__construct\\(\\) has parameter \\$config with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Http/Client.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Http\\\\Client\\:\\:delete\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Http/Client.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Http\\\\Client\\:\\:get\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Http/Client.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Http\\\\Client\\:\\:put\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Http/Client.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between bool and '/' will always evaluate to false\\.$#"
+			count: 1
+			path: src/Resource/Directory.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Resource\\\\File\\:\\:getMultiPartParams\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Resource/File.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Resource\\\\Library\\:\\:decrypt\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Resource/Library.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Resource\\\\Library\\:\\:sharePersonal\\(\\) has parameter \\$users with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Resource/Library.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Resource\\\\Multi\\:\\:copy\\(\\) has parameter \\$srcPaths with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Resource/Multi.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Resource\\\\Multi\\:\\:delete\\(\\) has parameter \\$paths with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Resource/Multi.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Resource\\\\Multi\\:\\:move\\(\\) has parameter \\$srcPaths with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Resource/Multi.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Resource\\\\Multi\\:\\:preparePaths\\(\\) has parameter \\$paths with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Resource/Multi.php
+
+		-
+			message: "#^PHPDoc tag @return with type mixed is not subtype of native type string\\.$#"
+			count: 1
+			path: src/Resource/ResourceInterface.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Type\\\\DirectoryItem\\:\\:fromArray\\(\\) has parameter \\$fromArray with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Type/DirectoryItem.php
+
+		-
+			message: "#^Property Seafile\\\\Client\\\\Type\\\\DirectoryItem\\:\\:\\$dir \\(bool\\) does not accept default value of type string\\.$#"
+			count: 1
+			path: src/Type/DirectoryItem.php
+
+		-
+			message: "#^Property Seafile\\\\Client\\\\Type\\\\SharedLink\\:\\:\\$permissions type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Type/SharedLink.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Type\\\\Type\\:\\:__construct\\(\\) has parameter \\$fromArray with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Type/Type.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Type\\\\Type\\:\\:fromArray\\(\\) has parameter \\$fromArray with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Type/Type.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Type\\\\Type\\:\\:getDateTime\\(\\) should return DateTime but returns DateTime\\|false\\.$#"
+			count: 1
+			path: src/Type/Type.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Type\\\\Type\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Type/Type.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Type\\\\Type\\:\\:toJson\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: src/Type/Type.php
+
+		-
+			message: "#^Parameter \\#1 \\$value of method Seafile\\\\Client\\\\Type\\\\Type\\:\\:getDateTime\\(\\) expects int, int\\|false given\\.$#"
+			count: 1
+			path: src/Type/Type.php
+
+		-
+			message: "#^Parameter \\#2 \\$datetime of static method DateTime\\:\\:createFromFormat\\(\\) expects string, float\\|int\\<min, 9999999999\\> given\\.$#"
+			count: 1
+			path: src/Type/Type.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Type\\\\TypeInterface\\:\\:fromArray\\(\\) has parameter \\$fromArray with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Type/TypeInterface.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Type\\\\TypeInterface\\:\\:toArray\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Type/TypeInterface.php
+
+		-
+			message: "#^Right side of && is always true\\.$#"
+			count: 1
+			path: test/bootstrap.php
+
+		-
+			message: "#^Access to an undefined property Faker\\\\Generator\\|Faker\\\\Provider\\\\Internet\\|Faker\\\\Provider\\\\Lorem\\|Faker\\\\Provider\\\\Person\\:\\:\\$safeEmail\\.$#"
+			count: 1
+			path: test/functional/Resource/AccountTest.php
+
+		-
+			message: "#^Call to an undefined method Faker\\\\Generator\\|Faker\\\\Provider\\\\Internet\\|Faker\\\\Provider\\\\Lorem\\|Faker\\\\Provider\\\\Person\\:\\:name\\(\\)\\.$#"
+			count: 1
+			path: test/functional/Resource/AccountTest.php
+
+		-
+			message: "#^Call to an undefined method Faker\\\\Generator\\|Faker\\\\Provider\\\\Internet\\|Faker\\\\Provider\\\\Lorem\\|Faker\\\\Provider\\\\Person\\:\\:sentence\\(\\)\\.$#"
+			count: 1
+			path: test/functional/Resource/AccountTest.php
+
+		-
+			message: "#^Call to an undefined method Seafile\\\\Client\\\\Type\\\\Library\\:\\:decrypt\\(\\)\\.$#"
+			count: 1
+			path: test/functional/Resource/FileTest.php
+
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: test/functional/Resource/FileTest.php
+
+		-
+			message: "#^Variable \\$cfg in isset\\(\\) is never defined\\.$#"
+			count: 1
+			path: test/functional/Resource/FileTest.php
+
+		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client\\:\\:expects\\(\\)\\.$#"
+			count: 4
+			path: test/unit/Resource/AccountTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\AccountTest\\:\\:dataProviderCreateUpdate\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/AccountTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\AccountTest\\:\\:dataProviderRemove\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/AccountTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\AccountTest\\:\\:testCreateUpdate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/AccountTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\AccountTest\\:\\:testRemove\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/AccountTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Account constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
+			count: 4
+			path: test/unit/Resource/AccountTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Account constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client given\\.$#"
+			count: 2
+			path: test/unit/Resource/AccountTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
+			count: 2
+			path: test/unit/Resource/AccountTest.php
+
+		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client\\:\\:expects\\(\\)\\.$#"
+			count: 3
+			path: test/unit/Resource/AvatarTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Avatar constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client given\\.$#"
+			count: 2
+			path: test/unit/Resource/AvatarTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
+			count: 1
+			path: test/unit/Resource/AvatarTest.php
+
+		-
+			message: "#^Parameter \\#5 \\$size of method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\AvatarTest\\:\\:doGetAvatar\\(\\) expects string, int given\\.$#"
+			count: 3
+			path: test/unit/Resource/AvatarTest.php
+
+		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client\\:\\:expects\\(\\)\\.$#"
+			count: 6
+			path: test/unit/Resource/DirectoryTest.php
+
+		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client\\:\\:method\\(\\)\\.$#"
+			count: 6
+			path: test/unit/Resource/DirectoryTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\DirectoryTest\\:\\:createNonRecursiveDataProvider\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/DirectoryTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Directory constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
+			count: 1
+			path: test/unit/Resource/DirectoryTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Directory constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client given\\.$#"
+			count: 6
+			path: test/unit/Resource/DirectoryTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
+			count: 8
+			path: test/unit/Resource/DirectoryTest.php
+
+		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client\\:\\:expects\\(\\)\\.$#"
+			count: 4
+			path: test/unit/Resource/FileTest.php
+
+		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client\\:\\:method\\(\\)\\.$#"
+			count: 3
+			path: test/unit/Resource/FileTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\FileTest\\:\\:dataProviderCopyInvalid\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/FileTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\FileTest\\:\\:dataProviderCopyMove\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/FileTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\FileTest\\:\\:dataProviderTestRenameInvalidFilename\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/FileTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\FileTest\\:\\:dataProviderTestUrlEncodePath\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/FileTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\FileTest\\:\\:testCopyInvalid\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/FileTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\FileTest\\:\\:testCopyMove\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/FileTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\File constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
+			count: 10
+			path: test/unit/Resource/FileTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\File constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client given\\.$#"
+			count: 8
+			path: test/unit/Resource/FileTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Tests\\\\Unit\\\\Stubs\\\\FileResourceStub constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
+			count: 7
+			path: test/unit/Resource/FileTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
+			count: 4
+			path: test/unit/Resource/FileTest.php
+
+		-
+			message: "#^Property Seafile\\\\Client\\\\Type\\\\FileHistoryItem\\:\\:\\$id \\(string\\) does not accept int\\.$#"
+			count: 2
+			path: test/unit/Resource/FileTest.php
+
+		-
+			message: "#^Property Seafile\\\\Client\\\\Type\\\\Library\\:\\:\\$id \\(string\\) does not accept int\\.$#"
+			count: 4
+			path: test/unit/Resource/FileTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Group constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
+			count: 1
+			path: test/unit/Resource/GroupTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
+			count: 1
+			path: test/unit/Resource/GroupTest.php
+
+		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client\\:\\:expects\\(\\)\\.$#"
+			count: 1
+			path: test/unit/Resource/LibraryTest.php
+
+		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client\\:\\:method\\(\\)\\.$#"
+			count: 1
+			path: test/unit/Resource/LibraryTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\LibraryTest\\:\\:dataProviderCreate\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/LibraryTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\LibraryTest\\:\\:dataProviderCreateInvalid\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/LibraryTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\LibraryTest\\:\\:dataProviderExists\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/LibraryTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\LibraryTest\\:\\:testCreate\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/LibraryTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\LibraryTest\\:\\:testCreateInvalid\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/LibraryTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\LibraryTest\\:\\:testExists\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/LibraryTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Library constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
+			count: 9
+			path: test/unit/Resource/LibraryTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
+			count: 7
+			path: test/unit/Resource/LibraryTest.php
+
+		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client\\:\\:expects\\(\\)\\.$#"
+			count: 2
+			path: test/unit/Resource/MultiTest.php
+
+		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client\\:\\:method\\(\\)\\.$#"
+			count: 2
+			path: test/unit/Resource/MultiTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\MultiTest\\:\\:dataProviderCopyMove\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/MultiTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\MultiTest\\:\\:dataProviderDelete\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/MultiTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\MultiTest\\:\\:testCopyMove\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/MultiTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\MultiTest\\:\\:testDelete\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/MultiTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Multi constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client given\\.$#"
+			count: 4
+			path: test/unit/Resource/MultiTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
+			count: 2
+			path: test/unit/Resource/MultiTest.php
+
+		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client\\:\\:method\\(\\)\\.$#"
+			count: 3
+			path: test/unit/Resource/ResourceTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\Directory constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
+			count: 1
+			path: test/unit/Resource/ResourceTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\ShareLinks constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client given\\.$#"
+			count: 1
+			path: test/unit/Resource/ResourceTest.php
+
+		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client\\:\\:expects\\(\\)\\.$#"
+			count: 3
+			path: test/unit/Resource/ShareLinksTest.php
+
+		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client\\:\\:method\\(\\)\\.$#"
+			count: 1
+			path: test/unit/Resource/ShareLinksTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\ShareLinksTest\\:\\:dataProviderCreate\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/ShareLinksTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\ShareLinksTest\\:\\:dataProviderRemove\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/ShareLinksTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\ShareLinks constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
+			count: 1
+			path: test/unit/Resource/ShareLinksTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\ShareLinks constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client given\\.$#"
+			count: 2
+			path: test/unit/Resource/ShareLinksTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$expected of static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) expects class\\-string\\<object\\>, string given\\.$#"
+			count: 1
+			path: test/unit/Resource/ShareLinksTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
+			count: 1
+			path: test/unit/Resource/ShareLinksTest.php
+
+		-
+			message: "#^Call to an undefined method PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client\\:\\:expects\\(\\)\\.$#"
+			count: 8
+			path: test/unit/Resource/StarredFileTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\StarredFileTest\\:\\:dataProviderUnstar\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/StarredFileTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Resource\\\\StarredFileTest\\:\\:testUnstar\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Resource/StarredFileTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\StarredFile constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject given\\.$#"
+			count: 2
+			path: test/unit/Resource/StarredFileTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$client of class Seafile\\\\Client\\\\Resource\\\\StarredFile constructor expects Seafile\\\\Client\\\\Http\\\\Client, PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client given\\.$#"
+			count: 4
+			path: test/unit/Resource/StarredFileTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$body of class GuzzleHttp\\\\Psr7\\\\Response constructor expects Psr\\\\Http\\\\Message\\\\StreamInterface\\|resource\\|string\\|null, string\\|false given\\.$#"
+			count: 1
+			path: test/unit/Resource/StarredFileTest.php
+
+		-
+			message: "#^Property Seafile\\\\Client\\\\Type\\\\Library\\:\\:\\$id \\(string\\) does not accept int\\.$#"
+			count: 4
+			path: test/unit/Resource/StarredFileTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Type\\\\DirectoryItemUnitTest\\:\\:dataFromArray\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Type/DirectoryItemUnitTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Type\\\\DirectoryItemUnitTest\\:\\:testFromArray\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Type/DirectoryItemUnitTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Type\\\\TypeUnitTest\\:\\:dataProviderTestToArrayAssoc\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Type/TypeUnitTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Type\\\\TypeUnitTest\\:\\:dataProviderTestToArrayMultiPart\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Type/TypeUnitTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Type\\\\TypeUnitTest\\:\\:testToArrayAssoc\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Type/TypeUnitTest.php
+
+		-
+			message: "#^Method Seafile\\\\Client\\\\Tests\\\\Unit\\\\Type\\\\TypeUnitTest\\:\\:testToArrayMultiPart\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: test/unit/Type/TypeUnitTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#"
+			count: 1
+			path: test/unit/Type/TypeUnitTest.php
+
+		-
+			message: "#^PHPDoc tag @return with type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\|Seafile\\\\Client\\\\Http\\\\Client is not subtype of native type PHPUnit\\\\Framework\\\\MockObject\\\\MockObject\\.$#"
+			count: 1
+			path: test/unit/UnitTestCase.php

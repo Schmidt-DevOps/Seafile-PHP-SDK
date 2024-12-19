@@ -5,14 +5,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.2','8.3']
+        php-versions: ['8.4','8.3']
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: https://github.com/shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, dom, fileinfo # Add your extensions here.
@@ -23,7 +23,7 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache dependencies
-        uses: actions/cache@v3
+        uses: https://github.com/actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -32,5 +32,11 @@ jobs:
       - name: Prepare tests
         run: composer run-script tests_prepare
 
-      - name: Run tests
-        run: composer run-script tests_run
+      - name: Run Rector
+        run: composer run rector
+
+      - name: Run PHPStan
+        run: composer run phpstan
+
+      - name: Run PHPUnit
+        run: composer run phpunit

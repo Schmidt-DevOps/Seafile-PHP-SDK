@@ -18,25 +18,25 @@ use \Seafile\Client\Type\DirectoryItem;
  */
 class Directory extends Resource
 {
-    const API_VERSION = '2';
+    public const API_VERSION = '2';
 
     /**
      * Get all items of a directory in a library
      *
-     * @param LibraryType $library Library type
+     * @param LibraryType $libraryType Library type
      * @param string $dir Directory path
      *
      * @return DirectoryItem[]
      * @throws Exception
      * @throws GuzzleException
      */
-    public function getAll(LibraryType $library, string $dir = '/')
+    public function getAll(LibraryType $libraryType, string $dir = '/'): array
     {
         $clippedBaseUri = $this->clipUri($this->getApiBaseUrl());
 
         $response = $this->client->request(
             'GET',
-            $clippedBaseUri . '/repos/' . $library->id . '/dir/',
+            $clippedBaseUri . '/repos/' . $libraryType->id . '/dir/',
             [
                 'query' => ['p' => $dir],
             ]
@@ -63,17 +63,16 @@ class Directory extends Resource
     /**
      * Check if $dirName exists within $parentDir
      *
-     * @param LibraryType $library Library instance
+     * @param LibraryType $libraryType Library instance
      * @param string $dirItemName DirectoryItem name
      * @param string $parentDir Parent directory
      *
-     * @return bool
      * @throws Exception
      * @throws GuzzleException
      */
-    public function exists(LibraryType $library, string $dirItemName, string $parentDir = '/')
+    public function exists(LibraryType $libraryType, string $dirItemName, string $parentDir = '/'): bool
     {
-        $directoryItems = $this->getAll($library, $parentDir);
+        $directoryItems = $this->getAll($libraryType, $parentDir);
 
         foreach ($directoryItems as $directoryItem) {
             if ($directoryItem->name === $dirItemName) {
@@ -87,7 +86,7 @@ class Directory extends Resource
     /**
      * Create directory within $parentDir
      *
-     * @param LibraryType $library Library instance
+     * @param LibraryType $libraryType Library instance
      * @param string $dirName Directory name
      * @param string $parentDir Parent directory
      * @param bool $recursive Recursive create
@@ -96,7 +95,7 @@ class Directory extends Resource
      * @throws Exception
      * @throws GuzzleException
      */
-    public function create(LibraryType $library, string $dirName, string $parentDir = '/', bool $recursive = false)
+    public function create(LibraryType $libraryType, string $dirName, string $parentDir = '/', bool $recursive = false)
     {
         if ($recursive) {
             $response = false;
@@ -107,8 +106,8 @@ class Directory extends Resource
                 $parentPath = '/' . implode('/', $tmp);
                 $tmp[] = $part;
 
-                if ($this->exists($library, $part, $parentPath) === false) {
-                    $response = $this->create($library, $part, $parentPath, false);
+                if ($this->exists($libraryType, $part, $parentPath) === false) {
+                    $response = $this->create($libraryType, $part, $parentPath, false);
                 }
             }
 
@@ -116,19 +115,19 @@ class Directory extends Resource
         }
 
         // only create folder which is not empty to prevent wrong implementation
-        if (empty($dirName)) {
+        if ($dirName === '' || $dirName === '0') {
             return false;
         }
 
         // Do not create folders that already exist
-        if ($this->exists($library, $dirName, $parentDir)) {
+        if ($this->exists($libraryType, $dirName, $parentDir)) {
             return false;
         }
 
         $uri = sprintf(
             '%s/repos/%s/dir/?p=%s/%s',
             $this->clipUri($this->getApiBaseUrl()),
-            $library->id,
+            $libraryType->id,
             rtrim($parentDir, '/'),
             $dirName
         );
@@ -153,22 +152,20 @@ class Directory extends Resource
     /**
      * Remove a directory
      *
-     * @param LibraryType $library Library instance
+     * @param LibraryType $libraryType Library instance
      * @param string $directoryPath Directory path
-     *
-     * @return bool
      */
-    public function remove(LibraryType $library, string $directoryPath)
+    public function remove(LibraryType $libraryType, string $directoryPath): bool
     {
         // don't allow empty paths
-        if (empty($directoryPath)) {
+        if ($directoryPath === '' || $directoryPath === '0') {
             return false;
         }
 
         $uri = sprintf(
             '%s/repos/%s/dir/?p=%s',
             $this->clipUri($this->getApiBaseUrl()),
-            $library->id,
+            $libraryType->id,
             rtrim($directoryPath, '/')
         );
 
@@ -186,23 +183,21 @@ class Directory extends Resource
     /**
      * Rename a directory
      *
-     * @param LibraryType $library Library object
+     * @param LibraryType $libraryType Library object
      * @param string $directoryPath Directory path
      * @param string $newDirectoryName New directory name
-     *
-     * @return bool
      */
-    public function rename(LibraryType $library, string $directoryPath, string $newDirectoryName)
+    public function rename(LibraryType $libraryType, string $directoryPath, string $newDirectoryName): bool
     {
         // don't allow empty paths
-        if (empty($directoryPath) || empty($newDirectoryName)) {
+        if ($directoryPath === '' || $directoryPath === '0' || ($newDirectoryName === '' || $newDirectoryName === '0')) {
             return false;
         }
 
         $uri = sprintf(
             '%s/repos/%s/dir/?p=%s',
             $this->clipUri($this->getApiBaseUrl()),
-            $library->id,
+            $libraryType->id,
             rtrim($directoryPath, '/')
         );
 

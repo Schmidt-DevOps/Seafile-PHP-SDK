@@ -3,6 +3,7 @@
 namespace Seafile\Client\Resource;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Type\Type;
 use \Seafile\Client\Type\Account as AccountType;
 use Seafile\Client\Type\TypeInterface;
@@ -18,7 +19,7 @@ use Seafile\Client\Type\TypeInterface;
  */
 class Account extends Resource
 {
-    const API_VERSION = '2';
+    public const API_VERSION = '2';
 
     /**
      * List accounts
@@ -27,6 +28,7 @@ class Account extends Resource
      *
      * @return AccountType[]
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getAll(): array
     {
@@ -50,8 +52,8 @@ class Account extends Resource
      *
      * @param string $emailAddress Email address
      *
-     * @return AccountType
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getByEmail(string $emailAddress): AccountType
     {
@@ -71,8 +73,8 @@ class Account extends Resource
      *
      * @param string $emailAddress Email address to get info of
      *
-     * @return AccountType|TypeInterface
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getInfo(string $emailAddress): TypeInterface
     {
@@ -93,8 +95,8 @@ class Account extends Resource
      *
      * @param AccountType $accountType AccountType instance with data for new account
      *
-     * @return bool
      * @throws Exception
+     * @throws GuzzleException
      */
     public function create(AccountType $accountType): bool
     {
@@ -128,7 +130,6 @@ class Account extends Resource
      *
      * @param AccountType $accountType AccountType instance with updated data
      *
-     * @return bool
      * @throws Exception
      */
     public function update(AccountType $accountType): bool
@@ -212,8 +213,8 @@ class Account extends Resource
      *
      * @param string $email Email address
      *
-     * @return bool
      * @throws Exception
+     * @throws GuzzleException
      */
     public function removeByEmail(string $email): bool
     {
@@ -226,12 +227,11 @@ class Account extends Resource
      * Requires admin permissions
      *
      * @param AccountType $accountType Account to remove
-     *
-     * @return bool
+     * @throws GuzzleException
      */
     public function remove(AccountType $accountType): bool
     {
-        if (empty($accountType->email)) {
+        if ($accountType->email === null || $accountType->email === '' || $accountType->email === '0') {
             return false;
         }
 

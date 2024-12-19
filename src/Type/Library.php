@@ -18,30 +18,15 @@ use stdClass;
  */
 class Library extends Type
 {
-    /**
-     * @var string
-     */
-    public $permission = '';
+    public string $permission = '';
 
-    /**
-     * @var string
-     */
-    public $encrypted = '';
+    public string $encrypted = '';
 
-    /**
-     * @var string
-     */
-    public $mtimeRelative = '';
+    public string $mtimeRelative = '';
 
-    /**
-     * @var DateTime
-     */
-    public $mtime;
+    public DateTime $mtime;
 
-    /**
-     * @var string
-     */
-    public $owner = '';
+    public string $owner = '';
 
     /**
      * @var string

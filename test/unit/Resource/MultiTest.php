@@ -26,47 +26,43 @@ class MultiTest extends UnitTestCase
     /**
      * Test delete() with empty paths
      *
-     * @return void
      * @throws GuzzleException
      * @throws Exception
      */
-    public function testDeleteEmpty()
+    public function testDeleteEmpty(): void
     {
         /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
-        $multiResource = new Multi($mockedClient);
+        $multi = new Multi($mockedClient);
 
-        $lib = new Library();
+        $library = new Library();
 
-        self::assertFalse($multiResource->delete($lib, []));
+        self::assertFalse($multi->delete($library, []));
     }
 
     /**
      * Test copy() and move() with empty paths
      *
-     * @return void
      * @throws GuzzleException
      * @throws Exception
      */
-    public function testCopyMoveEmpty()
+    public function testCopyMoveEmpty(): void
     {
         /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
-        $multiResource = new Multi($mockedClient);
+        $multi = new Multi($mockedClient);
 
-        $lib = new Library();
+        $library = new Library();
 
         foreach (['copy', 'move'] as $operation) {
-            self::assertFalse($multiResource->{$operation}($lib, [], $lib, ''));
+            self::assertFalse($multi->{$operation}($library, [], $library, ''));
         }
     }
 
     /**
      * Data provider for testDelete()
-     *
-     * @return array
      */
     public static function dataProviderDelete(): array
     {
@@ -109,11 +105,10 @@ class MultiTest extends UnitTestCase
      *
      * @param array $data DataProvider data
      *
-     * @return void
      * @throws GuzzleException
      * @throws Exception
      */
-    public function testDelete(array $data)
+    public function testDelete(array $data): void
     {
         $getAllResponse = new Response(
             200,
@@ -150,7 +145,7 @@ class MultiTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $deleteResponse, $expectUri, $expectParams) {
+                function ($method, $uri, $params) use ($getAllResponse, $deleteResponse, $expectUri, $expectParams): Response {
                     if ($method === 'GET') {
                         return $getAllResponse;
                     }
@@ -163,18 +158,16 @@ class MultiTest extends UnitTestCase
                 }
             ));
 
-        $fileResource = new Multi($mockedClient);
+        $multi = new Multi($mockedClient);
 
-        $lib = new Library();
-        $lib->id = 'some-crazy-id';
+        $library = new Library();
+        $library->id = 'some-crazy-id';
 
-        self::assertSame($data['assert'], $fileResource->delete($lib, $deletePaths));
+        self::assertSame($data['assert'], $multi->delete($library, $deletePaths));
     }
 
     /**
      * Data provider for testCopyMove()
-     *
-     * @return array
      */
     public static function dataProviderCopyMove(): array
     {
@@ -249,11 +242,10 @@ class MultiTest extends UnitTestCase
      *
      * @param array $data DataProvider data
      *
-     * @return void
      * @throws GuzzleException
      * @throws Exception
      */
-    public function testCopyMove(array $data)
+    public function testCopyMove(array $data): void
     {
         $getAllResponse = new Response(
             200,
@@ -305,7 +297,7 @@ class MultiTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $deleteResponse, $expectUri, $expectParams) {
+                function ($method, $uri, $params) use ($getAllResponse, $deleteResponse, $expectUri, $expectParams): Response {
                     if ($method === 'GET') {
                         return $getAllResponse;
                     }
@@ -318,11 +310,11 @@ class MultiTest extends UnitTestCase
                 }
             ));
 
-        $fileResource = new Multi($mockedClient);
+        $multi = new Multi($mockedClient);
 
         self::assertSame(
             $data['assert'],
-            $fileResource->{$data['operation']}($srcLib, $filePaths, $dstLib, $destDir)
+            $multi->{$data['operation']}($srcLib, $filePaths, $dstLib, $destDir)
         );
     }
 }

@@ -27,12 +27,11 @@ class DirectoryTest extends UnitTestCase
     /**
      * Test getAll()
      *
-     * @return void
      * @throws GuzzleException
      */
-    public function testGetAll()
+    public function testGetAll(): void
     {
-        $directoryResource = new Directory($this->getMockedClient(
+        $directory = new Directory($this->getMockedClient(
             new Response(
                 200,
                 ['Content-Type' => 'application/json'],
@@ -40,7 +39,7 @@ class DirectoryTest extends UnitTestCase
             )
         ));
 
-        $directoryItems = $directoryResource->getAll(new Library());
+        $directoryItems = $directory->getAll(new Library());
 
         self::assertIsArray($directoryItems);
 
@@ -52,10 +51,9 @@ class DirectoryTest extends UnitTestCase
     /**
      * Test getAll() with directory path
      *
-     * @return void
      * @throws GuzzleException
      */
-    public function testGetAllWithDir()
+    public function testGetAllWithDir(): void
     {
         $rootDir = '/' . uniqid('test_', true);
 
@@ -78,21 +76,20 @@ class DirectoryTest extends UnitTestCase
                 self::equalTo(['query' => ['p' => $rootDir]])
             )->willReturn($response);
 
-        $directoryResource = new Directory($mockedClient);
-        $lib = new Library();
-        $lib->id = 'some-crazy-id';
+        $directory = new Directory($mockedClient);
+        $library = new Library();
+        $library->id = 'some-crazy-id';
 
-        $directoryResource->getAll($lib, $rootDir);
+        $directory->getAll($library, $rootDir);
     }
 
     /**
      * Test exists()
      *
-     * @return void
      * @throws GuzzleException
      * @throws Exception
      */
-    public function testExists()
+    public function testExists(): void
     {
         $rootDir = '/' . uniqid('test_', true);
 
@@ -116,23 +113,21 @@ class DirectoryTest extends UnitTestCase
                 self::equalTo(['query' => ['p' => $rootDir]])
             )->willReturn($response);
 
-        $directoryResource = new Directory($mockedClient);
+        $directory = new Directory($mockedClient);
 
-        $lib = new Library();
-        $lib->id = 'some-crazy-id';
+        $library = new Library();
+        $library->id = 'some-crazy-id';
 
-        self::assertFalse($directoryResource->exists($lib, 'does_not_exist', $rootDir)); // ...2nd request...
+        self::assertFalse($directory->exists($library, 'does_not_exist', $rootDir)); // ...2nd request...
 
         // ...3rd request. For 'test_dir' see mock response json file, it's there
-        self::assertTrue($directoryResource->exists($lib, 'test_dir', $rootDir));
+        self::assertTrue($directory->exists($library, 'test_dir', $rootDir));
     }
 
     /**
      * Data provider for testCreateNonRecursive()
-     *
-     * @return array
      */
-    public function createNonRecursiveDataProvider()
+    public function createNonRecursiveDataProvider(): array
     {
         return [[201], [500]];
     }
@@ -143,10 +138,9 @@ class DirectoryTest extends UnitTestCase
      * @param int $expectResponseCode Expected mkdir request response code
      *
      * @dataProvider createNonRecursiveDataProvider
-     * @return void
      * @throws GuzzleException
      */
-    public function testCreateNonRecursive(int $expectResponseCode)
+    public function testCreateNonRecursive(int $expectResponseCode): void
     {
         $getAllResponse = new Response(
             200,
@@ -157,13 +151,13 @@ class DirectoryTest extends UnitTestCase
         $mkdirResponse = new Response($expectResponseCode, ['Content-Type' => 'text/plain']);
         $directoryResource = $this->getDirectoryResource($getAllResponse, $mkdirResponse);
 
-        $lib = new Library();
-        $lib->id = 'some-crazy-id';
+        $library = new Library();
+        $library->id = 'some-crazy-id';
 
         if ($expectResponseCode === 201) {
-            self::assertTrue($directoryResource->create($lib, 'new_dir', '/', false));
+            self::assertTrue($directoryResource->create($library, 'new_dir', '/', false));
         } else {
-            self::assertFalse($directoryResource->create($lib, 'new_dir', '/', false));
+            self::assertFalse($directoryResource->create($library, 'new_dir', '/', false));
         }
     }
 
@@ -172,10 +166,8 @@ class DirectoryTest extends UnitTestCase
      *
      * @param Response $getAllResponse Response on "get all" request
      * @param Response $mkdirResponse Response on actual operation
-     *
-     * @return Directory
      */
-    protected function getDirectoryResource(Response $getAllResponse, Response $mkdirResponse)
+    protected function getDirectoryResource(Response $getAllResponse, Response $mkdirResponse): Directory
     {
         /** @var SeafileHttpClient|MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
@@ -190,7 +182,7 @@ class DirectoryTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method) use ($getAllResponse, $mkdirResponse) {
+                function ($method) use ($getAllResponse, $mkdirResponse): Response {
                     if ($method === 'GET') {
                         return $getAllResponse;
                     }
@@ -205,10 +197,9 @@ class DirectoryTest extends UnitTestCase
     /**
      * Test create() non-recursively, directory exists. Must yield boolean false.
      *
-     * @return void
      * @throws GuzzleException
      */
-    public function testCreateDirectoryExists()
+    public function testCreateDirectoryExists(): void
     {
         $getAllResponse = new Response(
             200,
@@ -225,30 +216,27 @@ class DirectoryTest extends UnitTestCase
             ->method('request')
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function () use ($getAllResponse) {
-                    return $getAllResponse;
-                }
+                fn(): Response => $getAllResponse
             ));
 
-        $directoryResource = new Directory($mockedClient);
+        $directory = new Directory($mockedClient);
 
-        $lib = new Library();
-        $lib->id = 'some-crazy-id';
+        $library = new Library();
+        $library->id = 'some-crazy-id';
 
-        self::assertFalse($directoryResource->create($lib, 'test_dir', '/', false));
+        self::assertFalse($directory->create($library, 'test_dir', '/', false));
     }
 
     /**
      * test create() with empty dirName. Must yield boolean false.
      *
-     * @return void
      * @throws GuzzleException
      */
-    public function testCreateEmptyDirName()
+    public function testCreateEmptyDirName(): void
     {
-        $directoryResource = new Directory(new SeafileHttpClient());
+        $directory = new Directory(new SeafileHttpClient());
 
-        self::assertFalse($directoryResource->create(
+        self::assertFalse($directory->create(
             new Library(),
             ''
         ));
@@ -257,10 +245,9 @@ class DirectoryTest extends UnitTestCase
     /**
      * Test create() recursively
      *
-     * @return void
      * @throws GuzzleException
      */
-    public function testCreateRecursive()
+    public function testCreateRecursive(): void
     {
         $getAllResponse = new Response(
             200,
@@ -271,34 +258,32 @@ class DirectoryTest extends UnitTestCase
         $mkdirResponse = new Response(201, ['Content-Type' => 'text/plain']);
         $directoryResource = $this->getDirectoryResource($getAllResponse, $mkdirResponse);
 
-        $lib = new Library();
-        $lib->id = 'some-crazy-id';
+        $library = new Library();
+        $library->id = 'some-crazy-id';
 
-        self::assertTrue($directoryResource->create($lib, 'a/b', '/', true));
+        self::assertTrue($directoryResource->create($library, 'a/b', '/', true));
     }
 
     /**
      * Test rename(), with invalid directory name
      *
-     * @return void
      * @throws GuzzleException
      */
-    public function testRenameInvalidDirectoryName()
+    public function testRenameInvalidDirectoryName(): void
     {
-        $lib = new Library();
-        $lib->id = 'some-crazy-id';
+        $library = new Library();
+        $library->id = 'some-crazy-id';
 
-        $directoryResource = new Directory(new SeafileHttpClient());
-        self::assertFalse($directoryResource->rename($lib, '', ''));
+        $directory = new Directory(new SeafileHttpClient());
+        self::assertFalse($directory->rename($library, '', ''));
     }
 
     /**
      * Test rename()
      *
-     * @return void
      * @throws GuzzleException
      */
-    public function testRename()
+    public function testRename(): void
     {
         $getAllResponse = new Response(
             200,
@@ -336,7 +321,7 @@ class DirectoryTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $mkdirResponse, $expectUri, $expectParams) {
+                function ($method, $uri, $params) use ($getAllResponse, $mkdirResponse, $expectUri, $expectParams): Response {
                     if ($method === 'GET') {
                         return $getAllResponse;
                     }
@@ -349,36 +334,34 @@ class DirectoryTest extends UnitTestCase
                 }
             ));
 
-        $directoryResource = new Directory($mockedClient);
+        $directory = new Directory($mockedClient);
 
-        $lib = new Library();
-        $lib->id = 'some-crazy-id';
+        $library = new Library();
+        $library->id = 'some-crazy-id';
 
-        self::assertTrue($directoryResource->rename($lib, 'test_dir', 'test_dir_renamed'));
+        self::assertTrue($directory->rename($library, 'test_dir', 'test_dir_renamed'));
     }
 
     /**
      * Test remove(), with invalid directory name
      *
-     * @return void
      * @throws GuzzleException
      */
-    public function testRemoveInvalidDirectoryName()
+    public function testRemoveInvalidDirectoryName(): void
     {
-        $lib = new Library();
-        $lib->id = 'some-crazy-id';
+        $library = new Library();
+        $library->id = 'some-crazy-id';
 
-        $directoryResource = new Directory(new SeafileHttpClient());
-        self::assertFalse($directoryResource->remove($lib, ''));
+        $directory = new Directory(new SeafileHttpClient());
+        self::assertFalse($directory->remove($library, ''));
     }
 
     /**
      * Test remove()
      *
-     * @return void
      * @throws GuzzleException
      */
-    public function testRemove()
+    public function testRemove(): void
     {
         $getAllResponse = new Response(
             200,
@@ -406,7 +389,7 @@ class DirectoryTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $mkdirResponse, $expectUri, $expectParams) {
+                function ($method, $uri, $params) use ($getAllResponse, $mkdirResponse, $expectUri, $expectParams): Response {
                     if ($method === 'GET') {
                         return $getAllResponse;
                     }
@@ -419,11 +402,11 @@ class DirectoryTest extends UnitTestCase
                 }
             ));
 
-        $directoryResource = new Directory($mockedClient);
+        $directory = new Directory($mockedClient);
 
-        $lib = new Library();
-        $lib->id = 'some-crazy-id';
+        $library = new Library();
+        $library->id = 'some-crazy-id';
 
-        self::assertTrue($directoryResource->remove($lib, 'test_dir'));
+        self::assertTrue($directory->remove($library, 'test_dir'));
     }
 }

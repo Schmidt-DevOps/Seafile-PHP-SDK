@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Tests\Functional\Resource;
 
+use Override;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Resource\Directory;
@@ -23,17 +24,17 @@ use Seafile\Client\Type\StarredFile as StarredFileType;
  */
 class StarredFileTest extends FunctionalTestCase
 {
-    /** @var StarredFile|null */
-    private $starredFileResource = null;
+    private ?StarredFile $starredFile;
 
     /**
      * @throws Exception
      */
-    public function setUp(): void
+    #[Override]
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->starredFileResource = new StarredFile($this->client);
+        $this->starredFile = new StarredFile($this->client);
     }
 
     /**
@@ -46,38 +47,38 @@ class StarredFileTest extends FunctionalTestCase
      * @throws Exception
      * @throws GuzzleException
      */
-    public function testStarFile()
+    public function testStarFile(): void
     {
-        $fileResource = new File($this->client);
-        $libraryResource = new Library($this->client);
+        $file = new File($this->client);
+        $library = new Library($this->client);
 
-        $dirItem = (new DirectoryItem())->fromArray(['path' => '/', 'name' => uniqid('some_name_', true) . '.txt']);
-        self::assertTrue($fileResource->create($this->getTestLibraryType(), $dirItem));
-        $dirItem->type = DirectoryItem::TYPE_FILE;
-        $dirItem->path .= $dirItem->name; // @todo This needs to be done automatically
-        $result = $this->starredFileResource->star($this->getTestLibraryType(), $dirItem);
+        $directoryItem = (new DirectoryItem())->fromArray(['path' => '/', 'name' => uniqid('some_name_', true) . '.txt']);
+        self::assertTrue($file->create($this->getTestLibraryType(), $directoryItem));
+        $directoryItem->type = DirectoryItem::TYPE_FILE;
+        $directoryItem->path .= $directoryItem->name; // @todo This needs to be done automatically
+        $result = $this->starredFile->star($this->getTestLibraryType(), $directoryItem);
         self::assertIsString($result);
 
         // get all starred files
         $this->logger->debug("#################### Getting all starred files");
-        $dirItems = $this->starredFileResource->getAll();
+        $dirItems = $this->starredFile->getAll();
 
         self::assertIsArray($dirItems);
-        self::assertTrue(count($dirItems) > 0); // we just have created one so there must not be 0 items
+        self::assertTrue($dirItems !== []); // we just have created one so there must not be 0 items
 
-        foreach ($dirItems as $dirItem) {
-            self::assertInstanceOf(DirectoryItem::class, $dirItem);
+        foreach ($dirItems as $directoryItem) {
+            self::assertInstanceOf(DirectoryItem::class, $directoryItem);
         }
 
         $this->logger->debug("#################### Unstarring files...");
         foreach ($dirItems as $dirItem) {
-            $lib = $libraryResource->getById($dirItem->repo);
-            $this->starredFileResource->unstar($lib, $dirItem);
+            $lib = $library->getById($dirItem->repo);
+            $this->starredFile->unstar($lib, $dirItem);
         }
 
         // get all starred files, there must be none
         $this->logger->debug("#################### Getting all starred files");
-        $dirItems = $this->starredFileResource->getAll();
-        self::assertFalse(count($dirItems) > 0);
+        $dirItems = $this->starredFile->getAll();
+        self::assertFalse($dirItems !== []);
     }
 }

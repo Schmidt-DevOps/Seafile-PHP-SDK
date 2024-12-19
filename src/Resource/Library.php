@@ -17,7 +17,7 @@ use \Seafile\Client\Type\Library as LibraryType;
  */
 class Library extends Resource
 {
-    const API_VERSION = '2';
+    public const API_VERSION = '2';
 
     /**
      * List libraries
@@ -45,10 +45,9 @@ class Library extends Resource
      *
      * @param string $libraryId Library ID
      *
-     * @return LibraryType
      * @throws Exception
      */
-    public function getById($libraryId): LibraryType
+    public function getById(string $libraryId): LibraryType
     {
         $response = $this->client->request(
             'GET',
@@ -70,7 +69,7 @@ class Library extends Resource
      *
      * @throws Exception
      */
-    public function decrypt($libraryId, array $options): bool
+    public function decrypt(string $libraryId, array $options): bool
     {
         $hasQueryParams = array_key_exists('query', $options);
         $hasPassword = $hasQueryParams && array_key_exists('password', $options['query']);
@@ -94,7 +93,6 @@ class Library extends Resource
      * @param string $value Library name
      * @param string $attribute Attribute name of library
      *
-     * @return bool
      * @throws Exception
      * @throws GuzzleException
      */
@@ -102,8 +100,8 @@ class Library extends Resource
     {
         $libraries = $this->getAll();
 
-        foreach ($libraries as $lib) {
-            if (isset($lib->{$attribute}) && $lib->{$attribute} === $value) {
+        foreach ($libraries as $library) {
+            if (isset($library->{$attribute}) && $library->{$attribute} === $value) {
                 return true;
             }
         }
@@ -118,7 +116,6 @@ class Library extends Resource
      * @param string $description Library description
      * @param string $password false means no encryption, any other string is used as password
      *
-     * @return bool
      * @throws Exception
      * @throws GuzzleException
      */
@@ -174,7 +171,6 @@ class Library extends Resource
      *
      * @param string $libraryId Library ID
      *
-     * @return bool
      * @throws GuzzleException
      */
     public function remove($libraryId): bool
@@ -207,8 +203,6 @@ class Library extends Resource
      * @param string $libraryId Library ID
      * @param array $users Comma separated list of user email addresses
      * @param string $permission The permission of the shared library
-     *
-     * @return bool
      */
     public function sharePersonal($libraryId, array $users, string $permission = Resource::PERMISSION_R): bool
     {
@@ -216,7 +210,7 @@ class Library extends Resource
             '%s/shared-repos/%s/?share_type=personal&users=%s&permission=%s',
             $this->clipUri($this->getApiBaseUrl()),
             $libraryId,
-            join(',', $users),
+            implode(',', $users),
             $permission
         );
 
