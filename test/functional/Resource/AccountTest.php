@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Tests\Functional\Resource;
 
+use Override;
 use DateTime;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
@@ -27,6 +28,7 @@ class AccountTest extends FunctionalTestCase
     /**
      * @throws Exception
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

@@ -2,6 +2,9 @@
 
 namespace Seafile\Client\Tests\Functional\Resource;
 
+use Override;
+use Seafile\Client\Type\Library;
+use DateTime;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Resource\Directory;
@@ -22,11 +25,12 @@ class FileTest extends FunctionalTestCase
 {
     private ?File $file;
 
-    private ?\Seafile\Client\Type\Library $library = null;
+    private ?Library $library = null;
 
     /**
      * @throws Exception
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -76,7 +80,7 @@ class FileTest extends FunctionalTestCase
         $newFilename = tempnam($GLOBALS['BUILD_TMP'], 'Seafile-PHP-SDK_Test_File_History_Upload_');
         rename($newFilename, $newFilename . '.txt');
         $newFilename .= '.txt';
-        file_put_contents($newFilename, 'Hello World: ' . (new \DateTime)->format('Y-m-d H:i:s'));
+        file_put_contents($newFilename, 'Hello World: ' . (new DateTime)->format('Y-m-d H:i:s'));
 
         $this->logger->debug("#################### Uploading file " . $newFilename);
 
@@ -174,7 +178,7 @@ class FileTest extends FunctionalTestCase
         $success = $this->file->create($library, $dirItem);
         self::assertTrue($success);
 
-        $newFilename = 'test_' . (new \DateTime)->format('U') . '.txt';
+        $newFilename = 'test_' . (new DateTime)->format('U') . '.txt';
         $dirItem = $this->file->getFileDetail($library, $path . $fileName);
 
         $this->logger->debug("#################### File to be renamed: " . $path . $dirItem->name);
@@ -183,7 +187,7 @@ class FileTest extends FunctionalTestCase
         self::assertTrue($success);
         $this->logger->debug("#################### File renamed from " . $path . $fileName . ' to ' . $newFilename);
 
-        $newFilename = 'even_newer_file_name_test_' . (new \DateTime)->format('U') . '.txt';
+        $newFilename = 'even_newer_file_name_test_' . (new DateTime)->format('U') . '.txt';
         $success = $this->file->rename($library, $dirItem, $newFilename);
 
         self::assertTrue($success);

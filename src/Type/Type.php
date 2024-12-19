@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Type;
 
+use Override;
 use DateTime;
 use CaseHelper\CaseHelperFactory;
 use Exception;
@@ -51,6 +52,7 @@ abstract class Type implements TypeInterface
      * @return self
      * @throws Exception
      */
+    #[Override]
     public function fromArray(array $fromArray) // type is given in derived class
     {
         foreach ($fromArray as $key => $value) {
@@ -60,6 +62,7 @@ abstract class Type implements TypeInterface
                 continue;
             }
 
+            /** @noinspection PhpSwitchCanBeReplacedWithMatchExpressionInspection */
             switch ($key) {
                 case 'creator':
                     $this->{$key} = (new AccountType)->fromArray(['email' => $value]);
@@ -71,7 +74,7 @@ abstract class Type implements TypeInterface
                     $this->{$camelCaseKey} = $this->getDateTime((int)$value);
                     break;
                 case 'expire_date':
-                    $this->{$camelCaseKey} = $this->getDateTime(strtotime($value));
+                    $this->{$camelCaseKey} = $this->getDateTime(strtotime((string) $value));
                     break;
                 default:
                     $this->{$camelCaseKey} = $value;
@@ -88,6 +91,7 @@ abstract class Type implements TypeInterface
      *
      * @param int $value Int time stamp, either seconds or microseconds
      */
+    #[Override]
     public function getDateTime(int $value): DateTime
     {
         if ($value > 9999999999) { // microseconds it is
@@ -105,6 +109,7 @@ abstract class Type implements TypeInterface
      * @return self
      * @throws Exception
      */
+    #[Override]
     public function fromJson(stdClass $jsonResponse) // type is given in derived class
     {
         $this->fromArray((array)$jsonResponse);
@@ -119,6 +124,7 @@ abstract class Type implements TypeInterface
      *
      * @throws Exception
      */
+    #[Override]
     public function toArray(int $mode = self::ARRAY_ASSOC): array
     {
         switch ($mode) {
@@ -150,6 +156,7 @@ abstract class Type implements TypeInterface
      *
      * @return string JSON string
      */
+    #[Override]
     public function toJson(): string
     {
         return json_encode($this);

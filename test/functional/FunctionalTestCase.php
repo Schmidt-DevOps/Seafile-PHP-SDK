@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Tests\Functional;
 
+use Override;
 use Exception;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
@@ -29,10 +30,13 @@ use Seafile\Client\Type\Library as LibraryType;
  */
 class FunctionalTestCase extends TestCase
 {
-    protected ?Client $client;
-    protected ?Logger $logger;
-    protected ?LibraryType $testLib;
-    protected Internet|Lorem|null|Generator|Person $faker;
+    protected ?Client $client = null;
+
+    protected ?Logger $logger = null;
+
+    protected ?LibraryType $testLib = null;
+
+    protected Internet|Lorem|null|Generator|Person $faker = null;
 
     /**
      * Skip functional tests when they do not have been set up correctly. Please refer to README.md on how to set them up.
@@ -94,6 +98,7 @@ class FunctionalTestCase extends TestCase
      * Set up the test
      * @throws Exception
      */
+    #[Override]
     protected function setUp(): void
     {
         $this->getLogger();

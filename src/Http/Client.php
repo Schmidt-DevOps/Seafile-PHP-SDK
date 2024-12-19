@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Http;
 
+use Override;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
@@ -45,6 +46,7 @@ class Client extends \GuzzleHttp\Client
      * @param string|UriInterface $uri URI for request
      * @throws GuzzleException
      */
+    #[Override]
     public function get($uri, array $options = []): ResponseInterface
     {
         return parent::get($uri, $options);
@@ -54,6 +56,7 @@ class Client extends \GuzzleHttp\Client
      * @param string|UriInterface $uri URI for request
      * @throws GuzzleException
      */
+    #[Override]
     public function put($uri, array $options = []): ResponseInterface
     {
         return parent::put($uri, $options);
@@ -63,6 +66,7 @@ class Client extends \GuzzleHttp\Client
      * @param string|UriInterface $uri URI for request
      * @throws GuzzleException
      */
+    #[Override]
     public function delete($uri, array $options = []): ResponseInterface
     {
         return parent::delete($uri, $options);

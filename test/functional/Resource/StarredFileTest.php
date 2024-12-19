@@ -2,6 +2,7 @@
 
 namespace Seafile\Client\Tests\Functional\Resource;
 
+use Override;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Resource\Directory;
@@ -28,6 +29,7 @@ class StarredFileTest extends FunctionalTestCase
     /**
      * @throws Exception
      */
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

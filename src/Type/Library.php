@@ -19,9 +19,13 @@ use stdClass;
 class Library extends Type
 {
     public string $permission = '';
+
     public string $encrypted = '';
+
     public string $mtimeRelative = '';
+
     public DateTime $mtime;
+
     public string $owner = '';
 
     /**
