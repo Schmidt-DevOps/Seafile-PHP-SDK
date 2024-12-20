@@ -51,7 +51,8 @@
   "scripts": {
     "phpstan": "./vendor/bin/phpstan analyse --memory-limit 2G --configuration phpstan.neon src test",
     "phpunit": "./vendor/bin/phpunit --log-junit ./build/logs/junit.xml test",
-    "rector": "./vendor/bin/rector --no-ansi --no-progress-bar",
+    "rector": "./vendor/bin/rector --dry-run --no-ansi --no-progress-bar",
+    "rector-no-dry-run": "./vendor/bin/rector --no-ansi --no-progress-bar",
     "tests_prepare": "./bin/prepare_tests.sh",
     "tests_run": "./bin/run_tests.sh"
   }
