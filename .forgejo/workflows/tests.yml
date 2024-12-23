@@ -32,6 +32,9 @@ jobs:
       - name: Prepare tests
         run: composer run-script tests_prepare
 
+      - name: Run PHPMD
+        run: composer run phpmd
+
       - name: Run Rector
         run: composer run rector
 

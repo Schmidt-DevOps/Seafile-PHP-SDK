@@ -41,3 +41,4 @@ vendor/
 bin/run_tests_*.sh
 internal_requests/
 .phpunit.result.cache
+.phpmd.result-cache.php
