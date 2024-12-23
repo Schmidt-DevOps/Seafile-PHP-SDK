@@ -35,6 +35,9 @@ jobs:
       - name: Run Rector
         run: composer run rector
 
+      - name: Run PHPMD
+        run: composer run phpmd
+
       - name: Run PHPStan
         run: composer run phpstan
 

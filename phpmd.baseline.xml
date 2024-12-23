@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<phpmd-baseline>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Resource/Avatar.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Resource/Directory.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Resource/File.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="src/Resource/File.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Resource/File.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Resource/ShareLinks.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="src/Type/Account.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Type/Account.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Type/DirectoryItem.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Type/FileHistoryItem.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Type/Group.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="src/Type/Library.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Type/Type.php"/>
+  <violation rule="PHPMD\Rule\Controversial\Superglobals" file="test/functional/FunctionalTestCase.php" method="checkFunctionalTestsSetUpCorrectly"/>
+  <violation rule="PHPMD\Rule\Controversial\Superglobals" file="test/functional/FunctionalTestCase.php" method="getClient"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="test/functional/FunctionalTestCase.php"/>
+  <violation rule="PHPMD\Rule\Controversial\Superglobals" file="test/functional/FunctionalTestCase.php" method="getFaker"/>
+  <violation rule="PHPMD\Rule\Controversial\Superglobals" file="test/functional/FunctionalTestCase.php" method="getTestLibraryType"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="test/functional/Resource/AccountTest.php"/>
+  <violation rule="PHPMD\Rule\Controversial\Superglobals" file="test/functional/Resource/FileTest.php" method="testHistory"/>
+  <violation rule="PHPMD\Rule\Controversial\Superglobals" file="test/functional/Resource/FileTest.php" method="testRename"/>
+  <violation rule="PHPMD\Rule\UnusedLocalVariable" file="test/functional/Resource/FileTest.php"/>
+  <violation rule="PHPMD\Rule\Controversial\Superglobals" file="test/functional/Resource/ShareLinksTest.php" method="testShareLinks"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="test/functional/Resource/ShareLinksTest.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="test/functional/Resource/ShareLinksTest.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="test/functional/Resource/ShareLinksTest.php"/>
+  <violation rule="PHPMD\Rule\Naming\ShortVariable" file="test/unit/Resource/AvatarTest.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="test/unit/Resource/DirectoryTest.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="test/unit/Resource/DirectoryTest.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyMethods" file="test/unit/Resource/FileTest.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="test/unit/Resource/FileTest.php"/>
+  <violation rule="PHPMD\Rule\Controversial\Superglobals" file="test/unit/Resource/FileTest.php" method="testDownloadFromDirFileExists"/>
+  <violation rule="PHPMD\Rule\Controversial\Superglobals" file="test/unit/Resource/FileTest.php" method="testUpload"/>
+  <violation rule="PHPMD\Rule\Controversial\Superglobals" file="test/unit/Resource/FileTest.php" method="testUpdate"/>
+  <violation rule="PHPMD\Rule\Controversial\Superglobals" file="test/unit/Resource/FileTest.php" method="testUpdateMultiPartParams"/>
+  <violation rule="PHPMD\Rule\Controversial\Superglobals" file="test/unit/Resource/FileTest.php" method="testUpdateMultiPartParamsNewFilename"/>
+  <violation rule="PHPMD\Rule\Controversial\Superglobals" file="test/unit/Resource/FileTest.php" method="testUploadMultiPartParams"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="test/unit/Resource/LibraryTest.php"/>
+  <violation rule="PHPMD\Rule\Naming\LongVariable" file="test/unit/Resource/ShareLinksTest.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\ElseExpression" file="test/unit/Resource/ShareLinksTest.php"/>
+  <violation rule="PHPMD\Rule\CyclomaticComplexity" file="test/unit/Resource/StarredFileTest.php" method="testStar"/>
+  <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="test/unit/Stubs/FileResourceStub.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="test/unit/Type/TypeUnitTest.php"/>
+</phpmd-baseline>

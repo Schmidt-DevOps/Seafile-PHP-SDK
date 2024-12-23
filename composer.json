@@ -34,7 +34,8 @@
     "phpunit/php-timer": "~5.0",
     "fzaninotto/faker": "~1.5",
     "phpstan/phpstan": "^1.11",
-    "rector/rector": "^1.2"
+    "rector/rector": "^1.2",
+    "phpmd/phpmd": "^2.15.0"
   },
   "type": "library",
   "autoload": {
@@ -49,6 +50,8 @@
     }
   },
   "scripts": {
+    "create-phpmd-baseline": "./vendor/bin/phpmd -v --cache . text phpmd.xml --generate-baseline",
+    "phpmd": "./vendor/bin/phpmd -v --cache . text phpmd.xml",
     "phpstan": "./vendor/bin/phpstan analyse --memory-limit 2G --configuration phpstan.neon src test",
     "phpunit": "./vendor/bin/phpunit --log-junit ./build/logs/junit.xml test",
     "rector": "./vendor/bin/rector --dry-run --no-ansi --no-progress-bar",
