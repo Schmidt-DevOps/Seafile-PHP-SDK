@@ -19,11 +19,8 @@ use Seafile\Client\Type\Library;
 /**
  * File resource test
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ *
  * @covers    \Seafile\Client\Resource\File
  */
 class FileTest extends UnitTestCase
@@ -46,27 +43,13 @@ class FileTest extends UnitTestCase
     }
 
     /**
-     * Data provider for testUrlEncodePath()
-     */
-    public static function dataProviderTestUrlEncodePath(): array
-    {
-        return [
-            ['/foo#bar baz.txt', '/foo%23bar%20baz.txt'], // url-encode #, space in file name
-            ['/foo bar baz/foo#bar&baz.txt', '/foo%20bar%20baz/foo%23bar%26baz.txt'], // url-encode in dir
-            ['/cant/touch/this', '/cant/touch/this'], // no url-encoding here
-            ["/must not 'choke' on quote", '/must%20not%20%27choke%27%20on%20quote'],
-            ['/must/retain/trailing/slash/', '/must/retain/trailing/slash/'],
-            ['must_not_prepend_slash', 'must_not_prepend_slash'],
-        ];
-    }
-
-    /**
      * Test urlencodePath()
      *
      * @param string $path Path to encode
      * @param string $expectEncodedPath Expected encoded path
      *
      * @dataProvider dataProviderTestUrlEncodePath
+     *
      * @throws ReflectionException
      */
     public function testUrlEncodePath(string $path, string $expectEncodedPath): void
@@ -79,6 +62,21 @@ class FileTest extends UnitTestCase
         $actualEncodedPath = $this->invokeMethod($mock, 'urlencodePath', [$path]);
 
         self::assertSame($expectEncodedPath, $actualEncodedPath);
+    }
+
+    /**
+     * Data provider for testUrlEncodePath()
+     */
+    public static function dataProviderTestUrlEncodePath(): array
+    {
+        return [
+            ['/foo#bar baz.txt', '/foo%23bar%20baz.txt'], // url-encode #, space in file name
+            ['/foo bar baz/foo#bar&baz.txt', '/foo%20bar%20baz/foo%23bar%26baz.txt'], // url-encode in dir
+            ['/cant/touch/this', '/cant/touch/this'], // no url-encoding here
+            ["/must not 'choke' on quote", '/must%20not%20%27choke%27%20on%20quote'],
+            ['/must/retain/trailing/slash/', '/must/retain/trailing/slash/'],
+            ['must_not_prepend_slash', 'must_not_prepend_slash'],
+        ];
     }
 
     /**
@@ -110,7 +108,7 @@ class FileTest extends UnitTestCase
         $libId = "lib_id";
         $uploadDir = "/Somedir";
 
-        /** @var SeafileHttpClient|MockObject $mockObject */
+        /** @var MockObject|SeafileHttpClient $mockObject */
         $mockObject = $this->getMockedClient(
             new Response(200, ['Content-Type' => 'application/json'], '"https://some.example.com/some/url"')
         );
@@ -228,8 +226,8 @@ class FileTest extends UnitTestCase
         $file = new File($this->getMockedClient(new Response(
             200,
             ['Content-Type' => 'application/json'],
-            '{"id": "cd8ec413c72388149911c84b046642da2ca4b935", "mtime": 1444760758, "type": "file", ' .
-            '"name": "Seafile-PHP-SDK_Test_Upload_jt64pq.txt", "size": 32}'
+            '{"id": "cd8ec413c72388149911c84b046642da2ca4b935", "mtime": 1444760758, "type": "file", '
+            . '"name": "Seafile-PHP-SDK_Test_Upload_jt64pq.txt", "size": 32}'
         )));
 
         $directoryItem = $file->getFileDetail(new Library(), '/Seafile-PHP-SDK_Test_Upload_jt64pq.txt');
@@ -351,7 +349,7 @@ class FileTest extends UnitTestCase
      */
     public function testRemoveInvalidFilename(): void
     {
-        /** @var SeafileHttpClient|MockObject $mockedClient */
+        /** @var MockObject|SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $file = new File($mockedClient);
@@ -360,6 +358,34 @@ class FileTest extends UnitTestCase
         $library->id = 'some-crazy-id';
 
         self::assertFalse($file->remove($library, ''));
+    }
+
+    /**
+     * Test rename() with invalid file name
+     *
+     * @param string $invalidFilePath Invalid file path
+     * @param string $invalidNewFilename Invalid new file name
+     *
+     * @dataProvider dataProviderTestRenameInvalidFilename
+     *
+     * @throws GuzzleException
+     * @throws Exception
+     */
+    public function testRenameInvalidFilename(string $invalidFilePath, string $invalidNewFilename): void
+    {
+        self::expectException('\InvalidArgumentException');
+
+        /** @var MockObject|SeafileHttpClient $mockedClient */
+        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
+
+        $file = new File($mockedClient);
+
+        $library = new Library();
+        $library->id = 'some-crazy-id';
+
+        $directoryItem = new DirectoryItem(['dir' => $invalidFilePath]);
+
+        $file->rename($library, $directoryItem, $invalidNewFilename);
     }
 
     /**
@@ -376,30 +402,28 @@ class FileTest extends UnitTestCase
     }
 
     /**
-     * Test rename() with invalid file name
+     * Test copy() with invalid file name
      *
-     * @param string $invalidFilePath Invalid file path
-     * @param string $invalidNewFilename Invalid new file name
+     * @dataProvider dataProviderCopyInvalid
      *
-     * @dataProvider dataProviderTestRenameInvalidFilename
+     * @param array $data Test data
+     *
      * @throws GuzzleException
-     * @throws Exception
      */
-    public function testRenameInvalidFilename(string $invalidFilePath, string $invalidNewFilename): void
+    public function testCopyInvalid(array $data): void
     {
-        self::expectException('\InvalidArgumentException');
-
-        /** @var SeafileHttpClient|MockObject $mockedClient */
+        /** @var MockObject|SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $file = new File($mockedClient);
 
-        $library = new Library();
-        $library->id = 'some-crazy-id';
+        $srcLib = $data[0];
+        $srcFilePath = $data[1];
+        $dstLib = $data[2];
+        $dstFilePath = $data[3];
+        $expected = $data[4];
 
-        $directoryItem = new DirectoryItem(['dir' => $invalidFilePath]);
-
-        $file->rename($library, $directoryItem, $invalidNewFilename);
+        self::assertSame($expected, $file->copy($srcLib, $srcFilePath, $dstLib, $dstFilePath));
     }
 
     /**
@@ -420,31 +444,6 @@ class FileTest extends UnitTestCase
     }
 
     /**
-     * Test copy() with invalid file name
-     *
-     * @dataProvider dataProviderCopyInvalid
-     *
-     * @param array $data Test data
-     *
-     * @throws GuzzleException
-     */
-    public function testCopyInvalid(array $data): void
-    {
-        /** @var SeafileHttpClient|MockObject $mockedClient */
-        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
-
-        $file = new File($mockedClient);
-
-        $srcLib = $data[0];
-        $srcFilePath = $data[1];
-        $dstLib = $data[2];
-        $dstFilePath = $data[3];
-        $expected = $data[4];
-
-        self::assertSame($expected, $file->copy($srcLib, $srcFilePath, $dstLib, $dstFilePath));
-    }
-
-    /**
      * Test remove()
      *
      * @throws GuzzleException
@@ -459,7 +458,7 @@ class FileTest extends UnitTestCase
 
         $deleteResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /** @var SeafileHttpClient|MockObject $mockedClient */
+        /** @var MockObject|SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -478,7 +477,7 @@ class FileTest extends UnitTestCase
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
                 function ($method, $uri, $params) use ($getAllResponse, $deleteResponse, $expectUri, $expectParams): Response {
-                    if ($method === 'GET') {
+                    if ('GET' === $method) {
                         return $getAllResponse;
                     }
 
@@ -515,7 +514,7 @@ class FileTest extends UnitTestCase
         $newFilename = 'test_file_renamed';
         $renameResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /** @var SeafileHttpClient|MockObject $mockedClient */
+        /** @var MockObject|SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -540,7 +539,7 @@ class FileTest extends UnitTestCase
             ->with(self::equalTo('POST'))
             ->will(self::returnCallback(
                 function ($method, $uri, $params) use ($renameResponse, $expectUri, $expectParams): Response {
-                    if ($expectUri === $uri && $expectParams === $params && $method === 'POST') {
+                    if ($expectUri === $uri && $expectParams === $params && 'POST' === $method) {
                         return $renameResponse;
                     }
 
@@ -557,17 +556,6 @@ class FileTest extends UnitTestCase
     }
 
     /**
-     * Data provider for testCopy() and testMove()
-     */
-    public static function dataProviderCopyMove(): array
-    {
-        return [
-            [['operation' => 'copy', 'responseCode' => 200]],
-            [['operation' => 'move', 'responseCode' => 301]],
-        ];
-    }
-
-    /**
      * Test copy()
      *
      * @dataProvider dataProviderCopyMove
@@ -579,7 +567,7 @@ class FileTest extends UnitTestCase
         $sourceLib = new Library();
         $sourceLib->id = 'some-crazy-id';
 
-        $destLib = new  Library();
+        $destLib = new Library();
         $destLib->id = 'some-other-crazy-id';
 
         $getAllResponse = new Response(
@@ -593,7 +581,7 @@ class FileTest extends UnitTestCase
 
         $response = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
 
-        /** @var SeafileHttpClient|MockObject $mockedClient */
+        /** @var MockObject|SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -626,7 +614,7 @@ class FileTest extends UnitTestCase
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
                 function ($method, $uri, $params) use ($getAllResponse, $response, $expectUri, $expectParams): Response {
-                    if ($method === 'GET') {
+                    if ('GET' === $method) {
                         return $getAllResponse;
                     }
 
@@ -644,13 +632,24 @@ class FileTest extends UnitTestCase
     }
 
     /**
+     * Data provider for testCopy() and testMove()
+     */
+    public static function dataProviderCopyMove(): array
+    {
+        return [
+            [['operation' => 'copy', 'responseCode' => 200]],
+            [['operation' => 'move', 'responseCode' => 301]],
+        ];
+    }
+
+    /**
      * Test move() with invalid destination dir
      *
      * @throws GuzzleException
      */
     public function testMoveInvalidDestination(): void
     {
-        /** @var SeafileHttpClient|MockObject $mockedClient */
+        /** @var MockObject|SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $file = new File($mockedClient);
@@ -755,7 +754,7 @@ class FileTest extends UnitTestCase
     {
         $file = new File($this->getMockedClient(new Response()));
 
-        self::assertFalse($file->create(new Library, new DirectoryItem));
+        self::assertFalse($file->create(new Library(), new DirectoryItem()));
     }
 
     /**
@@ -788,10 +787,10 @@ class FileTest extends UnitTestCase
 
         $file = new File($mockObject);
 
-        $library = new Library;
+        $library = new Library();
         $library->id = 123;
 
-        $directoryItem = new DirectoryItem;
+        $directoryItem = new DirectoryItem();
         $directoryItem->path = '/';
         $directoryItem->name = 'some_name.txt';
 

@@ -8,11 +8,8 @@ use stdClass;
 /**
  * Library type class
  *
- * @package   Seafile\Type
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ *
  * @method Library fromJson(stdClass $jsonResponse)
  * @method Library fromArray(array $fromArray)
  */
@@ -28,48 +25,30 @@ class Library extends Type
 
     public string $owner = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $root = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $id = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $size = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $name = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $type = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $virtual = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $desc = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $sizeFormatted = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $password = '';
 }

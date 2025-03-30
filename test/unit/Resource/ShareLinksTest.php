@@ -5,22 +5,19 @@ namespace Seafile\Client\Tests\Unit\Resource;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\MockObject\MockObject;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\ShareLinks;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\Library as LibraryType;
 use Seafile\Client\Type\SharedLink;
-use PHPUnit\Framework\MockObject\MockObject;
 use Seafile\Client\Type\SharedLinkPermissions;
 
 /**
  * ShareLinks resource test
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ *
  * @covers    \Seafile\Client\Resource\ShareLinks
  */
 class ShareLinksTest extends UnitTestCase
@@ -51,23 +48,9 @@ class ShareLinksTest extends UnitTestCase
     }
 
     /**
-     * Provide test data for remove()
-     */
-    public static function dataProviderRemove(): array
-    {
-        // removeResponseCode, responseBody, expectedResult
-        return [
-            [200, '{"success":true}', true], // test normal success case
-            [200, '{"success":false}', false], // test 'soft' error
-            [500, "", false] // test 'hard' error
-        ];
-    }
-
-    /**
      * Test remove()
      *
      * @dataProvider dataProviderRemove
-     *
      *
      * @throws Exception
      */
@@ -79,7 +62,7 @@ class ShareLinksTest extends UnitTestCase
             $responseBody
         );
 
-        /** @var SeafileHttpClient|MockObject $mockedClient */
+        /** @var MockObject|SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -98,27 +81,15 @@ class ShareLinksTest extends UnitTestCase
     }
 
     /**
-     * DataProvider for create()
+     * Provide test data for remove()
      */
-    public static function dataProviderCreate(): array
+    public static function dataProviderRemove(): array
     {
-        // createResponseCode, returnType, responseBody
+        // removeResponseCode, responseBody, expectedResult
         return [
-            [ // test normal successful case
-                200,
-                SharedLink::class,
-                file_get_contents(__DIR__ . '/../../assets/ShareLinksTest_create.json')
-            ],
-            [ // test error handling
-                500,
-                null,
-                '',
-            ],
-            [ // @todo Document what's actually being tested here
-                200,
-                null,
-                '',
-            ],
+            [200, '{"success":true}', true], // test normal success case
+            [200, '{"success":false}', false], // test 'soft' error
+            [500, "", false], // test 'hard' error
         ];
     }
 
@@ -137,7 +108,7 @@ class ShareLinksTest extends UnitTestCase
 
         $createResponse = new Response($createResponseCode, $headers, $responseBody);
 
-        /** @var SeafileHttpClient|MockObject $mockedClient */
+        /** @var MockObject|SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())
@@ -170,5 +141,30 @@ class ShareLinksTest extends UnitTestCase
                 $shareLinks->create($library, '/abc', $sharedLinkPermissions, 123, 'pa55word')
             );
         }
+    }
+
+    /**
+     * DataProvider for create()
+     */
+    public static function dataProviderCreate(): array
+    {
+        // createResponseCode, returnType, responseBody
+        return [
+            [ // test normal successful case
+                200,
+                SharedLink::class,
+                file_get_contents(__DIR__ . '/../../assets/ShareLinksTest_create.json'),
+            ],
+            [ // test error handling
+                500,
+                null,
+                '',
+            ],
+            [ // @todo Document what's actually being tested here
+                200,
+                null,
+                '',
+            ],
+        ];
     }
 }

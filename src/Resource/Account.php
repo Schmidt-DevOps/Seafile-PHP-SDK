@@ -4,18 +4,14 @@ namespace Seafile\Client\Resource;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
+use Seafile\Client\Type\Account as AccountType;
 use Seafile\Client\Type\Type;
-use \Seafile\Client\Type\Account as AccountType;
 use Seafile\Client\Type\TypeInterface;
 
 /**
  * Handles everything regarding Seafile accounts.
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class Account extends Resource
 {
@@ -26,9 +22,10 @@ class Account extends Resource
      *
      * Requires admin permissions
      *
-     * @return AccountType[]
      * @throws Exception
      * @throws GuzzleException
+     *
+     * @return AccountType[]
      */
     public function getAll(): array
     {
@@ -39,7 +36,7 @@ class Account extends Resource
         $libCollection = [];
 
         foreach ($json as $lib) {
-            $libCollection[] = (new AccountType)->fromJson($lib);
+            $libCollection[] = (new AccountType())->fromJson($lib);
         }
 
         return $libCollection;
@@ -65,7 +62,7 @@ class Account extends Resource
 
         $json = json_decode($response->getBody());
 
-        return (new AccountType)->fromJson($json);
+        return (new AccountType())->fromJson($json);
     }
 
     /**
@@ -85,7 +82,7 @@ class Account extends Resource
 
         $json = json_decode($response->getBody());
 
-        return (new AccountType)->fromJson($json);
+        return (new AccountType())->fromJson($json);
     }
 
     /**
@@ -122,7 +119,7 @@ class Account extends Resource
             ]
         );
 
-        return $response->getStatusCode() === 201;
+        return 201 === $response->getStatusCode();
     }
 
     /**
@@ -159,52 +156,47 @@ class Account extends Resource
             ]
         );
 
-        return $response->getStatusCode() === 200;
+        return 200 === $response->getStatusCode();
     }
 
     /**
      * Migrate account
      *
      * Requires admin permissions
-     *
-     * @param AccountType $fromAccountType AccountType instance to update from
-     * @param AccountType $toAccountType AccountType instance to update to
-     *
-     * @return bool
      */
-//    public function migrate(AccountType $fromAccountType, AccountType $toAccountType)
-//    {
-//        // at least one of these fields is required
-//        $requirementsMet = !empty($fromAccountType->email) && !empty($toAccountType->email);
-//
-//        if (!$requirementsMet) {
-//            return false;
-//        }
-//
-//        $uri = sprintf(
-//            '%s/accounts/' . $fromAccountType->email . '/',
-//            $this->clipUri($this->getApiBaseUrl())
-//        );
-//
-//        $response = $this->client->put(
-//            $uri,
-//            [
-//                'headers' => ['Accept' => 'application/json; charset=utf-8'],
-//                'multipart' => [
-//                    [
-//                        'name' => 'op',
-//                        'contents' => 'migrate'
-//                    ],
-//                    [
-//                        'name' => 'to_user',
-//                        'contents' => $toAccountType->email
-//                    ]
-//                ]
-//            ]
-//        );
-//
-//        return $response->getStatusCode() === 200;
-//    }
+    //    public function migrate(AccountType $fromAccountType, AccountType $toAccountType)
+    //    {
+    //        // at least one of these fields is required
+    //        $requirementsMet = !empty($fromAccountType->email) && !empty($toAccountType->email);
+    //
+    //        if (!$requirementsMet) {
+    //            return false;
+    //        }
+    //
+    //        $uri = sprintf(
+    //            '%s/accounts/' . $fromAccountType->email . '/',
+    //            $this->clipUri($this->getApiBaseUrl())
+    //        );
+    //
+    //        $response = $this->client->put(
+    //            $uri,
+    //            [
+    //                'headers' => ['Accept' => 'application/json; charset=utf-8'],
+    //                'multipart' => [
+    //                    [
+    //                        'name' => 'op',
+    //                        'contents' => 'migrate'
+    //                    ],
+    //                    [
+    //                        'name' => 'to_user',
+    //                        'contents' => $toAccountType->email
+    //                    ]
+    //                ]
+    //            ]
+    //        );
+    //
+    //        return $response->getStatusCode() === 200;
+    //    }
 
     /**
      * Remove a account by email
@@ -218,7 +210,7 @@ class Account extends Resource
      */
     public function removeByEmail(string $email): bool
     {
-        return $this->remove((new AccountType)->fromArray(['email' => $email]));
+        return $this->remove((new AccountType())->fromArray(['email' => $email]));
     }
 
     /**
@@ -227,11 +219,12 @@ class Account extends Resource
      * Requires admin permissions
      *
      * @param AccountType $accountType Account to remove
+     *
      * @throws GuzzleException
      */
     public function remove(AccountType $accountType): bool
     {
-        if ($accountType->email === null || $accountType->email === '' || $accountType->email === '0') {
+        if (null === $accountType->email || '' === $accountType->email || '0' === $accountType->email) {
             return false;
         }
 
@@ -241,6 +234,6 @@ class Account extends Resource
             $accountType->email
         );
 
-        return $this->client->delete($uri, [])->getStatusCode() === 200;
+        return 200 === $this->client->delete($uri, [])->getStatusCode();
     }
 }

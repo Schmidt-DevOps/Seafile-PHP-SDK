@@ -2,26 +2,22 @@
 
 namespace Seafile\Client\Http;
 
-use Override;
 use GuzzleHttp\Exception\GuzzleException;
+use Override;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 
 /**
  * Guzzle wrapper
  *
- * @package   Seafile\Http
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class Client extends \GuzzleHttp\Client
 {
     /**
      * Constructor
      *
-     * @param array $config Client configuration settings.
+     * @param array $config client configuration settings
      */
     public function __construct(array $config = [])
     {
@@ -44,6 +40,7 @@ class Client extends \GuzzleHttp\Client
 
     /**
      * @param string|UriInterface $uri URI for request
+     *
      * @throws GuzzleException
      */
     #[Override]
@@ -54,6 +51,7 @@ class Client extends \GuzzleHttp\Client
 
     /**
      * @param string|UriInterface $uri URI for request
+     *
      * @throws GuzzleException
      */
     #[Override]
@@ -64,6 +62,7 @@ class Client extends \GuzzleHttp\Client
 
     /**
      * @param string|UriInterface $uri URI for request
+     *
      * @throws GuzzleException
      */
     #[Override]

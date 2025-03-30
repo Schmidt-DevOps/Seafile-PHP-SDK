@@ -8,74 +8,47 @@ use stdClass;
 /**
  * File history item type class
  *
- * @package   Seafile\Type
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ *
  * @method FileHistoryItem fromJson(stdClass $jsonResponse)
  * @method FileHistoryItem fromArray(array $fromArray)
  */
 class FileHistoryItem extends Type
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     public $revFileSize = 0;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $repoId = '';
 
-    /**
-     * @var DateTime|null
-     */
+    /** @var null|DateTime */
     public $ctime;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $creatorName = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $creator = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $rootId = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $revRenamedOldPath = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $parentId = '';
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     public $newMerge = false;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     public $version = 0;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     public $conflict = false;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $desc = '';
 
     /**
@@ -92,8 +65,6 @@ class FileHistoryItem extends Type
      */
     public $revFileId = '';
 
-    /**
-     * @var int|null
-     */
+    /** @var null|int */
     public $secondParentId;
 }

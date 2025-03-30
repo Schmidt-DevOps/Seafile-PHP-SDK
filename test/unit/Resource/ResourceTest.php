@@ -6,18 +6,14 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use Seafile\Client\Http\Client;
 use Seafile\Client\Resource\Directory;
-use Seafile\Client\Resource\SharedLink;
 use Seafile\Client\Resource\ShareLinks;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 
 /**
  * Resource test
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ *
  * @covers    \Seafile\Client\Resource\Resource
  */
 class ResourceTest extends UnitTestCase

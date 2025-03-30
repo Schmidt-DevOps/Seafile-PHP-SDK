@@ -3,16 +3,12 @@
 namespace Seafile\Client\Resource;
 
 use Exception;
-use \Seafile\Client\Type\Group as GroupType;
+use Seafile\Client\Type\Group as GroupType;
 
 /**
  * Handles everything regarding Seafile groups.
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class Group extends Resource
 {
@@ -21,8 +17,9 @@ class Group extends Resource
     /**
      * List groups
      *
-     * @return GroupType[]
      * @throws Exception
+     *
+     * @return GroupType[]
      */
     public function getAll(): array
     {
@@ -33,7 +30,7 @@ class Group extends Resource
         $groupCollection = [];
 
         foreach ($json->groups as $group) {
-            $groupCollection[] = (new GroupType)->fromJson($group);
+            $groupCollection[] = (new GroupType())->fromJson($group);
         }
 
         return $groupCollection;

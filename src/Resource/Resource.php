@@ -8,11 +8,7 @@ use Seafile\Client\Http\Client;
 /**
  * Abstract resource class
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 abstract class Resource implements ResourceInterface
 {
@@ -29,16 +25,14 @@ abstract class Resource implements ResourceInterface
      *
      * @param Client $client Client instance
      */
-    public function __construct(protected Client $client)
-    {
-    }
+    public function __construct(protected Client $client) {}
 
     /**
      * Get the actual API base URL depending on the resource
      */
     public function getApiBaseUrl(): string
     {
-        return $this->clipUri($this->client->getConfig('base_uri')) . (static::API_VERSION === '2' ? '/api2' : '/api/v' . static::API_VERSION);
+        return $this->clipUri($this->client->getConfig('base_uri')) . ('2' === static::API_VERSION ? '/api2' : '/api/v' . static::API_VERSION);
     }
 
     /**
@@ -49,6 +43,6 @@ abstract class Resource implements ResourceInterface
     #[Override]
     public function clipUri(string $uri): string
     {
-        return preg_replace("/\/$/", '', $uri);
+        return preg_replace("/\\/$/", '', $uri);
     }
 }

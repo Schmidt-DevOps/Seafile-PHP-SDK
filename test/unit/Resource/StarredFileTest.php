@@ -8,18 +8,15 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\StarredFile;
-use Seafile\Client\Type\DirectoryItem;
 use Seafile\Client\Tests\Unit\UnitTestCase;
+use Seafile\Client\Type\DirectoryItem;
 use Seafile\Client\Type\Library as LibraryType;
 
 /**
  * StarredFile resource test
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ *
  * @covers    \Seafile\Client\Resource\StarredFile
  */
 class StarredFileTest extends UnitTestCase
@@ -90,7 +87,7 @@ class StarredFileTest extends UnitTestCase
             ]
         );
 
-        /** @var SeafileHttpClient|MockObject $mockedClient */
+        /** @var MockObject|SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())
@@ -118,7 +115,7 @@ class StarredFileTest extends UnitTestCase
 
                     if ($hasParams
                         && $hasContents
-                        && $method === 'POST'
+                        && 'POST' === $method
                         && $uri === 'https://example.com/test/api' . StarredFile::API_VERSION . '/starredfiles/'
                     ) {
                         return $starResponse;
@@ -160,7 +157,7 @@ class StarredFileTest extends UnitTestCase
             ]
         );
 
-        /** @var SeafileHttpClient|MockObject $mockedClient */
+        /** @var MockObject|SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())
@@ -196,7 +193,7 @@ class StarredFileTest extends UnitTestCase
         $directoryItem->type = 'file';
         $directoryItem->path = '/some/path';
 
-        /** @var SeafileHttpClient|MockObject $mockedClient */
+        /** @var MockObject|SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())
@@ -218,33 +215,13 @@ class StarredFileTest extends UnitTestCase
     }
 
     /**
-     * DataProvider for unstar()
-     */
-    public static function dataProviderUnstar(): array
-    {
-        return [
-            [
-                [
-                    'responseCode' => 200,
-                    'result' => true,
-                ],
-            ],
-            [
-                [
-                    'responseCode' => 500,
-                    'result' => false,
-                ],
-            ],
-        ];
-    }
-
-    /**
      * Test unstar()
      *
      * @param array $data Data provider array
      *
      * @throws GuzzleException
      * @throws Exception
+     *
      * @dataProvider dataProviderUnstar
      */
     public function testUnstar(array $data): void
@@ -256,7 +233,7 @@ class StarredFileTest extends UnitTestCase
         $directoryItem->type = 'file';
         $directoryItem->path = '/some/path';
 
-        /** @var SeafileHttpClient|MockObject $mockedClient */
+        /** @var MockObject|SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())
@@ -277,5 +254,26 @@ class StarredFileTest extends UnitTestCase
             $data['result'],
             $starredFile->unstar($library, $directoryItem)
         );
+    }
+
+    /**
+     * DataProvider for unstar()
+     */
+    public static function dataProviderUnstar(): array
+    {
+        return [
+            [
+                [
+                    'responseCode' => 200,
+                    'result' => true,
+                ],
+            ],
+            [
+                [
+                    'responseCode' => 500,
+                    'result' => false,
+                ],
+            ],
+        ];
     }
 }

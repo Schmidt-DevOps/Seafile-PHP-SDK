@@ -4,7 +4,6 @@ namespace Seafile\Client\Resource;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Psr7\Response;
 use Seafile\Client\Type\Library as LibraryType;
 use Seafile\Client\Type\SharedLink as SharedLinkType;
 use Seafile\Client\Type\SharedLinkPermissions;
@@ -12,19 +11,16 @@ use Seafile\Client\Type\SharedLinkPermissions;
 /**
  * Handles everything regarding Seafile share links web API.
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class ShareLinks extends Resource implements ResourceInterface
 {
     /**
      * List shared links
      *
-     * @return SharedLinkType[]
      * @throws Exception
+     *
+     * @return SharedLinkType[]
      */
     public function getAll(): array
     {
@@ -35,7 +31,7 @@ class ShareLinks extends Resource implements ResourceInterface
         $sharedLinksCollection = [];
 
         foreach ($sharedLinks as $sharedLink) {
-            $sharedLinksCollection[] = (new SharedLinkType)->fromJson($sharedLink);
+            $sharedLinksCollection[] = (new SharedLinkType())->fromJson($sharedLink);
         }
 
         return $sharedLinksCollection;
@@ -62,13 +58,13 @@ class ShareLinks extends Resource implements ResourceInterface
             ]
         );
 
-        if ($response->getStatusCode() !== 200) {
+        if (200 !== $response->getStatusCode()) {
             return false;
         }
 
         $decodedResponse = json_decode($response->getBody());
 
-        return !is_null($decodedResponse) && $decodedResponse->success === true;
+        return !is_null($decodedResponse) && true === $decodedResponse->success;
     }
 
     /**
@@ -76,20 +72,19 @@ class ShareLinks extends Resource implements ResourceInterface
      *
      * @param LibraryType $libraryType Library instance
      * @param string $path Path
-     * @param int|null $expire Expire in such many days
-     * @param string|null $password Optional password string
+     * @param null|int $expire Expire in such many days
+     * @param null|string $password Optional password string
      *
      * @throws GuzzleException
      * @throws Exception
      */
     public function create(
-        LibraryType           $libraryType,
-        string                $path,
+        LibraryType $libraryType,
+        string $path,
         SharedLinkPermissions $sharedLinkPermissions,
-        ?int                   $expire = null,
-        ?string                $password = null
-    ): ?SharedLinkType
-    {
+        ?int $expire = null,
+        ?string $password = null
+    ): ?SharedLinkType {
         $uri = sprintf(
             '%s/share-links/',
             $this->clipUri($this->getApiBaseUrl())
@@ -102,9 +97,9 @@ class ShareLinks extends Resource implements ResourceInterface
                 'name' => 'permissions',
                 'contents' => json_encode([
                     'can_edit' => $sharedLinkPermissions->is(SharedLinkPermissions::CAN_EDIT),
-                    'can_download' => $sharedLinkPermissions->is(SharedLinkPermissions::CAN_DOWNLOAD)
-                ])
-            ]
+                    'can_download' => $sharedLinkPermissions->is(SharedLinkPermissions::CAN_DOWNLOAD),
+                ]),
+            ],
         ];
 
         if (!is_null($expire)) {
@@ -124,7 +119,7 @@ class ShareLinks extends Resource implements ResourceInterface
             ]
         );
 
-        if ($response->getStatusCode() !== 200) {
+        if (200 !== $response->getStatusCode()) {
             return null;
         }
 
@@ -134,7 +129,7 @@ class ShareLinks extends Resource implements ResourceInterface
             return null;
         }
 
-        return (new SharedLinkType)->fromArray([
+        return (new SharedLinkType())->fromArray([
             'url' => $decodedResponse->link,
             'link' => $decodedResponse->link,
             'expire_date' => $decodedResponse->expire_date,
@@ -148,7 +143,7 @@ class ShareLinks extends Resource implements ResourceInterface
             "permissions" => $decodedResponse->permissions,
             'is_dir' => $decodedResponse->is_dir,
             'is_expired' => $decodedResponse->is_expired,
-            'repo_name' => $decodedResponse->repo_name
+            'repo_name' => $decodedResponse->repo_name,
         ]);
     }
 }

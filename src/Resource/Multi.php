@@ -3,29 +3,21 @@
 namespace Seafile\Client\Resource;
 
 use GuzzleHttp\Exception\GuzzleException;
-use \Seafile\Client\Type\Library as LibraryType;
+use Seafile\Client\Type\Library as LibraryType;
 
 /**
  * Handles everything regarding Seafile multi file/folder operations.
  *
- * @package   Seafile\Resource
- * @author    Christoph Haas <christoph.h@sprinternet.at>
- * @copyright 2015 Christoph Haas <christoph.h@sprinternet.at>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class Multi extends Resource
 {
     public const API_VERSION = '2';
 
-    /**
-     * Mode of operation: copy
-     */
+    /** Mode of operation: copy */
     public const OPERATION_COPY = 1;
 
-    /**
-     * Mode of operation: move
-     */
+    /** Mode of operation: move */
     public const OPERATION_MOVE = 2;
 
     /**
@@ -40,11 +32,10 @@ class Multi extends Resource
      */
     public function move(
         LibraryType $srcLibrary,
-        array       $srcPaths,
+        array $srcPaths,
         LibraryType $dstLibrary,
-        string      $dstDirectoryPath
-    ): bool
-    {
+        string $dstDirectoryPath
+    ): bool {
         return $this->copy($srcLibrary, $srcPaths, $dstLibrary, $dstDirectoryPath, self::OPERATION_MOVE);
     }
 
@@ -61,18 +52,17 @@ class Multi extends Resource
      */
     public function copy(
         LibraryType $srcLibrary,
-        array       $srcPaths,
+        array $srcPaths,
         LibraryType $dstLibrary,
-        string      $dstDirectoryPath,
-        int         $operation = self::OPERATION_COPY
-    ): bool
-    {
+        string $dstDirectoryPath,
+        int $operation = self::OPERATION_COPY
+    ): bool {
         // do not allow empty paths
-        if ($srcPaths === [] || ($dstDirectoryPath === '' || $dstDirectoryPath === '0')) {
+        if ([] === $srcPaths || ('' === $dstDirectoryPath || '0' === $dstDirectoryPath)) {
             return false;
         }
 
-        $operationMode = $operation === self::OPERATION_MOVE ? 'move' : 'copy';
+        $operationMode = self::OPERATION_MOVE === $operation ? 'move' : 'copy';
 
         // get the source folder path
         // this path must be the same for all files!
@@ -80,7 +70,7 @@ class Multi extends Resource
 
         $dstFileNames = $this->preparePaths($srcFolderPath, $srcPaths);
 
-        if ($dstFileNames === '' || $dstFileNames === '0') {
+        if ('' === $dstFileNames || '0' === $dstFileNames) {
             return false;
         }
 
@@ -116,31 +106,7 @@ class Multi extends Resource
             ]
         );
 
-        return $response->getStatusCode() === 200;
-    }
-
-    /**
-     * check source folders paths and build the file_names string
-     *
-     * @param string $folder Folder path
-     * @param array $paths Paths of files
-     * @param string $fileNames Optional file names
-     */
-    protected function preparePaths(string $folder, array $paths, string $fileNames = ''): string
-    {
-        foreach ($paths as $path) {
-            if (dirname((string) $path) !== $folder) {
-                return ''; // all source paths must be the same
-            }
-
-            if ($fileNames !== '') {
-                $fileNames .= ':';
-            }
-
-            $fileNames .= basename((string) $path);
-        }
-
-        return $fileNames;
+        return 200 === $response->getStatusCode();
     }
 
     /**
@@ -154,7 +120,7 @@ class Multi extends Resource
     public function delete(LibraryType $libraryType, array $paths): bool
     {
         // do not allow empty paths
-        if ($paths === []) {
+        if ([] === $paths) {
             return false;
         }
 
@@ -164,7 +130,7 @@ class Multi extends Resource
 
         $fileNames = $this->preparePaths($folderPath, $paths);
 
-        if ($fileNames === '' || $fileNames === '0') {
+        if ('' === $fileNames || '0' === $fileNames) {
             return false;
         }
 
@@ -191,6 +157,30 @@ class Multi extends Resource
             ]
         );
 
-        return $response->getStatusCode() === 200;
+        return 200 === $response->getStatusCode();
+    }
+
+    /**
+     * check source folders paths and build the file_names string
+     *
+     * @param string $folder Folder path
+     * @param array $paths Paths of files
+     * @param string $fileNames Optional file names
+     */
+    protected function preparePaths(string $folder, array $paths, string $fileNames = ''): string
+    {
+        foreach ($paths as $path) {
+            if (dirname((string) $path) !== $folder) {
+                return ''; // all source paths must be the same
+            }
+
+            if ('' !== $fileNames) {
+                $fileNames .= ':';
+            }
+
+            $fileNames .= basename((string) $path);
+        }
+
+        return $fileNames;
     }
 }

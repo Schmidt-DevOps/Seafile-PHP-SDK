@@ -8,11 +8,8 @@ use stdClass;
 /**
  * SharedLink type class
  *
- * @package   Seafile\Type
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ *
  * @method SharedLink fromJson(stdClass $jsonResponse)
  * @method SharedLink fromArray(array $fromArray)
  */
@@ -21,82 +18,75 @@ class SharedLink extends Type
     /**
      * View count
      *
-     * @var int|null
+     * @var null|int
      */
     public $viewCnt;
 
     /**
      * Token
      *
-     * @var string|null
+     * @var null|string
      */
     public $token;
 
     /**
      * Creation time
      *
-     * @var DateTime|null
+     * @var null|DateTime
      */
     public $ctime;
 
     /**
      * Path
      *
-     * @var string|null
+     * @var null|string
      */
     public $path;
 
     /**
      * Repo ID
      *
-     * @var string|null
+     * @var null|string
      */
     public $repoId;
 
     /**
      * User name
      *
-     * @var string|null
+     * @var null|string
      */
     public $username;
 
     /**
      * URL
      *
-     * @var string|null
+     * @var null|string
      */
     public $url;
 
     /**
      * Link, same as URL
      *
-     * @var string|null
+     * @var null|string
      */
     public $link;
 
     /**
      * @var array
+     *
      * @todo Automatically cast to SharedLinkPermissions type
      */
     public $permissions = [];
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     public $isDir = false;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     public $isExpired = true;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $objName = "";
 
-    /**
-     * @var DateTime|null
-     */
+    /** @var null|DateTime */
     public $expireDate;
 }

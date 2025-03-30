@@ -5,21 +5,18 @@ namespace Seafile\Client\Tests\Unit\Resource;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\MockObject\MockObject;
 use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Directory;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\DirectoryItem;
 use Seafile\Client\Type\Library;
-use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Directory resource test
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ *
  * @covers    \Seafile\Client\Resource\Directory
  */
 class DirectoryTest extends UnitTestCase
@@ -63,7 +60,7 @@ class DirectoryTest extends UnitTestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        /** @var SeafileHttpClient|MockObject $mockedClient */
+        /** @var MockObject|SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
@@ -99,7 +96,7 @@ class DirectoryTest extends UnitTestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        /** @var SeafileHttpClient|MockObject $mockedClient */
+        /** @var MockObject|SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
@@ -125,19 +122,12 @@ class DirectoryTest extends UnitTestCase
     }
 
     /**
-     * Data provider for testCreateNonRecursive()
-     */
-    public function createNonRecursiveDataProvider(): array
-    {
-        return [[201], [500]];
-    }
-
-    /**
      * Test create() non-recursively
      *
      * @param int $expectResponseCode Expected mkdir request response code
      *
      * @dataProvider createNonRecursiveDataProvider
+     *
      * @throws GuzzleException
      */
     public function testCreateNonRecursive(int $expectResponseCode): void
@@ -154,7 +144,7 @@ class DirectoryTest extends UnitTestCase
         $library = new Library();
         $library->id = 'some-crazy-id';
 
-        if ($expectResponseCode === 201) {
+        if (201 === $expectResponseCode) {
             self::assertTrue($directoryResource->create($library, 'new_dir', '/', false));
         } else {
             self::assertFalse($directoryResource->create($library, 'new_dir', '/', false));
@@ -162,36 +152,11 @@ class DirectoryTest extends UnitTestCase
     }
 
     /**
-     * Get directory resource
-     *
-     * @param Response $getAllResponse Response on "get all" request
-     * @param Response $mkdirResponse Response on actual operation
+     * Data provider for testCreateNonRecursive()
      */
-    protected function getDirectoryResource(Response $getAllResponse, Response $mkdirResponse): Directory
+    public function createNonRecursiveDataProvider(): array
     {
-        /** @var SeafileHttpClient|MockObject $mockedClient */
-        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
-
-        $mockedClient->method('getConfig')->willReturn('http://example.com/');
-
-        $mockedClient->expects(self::any())
-            ->method('request')
-            ->with(self::logicalOr(
-                self::equalTo('GET'),
-                self::equalTo('POST')
-            ))
-            // Return what was passed to offsetGet as a new instance
-            ->will(self::returnCallback(
-                function ($method) use ($getAllResponse, $mkdirResponse): Response {
-                    if ($method === 'GET') {
-                        return $getAllResponse;
-                    }
-
-                    return $mkdirResponse;
-                }
-            ));
-
-        return new Directory($mockedClient);
+        return [[201], [500]];
     }
 
     /**
@@ -207,7 +172,7 @@ class DirectoryTest extends UnitTestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        /** @var SeafileHttpClient|MockObject $mockedClient */
+        /** @var MockObject|SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
@@ -216,7 +181,7 @@ class DirectoryTest extends UnitTestCase
             ->method('request')
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                fn(): Response => $getAllResponse
+                fn (): Response => $getAllResponse
             ));
 
         $directory = new Directory($mockedClient);
@@ -293,7 +258,7 @@ class DirectoryTest extends UnitTestCase
 
         $mkdirResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /** @var SeafileHttpClient|MockObject $mockedClient */
+        /** @var MockObject|SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -322,7 +287,7 @@ class DirectoryTest extends UnitTestCase
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
                 function ($method, $uri, $params) use ($getAllResponse, $mkdirResponse, $expectUri, $expectParams): Response {
-                    if ($method === 'GET') {
+                    if ('GET' === $method) {
                         return $getAllResponse;
                     }
 
@@ -371,7 +336,7 @@ class DirectoryTest extends UnitTestCase
 
         $mkdirResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /** @var SeafileHttpClient|MockObject $mockedClient */
+        /** @var MockObject|SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -390,7 +355,7 @@ class DirectoryTest extends UnitTestCase
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
                 function ($method, $uri, $params) use ($getAllResponse, $mkdirResponse, $expectUri, $expectParams): Response {
-                    if ($method === 'GET') {
+                    if ('GET' === $method) {
                         return $getAllResponse;
                     }
 
@@ -408,5 +373,38 @@ class DirectoryTest extends UnitTestCase
         $library->id = 'some-crazy-id';
 
         self::assertTrue($directory->remove($library, 'test_dir'));
+    }
+
+    /**
+     * Get directory resource
+     *
+     * @param Response $getAllResponse Response on "get all" request
+     * @param Response $mkdirResponse Response on actual operation
+     */
+    protected function getDirectoryResource(Response $getAllResponse, Response $mkdirResponse): Directory
+    {
+        /** @var MockObject|SeafileHttpClient $mockedClient */
+        $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
+
+        $mockedClient->method('getConfig')->willReturn('http://example.com/');
+
+        $mockedClient->expects(self::any())
+            ->method('request')
+            ->with(self::logicalOr(
+                self::equalTo('GET'),
+                self::equalTo('POST')
+            ))
+            // Return what was passed to offsetGet as a new instance
+            ->will(self::returnCallback(
+                function ($method) use ($getAllResponse, $mkdirResponse): Response {
+                    if ('GET' === $method) {
+                        return $getAllResponse;
+                    }
+
+                    return $mkdirResponse;
+                }
+            ));
+
+        return new Directory($mockedClient);
     }
 }

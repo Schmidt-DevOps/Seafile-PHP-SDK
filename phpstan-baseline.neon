@@ -26,11 +26,6 @@ parameters:
 			path: src/Http/Client.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between bool and '/' will always evaluate to false\\.$#"
-			count: 1
-			path: src/Resource/Directory.php
-
-		-
 			message: "#^Method Seafile\\\\Client\\\\Resource\\\\File\\:\\:getMultiPartParams\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Resource/File.php
@@ -72,11 +67,6 @@ parameters:
 
 		-
 			message: "#^Method Seafile\\\\Client\\\\Type\\\\DirectoryItem\\:\\:fromArray\\(\\) has parameter \\$fromArray with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: src/Type/DirectoryItem.php
-
-		-
-			message: "#^Property Seafile\\\\Client\\\\Type\\\\DirectoryItem\\:\\:\\$dir \\(bool\\) does not accept default value of type string\\.$#"
 			count: 1
 			path: src/Type/DirectoryItem.php
 

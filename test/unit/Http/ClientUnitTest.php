@@ -8,11 +8,8 @@ use Seafile\Client\Tests\Unit\UnitTestCase;
 /**
  * Client test
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ *
  * @covers    \Seafile\Client\Http\Client
  */
 class ClientUnitTest extends UnitTestCase
@@ -23,7 +20,7 @@ class ClientUnitTest extends UnitTestCase
     public function testBaseUriEmpty(): void
     {
         $client = new Client();
-        self::assertEmpty((string)$client->getConfig('base_uri'));
+        self::assertEmpty((string) $client->getConfig('base_uri'));
     }
 
     /**
@@ -32,6 +29,6 @@ class ClientUnitTest extends UnitTestCase
     public function testBaseUriNotEmpty(): void
     {
         $client = new Client(['base_uri' => 'http://example.com']);
-        self::assertSame('http://example.com', (string)$client->getConfig('base_uri'));
+        self::assertSame('http://example.com', (string) $client->getConfig('base_uri'));
     }
 }

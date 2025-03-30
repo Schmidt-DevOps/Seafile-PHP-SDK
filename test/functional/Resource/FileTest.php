@@ -2,24 +2,20 @@
 
 namespace Seafile\Client\Tests\Functional\Resource;
 
-use Override;
-use Seafile\Client\Type\Library;
 use DateTime;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
+use Override;
 use Seafile\Client\Resource\Directory;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Tests\Functional\FunctionalTestCase;
 use Seafile\Client\Type\DirectoryItem;
+use Seafile\Client\Type\Library;
 
 /**
  * File resource functional tests
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class FileTest extends FunctionalTestCase
 {
@@ -80,7 +76,7 @@ class FileTest extends FunctionalTestCase
         $newFilename = tempnam($GLOBALS['BUILD_TMP'], 'Seafile-PHP-SDK_Test_File_History_Upload_');
         rename($newFilename, $newFilename . '.txt');
         $newFilename .= '.txt';
-        file_put_contents($newFilename, 'Hello World: ' . (new DateTime)->format('Y-m-d H:i:s'));
+        file_put_contents($newFilename, 'Hello World: ' . (new DateTime())->format('Y-m-d H:i:s'));
 
         $this->logger->debug("#################### Uploading file " . $newFilename);
 
@@ -98,7 +94,7 @@ class FileTest extends FunctionalTestCase
         $this->logger->debug("#################### Getting file detail of " . $newFilename);
         $directoryItem = $this->file->getFileDetail($library, basename($newFilename));
 
-        if ($directoryItem->path === null) {
+        if (null === $directoryItem->path) {
             $directoryItem->path = '/';
         }
 
@@ -144,7 +140,7 @@ class FileTest extends FunctionalTestCase
         $this->logger->debug("############################################### Result:");
 
         self::assertIsArray($items);
-        self::assertTrue($items !== []);
+        self::assertTrue([] !== $items);
 
         foreach ($items as $item) {
             $this->logger->debug(sprintf("(%s) %s/%s (%d bytes)\n", $item->type, $item->path, $item->name, $item->size));
@@ -178,7 +174,7 @@ class FileTest extends FunctionalTestCase
         $success = $this->file->create($library, $dirItem);
         self::assertTrue($success);
 
-        $newFilename = 'test_' . (new DateTime)->format('U') . '.txt';
+        $newFilename = 'test_' . (new DateTime())->format('U') . '.txt';
         $dirItem = $this->file->getFileDetail($library, $path . $fileName);
 
         $this->logger->debug("#################### File to be renamed: " . $path . $dirItem->name);
@@ -187,7 +183,7 @@ class FileTest extends FunctionalTestCase
         self::assertTrue($success);
         $this->logger->debug("#################### File renamed from " . $path . $fileName . ' to ' . $newFilename);
 
-        $newFilename = 'even_newer_file_name_test_' . (new DateTime)->format('U') . '.txt';
+        $newFilename = 'even_newer_file_name_test_' . (new DateTime())->format('U') . '.txt';
         $success = $this->file->rename($library, $dirItem, $newFilename);
 
         self::assertTrue($success);

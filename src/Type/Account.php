@@ -8,11 +8,8 @@ use stdClass;
 /**
  * Account type class
  *
- * @package   Seafile\Type
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ *
  * @method Account fromJson(stdClass $jsonResponse)
  * @method Account fromArray(array $fromArray)
  */
@@ -28,58 +25,36 @@ class Account extends Type
 
     public ?int $id = null;
 
-    /**
-     * @var string|null
-     */
+    /** @var null|string */
     public $institution;
 
-    /**
-     * @var bool|null
-     */
+    /** @var null|bool */
     public $isStaff;
 
-    /**
-     * @var bool|null
-     */
+    /** @var null|bool */
     public $isActive;
 
-    /**
-     * @var string|null
-     */
+    /** @var null|string */
     public $loginId;
 
-    /**
-     * @var string|null
-     */
+    /** @var null|string */
     public $name;
 
-    /**
-     * @var string|null
-     */
+    /** @var null|string */
     public $note;
 
-    /**
-     * @var string|null
-     */
+    /** @var null|string */
     public $password;
 
-    /**
-     * @var int|null
-     */
+    /** @var null|int */
     public $storage;
 
-    /**
-     * @var int|null
-     */
+    /** @var null|int */
     public $spaceQuota;
 
-    /**
-     * @var int|null
-     */
+    /** @var null|int */
     public $total;
 
-    /**
-     * @var int|null
-     */
+    /** @var null|int */
     public $usage;
 }

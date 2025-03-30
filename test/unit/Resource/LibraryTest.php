@@ -15,11 +15,8 @@ use Seafile\Client\Type\Library as LibraryType;
 /**
  * Library resource test
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ *
  * @covers    \Seafile\Client\Resource\Library
  */
 class LibraryTest extends UnitTestCase
@@ -73,7 +70,7 @@ class LibraryTest extends UnitTestCase
      */
     public function testDecryptMissingQuery(): void
     {
-        $library = new Library($this->getMockedClient(new Response));
+        $library = new Library($this->getMockedClient(new Response()));
         $this->expectException('Exception');
         $library->decrypt('some id', []);
     }
@@ -85,7 +82,7 @@ class LibraryTest extends UnitTestCase
      */
     public function testDecryptMissingPassword(): void
     {
-        $library = new Library($this->getMockedClient(new Response));
+        $library = new Library($this->getMockedClient(new Response()));
         $this->expectException('Exception');
         $library->decrypt('some id', ['query' => []]);
     }
@@ -137,19 +134,6 @@ class LibraryTest extends UnitTestCase
     }
 
     /**
-     * Data provider for testExists()
-     */
-    public static function dataProviderExists(): array
-    {
-        return [
-            [['invalid_value', 'invalid_attribute', false]],
-            [['bar', 'name', true]],
-            [["f158d1dd-cc19-412c-b143-2ac83f352290", 'id', true]],
-            [["f158d1dd-cc19-412c-b143-2ac83f35229_", 'id', false]],
-        ];
-    }
-
-    /**
      * Test exists()
      *
      * @dataProvider dataProviderExists
@@ -172,13 +156,15 @@ class LibraryTest extends UnitTestCase
     }
 
     /**
-     * DataProvider for testCreateInvalid()
+     * Data provider for testExists()
      */
-    public static function dataProviderCreateInvalid(): array
+    public static function dataProviderExists(): array
     {
         return [
-            [['', false]],
-            [['foo', false]],
+            [['invalid_value', 'invalid_attribute', false]],
+            [['bar', 'name', true]],
+            [["f158d1dd-cc19-412c-b143-2ac83f352290", 'id', true]],
+            [["f158d1dd-cc19-412c-b143-2ac83f35229_", 'id', false]],
         ];
     }
 
@@ -205,6 +191,17 @@ class LibraryTest extends UnitTestCase
     }
 
     /**
+     * DataProvider for testCreateInvalid()
+     */
+    public static function dataProviderCreateInvalid(): array
+    {
+        return [
+            [['', false]],
+            [['foo', false]],
+        ];
+    }
+
+    /**
      * Test remove(), provide invalid parameters, expect failure
      *
      * @throws GuzzleException
@@ -220,19 +217,6 @@ class LibraryTest extends UnitTestCase
         ));
 
         self::assertFalse($library->remove(''));
-    }
-
-    /**
-     * DataProvider for create()
-     */
-    public static function dataProviderCreate(): array
-    {
-        return [
-            // [[expect response code, expected result, password]]
-            [[200, true, '']],
-            [[500, false, '']],
-            [[200, true, 'some_password']],
-        ];
     }
 
     /**
@@ -291,7 +275,7 @@ class LibraryTest extends UnitTestCase
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
                 function ($method, $uri, $params) use ($getAllResponse, $createResponse, $expectUri, $expectParams): Response {
-                    if ($method === 'GET') {
+                    if ('GET' === $method) {
                         return $getAllResponse;
                     }
 
@@ -315,6 +299,19 @@ class LibraryTest extends UnitTestCase
     }
 
     /**
+     * DataProvider for create()
+     */
+    public static function dataProviderCreate(): array
+    {
+        return [
+            // [[expect response code, expected result, password]]
+            [[200, true, '']],
+            [[500, false, '']],
+            [[200, true, 'some_password']],
+        ];
+    }
+
+    /**
      * Test remove()
      *
      * @throws Exception
@@ -330,7 +327,7 @@ class LibraryTest extends UnitTestCase
 
         $removeResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /** @var SeafileHttpClient|MockObject $mockedClient */
+        /** @var MockObject|SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -349,7 +346,7 @@ class LibraryTest extends UnitTestCase
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
                 function ($method, $uri, $params) use ($getAllResponse, $removeResponse, $expectUri, $expectParams): Response {
-                    if ($method === 'GET') {
+                    if ('GET' === $method) {
                         return $getAllResponse;
                     }
 

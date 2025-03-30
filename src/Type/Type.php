@@ -2,32 +2,24 @@
 
 namespace Seafile\Client\Type;
 
-use Override;
-use DateTime;
 use CaseHelper\CaseHelperFactory;
+use DateTime;
 use Exception;
-use \Seafile\Client\Type\Account as AccountType;
+use Override;
+use Seafile\Client\Type\Account as AccountType;
 use stdClass;
 
 /**
  * Abstract type class
  *
- * @package   Seafile\Type
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 abstract class Type implements TypeInterface
 {
-    /**
-     * Associative array mode
-     */
+    /** Associative array mode */
     public const ARRAY_ASSOC = 1;
 
-    /**
-     * Multipart array mode
-     */
+    /** Multipart array mode */
     public const ARRAY_MULTI_PART = 2;
 
     /**
@@ -39,7 +31,7 @@ abstract class Type implements TypeInterface
      */
     public function __construct(array $fromArray = [])
     {
-        if ($fromArray !== []) {
+        if ([] !== $fromArray) {
             $this->fromArray($fromArray);
         }
     }
@@ -49,8 +41,9 @@ abstract class Type implements TypeInterface
      *
      * @param array $fromArray Create from array
      *
-     * @return self
      * @throws Exception
+     *
+     * @return static
      */
     #[Override]
     public function fromArray(array $fromArray) // type is given in derived class
@@ -62,22 +55,29 @@ abstract class Type implements TypeInterface
                 continue;
             }
 
-            /** @noinspection PhpSwitchCanBeReplacedWithMatchExpressionInspection */
+            // @noinspection PhpSwitchCanBeReplacedWithMatchExpressionInspection
             switch ($key) {
                 case 'creator':
-                    $this->{$key} = (new AccountType)->fromArray(['email' => $value]);
+                    $this->{$key} = (new AccountType())->fromArray(['email' => $value]);
+
                     break;
+
                 case 'create_time':
                 case 'ctime':
                 case 'mtime':
                 case 'mtime_created':
-                    $this->{$camelCaseKey} = $this->getDateTime((int)$value);
+                    $this->{$camelCaseKey} = $this->getDateTime((int) $value);
+
                     break;
+
                 case 'expire_date':
                     $this->{$camelCaseKey} = $this->getDateTime(strtotime((string) $value));
+
                     break;
+
                 default:
                     $this->{$camelCaseKey} = $value;
+
                     break;
             }
         }
@@ -106,13 +106,14 @@ abstract class Type implements TypeInterface
      *
      * @param stdClass $jsonResponse Json response
      *
-     * @return self
      * @throws Exception
+     *
+     * @return self
      */
     #[Override]
     public function fromJson(stdClass $jsonResponse) // type is given in derived class
     {
-        $this->fromArray((array)$jsonResponse);
+        $this->fromArray((array) $jsonResponse);
 
         return $this;
     }
@@ -142,9 +143,12 @@ abstract class Type implements TypeInterface
                 }
 
                 $array = $multiPart;
+
                 break;
+
             default:
-                $array = array_filter((array)$this); // removes empty values
+                $array = array_filter((array) $this); // removes empty values
+
                 break;
         }
 

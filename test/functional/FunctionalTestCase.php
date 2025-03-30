@@ -2,7 +2,6 @@
 
 namespace Seafile\Client\Tests\Functional;
 
-use Override;
 use Exception;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
@@ -14,6 +13,7 @@ use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Override;
 use PHPUnit\Framework\TestCase;
 use Seafile\Client\Http\Client;
 use Seafile\Client\Resource\Library;
@@ -22,11 +22,7 @@ use Seafile\Client\Type\Library as LibraryType;
 /**
  * Seafile PHP SDK Functional Test Case class
  *
- * @package   Seafile\Tests
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class FunctionalTestCase extends TestCase
 {
@@ -36,7 +32,20 @@ class FunctionalTestCase extends TestCase
 
     protected ?LibraryType $testLib = null;
 
-    protected Internet|Lorem|null|Generator|Person $faker = null;
+    protected null|Generator|Internet|Lorem|Person $faker = null;
+
+    /**
+     * Set up the test
+     *
+     * @throws Exception
+     */
+    #[Override]
+    protected function setUp(): void
+    {
+        $this->getLogger();
+        $this->getClient();
+        $this->getFaker();
+    }
 
     /**
      * Skip functional tests when they do not have been set up correctly. Please refer to README.md on how to set them up.
@@ -47,7 +56,7 @@ class FunctionalTestCase extends TestCase
      */
     public static function checkFunctionalTestsSetUpCorrectly(): void
     {
-        if ($GLOBALS['RUN_FUNCTIONAL_TESTS'] !== true) {
+        if (true !== $GLOBALS['RUN_FUNCTIONAL_TESTS']) {
             self::markTestSkipped();
         }
     }
@@ -81,7 +90,7 @@ class FunctionalTestCase extends TestCase
             $this->client = new Client(
                 [
                     'base_uri' => $_ENV['TEST_SERVER'],
-                    'debug' => $_ENV['GUZZLE_DEBUG_TO_STDOUT'] === '1',
+                    'debug' => '1' === $_ENV['GUZZLE_DEBUG_TO_STDOUT'],
                     'handler' => $stack,
                     'headers' => [
                         'Content-Type' => 'application/json',
@@ -92,18 +101,6 @@ class FunctionalTestCase extends TestCase
         }
 
         return $this->client;
-    }
-
-    /**
-     * Set up the test
-     * @throws Exception
-     */
-    #[Override]
-    protected function setUp(): void
-    {
-        $this->getLogger();
-        $this->getClient();
-        $this->getFaker();
     }
 
     /**
@@ -138,9 +135,9 @@ class FunctionalTestCase extends TestCase
                         'multipart' => [
                             [
                                 'name' => 'password',
-                                'contents' => $_ENV['TEST_LIB_ENCRYPTED_PASSWORD']
-                            ]
-                        ]
+                                'contents' => $_ENV['TEST_LIB_ENCRYPTED_PASSWORD'],
+                            ],
+                        ],
                     ]
                 ));
             }

@@ -4,16 +4,12 @@ namespace Seafile\Client\Resource;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use \Seafile\Client\Type\Library as LibraryType;
+use Seafile\Client\Type\Library as LibraryType;
 
 /**
  * Handles everything regarding Seafile libraries.
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class Library extends Resource
 {
@@ -22,8 +18,9 @@ class Library extends Resource
     /**
      * List libraries
      *
-     * @return LibraryType[]
      * @throws Exception
+     *
+     * @return LibraryType[]
      */
     public function getAll(): array
     {
@@ -34,7 +31,7 @@ class Library extends Resource
         $libCollection = [];
 
         foreach ($json as $lib) {
-            $libCollection[] = (new LibraryType)->fromJson($lib);
+            $libCollection[] = (new LibraryType())->fromJson($lib);
         }
 
         return $libCollection;
@@ -56,7 +53,7 @@ class Library extends Resource
 
         $json = json_decode($response->getBody());
 
-        return (new LibraryType)->fromJson($json);
+        return (new LibraryType())->fromJson($json);
     }
 
     /**
@@ -65,9 +62,9 @@ class Library extends Resource
      * @param string $libraryId Library ID
      * @param array $options Options
      *
-     * @return bool Decryption success
-     *
      * @throws Exception
+     *
+     * @return bool Decryption success
      */
     public function decrypt(string $libraryId, array $options): bool
     {
@@ -84,7 +81,7 @@ class Library extends Resource
             $options
         );
 
-        return json_decode($response->getBody()) === 'success';
+        return 'success' === json_decode($response->getBody());
     }
 
     /**
@@ -147,7 +144,7 @@ class Library extends Resource
             ],
         ];
 
-        if ($password !== '') {
+        if ('' !== $password) {
             $multiPartData[] = [
                 'name' => 'passwd',
                 'contents' => $password,
@@ -163,7 +160,7 @@ class Library extends Resource
             ]
         );
 
-        return $response->getStatusCode() === 200;
+        return 200 === $response->getStatusCode();
     }
 
     /**
@@ -194,7 +191,7 @@ class Library extends Resource
             ]
         );
 
-        return $response->getStatusCode() === 200;
+        return 200 === $response->getStatusCode();
     }
 
     /**
@@ -216,6 +213,6 @@ class Library extends Resource
 
         $response = $this->client->put($uri, []);
 
-        return $response->getStatusCode() === 200;
+        return 200 === $response->getStatusCode();
     }
 }

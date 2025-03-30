@@ -10,15 +10,32 @@ use Seafile\Client\Type\DirectoryItem;
 /**
  * DirectoryItem test
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ *
  * @covers    \Seafile\Client\Type\DirectoryItem
  */
 class DirectoryItemUnitTest extends UnitTestCase
 {
+    /**
+     * Test fromArray()
+     *
+     * @param array $data Dataprovider array
+     *
+     * @dataProvider dataFromArray
+     *
+     * @throws GuzzleException
+     * @throws Exception
+     */
+    public function testFromArray(array $data): void
+    {
+        $directoryItem = new DirectoryItem([
+            'dir' => $data['dir'],
+        ]);
+
+        self::assertSame($data['dir'], $directoryItem->dir);
+        self::assertSame($data['type'], $directoryItem->type);
+    }
+
     /**
      * DataProvider for testFromArray()
      */
@@ -39,24 +56,5 @@ class DirectoryItemUnitTest extends UnitTestCase
                 ],
             ],
         ];
-    }
-
-    /**
-     * Test fromArray()
-     *
-     * @param array $data Dataprovider array
-     *
-     * @dataProvider dataFromArray
-     * @throws GuzzleException
-     * @throws Exception
-     */
-    public function testFromArray(array $data): void
-    {
-        $directoryItem = new DirectoryItem([
-            'dir' => $data['dir'],
-        ]);
-
-        self::assertSame($data['dir'], $directoryItem->dir);
-        self::assertSame($data['type'], $directoryItem->type);
     }
 }

@@ -5,19 +5,15 @@ namespace Seafile\Client\Resource;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Http\Client;
-use \Seafile\Client\Type\Library as LibraryType;
-use \Seafile\Client\Type\DirectoryItem;
+use Seafile\Client\Type\DirectoryItem;
+use Seafile\Client\Type\Library as LibraryType;
 
 /**
  * Handles everything regarding Seafile starred files.
  *
  * Please note that only starred files of the API user can be accessed.
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class StarredFile extends Resource
 {
@@ -40,20 +36,21 @@ class StarredFile extends Resource
     /**
      * Get all starred files
      *
-     * @return DirectoryItem[]
      * @throws Exception
      * @throws GuzzleException
+     *
+     * @return DirectoryItem[]
      */
     public function getAll(): array
     {
         $response = $this->client->request('GET', $this->resourceUri);
 
-        $json = json_decode((string)$response->getBody());
+        $json = json_decode((string) $response->getBody());
 
         $dirItemCollection = [];
 
         foreach ($json as $starredFile) {
-            $dirItemCollection[] = (new DirectoryItem)->fromJson($starredFile);
+            $dirItemCollection[] = (new DirectoryItem())->fromJson($starredFile);
         }
 
         return $dirItemCollection;
@@ -65,12 +62,13 @@ class StarredFile extends Resource
      * @param LibraryType $libraryType Library instance
      * @param DirectoryItem $directoryItem DirectoryItem instance to star
      *
-     * @return string URL of starred file list
      * @throws Exception
+     *
+     * @return string URL of starred file list
      */
     public function star(LibraryType $libraryType, DirectoryItem $directoryItem): string
     {
-        if ($directoryItem->type !== 'file') {
+        if ('file' !== $directoryItem->type) {
             throw new Exception('Cannot star other items than files.');
         }
 
@@ -92,7 +90,7 @@ class StarredFile extends Resource
             ]
         );
 
-        if ($response->getStatusCode() !== 201 || $response->hasHeader('Location') === false) {
+        if (201 !== $response->getStatusCode() || false === $response->hasHeader('Location')) {
             throw new Exception('Could not star file');
         }
 
@@ -116,6 +114,6 @@ class StarredFile extends Resource
 
         $response = $this->client->request('DELETE', $uri);
 
-        return $response->getStatusCode() === 200;
+        return 200 === $response->getStatusCode();
     }
 }

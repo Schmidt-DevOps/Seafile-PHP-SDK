@@ -2,34 +2,31 @@
 
 namespace Seafile\Client\Tests\Unit;
 
-use Seafile\Client\Type\Library;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use Seafile\Client\Http\Client;
+use Seafile\Client\Type\Library;
 
 /**
  * Seafile PHP SDK Unit Test Case class
  *
- * @package   Seafile\Tests
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class UnitTestCase extends TestCase
 {
     /**
      * Call protected/private method of a class.
      *
-     * @param object $object Instantiated object that we will run method on.
+     * @param object $object instantiated object that we will run method on
      * @param string $methodName Method name to call
-     * @param array<int, (int | Library)>|array<int, string> $parameters Params to pass to method.
+     * @param array<int, (int | Library)>|array<int, string> $parameters params to pass to method
      *
-     * @return mixed Method return.
      * @throws ReflectionException
+     *
+     * @return mixed method return
      */
     public function invokeMethod(object &$object, string $methodName, array $parameters = []): mixed
     {
@@ -44,7 +41,7 @@ class UnitTestCase extends TestCase
      *
      * @param Response $response HTTP Response
      *
-     * @return MockObject|Client
+     * @return Client|MockObject
      */
     protected function getMockedClient(Response $response): MockObject
     {

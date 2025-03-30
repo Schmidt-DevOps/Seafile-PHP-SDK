@@ -4,7 +4,6 @@ namespace Seafile\Client\Resource;
 
 /**
  * Interface ResourceInterface
- * @package Seafile\Client\Resource
  */
 interface ResourceInterface
 {

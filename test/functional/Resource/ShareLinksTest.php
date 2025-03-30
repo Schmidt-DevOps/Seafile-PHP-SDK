@@ -2,26 +2,22 @@
 
 namespace Seafile\Client\Tests\Functional\Resource;
 
-use Override;
 use DateTime;
-use GuzzleHttp\Exception\GuzzleException;
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
+use Override;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Resource\Library;
 use Seafile\Client\Resource\ShareLinks as ShareLinksAlias;
 use Seafile\Client\Tests\Functional\FunctionalTestCase;
+use Seafile\Client\Type\Library as LibraryType;
 use Seafile\Client\Type\SharedLink;
 use Seafile\Client\Type\SharedLinkPermissions;
-use Seafile\Client\Type\Library as LibraryType;
 
 /**
  * ShareLinks resource functional tests
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class ShareLinksTest extends FunctionalTestCase
 {
@@ -59,7 +55,7 @@ class ShareLinksTest extends FunctionalTestCase
 
         foreach ($libs as $lib) {
             self::assertInstanceOf(LibraryType::class, $lib);
-            $this->logger->debug(sprintf("Name: %s, ID: %s, is encrypted: %s\n", $lib->name, $lib->id, $lib->encrypted !== '' && $lib->encrypted !== '0' ? 'YES' : 'NO'));
+            $this->logger->debug(sprintf("Name: %s, ID: %s, is encrypted: %s\n", $lib->name, $lib->id, '' !== $lib->encrypted && '0' !== $lib->encrypted ? 'YES' : 'NO'));
         }
 
         $libId = $_ENV['TEST_LIB_UNENCRYPTED_ID'];
@@ -72,7 +68,7 @@ class ShareLinksTest extends FunctionalTestCase
         $newFilename = $GLOBALS['BUILD_TMP'] . '/Seafile-PHP-SDK_Test_Upload.txt';
 
         if (!file_exists($newFilename)) {
-            file_put_contents($newFilename, 'Hello World: ' . (new DateTime)->format('Y-m-d H:i:s'));
+            file_put_contents($newFilename, 'Hello World: ' . (new DateTime())->format('Y-m-d H:i:s'));
         }
 
         $this->logger->debug("#################### Uploading file " . $newFilename);
@@ -86,7 +82,7 @@ class ShareLinksTest extends FunctionalTestCase
         $sharedLinkPermissions = new SharedLinkPermissions(SharedLinkPermissions::CAN_DOWNLOAD);
         $p = "/" . basename($newFilename);
 
-        if ($lib->encrypted !== '' && $lib->encrypted !== '0') {
+        if ('' !== $lib->encrypted && '0' !== $lib->encrypted) {
             $shareLinkType = $this->shareLinksAlias->create($lib, $p, $sharedLinkPermissions, $expire, $lib->password);
         } else {
             $shareLinkType = $this->shareLinksAlias->create($lib, $p, $sharedLinkPermissions, $expire);

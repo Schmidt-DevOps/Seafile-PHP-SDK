@@ -8,7 +8,6 @@ use stdClass;
 
 /**
  * Interface TypeInterface
- * @package Seafile\Client\Type
  */
 interface TypeInterface
 {
@@ -17,10 +16,12 @@ interface TypeInterface
      *
      * @param array $fromArray Create from array
      *
-     * @return self
      * @throws Exception
+     *
+     * @return self
      */
     public function fromArray(array $fromArray); // type is given in implementing class
+
     /**
      * Time stamps vary a lot in Seafile. Sometimes it's seconds from 1970-01-01 00:00:00, sometimes
      * it's microseconds. You never know.
@@ -34,10 +35,12 @@ interface TypeInterface
      *
      * @param stdClass $jsonResponse Json response
      *
-     * @return self
      * @throws Exception
+     *
+     * @return self
      */
     public function fromJson(stdClass $jsonResponse); // type is given in implementing class
+
     /**
      * Return instance as array
      *

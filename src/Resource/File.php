@@ -8,34 +8,24 @@ use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Seafile\Client\Type\DirectoryItem;
 use Seafile\Client\Type\FileHistoryItem;
-use \Seafile\Client\Type\Library as LibraryType;
+use Seafile\Client\Type\Library as LibraryType;
 
 /**
  * Handles everything regarding Seafile files.
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class File extends Resource
 {
     public const API_VERSION = '2';
 
-    /**
-     * Mode of operation: copy
-     */
+    /** Mode of operation: copy */
     public const OPERATION_COPY = 1;
 
-    /**
-     * Mode of operation: move
-     */
+    /** Mode of operation: move */
     public const OPERATION_MOVE = 2;
 
-    /**
-     * Mode of operation: create
-     */
+    /** Mode of operation: create */
     public const OPERATION_CREATE = 3;
 
     /**
@@ -58,19 +48,9 @@ class File extends Resource
             . '&p=' . $this->urlEncodePath($dir . $directoryItem->name);
 
         $response = $this->client->request('GET', $url);
-        $downloadUrl = (string)$response->getBody();
+        $downloadUrl = (string) $response->getBody();
 
         return preg_replace('/"/', '', $downloadUrl);
-    }
-
-    /**
-     * URL-encode path string
-     *
-     * @param string $path Path string
-     */
-    protected function urlEncodePath(string $path): string
-    {
-        return implode('/', array_map('rawurlencode', explode('/', $path)));
     }
 
     /**
@@ -86,13 +66,12 @@ class File extends Resource
      * @throws GuzzleException
      */
     public function downloadFromDir(
-        LibraryType   $libraryType,
+        LibraryType $libraryType,
         DirectoryItem $directoryItem,
-        string        $localFilePath,
-        string        $dir,
-        int           $reuse = 1
-    ): ResponseInterface
-    {
+        string $localFilePath,
+        string $dir,
+        int $reuse = 1
+    ): ResponseInterface {
         if (is_readable($localFilePath)) {
             throw new Exception('File already exists');
         }
@@ -146,8 +125,9 @@ class File extends Resource
      * @param bool $newFile Is new file (=upload) or not (=update)
      * @param string $dir Directory to upload to
      *
-     * @return String Upload link
      * @throws GuzzleException
+     *
+     * @return string Upload link
      */
     public function getUploadUrl(LibraryType $libraryType, bool $newFile = true, string $dir = "/"): string
     {
@@ -158,7 +138,7 @@ class File extends Resource
             . '?p=' . $dir;
 
         $response = $this->client->request('GET', $url);
-        $uploadLink = (string)$response->getBody();
+        $uploadLink = (string) $response->getBody();
 
         return preg_replace('/"/', '', $uploadLink);
     }
@@ -174,11 +154,10 @@ class File extends Resource
     public function getMultiPartParams(
         string $localFilePath,
         string $dir,
-        bool   $newFile = true,
-               mixed $newFilename = false
-    ): array
-    {
-        $fileBaseName = $newFilename === false ? basename($localFilePath) : $newFilename;
+        bool $newFile = true,
+        mixed $newFilename = false
+    ): array {
+        $fileBaseName = false === $newFilename ? basename($localFilePath) : $newFilename;
 
         $multiPartParams = [
             [
@@ -225,12 +204,11 @@ class File extends Resource
      */
     public function upload(
         LibraryType $libraryType,
-        string      $localFilePath,
-        string      $dir = '/',
-                    mixed $newFilename = false,
-        bool        $newFile = true
-    ): ResponseInterface
-    {
+        string $localFilePath,
+        string $dir = '/',
+        mixed $newFilename = false,
+        bool $newFile = true
+    ): ResponseInterface {
         if (!is_readable($localFilePath)) {
             throw new Exception('File ' . $localFilePath . ' could not be read or does not exist');
         }
@@ -264,9 +242,9 @@ class File extends Resource
 
         $response = $this->client->request('GET', $url);
 
-        $json = json_decode((string)$response->getBody());
+        $json = json_decode((string) $response->getBody());
 
-        return (new DirectoryItem)->fromJson($json);
+        return (new DirectoryItem())->fromJson($json);
     }
 
     /**
@@ -280,7 +258,7 @@ class File extends Resource
     public function remove(LibraryType $libraryType, string $filePath): bool
     {
         // do not allow empty paths
-        if ($filePath === '' || $filePath === '0') {
+        if ('' === $filePath || '0' === $filePath) {
             return false;
         }
 
@@ -299,7 +277,7 @@ class File extends Resource
             ]
         );
 
-        return $response->getStatusCode() === 200;
+        return 200 === $response->getStatusCode();
     }
 
     /**
@@ -315,11 +293,11 @@ class File extends Resource
     {
         $filePath = $directoryItem->dir . $directoryItem->name;
 
-        if ($filePath === '' || $filePath === '0') {
+        if ('' === $filePath || '0' === $filePath) {
             throw new InvalidArgumentException('Invalid file path: must not be empty');
         }
 
-        if ($newFilename === '' || $newFilename === '0' || str_starts_with($newFilename, '/')) {
+        if ('' === $newFilename || '0' === $newFilename || str_starts_with($newFilename, '/')) {
             throw new InvalidArgumentException('Invalid new file name: length must be >0 and must not start with /');
         }
 
@@ -348,7 +326,7 @@ class File extends Resource
             ]
         );
 
-        $success = $response->getStatusCode() === 200;
+        $success = 200 === $response->getStatusCode();
 
         if ($success) {
             $directoryItem->name = $newFilename;
@@ -370,21 +348,20 @@ class File extends Resource
      */
     public function copy(
         LibraryType $srcLibrary,
-        string      $srcFilePath,
+        string $srcFilePath,
         LibraryType $dstLibrary,
-        string      $dstDirectoryPath,
-        int         $operation = self::OPERATION_COPY
-    ): bool
-    {
+        string $dstDirectoryPath,
+        int $operation = self::OPERATION_COPY
+    ): bool {
         // do not allow empty paths
-        if ($srcFilePath === '' || $srcFilePath === '0' || ($dstDirectoryPath === '' || $dstDirectoryPath === '0')) {
+        if ('' === $srcFilePath || '0' === $srcFilePath || ('' === $dstDirectoryPath || '0' === $dstDirectoryPath)) {
             return false;
         }
 
         $operationMode = 'copy';
         $returnCode = 200;
 
-        if ($operation === self::OPERATION_MOVE) {
+        if (self::OPERATION_MOVE === $operation) {
             $operationMode = 'move';
             $returnCode = 301;
         }
@@ -433,11 +410,10 @@ class File extends Resource
      */
     public function move(
         LibraryType $srcLibrary,
-        string      $srcFilePath,
+        string $srcFilePath,
         LibraryType $dstLibrary,
-        string      $dstDirectoryPath
-    ): bool
-    {
+        string $dstDirectoryPath
+    ): bool {
         return $this->copy($srcLibrary, $srcFilePath, $dstLibrary, $dstDirectoryPath, self::OPERATION_MOVE);
     }
 
@@ -451,11 +427,10 @@ class File extends Resource
      * @throws GuzzleException
      */
     public function getFileRevisionDownloadUrl(
-        LibraryType     $libraryType,
-        DirectoryItem   $directoryItem,
+        LibraryType $libraryType,
+        DirectoryItem $directoryItem,
         FileHistoryItem $fileHistoryItem
-    ): ?string
-    {
+    ): ?string {
         $url = $this->getApiBaseUrl()
             . '/repos/'
             . $libraryType->id
@@ -465,7 +440,7 @@ class File extends Resource
 
         $response = $this->client->request('GET', $url);
 
-        return preg_replace('/"/', '', (string)$response->getBody());
+        return preg_replace('/"/', '', (string) $response->getBody());
     }
 
     /**
@@ -479,12 +454,11 @@ class File extends Resource
      * @throws GuzzleException
      */
     public function downloadRevision(
-        LibraryType     $libraryType,
-        DirectoryItem   $directoryItem,
+        LibraryType $libraryType,
+        DirectoryItem $directoryItem,
         FileHistoryItem $fileHistoryItem,
-        string          $localFilePath
-    ): ResponseInterface
-    {
+        string $localFilePath
+    ): ResponseInterface {
         $downloadUrl = $this->getFileRevisionDownloadUrl($libraryType, $directoryItem, $fileHistoryItem);
 
         return $this->client->request('GET', $downloadUrl, ['save_to' => $localFilePath]);
@@ -496,9 +470,10 @@ class File extends Resource
      * @param LibraryType $libraryType Library instance
      * @param DirectoryItem $directoryItem Item instance
      *
-     * @return FileHistoryItem[]
      * @throws GuzzleException
      * @throws Exception
+     *
+     * @return FileHistoryItem[]
      */
     public function getHistory(LibraryType $libraryType, DirectoryItem $directoryItem): array
     {
@@ -515,7 +490,7 @@ class File extends Resource
         $fileHistoryCollection = [];
 
         foreach ($json->commits as $lib) {
-            $fileHistoryCollection[] = (new FileHistoryItem)->fromJson($lib);
+            $fileHistoryCollection[] = (new FileHistoryItem())->fromJson($lib);
         }
 
         return $fileHistoryCollection;
@@ -556,49 +531,60 @@ class File extends Resource
                 ],
             ]
         );
-// @todo Return the actual response instead of bool
-        return $response->getStatusCode() === 201;
+
+        // @todo Return the actual response instead of bool
+        return 201 === $response->getStatusCode();
     }
 
-//    /**
-//     * Lock file. Only supported in Seafile Professional which I currently do not have.
-//     *
-//     * @param LibraryType   $library Library instance
-//     * @param DirectoryItem $item    Item instance
-//     *
-//     * @return bool
-//     */
-//    public function lock(LibraryType $library, DirectoryItem $item)
-//    {
-//        // do not allow empty paths
-//        if (empty($item->path) || empty($item->name)) {
-//            return false;
-//        }
-//
-//        $uri = sprintf(
-//            '%s/repos/%s/file/',
-//            $this->clipUri($this->getApiBaseUrl()),
-//            $library->id
-//        );
-//
-//        $response = $this->client->request(
-//            'PUT',
-//            $uri,
-//            [
-//                'headers' => ['Accept' => 'application/json'],
-//                'multipart' => [
-//                    [
-//                        'name' => 'operation',
-//                        'contents' => 'lock'
-//                    ],
-//                    [
-//                        'name' => 'p',
-//                        'contents' => $item->path . $item->name
-//                    ],
-//                ],
-//            ]
-//        );
-//
-//        return $response->getStatusCode() === 200;
-//    }
+    /**
+     * URL-encode path string
+     *
+     * @param string $path Path string
+     */
+    protected function urlEncodePath(string $path): string
+    {
+        return implode('/', array_map('rawurlencode', explode('/', $path)));
+    }
+
+    //    /**
+    //     * Lock file. Only supported in Seafile Professional which I currently do not have.
+    //     *
+    //     * @param LibraryType   $library Library instance
+    //     * @param DirectoryItem $item    Item instance
+    //     *
+    //     * @return bool
+    //     */
+    //    public function lock(LibraryType $library, DirectoryItem $item)
+    //    {
+    //        // do not allow empty paths
+    //        if (empty($item->path) || empty($item->name)) {
+    //            return false;
+    //        }
+    //
+    //        $uri = sprintf(
+    //            '%s/repos/%s/file/',
+    //            $this->clipUri($this->getApiBaseUrl()),
+    //            $library->id
+    //        );
+    //
+    //        $response = $this->client->request(
+    //            'PUT',
+    //            $uri,
+    //            [
+    //                'headers' => ['Accept' => 'application/json'],
+    //                'multipart' => [
+    //                    [
+    //                        'name' => 'operation',
+    //                        'contents' => 'lock'
+    //                    ],
+    //                    [
+    //                        'name' => 'p',
+    //                        'contents' => $item->path . $item->name
+    //                    ],
+    //                ],
+    //            ]
+    //        );
+    //
+    //        return $response->getStatusCode() === 200;
+    //    }
 }

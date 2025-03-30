@@ -2,24 +2,20 @@
 
 namespace Seafile\Client\Tests\Unit\Type;
 
-use DateTimeInterface;
 use DateTime;
+use DateTimeInterface;
 use Exception;
 use Seafile\Client\Tests\Unit\UnitTestCase;
-use Seafile\Client\Type\Account;
-use Seafile\Client\Type\Type;
-use Seafile\Client\Type\DirectoryItem;
 use Seafile\Client\Type\Account as AccountType;
+use Seafile\Client\Type\DirectoryItem;
 use Seafile\Client\Type\Group as GroupType;
+use Seafile\Client\Type\Type;
 
 /**
  * Type test
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ *
  * @covers    \Seafile\Client\Type\Type
  */
 class TypeUnitTest extends UnitTestCase
@@ -71,7 +67,7 @@ class TypeUnitTest extends UnitTestCase
                 'path' => null,
                 'repo' => null,
             ],
-            (array)$directoryItem
+            (array) $directoryItem
         );
     }
 
@@ -120,32 +116,12 @@ class TypeUnitTest extends UnitTestCase
     }
 
     /**
-     * Data provider for testToArrayAssoc()
-     */
-    public static function dataProviderTestToArrayAssoc(): array
-    {
-        return [
-            [
-                [
-                    [],
-                    [] // no empty values
-                ],
-            ],
-            [
-                [
-                    ['create_time' => 1452202279000000],
-                    ['createTime' => DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-01-07T21:31:19+0000')] // no empty values
-                ],
-            ],
-        ];
-    }
-
-    /**
      * Test toArray(ARRAY_ASSOC)
      *
      * @param array $data Data provider array
      *
      * @dataProvider dataProviderTestToArrayAssoc
+     *
      * @throws Exception
      */
     public function testToArrayAssoc(array $data): void
@@ -154,23 +130,22 @@ class TypeUnitTest extends UnitTestCase
         self::assertEquals($data[1], $accountType->toArray());
     }
 
-
     /**
-     * Data provider for testToArrayMultiPart()
+     * Data provider for testToArrayAssoc()
      */
-    public static function dataProviderTestToArrayMultiPart(): array
+    public static function dataProviderTestToArrayAssoc(): array
     {
         return [
             [
                 [
                     [],
-                    [] // no empty values
+                    [], // no empty values
                 ],
             ],
             [
                 [
                     ['create_time' => 1452202279000000],
-                    [['name' => 'create_time', 'contents' => '1452202279']] // no empty values
+                    ['createTime' => DateTime::createFromFormat(DateTimeInterface::ATOM, '2016-01-07T21:31:19+0000')], // no empty values
                 ],
             ],
         ];
@@ -182,6 +157,7 @@ class TypeUnitTest extends UnitTestCase
      * @param array $data Data provider array
      *
      * @dataProvider dataProviderTestToArrayMultiPart
+     *
      * @throws Exception
      */
     public function testToArrayMultiPart(array $data): void
@@ -189,6 +165,27 @@ class TypeUnitTest extends UnitTestCase
         $accountType = (new AccountType())->fromArray($data[0]);
 
         self::assertSame($data[1], $accountType->toArray(Type::ARRAY_MULTI_PART));
+    }
+
+    /**
+     * Data provider for testToArrayMultiPart()
+     */
+    public static function dataProviderTestToArrayMultiPart(): array
+    {
+        return [
+            [
+                [
+                    [],
+                    [], // no empty values
+                ],
+            ],
+            [
+                [
+                    ['create_time' => 1452202279000000],
+                    [['name' => 'create_time', 'contents' => '1452202279']], // no empty values
+                ],
+            ],
+        ];
     }
 
     /**

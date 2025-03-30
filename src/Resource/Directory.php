@@ -4,17 +4,13 @@ namespace Seafile\Client\Resource;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use \Seafile\Client\Type\Library as LibraryType;
-use \Seafile\Client\Type\DirectoryItem;
+use Seafile\Client\Type\DirectoryItem;
+use Seafile\Client\Type\Library as LibraryType;
 
 /**
  * Handles everything regarding Seafile directories.
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class Directory extends Resource
 {
@@ -26,9 +22,10 @@ class Directory extends Resource
      * @param LibraryType $libraryType Library type
      * @param string $dir Directory path
      *
-     * @return DirectoryItem[]
      * @throws Exception
      * @throws GuzzleException
+     *
+     * @return DirectoryItem[]
      */
     public function getAll(LibraryType $libraryType, string $dir = '/'): array
     {
@@ -42,15 +39,15 @@ class Directory extends Resource
             ]
         );
 
-        $json = json_decode((string)$response->getBody());
+        $json = json_decode((string) $response->getBody());
 
         $dirItemCollection = [];
 
         foreach ($json as $dirItemJson) {
-            $dirItem = (new DirectoryItem)->fromJson($dirItemJson);
+            $dirItem = (new DirectoryItem())->fromJson($dirItemJson);
 
             // if dirItem has no value for "dir", set it here
-            if ($dirItem->dir === '/') {
+            if ('/' === $dirItem->dir) {
                 $dirItem = $dirItem->fromArray(['dir' => $dir]);
             }
 
@@ -91,9 +88,10 @@ class Directory extends Resource
      * @param string $parentDir Parent directory
      * @param bool $recursive Recursive create
      *
-     * @return bool Success
      * @throws Exception
      * @throws GuzzleException
+     *
+     * @return bool Success
      */
     public function create(LibraryType $libraryType, string $dirName, string $parentDir = '/', bool $recursive = false)
     {
@@ -106,7 +104,7 @@ class Directory extends Resource
                 $parentPath = '/' . implode('/', $tmp);
                 $tmp[] = $part;
 
-                if ($this->exists($libraryType, $part, $parentPath) === false) {
+                if (false === $this->exists($libraryType, $part, $parentPath)) {
                     $response = $this->create($libraryType, $part, $parentPath, false);
                 }
             }
@@ -115,7 +113,7 @@ class Directory extends Resource
         }
 
         // only create folder which is not empty to prevent wrong implementation
-        if ($dirName === '' || $dirName === '0') {
+        if ('' === $dirName || '0' === $dirName) {
             return false;
         }
 
@@ -146,7 +144,7 @@ class Directory extends Resource
             ]
         );
 
-        return $response->getStatusCode() === 201;
+        return 201 === $response->getStatusCode();
     }
 
     /**
@@ -158,7 +156,7 @@ class Directory extends Resource
     public function remove(LibraryType $libraryType, string $directoryPath): bool
     {
         // don't allow empty paths
-        if ($directoryPath === '' || $directoryPath === '0') {
+        if ('' === $directoryPath || '0' === $directoryPath) {
             return false;
         }
 
@@ -177,7 +175,7 @@ class Directory extends Resource
             ]
         );
 
-        return $response->getStatusCode() === 200;
+        return 200 === $response->getStatusCode();
     }
 
     /**
@@ -190,7 +188,7 @@ class Directory extends Resource
     public function rename(LibraryType $libraryType, string $directoryPath, string $newDirectoryName): bool
     {
         // don't allow empty paths
-        if ($directoryPath === '' || $directoryPath === '0' || ($newDirectoryName === '' || $newDirectoryName === '0')) {
+        if ('' === $directoryPath || '0' === $directoryPath || ('' === $newDirectoryName || '0' === $newDirectoryName)) {
             return false;
         }
 
@@ -219,6 +217,6 @@ class Directory extends Resource
             ]
         );
 
-        return $response->getStatusCode() === 200;
+        return 200 === $response->getStatusCode();
     }
 }

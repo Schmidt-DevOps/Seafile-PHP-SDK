@@ -2,25 +2,19 @@
 
 namespace Seafile\Client\Tests\Functional\Resource;
 
-use Override;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use Seafile\Client\Resource\Directory;
+use Override;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Resource\Library;
 use Seafile\Client\Resource\StarredFile;
 use Seafile\Client\Tests\Functional\FunctionalTestCase;
 use Seafile\Client\Type\DirectoryItem;
-use Seafile\Client\Type\StarredFile as StarredFileType;
 
 /**
  * StarredFile resource functional tests
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class StarredFileTest extends FunctionalTestCase
 {
@@ -64,13 +58,14 @@ class StarredFileTest extends FunctionalTestCase
         $dirItems = $this->starredFile->getAll();
 
         self::assertIsArray($dirItems);
-        self::assertTrue($dirItems !== []); // we just have created one so there must not be 0 items
+        self::assertTrue([] !== $dirItems); // we just have created one so there must not be 0 items
 
         foreach ($dirItems as $directoryItem) {
             self::assertInstanceOf(DirectoryItem::class, $directoryItem);
         }
 
         $this->logger->debug("#################### Unstarring files...");
+
         foreach ($dirItems as $dirItem) {
             $lib = $library->getById($dirItem->repo);
             $this->starredFile->unstar($lib, $dirItem);
@@ -79,6 +74,6 @@ class StarredFileTest extends FunctionalTestCase
         // get all starred files, there must be none
         $this->logger->debug("#################### Getting all starred files");
         $dirItems = $this->starredFile->getAll();
-        self::assertFalse($dirItems !== []);
+        self::assertFalse([] !== $dirItems);
     }
 }

@@ -2,22 +2,18 @@
 
 namespace Seafile\Client\Tests\Functional\Resource;
 
-use Override;
 use DateTime;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
+use Override;
 use Seafile\Client\Resource\Account;
-use Seafile\Client\Type\Account as AccountType;
 use Seafile\Client\Tests\Functional\FunctionalTestCase;
+use Seafile\Client\Type\Account as AccountType;
 
 /**
  * Account resource functional tests
  *
- * @package   Seafile\Resource
- * @author    Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @copyright 2015-2020 Rene Schmidt DevOps UG (haftungsbeschränkt) & Co. KG <rene+_seafile_github@sdo.sh>
- * @license   https://opensource.org/licenses/MIT MIT
- * @link      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class AccountTest extends FunctionalTestCase
 {
@@ -58,7 +54,7 @@ class AccountTest extends FunctionalTestCase
         $accountTypes = $this->account->getAll();
 
         self::assertIsArray($accountTypes);
-        self::assertTrue($accountTypes !== []);
+        self::assertTrue([] !== $accountTypes);
 
         foreach ($accountTypes as $accountType) {
             $this->logger->debug($accountType->email);
@@ -75,13 +71,13 @@ class AccountTest extends FunctionalTestCase
 
         $this->logger->debug('#################### Create random account: ' . $this->emailAddress);
 
-        $newAccountType = (new AccountType)->fromArray([
+        $newAccountType = (new AccountType())->fromArray([
             'email' => $this->emailAddress,
             'password' => md5(uniqid('t.gif', true)),
             'name' => $fullUserName,
             'note' => $note,
-            'storage' => 100000000
-            //'institution' => 'Duff Beer Inc.',
+            'storage' => 100000000,
+            // 'institution' => 'Duff Beer Inc.',
         ]);
 
         self::assertTrue($this->account->create($newAccountType));
@@ -93,7 +89,7 @@ class AccountTest extends FunctionalTestCase
         self::assertInstanceOf(AccountType::class, $accountType);
         self::assertSame($this->emailAddress, $accountType->email);
 
-        foreach ((array)$accountType as $key => $value) {
+        foreach ((array) $accountType as $key => $value) {
             if ($value instanceof DateTime) {
                 $this->logger->debug($key . ': ' . $value->format(DateTime::ISO8601));
             } else {
@@ -107,7 +103,7 @@ class AccountTest extends FunctionalTestCase
         self::assertInstanceOf(AccountType::class, $accountType);
         self::assertSame($this->emailAddress, $accountType->email);
 
-        foreach ((array)$accountType as $key => $value) {
+        foreach ((array) $accountType as $key => $value) {
             $this->logger->debug($key . ': ' . print_r($value, true));
         }
     }
