@@ -32,11 +32,14 @@ jobs:
       - name: Prepare tests
         run: composer run-script tests_prepare
 
+      - name: Run Rector
+        run: composer run rector
+
       - name: Run PHPMD
         run: composer run phpmd
 
-      - name: Run Rector
-        run: composer run rector
+      - name: Run PHP-CS-Fixer
+        run: composer run php-cs-fixer
 
       - name: Run PHPStan
         run: composer run phpstan
