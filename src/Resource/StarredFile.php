@@ -3,7 +3,6 @@
 namespace Seafile\Client\Resource;
 
 use Exception;
-use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Http\Client;
 use Seafile\Client\Type\DirectoryItem;
 use Seafile\Client\Type\Library as LibraryType;
@@ -19,10 +18,12 @@ class StarredFile extends Resource
 {
     public const API_VERSION = '2';
 
+    private const string API_STARRED_FILES_PATH = '/starredfiles/';
+
     protected string $resourceUri;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param Client $client Client instance
      */
@@ -30,16 +31,13 @@ class StarredFile extends Resource
     {
         parent::__construct($client);
 
-        $this->resourceUri = $this->clipUri($this->getApiBaseUrl()) . '/starredfiles/';
+        $this->resourceUri = $this->clipUri($this->getApiBaseUrl()) . self::API_STARRED_FILES_PATH;
     }
 
     /**
      * Get all starred files
      *
-     * @throws Exception
-     * @throws GuzzleException
-     *
-     * @return DirectoryItem[]
+     * @return DirectoryItem[] Array of directory item instances
      */
     public function getAll(): array
     {
@@ -57,12 +55,7 @@ class StarredFile extends Resource
     }
 
     /**
-     * Create directory within $parentDir
-     *
-     * @param LibraryType $libraryType Library instance
-     * @param DirectoryItem $directoryItem DirectoryItem instance to star
-     *
-     * @throws Exception
+     * Create directory within parent directory.
      *
      * @return string URL of starred file list
      */
@@ -78,19 +71,13 @@ class StarredFile extends Resource
             [
                 'headers' => ['Accept' => 'application/json'],
                 'multipart' => [
-                    [
-                        'name' => 'repo_id',
-                        'contents' => $libraryType->id,
-                    ],
-                    [
-                        'name' => 'p',
-                        'contents' => $directoryItem->path,
-                    ],
+                    ['name' => 'repo_id', 'contents' => $libraryType->id],
+                    ['name' => 'p', 'contents' => $directoryItem->path],
                 ],
             ]
         );
 
-        if (201 !== $response->getStatusCode() || false === $response->hasHeader('Location')) {
+        if (201 !== $response->getStatusCode() || !$response->hasHeader('Location')) {
             throw new Exception('Could not star file');
         }
 
@@ -98,10 +85,7 @@ class StarredFile extends Resource
     }
 
     /**
-     * Unstar a file
-     *
-     * @param LibraryType $libraryType Library instance
-     * @param DirectoryItem $directoryItem DirectoryItem instance
+     * Unstar a file.
      */
     public function unstar(LibraryType $libraryType, DirectoryItem $directoryItem): bool
     {

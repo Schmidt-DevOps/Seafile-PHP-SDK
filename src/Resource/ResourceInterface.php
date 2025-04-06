@@ -12,7 +12,7 @@ interface ResourceInterface
      *
      * @param string $uri URI string
      *
-     * @return mixed|string
+     * @return string Clipped URI string
      */
     public function clipUri(string $uri): string;
 }

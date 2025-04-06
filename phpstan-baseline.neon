@@ -61,11 +61,6 @@ parameters:
 			path: src/Resource/Multi.php
 
 		-
-			message: "#^PHPDoc tag @return with type mixed is not subtype of native type string\\.$#"
-			count: 1
-			path: src/Resource/ResourceInterface.php
-
-		-
 			message: "#^Method Seafile\\\\Client\\\\Type\\\\DirectoryItem\\:\\:fromArray\\(\\) has parameter \\$fromArray with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: src/Type/DirectoryItem.php

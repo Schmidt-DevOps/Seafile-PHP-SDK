@@ -15,27 +15,24 @@ use Psr\Http\Message\UriInterface;
 class Client extends \GuzzleHttp\Client
 {
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param array $config client configuration settings
+     * @param array $config Configuration settings
      */
     public function __construct(array $config = [])
     {
-        $config = array_merge(
-            [
-                'http_errors' => true,
-                'request.options' => [
-                    'verify' => true,
-                    'headers' => [
-                        'Content-Type' => 'application/json',
-                        'Authorization' => 'Token none',
-                    ],
+        $defaultConfig = [
+            'http_errors' => true,
+            'request.options' => [
+                'verify' => true,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Token none',
                 ],
             ],
-            $config
-        );
+        ];
 
-        parent::__construct($config);
+        parent::__construct(array_merge($defaultConfig, $config));
     }
 
     /**
