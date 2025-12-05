@@ -32,7 +32,7 @@ class FunctionalTestCase extends TestCase
 
     protected ?LibraryType $testLib = null;
 
-    protected null|Generator|Internet|Lorem|Person $faker = null;
+    protected Generator|Internet|Lorem|Person|null $faker = null;
 
     /**
      * Set up the test
