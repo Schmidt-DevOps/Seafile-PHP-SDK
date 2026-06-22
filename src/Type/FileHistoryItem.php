@@ -19,7 +19,7 @@ class FileHistoryItem extends Type
 
     public string $repoId = '';
 
-    public ?DateTime $ctime;
+    public ?DateTime $ctime = null;
 
     public string $creatorName = '';
 
@@ -49,5 +49,5 @@ class FileHistoryItem extends Type
      */
     public string $revFileId = '';
 
-    public ?int $secondParentId;
+    public ?int $secondParentId = null;
 }

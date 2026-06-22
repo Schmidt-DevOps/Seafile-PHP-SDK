@@ -15,15 +15,15 @@ use Seafile\Client\Type\Account as AccountType;
  */
 class Group extends Type
 {
-    public ?int $ctime;
+    public ?int $ctime = null;
 
-    public ?AccountType $creator;
+    public ?AccountType $creator = null;
 
-    public ?int $msgnum;
+    public ?int $msgnum = null;
 
-    public ?int $mtime;
+    public ?int $mtime = null;
 
-    public ?int $id;
+    public ?int $id = null;
 
-    public ?string $name;
+    public ?string $name = null;
 }

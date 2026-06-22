@@ -34,8 +34,6 @@ interface TypeInterface
      * @param stdClass $jsonResponse Json response
      *
      * @throws Exception
-     *
-     * @return self
      */
     public function fromJson(stdClass $jsonResponse): TypeInterface; // type is given in implementing class
 

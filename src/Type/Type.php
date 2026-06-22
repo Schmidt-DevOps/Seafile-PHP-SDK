@@ -42,8 +42,6 @@ abstract class Type implements TypeInterface
      * @param array $fromArray Create from array
      *
      * @throws Exception
-     *
-     * @return static
      */
     #[Override]
     public function fromArray(array $fromArray): Type

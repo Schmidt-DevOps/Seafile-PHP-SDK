@@ -98,9 +98,9 @@ class Account extends Resource
     public function create(AccountType $accountType): bool
     {
         // at least one of these fields is required
-        $requirementsMet = !empty($accountType->password)
-            || !empty($accountType->isStaff)
-            || !empty($accountType->isActive);
+        $requirementsMet = isset($accountType->password) && ($accountType->password !== null && $accountType->password !== '' && $accountType->password !== '0')
+            || $accountType->isStaff === true
+            || $accountType->isActive === true;
 
         if (!$requirementsMet) {
             return false;
@@ -132,12 +132,12 @@ class Account extends Resource
     public function update(AccountType $accountType): bool
     {
         // at least one of these fields is required
-        $requirementsMet = !empty($accountType->password)
-            || !empty($accountType->isStaff)
-            || !empty($accountType->isActive)
-            || !empty($accountType->name)
-            || !empty($accountType->note)
-            || !empty($accountType->storage);
+        $requirementsMet = isset($accountType->password) && ($accountType->password !== null && $accountType->password !== '' && $accountType->password !== '0')
+            || $accountType->isStaff === true
+            || $accountType->isActive === true
+            || $accountType->name !== null && $accountType->name !== '' && $accountType->name !== '0'
+            || $accountType->note !== null && $accountType->note !== '' && $accountType->note !== '0'
+            || isset($accountType->storage) && ($accountType->storage !== null && $accountType->storage !== 0);
 
         if (!$requirementsMet) {
             return false;

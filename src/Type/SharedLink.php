@@ -18,48 +18,44 @@ class SharedLink extends Type
     /**
      * View count
      */
-    public ?int $viewCnt;
+    public ?int $viewCnt = null;
 
     /**
      * Token
      */
-    public ?string $token;
+    public ?string $token = null;
 
     /**
      * Creation time
-     *
-     * @var null|DateTime
      */
-    public ?DateTime $ctime;
+    public ?DateTime $ctime = null;
 
     /**
      * Path
      */
-    public ?string $path;
+    public ?string $path = null;
 
     /**
      * Repo ID
      */
-    public ?string $repoId;
+    public ?string $repoId = null;
 
     /**
      * User name
      */
-    public ?string $username;
+    public ?string $username = null;
 
     /**
      * URL
      */
-    public ?string $url;
+    public ?string $url = null;
 
     /**
      * Link, same as URL
      */
-    public ?string $link;
+    public ?string $link = null;
 
     /**
-     * @var array
-     *
      * @todo Automatically cast to SharedLinkPermissions type
      */
     public array $permissions = [];
@@ -70,5 +66,5 @@ class SharedLink extends Type
 
     public string $objName = "";
 
-    public ?DateTime $expireDate;
+    public ?DateTime $expireDate = null;
 }

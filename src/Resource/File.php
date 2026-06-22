@@ -507,7 +507,7 @@ class File extends Resource
     public function create(LibraryType $libraryType, DirectoryItem $directoryItem): bool
     {
         // do not allow empty paths
-        if (empty($directoryItem->path)) {
+        if ($directoryItem->path === null || $directoryItem->path === '' || $directoryItem->path === '0') {
             return false;
         }
 

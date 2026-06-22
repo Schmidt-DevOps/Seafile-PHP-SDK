@@ -15,9 +15,9 @@ use DateTime;
  */
 class Avatar extends Type
 {
-    public ?string $url;
+    public ?string $url = null;
 
-    public ?bool $isDefault;
+    public ?bool $isDefault = null;
 
-    public ?DateTime $mtime;
+    public ?DateTime $mtime = null;
 }

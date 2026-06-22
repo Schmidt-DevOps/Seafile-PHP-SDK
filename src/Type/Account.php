@@ -37,13 +37,13 @@ class Account extends Type
 
     public ?string $note = null;
 
-    public ?string $password;
+    public ?string $password = null;
 
-    public ?int $storage;
+    public ?int $storage = null;
 
-    public ?int $spaceQuota;
+    public ?int $spaceQuota = null;
 
-    public ?int $total;
+    public ?int $total = null;
 
-    public ?int $usage;
+    public ?int $usage = null;
 }

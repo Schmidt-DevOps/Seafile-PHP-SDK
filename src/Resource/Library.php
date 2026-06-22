@@ -122,7 +122,7 @@ class Library extends Resource
     public function create(string $name, string $description = "new repo", string $password = ''): bool
     {
         // only create a library which is not empty to prevent wrong implementation
-        if (empty($name)) {
+        if ($name === '' || $name === '0') {
             return false;
         }
 
@@ -176,7 +176,7 @@ class Library extends Resource
     public function remove(string $libraryId): bool
     {
         // do not allow empty IDs
-        if (empty($libraryId)) {
+        if ($libraryId === '' || $libraryId === '0') {
             return false;
         }
 
