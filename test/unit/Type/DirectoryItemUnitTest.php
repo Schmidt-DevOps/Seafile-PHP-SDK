@@ -3,7 +3,6 @@
 namespace Seafile\Client\Tests\Unit\Type;
 
 use Exception;
-use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\DirectoryItem;
 
@@ -23,7 +22,6 @@ class DirectoryItemUnitTest extends UnitTestCase
      *
      * @dataProvider dataFromArray
      *
-     * @throws GuzzleException
      * @throws Exception
      */
     public function testFromArray(array $data): void

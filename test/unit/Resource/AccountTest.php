@@ -104,7 +104,6 @@ class AccountTest extends UnitTestCase
     {
         $baseUri = 'https://example.com';
 
-        /** @var AccountType $accountType */
         $accountType = (new AccountType())->fromArray([
             'password' => 'some_password',
             'email' => 'my_email@example.com',

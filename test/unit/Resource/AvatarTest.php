@@ -8,6 +8,7 @@ use GuzzleHttp\Client as SeafileHttpClient;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use Seafile\Client\Resource\Avatar as AvatarResource;
+use Seafile\Client\Resource\Resource;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\Avatar;
 use Seafile\Client\Type\Group as GroupType;
@@ -111,7 +112,7 @@ class AvatarTest extends UnitTestCase
 
         $mockedClient->expects(self::any())
             ->method('get')
-            ->with($baseUri . '/api/v' . AvatarResource::API_VERSION . '/avatars/' . $resource . '/' . $id . '/resized/' . $size . '/', [])
+            ->with($baseUri . '/api/v' . Resource::API_VERSION . '/avatars/' . $resource . '/' . $id . '/resized/' . $size . '/', [])
             ->willReturn(
                 new Response(
                     200,
@@ -131,6 +132,6 @@ class AvatarTest extends UnitTestCase
 
         self::assertInstanceOf(Avatar::class, $avatarType);
         self::assertInstanceOf(DateTime::class, $avatarType->mtime);
-        self::assertSame('1970-01-01T00:00:00+0000', $avatarType->mtime->format(DATE_ISO8601));
+        self::assertSame('1970-01-01T00:00:00+00:00', $avatarType->mtime->format(DATE_ATOM));
     }
 }

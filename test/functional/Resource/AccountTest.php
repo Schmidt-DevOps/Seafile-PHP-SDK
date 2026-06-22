@@ -3,7 +3,6 @@
 namespace Seafile\Client\Tests\Functional\Resource;
 
 use DateTime;
-use DateTimeInterface;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Override;
@@ -73,7 +72,6 @@ class AccountTest extends FunctionalTestCase
 
         $this->logger->debug('#################### Create random account: ' . $this->emailAddress);
 
-        /** @var AccountType $newAccountType */
         $newAccountType = (new AccountType())->fromArray([
             'email' => $this->emailAddress,
             'password' => md5(uniqid('t.gif', true)),
@@ -95,7 +93,7 @@ class AccountTest extends FunctionalTestCase
 
         foreach ((array) $accountType as $key => $value) {
             if ($value instanceof DateTime) {
-                $this->logger->debug($key . ': ' . $value->format(DateTimeInterface::ISO8601));
+                $this->logger->debug($key . ': ' . $value->format(DATE_ATOM));
             } elseif (!$value instanceof TypeInterface) {
                 $this->logger->debug($key . ': ' . $value);
             }

@@ -104,7 +104,7 @@ try {
 
         foreach ((array)$accountType as $key => $value) {
             if ($value instanceof DateTime) {
-                $logger->log(Logger::INFO, $key . ': ' . $value->format(\DateTime::ISO8601));
+                $logger->log(Logger::INFO, $key . ': ' . $value->format(DATE_ATOM));
             } else {
                 $logger->log(Logger::INFO, $key . ': ' . $value);
             }

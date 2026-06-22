@@ -123,8 +123,7 @@ class ShareLinksTest extends UnitTestCase
 
         $shareLinks = new ShareLinks($mockedClient);
 
-        $sharedLink = new SharedLink();
-        $sharedLink->url = 'https://seafile.example.com/f/abc/';
+        $sharedLink = (new SharedLink())->fromArray(['url' => 'https://seafile.example.com/f/abc/']);
 
         $library = new LibraryType();
         $library->id = 'decaf-deadbeef-dad';

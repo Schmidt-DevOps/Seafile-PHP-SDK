@@ -72,7 +72,7 @@ class ShareLinksTest extends FunctionalTestCase
         }
 
         $this->logger->debug("#################### Uploading file " . $newFilename);
-        $response = $file->upload($lib, $newFilename, '/');
+        $response = $file->upload($lib, $newFilename);
         self::assertSame(200, $response->getStatusCode());
 
         // create share link for a file

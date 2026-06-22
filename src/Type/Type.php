@@ -55,7 +55,7 @@ abstract class Type implements TypeInterface
                 continue;
             }
 
-            /** @noinspection PhpSwitchCanBeReplacedWithMatchExpressionInspection */
+            // @noinspection PhpSwitchCanBeReplacedWithMatchExpressionInspection
             switch ($key) {
                 case 'creator':
                     $this->{$key} = (new AccountType())->fromArray(['email' => $value]);

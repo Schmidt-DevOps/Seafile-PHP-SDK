@@ -171,7 +171,7 @@ class FileTest extends UnitTestCase
     public function testDownloadFromDir(): void
     {
         $fileResourceStub = new FileResourceStub($this->getMockedClient(new Response()));
-        $response = $fileResourceStub->downloadFromDir(new Library(), new DirectoryItem(), '/some/path', '/', 1);
+        $response = $fileResourceStub->downloadFromDir(new Library(), new DirectoryItem(), '/some/path', '/');
 
         self::assertInstanceOf(Response::class, $response);
     }
@@ -184,7 +184,7 @@ class FileTest extends UnitTestCase
     public function testDownload(): void
     {
         $fileResourceStub = new FileResourceStub($this->getMockedClient(new Response()));
-        $response = $fileResourceStub->download(new Library(), '/some/path', '/some/file', 1);
+        $response = $fileResourceStub->download(new Library(), '/some/path', '/some/file');
 
         // @todo Assert request query params
         self::assertInstanceOf(Response::class, $response);
@@ -198,7 +198,7 @@ class FileTest extends UnitTestCase
     public function testUpload(): void
     {
         $fileResourceStub = new FileResourceStub($this->getMockedClient(new Response()));
-        $response = $fileResourceStub->upload(new Library(), $GLOBALS['BUILD_TMP'], '/');
+        $response = $fileResourceStub->upload(new Library(), $GLOBALS['BUILD_TMP']);
 
         self::assertInstanceOf(Response::class, $response);
     }
@@ -211,7 +211,7 @@ class FileTest extends UnitTestCase
     public function testUpdate(): void
     {
         $fileResourceStub = new FileResourceStub($this->getMockedClient(new Response()));
-        $response = $fileResourceStub->update(new Library(), $GLOBALS['BUILD_TMP'], '/');
+        $response = $fileResourceStub->update(new Library(), $GLOBALS['BUILD_TMP']);
 
         self::assertInstanceOf(Response::class, $response);
     }
@@ -255,14 +255,14 @@ class FileTest extends UnitTestCase
                     'name' => 'parent_dir',
                     'contents' => $dir,
                 ],
-                $fileResourceStub->getMultiPartParams($localFilePath, $dir, true)
+                $fileResourceStub->getMultiPartParams($localFilePath, $dir)
             );
             self::assertNotContains(
                 [
                     'name' => 'target_file',
                     'contents' => $dir . basename($localFilePath),
                 ],
-                $fileResourceStub->getMultiPartParams($localFilePath, $dir, true)
+                $fileResourceStub->getMultiPartParams($localFilePath, $dir)
             );
         } finally {
             if (is_writable($localFilePath)) {
@@ -456,16 +456,9 @@ class FileTest extends UnitTestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        $deleteResponse = new Response(200, ['Content-Type' => 'text/plain']);
-
         /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
-
-        $expectUri = 'http://example.com/api' . File::API_VERSION . '/repos/some-crazy-id/file/?p=test_dir';
-        $expectParams = [
-            'headers' => ['Accept' => "application/json"],
-        ];
 
         // @todo: Test more thoroughly. For example make sure request() gets called with POST twice (a, then b)
         $mockedClient->expects(self::any())
@@ -476,7 +469,13 @@ class FileTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $deleteResponse, $expectUri, $expectParams): Response {
+                function ($method, $uri, $params) use ($getAllResponse): Response {
+                    $deleteResponse = new Response(200, ['Content-Type' => 'text/plain']);
+                    $expectUri = 'http://example.com/api' . File::API_VERSION . '/repos/some-crazy-id/file/?p=test_dir';
+                    $expectParams = [
+                        'headers' => ['Accept' => "application/json"],
+                    ];
+
                     if ('GET' === $method) {
                         return $getAllResponse;
                     }
@@ -512,13 +511,11 @@ class FileTest extends UnitTestCase
         );
 
         $newFilename = 'test_file_renamed';
-        $renameResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
         /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/api' . File::API_VERSION . '/repos/some-crazy-id/file/?p=/test_file';
         $expectParams = [
             'headers' => ['Accept' => "application/json"],
             'multipart' => [
@@ -538,7 +535,10 @@ class FileTest extends UnitTestCase
             ->method('request')
             ->with(self::equalTo('POST'))
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($renameResponse, $expectUri, $expectParams): Response {
+                function ($method, $uri, $params) use ($expectParams): Response {
+                    $renameResponse = new Response(200, ['Content-Type' => 'text/plain']);
+                    $expectUri = 'http://example.com/api' . File::API_VERSION . '/repos/some-crazy-id/file/?p=/test_file';
+
                     if ($expectUri === $uri && $expectParams === $params && 'POST' === $method) {
                         return $renameResponse;
                     }

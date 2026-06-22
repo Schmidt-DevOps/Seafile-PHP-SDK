@@ -85,7 +85,6 @@ class MultiTest extends UnitTestCase
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/api' . Multi::API_VERSION . '/repos/some-crazy-id/fileops/delete/?p=/some_dir';
         $expectParams = [
             'headers' => ['Accept' => "application/json"],
             'multipart' => [
@@ -105,7 +104,9 @@ class MultiTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $deleteResponse, $expectUri, $expectParams): Response {
+                function ($method, $uri, $params) use ($getAllResponse, $deleteResponse, $expectParams): Response {
+                    $expectUri = 'http://example.com/api' . Multi::API_VERSION . '/repos/some-crazy-id/fileops/delete/?p=/some_dir';
+
                     if ('GET' === $method) {
                         return $getAllResponse;
                     }

@@ -28,7 +28,7 @@ class UnitTestCase extends TestCase
      *
      * @return mixed method return
      */
-    public function invokeMethod(object &$object, string $methodName, array $parameters = []): mixed
+    public function invokeMethod(object $object, string $methodName, array $parameters = []): mixed
     {
         $reflectionClass = new ReflectionClass($object::class);
         $reflectionMethod = $reflectionClass->getMethod($methodName);
