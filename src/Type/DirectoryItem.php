@@ -52,12 +52,12 @@ class DirectoryItem extends Type
             $fromArray['type'] = $fromArray['dir'] ? self::TYPE_DIR : self::TYPE_FILE;
         }
 
-        $directoryItem = parent::fromArray($fromArray);
+        $type = parent::fromArray($fromArray);
 
-        if (!$directoryItem instanceof DirectoryItem) {
+        if (!$type instanceof DirectoryItem) {
             throw new Exception('Failed to create DirectoryItem from array');
         }
 
-        return $directoryItem;
+        return $type;
     }
 }

@@ -98,7 +98,7 @@ class Account extends Resource
     public function create(AccountType $accountType): bool
     {
         // at least one of these fields is required
-        $requirementsMet = isset($accountType->password) && ('' !== $accountType->password && '0' !== $accountType->password)
+        $requirementsMet = $accountType->password !== null && ('' !== $accountType->password && '0' !== $accountType->password)
             || true === $accountType->isStaff
             || true === $accountType->isActive;
 
@@ -132,12 +132,12 @@ class Account extends Resource
     public function update(AccountType $accountType): bool
     {
         // at least one of these fields is required
-        $requirementsMet = isset($accountType->password) && ('' !== $accountType->password && '0' !== $accountType->password)
+        $requirementsMet = $accountType->password !== null && ('' !== $accountType->password && '0' !== $accountType->password)
             || true === $accountType->isStaff
             || true === $accountType->isActive
             || null !== $accountType->name && '' !== $accountType->name && '0' !== $accountType->name
             || null !== $accountType->note && '' !== $accountType->note && '0' !== $accountType->note
-            || isset($accountType->storage) && (0 !== $accountType->storage);
+            || $accountType->storage !== null && (0 !== $accountType->storage);
 
         if (!$requirementsMet) {
             return false;
@@ -210,12 +210,12 @@ class Account extends Resource
      */
     public function removeByEmail(string $email): bool
     {
-        $account = (new AccountType())->fromArray(['email' => $email]);
-        if (!$account instanceof AccountType) {
+        $type = (new AccountType())->fromArray(['email' => $email]);
+        if (!$type instanceof AccountType) {
             throw new Exception('Failed to create AccountType from email');
         }
 
-        return $this->remove($account);
+        return $this->remove($type);
     }
 
     /**

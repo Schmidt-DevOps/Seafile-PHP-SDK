@@ -97,7 +97,7 @@ class AccountTest extends FunctionalTestCase
             if ($value instanceof DateTime) {
                 $this->logger->debug($key . ': ' . $value->format(DateTimeInterface::ISO8601));
             } elseif (!$value instanceof TypeInterface) {
-                $this->logger->debug($key . ': ' . (string) $value);
+                $this->logger->debug($key . ': ' . $value);
             }
         }
 
