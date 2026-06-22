@@ -18,10 +18,10 @@ class Group extends Resource
     /**
      * List groups
      *
+     * @throws Exception|GuzzleException
+     *
      * @return GroupType[]
-     * @throws GuzzleException
- *
-     * @throws Exception*/
+     */
     public function getAll(): array
     {
         $response = $this->client->request('GET', $this->getApiBaseUrl() . '/groups/');

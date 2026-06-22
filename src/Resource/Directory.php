@@ -150,6 +150,7 @@ class Directory extends Resource
      *
      * @param LibraryType $libraryType Library instance
      * @param string $directoryPath Directory path
+     *
      * @throws GuzzleException
      * @throws GuzzleException
      */
@@ -184,6 +185,7 @@ class Directory extends Resource
      * @param LibraryType $libraryType Library object
      * @param string $directoryPath Directory path
      * @param string $newDirectoryName New directory name
+     *
      * @throws GuzzleException
      * @throws GuzzleException
      */

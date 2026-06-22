@@ -2,9 +2,9 @@
 
 namespace Seafile\Client\Tests\Unit\Resource;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
-use GuzzleHttp\Client;
 use Seafile\Client\Resource\Directory;
 use Seafile\Client\Resource\ShareLinks;
 use Seafile\Client\Tests\Unit\UnitTestCase;

@@ -19,10 +19,10 @@ class ShareLinks extends Resource implements ResourceInterface
     /**
      * List shared links
      *
-     * @return SharedLinkType[]
      * @throws GuzzleException
-     *
      * @throws Exception
+     *
+     * @return SharedLinkType[]
      */
     public function getAll(): array
     {
@@ -43,6 +43,7 @@ class ShareLinks extends Resource implements ResourceInterface
      * Remove shared link
      *
      * @param SharedLinkType $sharedLinkType SharedLinkType instance
+     *
      * @throws GuzzleException
      * @throws GuzzleException
      */

@@ -2,8 +2,8 @@
 
 namespace Seafile\Client\Resource;
 
-use Override;
 use GuzzleHttp\Client;
+use Override;
 
 /**
  * Abstract resource class

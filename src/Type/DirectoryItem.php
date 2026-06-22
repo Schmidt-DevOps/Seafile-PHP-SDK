@@ -52,9 +52,7 @@ class DirectoryItem extends Type
             $fromArray['type'] = $fromArray['dir'] ? self::TYPE_DIR : self::TYPE_FILE;
         }
 
-        /** @var DirectoryItem $dirItem */
-        $dirItem = parent::fromArray($fromArray);
-
-        return $dirItem;
+        // @var DirectoryItem $dirItem
+        return parent::fromArray($fromArray);
     }
 }

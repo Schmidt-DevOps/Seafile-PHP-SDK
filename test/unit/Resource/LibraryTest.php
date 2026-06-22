@@ -3,11 +3,11 @@
 namespace Seafile\Client\Tests\Unit\Resource;
 
 use Exception;
+use GuzzleHttp\Client;
+use GuzzleHttp\Client as SeafileHttpClient;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
-use GuzzleHttp\Client;
-use GuzzleHttp\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Library;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\Library as LibraryType;

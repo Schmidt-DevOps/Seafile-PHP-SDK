@@ -18,10 +18,10 @@ class Library extends Resource
     /**
      * List libraries
      *
-     * @return LibraryType[]
      * @throws GuzzleException
-     *
      * @throws Exception
+     *
+     * @return LibraryType[]
      */
     public function getAll(): array
     {
@@ -64,10 +64,10 @@ class Library extends Resource
      * @param string $libraryId Library ID
      * @param array $options Options
      *
-     * @return bool Decryption success
      * @throws GuzzleException
-     *
      * @throws Exception
+     *
+     * @return bool Decryption success
      */
     public function decrypt(string $libraryId, array $options): bool
     {
@@ -122,7 +122,7 @@ class Library extends Resource
     public function create(string $name, string $description = "new repo", string $password = ''): bool
     {
         // only create a library which is not empty to prevent wrong implementation
-        if ($name === '' || $name === '0') {
+        if ('' === $name || '0' === $name) {
             return false;
         }
 
@@ -176,7 +176,7 @@ class Library extends Resource
     public function remove(string $libraryId): bool
     {
         // do not allow empty IDs
-        if ($libraryId === '' || $libraryId === '0') {
+        if ('' === $libraryId || '0' === $libraryId) {
             return false;
         }
 
@@ -203,6 +203,7 @@ class Library extends Resource
      * @param string $libraryId Library ID
      * @param array $users Comma separated list of user email addresses
      * @param string $permission The permission of the shared library
+     *
      * @throws GuzzleException
      * @throws GuzzleException
      */

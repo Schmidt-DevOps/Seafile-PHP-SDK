@@ -4,9 +4,9 @@ namespace Seafile\Client\Tests\Unit\Resource;
 
 use DateTime;
 use Exception;
+use GuzzleHttp\Client as SeafileHttpClient;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
-use GuzzleHttp\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Avatar as AvatarResource;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\Avatar;

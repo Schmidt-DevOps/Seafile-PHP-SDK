@@ -4,11 +4,11 @@ namespace Seafile\Client\Tests\Unit\Resource;
 
 use DateTime;
 use Exception;
+use GuzzleHttp\Client as SeafileHttpClient;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use ReflectionException;
-use GuzzleHttp\Client as SeafileHttpClient;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Tests\Unit\Stubs\FileResourceStub;
 use Seafile\Client\Tests\Unit\UnitTestCase;

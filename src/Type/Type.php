@@ -23,6 +23,7 @@ abstract class Type implements TypeInterface
     public const int ARRAY_MULTI_PART = 2;
 
     public ?Type $creator = null;
+
     /**
      * Constructor
      *
@@ -54,7 +55,7 @@ abstract class Type implements TypeInterface
                 continue;
             }
 
-            /** @noinspection PhpSwitchCanBeReplacedWithMatchExpressionInspection */
+            // @noinspection PhpSwitchCanBeReplacedWithMatchExpressionInspection
             switch ($key) {
                 case 'creator':
                     $this->{$key} = (new AccountType())->fromArray(['email' => $value]);
@@ -102,6 +103,7 @@ abstract class Type implements TypeInterface
 
     /**
      * Create from jsonResponse
+     *
      * @throws Exception
      */
     #[Override]

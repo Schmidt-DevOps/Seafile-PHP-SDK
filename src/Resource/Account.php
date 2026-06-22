@@ -98,9 +98,9 @@ class Account extends Resource
     public function create(AccountType $accountType): bool
     {
         // at least one of these fields is required
-        $requirementsMet = isset($accountType->password) && ($accountType->password !== null && $accountType->password !== '' && $accountType->password !== '0')
-            || $accountType->isStaff === true
-            || $accountType->isActive === true;
+        $requirementsMet = isset($accountType->password) && (null !== $accountType->password && '' !== $accountType->password && '0' !== $accountType->password)
+            || true === $accountType->isStaff
+            || true === $accountType->isActive;
 
         if (!$requirementsMet) {
             return false;
@@ -132,12 +132,12 @@ class Account extends Resource
     public function update(AccountType $accountType): bool
     {
         // at least one of these fields is required
-        $requirementsMet = isset($accountType->password) && ($accountType->password !== null && $accountType->password !== '' && $accountType->password !== '0')
-            || $accountType->isStaff === true
-            || $accountType->isActive === true
-            || $accountType->name !== null && $accountType->name !== '' && $accountType->name !== '0'
-            || $accountType->note !== null && $accountType->note !== '' && $accountType->note !== '0'
-            || isset($accountType->storage) && ($accountType->storage !== null && $accountType->storage !== 0);
+        $requirementsMet = isset($accountType->password) && (null !== $accountType->password && '' !== $accountType->password && '0' !== $accountType->password)
+            || true === $accountType->isStaff
+            || true === $accountType->isActive
+            || null !== $accountType->name && '' !== $accountType->name && '0' !== $accountType->name
+            || null !== $accountType->note && '' !== $accountType->note && '0' !== $accountType->note
+            || isset($accountType->storage) && (null !== $accountType->storage && 0 !== $accountType->storage);
 
         if (!$requirementsMet) {
             return false;
@@ -228,11 +228,11 @@ class Account extends Resource
     public function remove(AccountType $accountType): bool
     {
         if (
-            property_exists($accountType, 'email') &&
-            (
-                null === $accountType->email ||
-                '' === $accountType->email ||
-                '0' === $accountType->email
+            property_exists($accountType, 'email')
+            && (
+                null === $accountType->email
+                || '' === $accountType->email
+                || '0' === $accountType->email
             )
         ) {
             return false;

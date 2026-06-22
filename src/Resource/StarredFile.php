@@ -3,8 +3,8 @@
 namespace Seafile\Client\Resource;
 
 use Exception;
-use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Type\DirectoryItem;
 use Seafile\Client\Type\Library as LibraryType;
 
@@ -38,8 +38,9 @@ class StarredFile extends Resource
     /**
      * Get all starred files
      *
-     * @return DirectoryItem[] Array of directory item instances
      * @throws Exception|GuzzleException
+     *
+     * @return DirectoryItem[] Array of directory item instances
      */
     public function getAll(): array
     {
@@ -59,8 +60,9 @@ class StarredFile extends Resource
     /**
      * Create directory within parent directory.
      *
-     * @return string URL of starred file list
      * @throws Exception|GuzzleException
+     *
+     * @return string URL of starred file list
      */
     public function star(LibraryType $libraryType, DirectoryItem $directoryItem): string
     {
@@ -89,6 +91,7 @@ class StarredFile extends Resource
 
     /**
      * Unstar a file.
+     *
      * @throws GuzzleException
      */
     public function unstar(LibraryType $libraryType, DirectoryItem $directoryItem): bool

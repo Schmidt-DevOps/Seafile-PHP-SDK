@@ -11,49 +11,31 @@ use DateTime;
  */
 class SharedLink extends Type
 {
-    /**
-     * View count
-     */
+    /** View count */
     public ?int $viewCnt = null;
 
-    /**
-     * Token
-     */
+    /** Token */
     public ?string $token = null;
 
-    /**
-     * Creation time
-     */
+    /** Creation time */
     public ?DateTime $ctime = null;
 
-    /**
-     * Path
-     */
+    /** Path */
     public ?string $path = null;
 
-    /**
-     * Repo ID
-     */
+    /** Repo ID */
     public ?string $repoId = null;
 
-    /**
-     * User name
-     */
+    /** User name */
     public ?string $username = null;
 
-    /**
-     * URL
-     */
+    /** URL */
     public ?string $url = null;
 
-    /**
-     * Link, same as URL
-     */
+    /** Link, same as URL */
     public ?string $link = null;
 
-    /**
-     * @todo Automatically cast to SharedLinkPermissions type
-     */
+    /** @todo Automatically cast to SharedLinkPermissions type */
     public array $permissions = [];
 
     public bool $isDir = false;

@@ -83,6 +83,7 @@ class Avatar extends Resource
 
     /**
      * Get avatar image
+     *
      * @param TypeInterface $type Either AccountType or GroupType instance
      * @param int $size Avatar size
      *

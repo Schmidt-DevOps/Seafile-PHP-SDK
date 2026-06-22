@@ -2,8 +2,6 @@
 
 namespace Seafile\Client\Type;
 
-use Seafile\Client\Type\Account as AccountType;
-
 /**
  * Group type class
  *

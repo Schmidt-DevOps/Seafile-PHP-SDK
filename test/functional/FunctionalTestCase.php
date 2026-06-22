@@ -8,6 +8,7 @@ use Faker\Generator;
 use Faker\Provider\Internet;
 use Faker\Provider\Lorem;
 use Faker\Provider\Person;
+use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
@@ -15,7 +16,6 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Override;
 use PHPUnit\Framework\TestCase;
-use GuzzleHttp\Client;
 use Seafile\Client\Resource\Library;
 use Seafile\Client\Type\Library as LibraryType;
 

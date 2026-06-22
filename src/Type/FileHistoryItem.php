@@ -35,14 +35,10 @@ class FileHistoryItem extends Type
 
     public string $desc = '';
 
-    /**
-     * Commit ID
-     */
+    /** Commit ID */
     public string $id = '';
 
-    /**
-     * Object ID
-     */
+    /** Object ID */
     public string $revFileId = '';
 
     public ?int $secondParentId = null;
