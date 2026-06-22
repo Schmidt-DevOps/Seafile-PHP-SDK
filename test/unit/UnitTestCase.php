@@ -41,7 +41,7 @@ class UnitTestCase extends TestCase
      *
      * @param Response $response HTTP Response
      *
-     * @return Client|MockObject
+     * @return Client&MockObject
      */
     protected function getMockedClient(Response $response): MockObject
     {

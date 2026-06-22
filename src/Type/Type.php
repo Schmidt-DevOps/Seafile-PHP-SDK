@@ -22,6 +22,7 @@ abstract class Type implements TypeInterface
     /** Multipart array mode */
     public const int ARRAY_MULTI_PART = 2;
 
+    public ?Type $creator = null;
     /**
      * Constructor
      *

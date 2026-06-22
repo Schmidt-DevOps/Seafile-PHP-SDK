@@ -8,10 +8,6 @@ use DateTime;
  * File history item type class
  *
  * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
- *
- * @method FileHistoryItem #[Override]
- * fromJson(stdClass $jsonResponse)
- * fromArray(array $fromArray)
  */
 class FileHistoryItem extends Type
 {
@@ -23,7 +19,7 @@ class FileHistoryItem extends Type
 
     public string $creatorName = '';
 
-    public string $creator = '';
+    public ?Type $creator = null;
 
     public string $rootId = '';
 

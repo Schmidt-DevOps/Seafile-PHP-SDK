@@ -28,7 +28,7 @@ class MultiTest extends UnitTestCase
      */
     public function testDeleteEmpty(): void
     {
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $multi = new Multi($mockedClient);
@@ -46,7 +46,7 @@ class MultiTest extends UnitTestCase
      */
     public function testCopyMoveEmpty(): void
     {
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $multi = new Multi($mockedClient);
@@ -81,7 +81,7 @@ class MultiTest extends UnitTestCase
 
         $deleteResponse = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -193,7 +193,7 @@ class MultiTest extends UnitTestCase
 
         $deleteResponse = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com');
 

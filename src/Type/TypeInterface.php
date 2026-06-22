@@ -18,7 +18,7 @@ interface TypeInterface
      *
      * @throws Exception
      */
-    public function fromArray(array $fromArray): TypeInterface; // type is given in implementing class
+    public function fromArray(array $fromArray): Type;
 
     /**
      * Time stamps vary a lot in Seafile. Sometimes it's seconds from 1970-01-01 00:00:00, sometimes
@@ -35,7 +35,7 @@ interface TypeInterface
      *
      * @throws Exception
      */
-    public function fromJson(stdClass $jsonResponse): TypeInterface; // type is given in implementing class
+    public function fromJson(stdClass $jsonResponse): static; // type is given in implementing class
 
     /**
      * Return instance as array

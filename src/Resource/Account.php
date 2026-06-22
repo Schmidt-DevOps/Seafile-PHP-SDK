@@ -210,7 +210,10 @@ class Account extends Resource
      */
     public function removeByEmail(string $email): bool
     {
-        return $this->remove((new AccountType())->fromArray(['email' => $email]));
+        /** @var AccountType $account */
+        $account = (new AccountType())->fromArray(['email' => $email]);
+
+        return $this->remove($account);
     }
 
     /**
@@ -224,7 +227,14 @@ class Account extends Resource
      */
     public function remove(AccountType $accountType): bool
     {
-        if (null === $accountType->email || '' === $accountType->email || '0' === $accountType->email) {
+        if (
+            property_exists($accountType, 'email') &&
+            (
+                null === $accountType->email ||
+                '' === $accountType->email ||
+                '0' === $accountType->email
+            )
+        ) {
             return false;
         }
 

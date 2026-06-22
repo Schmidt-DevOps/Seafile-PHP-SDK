@@ -8,6 +8,7 @@ use Seafile\Client\Type\Account as AccountType;
 use Seafile\Client\Type\Avatar as AvatarType;
 use Seafile\Client\Type\Group as GroupType;
 use Seafile\Client\Type\Type;
+use Seafile\Client\Type\TypeInterface;
 
 /**
  * Handles everything regarding Seafile avatars.
@@ -32,12 +33,12 @@ class Avatar extends Resource
     /**
      * Get user avatar by AccountType instance
      *
-     * @param AccountType $accountType AccountType instance
+     * @param TypeInterface $accountType AccountType instance
      * @param int $size Avatar size, defaults to 80 pixels
      *
      * @throws Exception|GuzzleException
      */
-    public function getUserAvatar(AccountType $accountType, int $size = 80): AvatarType
+    public function getUserAvatar(TypeInterface $accountType, int $size = 80): AvatarType
     {
         return $this->getAvatar($accountType, $size);
     }
@@ -82,12 +83,12 @@ class Avatar extends Resource
 
     /**
      * Get avatar image
-     * @param AccountType|GroupType $type Either AccountType or GroupType instance
+     * @param TypeInterface $type Either AccountType or GroupType instance
      * @param int $size Avatar size
      *
      * @throws Exception|GuzzleException
      */
-    protected function getAvatar(AccountType|GroupType $type, int $size): AvatarType
+    protected function getAvatar(TypeInterface $type, int $size): AvatarType
     {
         if ($size < 1) {
             throw new Exception('Illegal avatar size');

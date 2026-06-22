@@ -19,7 +19,7 @@ use Seafile\Client\Type\Library;
  */
 class FileTest extends FunctionalTestCase
 {
-    private ?File $file;
+    private ?File $file = null;
 
     private ?Library $library = null;
 

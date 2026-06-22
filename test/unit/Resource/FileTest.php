@@ -108,7 +108,7 @@ class FileTest extends UnitTestCase
         $libId = "lib_id";
         $uploadDir = "/Somedir";
 
-        /** @var MockObject|SeafileHttpClient $mockObject */
+        /** @var MockObject&SeafileHttpClient $mockObject */
         $mockObject = $this->getMockedClient(
             new Response(200, ['Content-Type' => 'application/json'], '"https://some.example.com/some/url"')
         );
@@ -349,7 +349,7 @@ class FileTest extends UnitTestCase
      */
     public function testRemoveInvalidFilename(): void
     {
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $file = new File($mockedClient);
@@ -375,7 +375,7 @@ class FileTest extends UnitTestCase
     {
         self::expectException('\InvalidArgumentException');
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $file = new File($mockedClient);
@@ -412,7 +412,7 @@ class FileTest extends UnitTestCase
      */
     public function testCopyInvalid(array $data): void
     {
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $file = new File($mockedClient);
@@ -458,7 +458,7 @@ class FileTest extends UnitTestCase
 
         $deleteResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -514,7 +514,7 @@ class FileTest extends UnitTestCase
         $newFilename = 'test_file_renamed';
         $renameResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -581,7 +581,7 @@ class FileTest extends UnitTestCase
 
         $response = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -649,7 +649,7 @@ class FileTest extends UnitTestCase
      */
     public function testMoveInvalidDestination(): void
     {
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $file = new File($mockedClient);

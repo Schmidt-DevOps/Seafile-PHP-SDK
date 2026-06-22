@@ -12,6 +12,7 @@ use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\Avatar;
 use Seafile\Client\Type\Group as GroupType;
 use Seafile\Client\Type\Library as LibraryType;
+use Seafile\Client\Type\TypeInterface;
 
 /**
  * Avatar resource test
@@ -74,7 +75,7 @@ class AvatarTest extends UnitTestCase
     {
         $baseUri = 'https://example.com';
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $library = new LibraryType();
@@ -98,15 +99,15 @@ class AvatarTest extends UnitTestCase
      * @param string $method Method name
      * @param string $baseUri Base URI
      * @param string $resource Resource string
-     * @param GroupType|string $entity Resource entity
+     * @param string|TypeInterface $entity Resource entity
      * @param string $size Avatar size in pixels
      */
-    protected function doGetAvatar(string $method, string $baseUri, string $resource, $entity, string $size): void
+    protected function doGetAvatar(string $method, string $baseUri, string $resource, string|TypeInterface $entity, string $size): void
     {
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->createPartialMock(SeafileHttpClient::class, ['get', 'getConfig']);
 
-        $id = ($entity instanceof GroupType ? $entity->id : $entity);
+        $id = (string) ((is_object($entity) && property_exists($entity, 'id')) ? $entity->id : $entity);
 
         $mockedClient->expects(self::any())
             ->method('get')

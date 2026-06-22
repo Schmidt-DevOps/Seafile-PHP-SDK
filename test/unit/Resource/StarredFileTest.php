@@ -87,7 +87,7 @@ class StarredFileTest extends UnitTestCase
             ]
         );
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())
@@ -157,7 +157,7 @@ class StarredFileTest extends UnitTestCase
             ]
         );
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())
@@ -193,7 +193,7 @@ class StarredFileTest extends UnitTestCase
         $directoryItem->type = 'file';
         $directoryItem->path = '/some/path';
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())
@@ -233,7 +233,7 @@ class StarredFileTest extends UnitTestCase
         $directoryItem->type = 'file';
         $directoryItem->path = '/some/path';
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())

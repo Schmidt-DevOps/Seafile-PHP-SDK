@@ -21,7 +21,7 @@ use Seafile\Client\Type\SharedLinkPermissions;
  */
 class ShareLinksTest extends FunctionalTestCase
 {
-    private ?ShareLinksAlias $shareLinksAlias;
+    private ?ShareLinksAlias $shareLinksAlias = null;
 
     /**
      * @throws Exception

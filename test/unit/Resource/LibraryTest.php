@@ -327,7 +327,7 @@ class LibraryTest extends UnitTestCase
 
         $removeResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 

@@ -62,7 +62,7 @@ class ShareLinksTest extends UnitTestCase
             $responseBody
         );
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -108,7 +108,7 @@ class ShareLinksTest extends UnitTestCase
 
         $createResponse = new Response($createResponseCode, $headers, $responseBody);
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())

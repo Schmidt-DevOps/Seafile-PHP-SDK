@@ -8,10 +8,6 @@ use DateTime;
  * SharedLink type class
  *
  * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
- *
- * @method SharedLink #[Override]
- * fromJson(stdClass $jsonResponse)
- * fromArray(array $fromArray)
  */
 class SharedLink extends Type
 {

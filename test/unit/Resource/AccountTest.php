@@ -104,12 +104,13 @@ class AccountTest extends UnitTestCase
     {
         $baseUri = 'https://example.com';
 
+        /** @var AccountType $accountType */
         $accountType = (new AccountType())->fromArray([
             'password' => 'some_password',
             'email' => 'my_email@example.com',
         ]);
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->createPartialMock(SeafileHttpClient::class, ['put', 'getConfig']);
 
         $mockedClient->expects(self::any())
@@ -169,7 +170,7 @@ class AccountTest extends UnitTestCase
         $accountType = new AccountType();
         $accountType->email = $data['email'];
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->createPartialMock(SeafileHttpClient::class, ['delete', 'getConfig']);
 
         $mockedClient->expects(self::any())

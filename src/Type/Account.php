@@ -8,10 +8,6 @@ use DateTime;
  * Account type class
  *
  * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
- *
- * @method Account #[Override]
- * fromJson(stdClass $jsonResponse)
- * fromArray(array $fromArray)
  */
 class Account extends Type
 {

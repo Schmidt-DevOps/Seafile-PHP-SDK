@@ -44,7 +44,7 @@ class ResourceTest extends UnitTestCase
      */
     public function testGetApiBaseUrl(): void
     {
-        /** @var Client|MockObject $mockedClient */
+        /** @var Client&MockObject $mockedClient */
         $mockedClient = $this->getMockBuilder(Client::class)->getMock();
 
         $mockedClient->method('getConfig')

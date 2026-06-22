@@ -7,6 +7,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Type\Library as LibraryType;
 use Seafile\Client\Type\SharedLink as SharedLinkType;
 use Seafile\Client\Type\SharedLinkPermissions;
+use Seafile\Client\Type\TypeInterface;
 
 /**
  * Handles everything regarding Seafile share links web API.
@@ -87,7 +88,7 @@ class ShareLinks extends Resource implements ResourceInterface
         SharedLinkPermissions $sharedLinkPermissions,
         ?int $expire = null,
         ?string $password = null
-    ): ?SharedLinkType {
+    ): ?TypeInterface {
         $uri = sprintf(
             '%s/share-links/',
             $this->clipUri($this->getApiBaseUrl())

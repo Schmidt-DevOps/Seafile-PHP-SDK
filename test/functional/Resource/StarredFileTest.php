@@ -18,7 +18,7 @@ use Seafile\Client\Type\DirectoryItem;
  */
 class StarredFileTest extends FunctionalTestCase
 {
-    private ?StarredFile $starredFile;
+    private ?StarredFile $starredFile = null;
 
     /**
      * @throws Exception

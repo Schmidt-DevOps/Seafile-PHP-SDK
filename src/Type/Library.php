@@ -8,10 +8,6 @@ use DateTime;
  * Library type class
  *
  * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
- *
- * @method Library #[Override]
- * fromJson(stdClass $jsonResponse)
- * fromArray(array $fromArray)
  */
 class Library extends Type
 {

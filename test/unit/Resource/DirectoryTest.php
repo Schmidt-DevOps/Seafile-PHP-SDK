@@ -60,7 +60,7 @@ class DirectoryTest extends UnitTestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
@@ -96,7 +96,7 @@ class DirectoryTest extends UnitTestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
@@ -172,7 +172,7 @@ class DirectoryTest extends UnitTestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
@@ -258,7 +258,7 @@ class DirectoryTest extends UnitTestCase
 
         $mkdirResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -336,7 +336,7 @@ class DirectoryTest extends UnitTestCase
 
         $mkdirResponse = new Response(200, ['Content-Type' => 'text/plain']);
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -383,7 +383,7 @@ class DirectoryTest extends UnitTestCase
      */
     protected function getDirectoryResource(Response $getAllResponse, Response $mkdirResponse): Directory
     {
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');

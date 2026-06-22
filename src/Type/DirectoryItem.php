@@ -10,9 +10,6 @@ use Override;
  * Directory Item class.
  *
  * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
- *
- * @method DirectoryItem #[Override]
-fromJson(stdClass $jsonResponse)
  */
 class DirectoryItem extends Type
 {
@@ -55,6 +52,9 @@ class DirectoryItem extends Type
             $fromArray['type'] = $fromArray['dir'] ? self::TYPE_DIR : self::TYPE_FILE;
         }
 
-        return parent::fromArray($fromArray);
+        /** @var DirectoryItem $dirItem */
+        $dirItem = parent::fromArray($fromArray);
+
+        return $dirItem;
     }
 }

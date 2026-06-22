@@ -15,7 +15,7 @@ use Seafile\Client\Type\Group as GroupType;
  */
 class GroupTest extends FunctionalTestCase
 {
-    private ?Group $group;
+    private ?Group $group = null;
 
     /**
      * @throws Exception
