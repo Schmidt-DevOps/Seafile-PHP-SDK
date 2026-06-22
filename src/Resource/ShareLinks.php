@@ -45,7 +45,6 @@ class ShareLinks extends Resource implements ResourceInterface
      * @param SharedLinkType $sharedLinkType SharedLinkType instance
      *
      * @throws GuzzleException
-     * @throws GuzzleException
      */
     public function remove(SharedLinkType $sharedLinkType): bool
     {

@@ -205,7 +205,6 @@ class Library extends Resource
      * @param string $permission The permission of the shared library
      *
      * @throws GuzzleException
-     * @throws GuzzleException
      */
     public function sharePersonal(string $libraryId, array $users, string $permission = Resource::PERMISSION_R): bool
     {

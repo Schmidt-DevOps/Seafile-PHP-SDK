@@ -152,7 +152,6 @@ class Directory extends Resource
      * @param string $directoryPath Directory path
      *
      * @throws GuzzleException
-     * @throws GuzzleException
      */
     public function remove(LibraryType $libraryType, string $directoryPath): bool
     {
@@ -186,7 +185,6 @@ class Directory extends Resource
      * @param string $directoryPath Directory path
      * @param string $newDirectoryName New directory name
      *
-     * @throws GuzzleException
      * @throws GuzzleException
      */
     public function rename(LibraryType $libraryType, string $directoryPath, string $newDirectoryName): bool
