@@ -3,90 +3,72 @@
 namespace Seafile\Client\Type;
 
 use DateTime;
-use stdClass;
 
 /**
  * SharedLink type class
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
- * @method SharedLink fromJson(stdClass $jsonResponse)
- * @method SharedLink fromArray(array $fromArray)
+ * @method SharedLink #[Override]
+ * fromJson(stdClass $jsonResponse)
+ * fromArray(array $fromArray)
  */
 class SharedLink extends Type
 {
     /**
      * View count
-     *
-     * @var null|int
      */
-    public $viewCnt;
+    public ?int $viewCnt;
 
     /**
      * Token
-     *
-     * @var null|string
      */
-    public $token;
+    public ?string $token;
 
     /**
      * Creation time
      *
      * @var null|DateTime
      */
-    public $ctime;
+    public ?DateTime $ctime;
 
     /**
      * Path
-     *
-     * @var null|string
      */
-    public $path;
+    public ?string $path;
 
     /**
      * Repo ID
-     *
-     * @var null|string
      */
-    public $repoId;
+    public ?string $repoId;
 
     /**
      * User name
-     *
-     * @var null|string
      */
-    public $username;
+    public ?string $username;
 
     /**
      * URL
-     *
-     * @var null|string
      */
-    public $url;
+    public ?string $url;
 
     /**
      * Link, same as URL
-     *
-     * @var null|string
      */
-    public $link;
+    public ?string $link;
 
     /**
      * @var array
      *
      * @todo Automatically cast to SharedLinkPermissions type
      */
-    public $permissions = [];
+    public array $permissions = [];
 
-    /** @var bool */
-    public $isDir = false;
+    public bool $isDir = false;
 
-    /** @var bool */
-    public $isExpired = true;
+    public bool $isExpired = true;
 
-    /** @var string */
-    public $objName = "";
+    public string $objName = "";
 
-    /** @var null|DateTime */
-    public $expireDate;
+    public ?DateTime $expireDate;
 }

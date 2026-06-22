@@ -2,15 +2,15 @@
 
 namespace Seafile\Client\Tests\Unit\Http;
 
-use Seafile\Client\Http\Client;
+use GuzzleHttp\Client;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 
 /**
  * Client test
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
- * @covers    \Seafile\Client\Http\Client
+ * @covers    \GuzzleHttp\Client
  */
 class ClientUnitTest extends UnitTestCase
 {

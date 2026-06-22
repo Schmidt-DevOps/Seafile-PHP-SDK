@@ -15,7 +15,7 @@ use Seafile\Client\Type\Library;
 /**
  * File resource functional tests
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class FileTest extends FunctionalTestCase
 {

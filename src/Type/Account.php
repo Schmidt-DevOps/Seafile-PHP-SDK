@@ -3,15 +3,15 @@
 namespace Seafile\Client\Type;
 
 use DateTime;
-use stdClass;
 
 /**
  * Account type class
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
- * @method Account fromJson(stdClass $jsonResponse)
- * @method Account fromArray(array $fromArray)
+ * @method Account #[Override]
+ * fromJson(stdClass $jsonResponse)
+ * fromArray(array $fromArray)
  */
 class Account extends Type
 {
@@ -25,36 +25,25 @@ class Account extends Type
 
     public ?int $id = null;
 
-    /** @var null|string */
-    public $institution;
+    public ?string $institution = null;
 
-    /** @var null|bool */
-    public $isStaff;
+    public ?bool $isStaff = null;
 
-    /** @var null|bool */
-    public $isActive;
+    public ?bool $isActive = null;
 
-    /** @var null|string */
-    public $loginId;
+    public ?string $loginId = null;
 
-    /** @var null|string */
-    public $name;
+    public ?string $name = null;
 
-    /** @var null|string */
-    public $note;
+    public ?string $note = null;
 
-    /** @var null|string */
-    public $password;
+    public ?string $password;
 
-    /** @var null|int */
-    public $storage;
+    public ?int $storage;
 
-    /** @var null|int */
-    public $spaceQuota;
+    public ?int $spaceQuota;
 
-    /** @var null|int */
-    public $total;
+    public ?int $total;
 
-    /** @var null|int */
-    public $usage;
+    public ?int $usage;
 }

@@ -8,17 +8,17 @@ use Seafile\Client\Type\Library as LibraryType;
 /**
  * Handles everything regarding Seafile multi file/folder operations.
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class Multi extends Resource
 {
-    public const API_VERSION = '2';
+    public const string API_VERSION = '2';
 
     /** Mode of operation: copy */
-    public const OPERATION_COPY = 1;
+    public const int OPERATION_COPY = 1;
 
     /** Mode of operation: move */
-    public const OPERATION_MOVE = 2;
+    public const int OPERATION_MOVE = 2;
 
     /**
      * Move multiple files or folders

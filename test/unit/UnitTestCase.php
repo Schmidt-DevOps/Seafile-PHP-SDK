@@ -7,13 +7,13 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
-use Seafile\Client\Http\Client;
+use GuzzleHttp\Client;
 use Seafile\Client\Type\Library;
 
 /**
  * Seafile PHP SDK Unit Test Case class
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class UnitTestCase extends TestCase
 {

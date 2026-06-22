@@ -6,7 +6,7 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
-use Seafile\Client\Http\Client as SeafileHttpClient;
+use GuzzleHttp\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Directory;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\DirectoryItem;
@@ -15,7 +15,7 @@ use Seafile\Client\Type\Library;
 /**
  * Directory resource test
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
  * @covers    \Seafile\Client\Resource\Directory
  */

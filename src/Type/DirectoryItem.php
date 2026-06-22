@@ -5,47 +5,38 @@ namespace Seafile\Client\Type;
 use DateTime;
 use Exception;
 use Override;
-use stdClass;
 
 /**
  * Directory Item class.
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
- * @method DirectoryItem fromJson(stdClass $jsonResponse)
+ * @method DirectoryItem #[Override]
+fromJson(stdClass $jsonResponse)
  */
 class DirectoryItem extends Type
 {
-    public const TYPE_DIR = 'dir';
+    public const string TYPE_DIR = 'dir';
 
-    public const TYPE_FILE = 'file';
+    public const string TYPE_FILE = 'file';
 
-    /** @var string */
-    public $id = "";
+    public string $id = "";
 
-    /** @var string */
-    public $dir = '/';
+    public string $dir = '/';
 
-    /** @var DateTime */
-    public $mtime;
+    public DateTime $mtime;
 
-    /** @var string */
-    public $name = "";
+    public string $name = "";
 
-    /** @var null|int */
-    public $org;
+    public ?int $org = null;
 
-    /** @var null|string */
-    public $path;
+    public ?string $path = null;
 
-    /** @var null|string */
-    public $repo;
+    public ?string $repo = null;
 
-    /** @var string */
-    public $size = "";
+    public string $size = "";
 
-    /** @var string */
-    public $type = "";
+    public string $type = "";
 
     /**
      * Populate from array

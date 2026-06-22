@@ -3,24 +3,21 @@
 namespace Seafile\Client\Type;
 
 use DateTime;
-use stdClass;
 
 /**
  * Avatar type class
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
- * @method Avatar fromJson(stdClass $jsonResponse)
- * @method Avatar fromArray(array $fromArray)
+ * @method Avatar #[Override]
+ * fromJson(stdClass $jsonResponse)
+ * fromArray(array $fromArray)
  */
 class Avatar extends Type
 {
-    /** @var null|string */
-    public $url;
+    public ?string $url;
 
-    /** @var null|bool */
-    public $isDefault;
+    public ?bool $isDefault;
 
-    /** @var null|DateTime */
-    public $mtime;
+    public ?DateTime $mtime;
 }

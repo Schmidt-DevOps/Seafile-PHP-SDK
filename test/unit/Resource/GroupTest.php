@@ -11,7 +11,7 @@ use Seafile\Client\Type\Group as GroupType;
 /**
  * Group resource test
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
  * @covers    \Seafile\Client\Resource\Group
  */

@@ -10,7 +10,7 @@ use Seafile\Client\Type\DirectoryItem;
 /**
  * DirectoryItem test
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
  * @covers    \Seafile\Client\Type\DirectoryItem
  */

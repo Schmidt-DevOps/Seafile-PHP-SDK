@@ -17,7 +17,7 @@ use Seafile\Client\Type\SharedLinkPermissions;
 /**
  * ShareLinks resource functional tests
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class ShareLinksTest extends FunctionalTestCase
 {

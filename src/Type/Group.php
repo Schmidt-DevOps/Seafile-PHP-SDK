@@ -3,33 +3,27 @@
 namespace Seafile\Client\Type;
 
 use Seafile\Client\Type\Account as AccountType;
-use stdClass;
 
 /**
  * Group type class
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
- * @method Group fromJson(stdClass $jsonResponse)
- * @method Group fromArray(array $fromArray)
+ * @method Group #[Override]
+ * fromJson(stdClass $jsonResponse)
+ * fromArray(array $fromArray)
  */
 class Group extends Type
 {
-    /** @var null|int */
-    public $ctime;
+    public ?int $ctime;
 
-    /** @var null|AccountType */
-    public $creator;
+    public ?AccountType $creator;
 
-    /** @var null|int */
-    public $msgnum;
+    public ?int $msgnum;
 
-    /** @var null|int */
-    public $mtime;
+    public ?int $mtime;
 
-    /** @var null|int */
-    public $id;
+    public ?int $id;
 
-    /** @var null|string */
-    public $name;
+    public ?string $name;
 }

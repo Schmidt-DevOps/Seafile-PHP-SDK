@@ -3,7 +3,8 @@
 namespace Seafile\Client\Resource;
 
 use Exception;
-use Seafile\Client\Http\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 use Seafile\Client\Type\DirectoryItem;
 use Seafile\Client\Type\Library as LibraryType;
 
@@ -12,11 +13,11 @@ use Seafile\Client\Type\Library as LibraryType;
  *
  * Please note that only starred files of the API user can be accessed.
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class StarredFile extends Resource
 {
-    public const API_VERSION = '2';
+    public const string API_VERSION = '2';
 
     private const string API_STARRED_FILES_PATH = '/starredfiles/';
 
@@ -38,6 +39,7 @@ class StarredFile extends Resource
      * Get all starred files
      *
      * @return DirectoryItem[] Array of directory item instances
+     * @throws Exception|GuzzleException
      */
     public function getAll(): array
     {
@@ -58,6 +60,7 @@ class StarredFile extends Resource
      * Create directory within parent directory.
      *
      * @return string URL of starred file list
+     * @throws Exception|GuzzleException
      */
     public function star(LibraryType $libraryType, DirectoryItem $directoryItem): string
     {
@@ -86,6 +89,7 @@ class StarredFile extends Resource
 
     /**
      * Unstar a file.
+     * @throws GuzzleException
      */
     public function unstar(LibraryType $libraryType, DirectoryItem $directoryItem): bool
     {

@@ -12,15 +12,15 @@ use stdClass;
 /**
  * Abstract type class
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 abstract class Type implements TypeInterface
 {
     /** Associative array mode */
-    public const ARRAY_ASSOC = 1;
+    public const int ARRAY_ASSOC = 1;
 
     /** Multipart array mode */
-    public const ARRAY_MULTI_PART = 2;
+    public const int ARRAY_MULTI_PART = 2;
 
     /**
      * Constructor
@@ -46,7 +46,7 @@ abstract class Type implements TypeInterface
      * @return static
      */
     #[Override]
-    public function fromArray(array $fromArray) // type is given in derived class
+    public function fromArray(array $fromArray): Type
     {
         foreach ($fromArray as $key => $value) {
             $camelCaseKey = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_SNAKE_CASE)->toCamelCase($key);
@@ -55,7 +55,7 @@ abstract class Type implements TypeInterface
                 continue;
             }
 
-            // @noinspection PhpSwitchCanBeReplacedWithMatchExpressionInspection
+            /** @noinspection PhpSwitchCanBeReplacedWithMatchExpressionInspection */
             switch ($key) {
                 case 'creator':
                     $this->{$key} = (new AccountType())->fromArray(['email' => $value]);
@@ -103,15 +103,10 @@ abstract class Type implements TypeInterface
 
     /**
      * Create from jsonResponse
-     *
-     * @param stdClass $jsonResponse Json response
-     *
      * @throws Exception
-     *
-     * @return self
      */
     #[Override]
-    public function fromJson(stdClass $jsonResponse) // type is given in derived class
+    public function fromJson(stdClass $jsonResponse): static // type is given in derived class
     {
         $this->fromArray((array) $jsonResponse);
 
@@ -131,7 +126,7 @@ abstract class Type implements TypeInterface
         switch ($mode) {
             case self::ARRAY_MULTI_PART:
                 $caseHelper = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_CAMEL_CASE);
-                $keyVals = $this->toArray(self::ARRAY_ASSOC);
+                $keyVals = $this->toArray();
                 $multiPart = [];
 
                 foreach ($keyVals as $key => $val) {

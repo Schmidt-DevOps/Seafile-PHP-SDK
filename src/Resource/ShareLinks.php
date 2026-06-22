@@ -11,16 +11,17 @@ use Seafile\Client\Type\SharedLinkPermissions;
 /**
  * Handles everything regarding Seafile share links web API.
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class ShareLinks extends Resource implements ResourceInterface
 {
     /**
      * List shared links
      *
-     * @throws Exception
-     *
      * @return SharedLinkType[]
+     * @throws GuzzleException
+     *
+     * @throws Exception
      */
     public function getAll(): array
     {
@@ -41,6 +42,8 @@ class ShareLinks extends Resource implements ResourceInterface
      * Remove shared link
      *
      * @param SharedLinkType $sharedLinkType SharedLinkType instance
+     * @throws GuzzleException
+     * @throws GuzzleException
      */
     public function remove(SharedLinkType $sharedLinkType): bool
     {
@@ -140,7 +143,7 @@ class ShareLinks extends Resource implements ResourceInterface
             'token' => $decodedResponse->token,
             'view_cnt' => $decodedResponse->view_cnt,
             'obj_name' => $decodedResponse->obj_name,
-            "permissions" => $decodedResponse->permissions,
+            'permissions' => $decodedResponse->permissions,
             'is_dir' => $decodedResponse->is_dir,
             'is_expired' => $decodedResponse->is_expired,
             'repo_name' => $decodedResponse->repo_name,

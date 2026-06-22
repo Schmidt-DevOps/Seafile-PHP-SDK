@@ -11,11 +11,11 @@ use Seafile\Client\Type\TypeInterface;
 /**
  * Handles everything regarding Seafile accounts.
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class Account extends Resource
 {
-    public const API_VERSION = '2';
+    public const string API_VERSION = '2';
 
     /**
      * List accounts
@@ -127,7 +127,7 @@ class Account extends Resource
      *
      * @param AccountType $accountType AccountType instance with updated data
      *
-     * @throws Exception
+     * @throws Exception|GuzzleException
      */
     public function update(AccountType $accountType): bool
     {
@@ -234,6 +234,6 @@ class Account extends Resource
             $accountType->email
         );
 
-        return 200 === $this->client->delete($uri, [])->getStatusCode();
+        return 200 === $this->client->delete($uri)->getStatusCode();
     }
 }

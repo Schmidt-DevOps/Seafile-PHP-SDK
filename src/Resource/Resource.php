@@ -3,22 +3,22 @@
 namespace Seafile\Client\Resource;
 
 use Override;
-use Seafile\Client\Http\Client;
+use GuzzleHttp\Client;
 
 /**
  * Abstract resource class
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 abstract class Resource implements ResourceInterface
 {
-    public const API_VERSION = '2.1';
+    public const string API_VERSION = '2.1';
 
     /** Represents 'read' permission (in whatever context) */
-    public const PERMISSION_R = 'r';
+    public const string PERMISSION_R = 'r';
 
     /** Represents 'read and write' permission (in whatever context) */
-    public const PERMISSION_RW = 'rw';
+    public const string PERMISSION_RW = 'rw';
 
     /**
      * Constructor

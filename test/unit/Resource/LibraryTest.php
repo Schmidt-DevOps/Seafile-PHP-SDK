@@ -6,8 +6,8 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
-use Seafile\Client\Http\Client;
-use Seafile\Client\Http\Client as SeafileHttpClient;
+use GuzzleHttp\Client;
+use GuzzleHttp\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Library;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\Library as LibraryType;
@@ -15,7 +15,7 @@ use Seafile\Client\Type\Library as LibraryType;
 /**
  * Library resource test
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
  * @covers    \Seafile\Client\Resource\Library
  */

@@ -4,7 +4,7 @@ namespace Seafile\Client\Tests\Unit\Resource;
 
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
-use Seafile\Client\Http\Client;
+use GuzzleHttp\Client;
 use Seafile\Client\Resource\Directory;
 use Seafile\Client\Resource\ShareLinks;
 use Seafile\Client\Tests\Unit\UnitTestCase;
@@ -12,7 +12,7 @@ use Seafile\Client\Tests\Unit\UnitTestCase;
 /**
  * Resource test
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
  * @covers    \Seafile\Client\Resource\Resource
  */

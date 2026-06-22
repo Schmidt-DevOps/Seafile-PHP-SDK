@@ -13,7 +13,7 @@ use Seafile\Client\Type\Account as AccountType;
 /**
  * Account resource functional tests
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class AccountTest extends FunctionalTestCase
 {

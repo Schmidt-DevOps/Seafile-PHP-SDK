@@ -13,20 +13,20 @@ use Seafile\Client\Type\Library as LibraryType;
 /**
  * Handles everything regarding Seafile files.
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class File extends Resource
 {
-    public const API_VERSION = '2';
+    public const string API_VERSION = '2';
 
     /** Mode of operation: copy */
-    public const OPERATION_COPY = 1;
+    public const int OPERATION_COPY = 1;
 
     /** Mode of operation: move */
-    public const OPERATION_MOVE = 2;
+    public const int OPERATION_MOVE = 2;
 
     /** Mode of operation: create */
-    public const OPERATION_CREATE = 3;
+    public const int OPERATION_CREATE = 3;
 
     /**
      * Get download URL of a file

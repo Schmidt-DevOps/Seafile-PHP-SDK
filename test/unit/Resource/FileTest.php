@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use ReflectionException;
-use Seafile\Client\Http\Client as SeafileHttpClient;
+use GuzzleHttp\Client as SeafileHttpClient;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Tests\Unit\Stubs\FileResourceStub;
 use Seafile\Client\Tests\Unit\UnitTestCase;
@@ -19,7 +19,7 @@ use Seafile\Client\Type\Library;
 /**
  * File resource test
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
  * @covers    \Seafile\Client\Resource\File
  */

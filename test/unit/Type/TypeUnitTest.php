@@ -14,7 +14,7 @@ use Seafile\Client\Type\Type;
 /**
  * Type test
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
  * @covers    \Seafile\Client\Type\Type
  */
