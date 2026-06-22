@@ -3,21 +3,22 @@
 namespace Seafile\Client\Resource;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use Seafile\Client\Type\Group as GroupType;
 
 /**
  * Handles everything regarding Seafile groups.
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class Group extends Resource
 {
-    public const API_VERSION = '2';
+    public const string API_VERSION = '2';
 
     /**
      * List groups
      *
-     * @throws Exception
+     * @throws Exception|GuzzleException
      *
      * @return GroupType[]
      */

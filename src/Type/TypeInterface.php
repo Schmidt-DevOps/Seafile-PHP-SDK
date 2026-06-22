@@ -17,10 +17,8 @@ interface TypeInterface
      * @param array $fromArray Create from array
      *
      * @throws Exception
-     *
-     * @return self
      */
-    public function fromArray(array $fromArray); // type is given in implementing class
+    public function fromArray(array $fromArray): Type;
 
     /**
      * Time stamps vary a lot in Seafile. Sometimes it's seconds from 1970-01-01 00:00:00, sometimes
@@ -36,10 +34,8 @@ interface TypeInterface
      * @param stdClass $jsonResponse Json response
      *
      * @throws Exception
-     *
-     * @return self
      */
-    public function fromJson(stdClass $jsonResponse); // type is given in implementing class
+    public function fromJson(stdClass $jsonResponse): static; // type is given in implementing class
 
     /**
      * Return instance as array

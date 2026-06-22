@@ -9,15 +9,16 @@ use Seafile\Client\Type\Library as LibraryType;
 /**
  * Handles everything regarding Seafile libraries.
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class Library extends Resource
 {
-    public const API_VERSION = '2';
+    public const string API_VERSION = '2';
 
     /**
      * List libraries
      *
+     * @throws GuzzleException
      * @throws Exception
      *
      * @return LibraryType[]
@@ -43,6 +44,7 @@ class Library extends Resource
      * @param string $libraryId Library ID
      *
      * @throws Exception
+     * @throws GuzzleException
      */
     public function getById(string $libraryId): LibraryType
     {
@@ -62,6 +64,7 @@ class Library extends Resource
      * @param string $libraryId Library ID
      * @param array $options Options
      *
+     * @throws GuzzleException
      * @throws Exception
      *
      * @return bool Decryption success
@@ -93,7 +96,7 @@ class Library extends Resource
      * @throws Exception
      * @throws GuzzleException
      */
-    public function exists($value, $attribute = 'name'): bool
+    public function exists(string $value, string $attribute = 'name'): bool
     {
         $libraries = $this->getAll();
 
@@ -116,10 +119,10 @@ class Library extends Resource
      * @throws Exception
      * @throws GuzzleException
      */
-    public function create($name, $description = "new repo", $password = ''): bool
+    public function create(string $name, string $description = "new repo", string $password = ''): bool
     {
         // only create a library which is not empty to prevent wrong implementation
-        if (empty($name)) {
+        if ('' === $name || '0' === $name) {
             return false;
         }
 
@@ -170,10 +173,10 @@ class Library extends Resource
      *
      * @throws GuzzleException
      */
-    public function remove($libraryId): bool
+    public function remove(string $libraryId): bool
     {
         // do not allow empty IDs
-        if (empty($libraryId)) {
+        if ('' === $libraryId || '0' === $libraryId) {
             return false;
         }
 
@@ -200,8 +203,10 @@ class Library extends Resource
      * @param string $libraryId Library ID
      * @param array $users Comma separated list of user email addresses
      * @param string $permission The permission of the shared library
+     *
+     * @throws GuzzleException
      */
-    public function sharePersonal($libraryId, array $users, string $permission = Resource::PERMISSION_R): bool
+    public function sharePersonal(string $libraryId, array $users, string $permission = Resource::PERMISSION_R): bool
     {
         $uri = sprintf(
             '%s/shared-repos/%s/?share_type=personal&users=%s&permission=%s',
@@ -211,7 +216,7 @@ class Library extends Resource
             $permission
         );
 
-        $response = $this->client->put($uri, []);
+        $response = $this->client->put($uri);
 
         return 200 === $response->getStatusCode();
     }

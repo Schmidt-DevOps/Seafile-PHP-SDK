@@ -3,68 +3,43 @@
 namespace Seafile\Client\Type;
 
 use DateTime;
-use stdClass;
 
 /**
  * File history item type class
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
- *
- * @method FileHistoryItem fromJson(stdClass $jsonResponse)
- * @method FileHistoryItem fromArray(array $fromArray)
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class FileHistoryItem extends Type
 {
-    /** @var int */
-    public $revFileSize = 0;
+    public int $revFileSize = 0;
 
-    /** @var string */
-    public $repoId = '';
+    public string $repoId = '';
 
-    /** @var null|DateTime */
-    public $ctime;
+    public ?DateTime $ctime = null;
 
-    /** @var string */
-    public $creatorName = '';
+    public string $creatorName = '';
 
-    /** @var string */
-    public $creator = '';
+    public ?Type $creator = null;
 
-    /** @var string */
-    public $rootId = '';
+    public string $rootId = '';
 
-    /** @var string */
-    public $revRenamedOldPath = '';
+    public string $revRenamedOldPath = '';
 
-    /** @var string */
-    public $parentId = '';
+    public string $parentId = '';
 
-    /** @var bool */
-    public $newMerge = false;
+    public bool $newMerge = false;
 
-    /** @var int */
-    public $version = 0;
+    public int $version = 0;
 
-    /** @var bool */
-    public $conflict = false;
+    public bool $conflict = false;
 
-    /** @var string */
-    public $desc = '';
+    public string $desc = '';
 
-    /**
-     * Commit ID
-     *
-     * @var string
-     */
-    public $id = '';
+    /** Commit ID */
+    public string $id = '';
 
-    /**
-     * Object ID
-     *
-     * @var string
-     */
-    public $revFileId = '';
+    /** Object ID */
+    public string $revFileId = '';
 
-    /** @var null|int */
-    public $secondParentId;
+    public ?int $secondParentId = null;
 }

@@ -3,10 +3,10 @@
 namespace Seafile\Client\Tests\Unit\Resource;
 
 use Exception;
+use GuzzleHttp\Client as SeafileHttpClient;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
-use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Directory;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\DirectoryItem;
@@ -15,7 +15,7 @@ use Seafile\Client\Type\Library;
 /**
  * Directory resource test
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
  * @covers    \Seafile\Client\Resource\Directory
  */
@@ -60,7 +60,7 @@ class DirectoryTest extends UnitTestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
@@ -96,7 +96,7 @@ class DirectoryTest extends UnitTestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
@@ -145,9 +145,9 @@ class DirectoryTest extends UnitTestCase
         $library->id = 'some-crazy-id';
 
         if (201 === $expectResponseCode) {
-            self::assertTrue($directoryResource->create($library, 'new_dir', '/', false));
+            self::assertTrue($directoryResource->create($library, 'new_dir'));
         } else {
-            self::assertFalse($directoryResource->create($library, 'new_dir', '/', false));
+            self::assertFalse($directoryResource->create($library, 'new_dir'));
         }
     }
 
@@ -172,7 +172,7 @@ class DirectoryTest extends UnitTestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
@@ -189,7 +189,7 @@ class DirectoryTest extends UnitTestCase
         $library = new Library();
         $library->id = 'some-crazy-id';
 
-        self::assertFalse($directory->create($library, 'test_dir', '/', false));
+        self::assertFalse($directory->create($library, 'test_dir'));
     }
 
     /**
@@ -256,26 +256,9 @@ class DirectoryTest extends UnitTestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        $mkdirResponse = new Response(200, ['Content-Type' => 'text/plain']);
-
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
-
-        $expectUri = 'http://example.com/api' . Directory::API_VERSION . '/repos/some-crazy-id/dir/?p=test_dir';
-        $expectParams = [
-            'headers' => ['Accept' => "application/json"],
-            'multipart' => [
-                [
-                    'name' => "operation",
-                    'contents' => "rename",
-                ],
-                [
-                    'name' => "newname",
-                    'contents' => "test_dir_renamed",
-                ],
-            ],
-        ];
 
         // @todo: Test more thoroughly. For example make sure request() gets called with POST twice (a, then b)
         $mockedClient->expects(self::any())
@@ -286,7 +269,23 @@ class DirectoryTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $mkdirResponse, $expectUri, $expectParams): Response {
+                function ($method, $uri, $params) use ($getAllResponse): Response {
+                    $mkdirResponse = new Response(200, ['Content-Type' => 'text/plain']);
+                    $expectUri = 'http://example.com/api' . Directory::API_VERSION . '/repos/some-crazy-id/dir/?p=test_dir';
+                    $expectParams = [
+                        'headers' => ['Accept' => "application/json"],
+                        'multipart' => [
+                            [
+                                'name' => "operation",
+                                'contents' => "rename",
+                            ],
+                            [
+                                'name' => "newname",
+                                'contents' => "test_dir_renamed",
+                            ],
+                        ],
+                    ];
+
                     if ('GET' === $method) {
                         return $getAllResponse;
                     }
@@ -334,16 +333,9 @@ class DirectoryTest extends UnitTestCase
             file_get_contents(__DIR__ . '/../../assets/DirectoryTest_getAll.json')
         );
 
-        $mkdirResponse = new Response(200, ['Content-Type' => 'text/plain']);
-
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
-
-        $expectUri = 'http://example.com/api' . Directory::API_VERSION . '/repos/some-crazy-id/dir/?p=test_dir';
-        $expectParams = [
-            'headers' => ['Accept' => "application/json"],
-        ];
 
         // @todo: Test more thoroughly. For example make sure request() gets called with POST twice (a, then b)
         $mockedClient->expects(self::any())
@@ -354,7 +346,13 @@ class DirectoryTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $mkdirResponse, $expectUri, $expectParams): Response {
+                function ($method, $uri, $params) use ($getAllResponse): Response {
+                    $mkdirResponse = new Response(200, ['Content-Type' => 'text/plain']);
+                    $expectUri = 'http://example.com/api' . Directory::API_VERSION . '/repos/some-crazy-id/dir/?p=test_dir';
+                    $expectParams = [
+                        'headers' => ['Accept' => "application/json"],
+                    ];
+
                     if ('GET' === $method) {
                         return $getAllResponse;
                     }
@@ -383,7 +381,7 @@ class DirectoryTest extends UnitTestCase
      */
     protected function getDirectoryResource(Response $getAllResponse, Response $mkdirResponse): Directory
     {
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->method('getConfig')->willReturn('http://example.com/');

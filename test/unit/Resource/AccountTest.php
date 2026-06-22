@@ -5,10 +5,10 @@ namespace Seafile\Client\Tests\Unit\Resource;
 use DateTime;
 use DateTimeInterface;
 use Exception;
+use GuzzleHttp\Client as SeafileHttpClient;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
-use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Account;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\Account as AccountType;
@@ -16,7 +16,7 @@ use Seafile\Client\Type\Account as AccountType;
 /**
  * Account resource test
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
  * @covers    \Seafile\Client\Resource\Account
  */
@@ -83,7 +83,7 @@ class AccountTest extends UnitTestCase
     /**
      * Test create() with missing attribute values
      *
-     * @throws Exception
+     * @throws Exception|GuzzleException
      */
     public function testCreateIllegal(): void
     {
@@ -109,7 +109,7 @@ class AccountTest extends UnitTestCase
             'email' => 'my_email@example.com',
         ]);
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->createPartialMock(SeafileHttpClient::class, ['put', 'getConfig']);
 
         $mockedClient->expects(self::any())
@@ -145,7 +145,7 @@ class AccountTest extends UnitTestCase
     /**
      * Test update() with missing attribute values
      *
-     * @throws Exception
+     * @throws Exception|GuzzleException
      */
     public function testUpdateIllegal(): void
     {
@@ -160,7 +160,7 @@ class AccountTest extends UnitTestCase
      *
      * @param array $data DataProvider data
      *
-     * @throws Exception
+     * @throws Exception|GuzzleException
      */
     public function testRemove(array $data): void
     {
@@ -169,7 +169,7 @@ class AccountTest extends UnitTestCase
         $accountType = new AccountType();
         $accountType->email = $data['email'];
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->createPartialMock(SeafileHttpClient::class, ['delete', 'getConfig']);
 
         $mockedClient->expects(self::any())

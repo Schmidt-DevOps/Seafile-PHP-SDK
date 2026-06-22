@@ -3,10 +3,10 @@
 namespace Seafile\Client\Tests\Unit\Resource;
 
 use Exception;
+use GuzzleHttp\Client as SeafileHttpClient;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
-use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\ShareLinks;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\Library as LibraryType;
@@ -16,7 +16,7 @@ use Seafile\Client\Type\SharedLinkPermissions;
 /**
  * ShareLinks resource test
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
  * @covers    \Seafile\Client\Resource\ShareLinks
  */
@@ -62,7 +62,7 @@ class ShareLinksTest extends UnitTestCase
             $responseBody
         );
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
@@ -108,7 +108,7 @@ class ShareLinksTest extends UnitTestCase
 
         $createResponse = new Response($createResponseCode, $headers, $responseBody);
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())
@@ -123,8 +123,7 @@ class ShareLinksTest extends UnitTestCase
 
         $shareLinks = new ShareLinks($mockedClient);
 
-        $sharedLink = new SharedLink();
-        $sharedLink->url = 'https://seafile.example.com/f/abc/';
+        $sharedLink = (new SharedLink())->fromArray(['url' => 'https://seafile.example.com/f/abc/']);
 
         $library = new LibraryType();
         $library->id = 'decaf-deadbeef-dad';

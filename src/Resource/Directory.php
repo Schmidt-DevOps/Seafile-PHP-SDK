@@ -10,11 +10,11 @@ use Seafile\Client\Type\Library as LibraryType;
 /**
  * Handles everything regarding Seafile directories.
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class Directory extends Resource
 {
-    public const API_VERSION = '2';
+    public const string API_VERSION = '2';
 
     /**
      * Get all items of a directory in a library
@@ -90,10 +90,8 @@ class Directory extends Resource
      *
      * @throws Exception
      * @throws GuzzleException
-     *
-     * @return bool Success
      */
-    public function create(LibraryType $libraryType, string $dirName, string $parentDir = '/', bool $recursive = false)
+    public function create(LibraryType $libraryType, string $dirName, string $parentDir = '/', bool $recursive = false): bool
     {
         if ($recursive) {
             $response = false;
@@ -105,7 +103,7 @@ class Directory extends Resource
                 $tmp[] = $part;
 
                 if (false === $this->exists($libraryType, $part, $parentPath)) {
-                    $response = $this->create($libraryType, $part, $parentPath, false);
+                    $response = $this->create($libraryType, $part, $parentPath);
                 }
             }
 
@@ -152,6 +150,8 @@ class Directory extends Resource
      *
      * @param LibraryType $libraryType Library instance
      * @param string $directoryPath Directory path
+     *
+     * @throws GuzzleException
      */
     public function remove(LibraryType $libraryType, string $directoryPath): bool
     {
@@ -184,6 +184,8 @@ class Directory extends Resource
      * @param LibraryType $libraryType Library object
      * @param string $directoryPath Directory path
      * @param string $newDirectoryName New directory name
+     *
+     * @throws GuzzleException
      */
     public function rename(LibraryType $libraryType, string $directoryPath, string $newDirectoryName): bool
     {

@@ -2,18 +2,18 @@
 
 namespace Seafile\Client\Tests\Unit;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
-use Seafile\Client\Http\Client;
 use Seafile\Client\Type\Library;
 
 /**
  * Seafile PHP SDK Unit Test Case class
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class UnitTestCase extends TestCase
 {
@@ -22,13 +22,13 @@ class UnitTestCase extends TestCase
      *
      * @param object $object instantiated object that we will run method on
      * @param string $methodName Method name to call
-     * @param array<int, (int | Library)>|array<int, string> $parameters params to pass to method
+     * @param array<int, (int|Library)>|array<int, string> $parameters params to pass to method
      *
      * @throws ReflectionException
      *
      * @return mixed method return
      */
-    public function invokeMethod(object &$object, string $methodName, array $parameters = []): mixed
+    public function invokeMethod(object $object, string $methodName, array $parameters = []): mixed
     {
         $reflectionClass = new ReflectionClass($object::class);
         $reflectionMethod = $reflectionClass->getMethod($methodName);
@@ -41,7 +41,7 @@ class UnitTestCase extends TestCase
      *
      * @param Response $response HTTP Response
      *
-     * @return Client|MockObject
+     * @return Client&MockObject
      */
     protected function getMockedClient(Response $response): MockObject
     {

@@ -3,15 +3,11 @@
 namespace Seafile\Client\Type;
 
 use DateTime;
-use stdClass;
 
 /**
  * Library type class
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
- *
- * @method Library fromJson(stdClass $jsonResponse)
- * @method Library fromArray(array $fromArray)
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class Library extends Type
 {
@@ -25,30 +21,21 @@ class Library extends Type
 
     public string $owner = '';
 
-    /** @var string */
-    public $root = '';
+    public string $root = '';
 
-    /** @var string */
-    public $id = '';
+    public string $id = '';
 
-    /** @var string */
-    public $size = '';
+    public string $size = '';
 
-    /** @var string */
-    public $name = '';
+    public string $name = '';
 
-    /** @var string */
-    public $type = '';
+    public string $type = '';
 
-    /** @var string */
-    public $virtual = '';
+    public string $virtual = '';
 
-    /** @var string */
-    public $desc = '';
+    public string $desc = '';
 
-    /** @var string */
-    public $sizeFormatted = '';
+    public string $sizeFormatted = '';
 
-    /** @var string */
-    public $password = '';
+    public string $password = '';
 }

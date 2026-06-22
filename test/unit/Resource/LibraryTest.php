@@ -3,11 +3,11 @@
 namespace Seafile\Client\Tests\Unit\Resource;
 
 use Exception;
+use GuzzleHttp\Client;
+use GuzzleHttp\Client as SeafileHttpClient;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
-use Seafile\Client\Http\Client;
-use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Library;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\Library as LibraryType;
@@ -15,7 +15,7 @@ use Seafile\Client\Type\Library as LibraryType;
 /**
  * Library resource test
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
  * @covers    \Seafile\Client\Resource\Library
  */
@@ -244,7 +244,6 @@ class LibraryTest extends UnitTestCase
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/api' . Library::API_VERSION . '/repos/';
         $expectParams = [
             'headers' => ['Accept' => "application/json"],
             'multipart' => [
@@ -274,7 +273,9 @@ class LibraryTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $createResponse, $expectUri, $expectParams): Response {
+                function ($method, $uri, $params) use ($getAllResponse, $createResponse, $expectParams): Response {
+                    $expectUri = 'http://example.com/api' . Library::API_VERSION . '/repos/';
+
                     if ('GET' === $method) {
                         return $getAllResponse;
                     }
@@ -292,8 +293,7 @@ class LibraryTest extends UnitTestCase
          */
         $libraryResource = new Library($mockedClient);
 
-        $lib = new LibraryType();
-        $lib->id = 'some-crazy-id';
+        $lib = (new LibraryType())->fromArray(['id' => 'some-crazy-id']);
 
         self::assertSame($data[1], $libraryResource->create($name, $description, $data[2]));
     }
@@ -325,16 +325,9 @@ class LibraryTest extends UnitTestCase
             file_get_contents(__DIR__ . '/../../assets/LibraryTest_getAll.json')
         );
 
-        $removeResponse = new Response(200, ['Content-Type' => 'text/plain']);
-
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
-
-        $expectUri = 'http://example.com/api' . Library::API_VERSION . '/repos/some-crazy-id/';
-        $expectParams = [
-            'headers' => ['Accept' => "application/json"],
-        ];
 
         // @todo: Test more thoroughly. For example make sure request() gets called with POST twice (a, then b)
         $mockedClient->expects(self::any())
@@ -345,7 +338,13 @@ class LibraryTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $removeResponse, $expectUri, $expectParams): Response {
+                function ($method, $uri, $params) use ($getAllResponse): Response {
+                    $removeResponse = new Response(200, ['Content-Type' => 'text/plain']);
+                    $expectUri = 'http://example.com/api' . Library::API_VERSION . '/repos/some-crazy-id/';
+                    $expectParams = [
+                        'headers' => ['Accept' => "application/json"],
+                    ];
+
                     if ('GET' === $method) {
                         return $getAllResponse;
                     }

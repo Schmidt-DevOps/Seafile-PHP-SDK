@@ -5,47 +5,35 @@ namespace Seafile\Client\Type;
 use DateTime;
 use Exception;
 use Override;
-use stdClass;
 
 /**
  * Directory Item class.
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
- *
- * @method DirectoryItem fromJson(stdClass $jsonResponse)
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class DirectoryItem extends Type
 {
-    public const TYPE_DIR = 'dir';
+    public const string TYPE_DIR = 'dir';
 
-    public const TYPE_FILE = 'file';
+    public const string TYPE_FILE = 'file';
 
-    /** @var string */
-    public $id = "";
+    public string $id = "";
 
-    /** @var string */
-    public $dir = '/';
+    public string $dir = '/';
 
-    /** @var DateTime */
-    public $mtime;
+    public DateTime $mtime;
 
-    /** @var string */
-    public $name = "";
+    public string $name = "";
 
-    /** @var null|int */
-    public $org;
+    public ?int $org = null;
 
-    /** @var null|string */
-    public $path;
+    public ?string $path = null;
 
-    /** @var null|string */
-    public $repo;
+    public ?string $repo = null;
 
-    /** @var string */
-    public $size = "";
+    public string $size = "";
 
-    /** @var string */
-    public $type = "";
+    public string $type = "";
 
     /**
      * Populate from array
@@ -64,6 +52,12 @@ class DirectoryItem extends Type
             $fromArray['type'] = $fromArray['dir'] ? self::TYPE_DIR : self::TYPE_FILE;
         }
 
-        return parent::fromArray($fromArray);
+        $type = parent::fromArray($fromArray);
+
+        if (!$type instanceof DirectoryItem) {
+            throw new Exception('Failed to create DirectoryItem from array');
+        }
+
+        return $type;
     }
 }

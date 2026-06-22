@@ -3,10 +3,10 @@
 namespace Seafile\Client\Tests\Unit\Resource;
 
 use Exception;
+use GuzzleHttp\Client as SeafileHttpClient;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
-use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\StarredFile;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\DirectoryItem;
@@ -15,7 +15,7 @@ use Seafile\Client\Type\Library as LibraryType;
 /**
  * StarredFile resource test
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
  * @covers    \Seafile\Client\Resource\StarredFile
  */
@@ -87,7 +87,7 @@ class StarredFileTest extends UnitTestCase
             ]
         );
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())
@@ -157,7 +157,7 @@ class StarredFileTest extends UnitTestCase
             ]
         );
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())
@@ -193,7 +193,7 @@ class StarredFileTest extends UnitTestCase
         $directoryItem->type = 'file';
         $directoryItem->path = '/some/path';
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())
@@ -233,7 +233,7 @@ class StarredFileTest extends UnitTestCase
         $directoryItem->type = 'file';
         $directoryItem->path = '/some/path';
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $mockedClient->expects(self::any())

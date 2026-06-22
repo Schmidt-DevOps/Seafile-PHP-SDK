@@ -14,11 +14,11 @@ use Seafile\Client\Type\DirectoryItem;
 /**
  * StarredFile resource functional tests
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class StarredFileTest extends FunctionalTestCase
 {
-    private ?StarredFile $starredFile;
+    private ?StarredFile $starredFile = null;
 
     /**
      * @throws Exception

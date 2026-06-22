@@ -51,10 +51,10 @@
     }
   },
   "scripts": {
-    "create-phpmd-baseline": "./vendor/bin/phpmd -v --cache . text phpmd.xml --generate-baseline",
+    "create-phpmd-baseline": "./vendor/bin/phpmd -v --cache src,test text phpmd.xml --generate-baseline",
     "php-cs-fixer": "./vendor/bin/php-cs-fixer fix -vvv --dry-run --diff --show-progress none --format=junit",
     "php-cs-fixer-no-dry-run": "./vendor/bin/php-cs-fixer fix -vvv --diff",
-    "phpmd": "./vendor/bin/phpmd -v --cache . text phpmd.xml",
+    "phpmd": "./vendor/bin/phpmd -v --cache src,test text phpmd.xml",
     "phpstan": "./vendor/bin/phpstan analyse --memory-limit 2G --configuration phpstan.neon src test",
     "phpunit": "./vendor/bin/phpunit --log-junit ./build/logs/junit.xml test",
     "rector": "./vendor/bin/rector --dry-run --no-ansi --no-progress-bar",

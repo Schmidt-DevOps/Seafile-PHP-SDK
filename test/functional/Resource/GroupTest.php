@@ -11,11 +11,11 @@ use Seafile\Client\Type\Group as GroupType;
 /**
  * Group resource functional tests
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class GroupTest extends FunctionalTestCase
 {
-    private ?Group $group;
+    private ?Group $group = null;
 
     /**
      * @throws Exception

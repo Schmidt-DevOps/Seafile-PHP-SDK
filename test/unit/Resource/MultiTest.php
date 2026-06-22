@@ -3,10 +3,10 @@
 namespace Seafile\Client\Tests\Unit\Resource;
 
 use Exception;
+use GuzzleHttp\Client as SeafileHttpClient;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
-use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Multi;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\Library;
@@ -14,7 +14,7 @@ use Seafile\Client\Type\Library;
 /**
  * Multi resource test
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
  * @covers    \Seafile\Client\Resource\Multi
  */
@@ -28,7 +28,7 @@ class MultiTest extends UnitTestCase
      */
     public function testDeleteEmpty(): void
     {
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $multi = new Multi($mockedClient);
@@ -46,7 +46,7 @@ class MultiTest extends UnitTestCase
      */
     public function testCopyMoveEmpty(): void
     {
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $multi = new Multi($mockedClient);
@@ -81,11 +81,10 @@ class MultiTest extends UnitTestCase
 
         $deleteResponse = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com/');
 
-        $expectUri = 'http://example.com/api' . Multi::API_VERSION . '/repos/some-crazy-id/fileops/delete/?p=/some_dir';
         $expectParams = [
             'headers' => ['Accept' => "application/json"],
             'multipart' => [
@@ -105,7 +104,9 @@ class MultiTest extends UnitTestCase
             ))
             // Return what was passed to offsetGet as a new instance
             ->will(self::returnCallback(
-                function ($method, $uri, $params) use ($getAllResponse, $deleteResponse, $expectUri, $expectParams): Response {
+                function ($method, $uri, $params) use ($getAllResponse, $deleteResponse, $expectParams): Response {
+                    $expectUri = 'http://example.com/api' . Multi::API_VERSION . '/repos/some-crazy-id/fileops/delete/?p=/some_dir';
+
                     if ('GET' === $method) {
                         return $getAllResponse;
                     }
@@ -193,7 +194,7 @@ class MultiTest extends UnitTestCase
 
         $deleteResponse = new Response($data['responseCode'], ['Content-Type' => 'text/plain']);
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
         $mockedClient->method('getConfig')->willReturn('http://example.com');
 

@@ -13,7 +13,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\MessageFormatter;
 use Monolog\Logger;
-use Seafile\Client\Http\Client;
+use GuzzleHttp\Client;
 use Seafile\Client\Resource\File;
 use Seafile\Client\Resource\Library;
 
@@ -62,9 +62,13 @@ try {
             'base_uri' => $cfg->baseUri,
             'debug' => true,
             'handler' => $stack,
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Authorization' => 'Token ' . $token->token,
+            'http_errors' => true,
+            'request.options' => [
+                'verify' => true,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Token ' . $token->token,
+                ],
             ],
         ]
     );
@@ -100,7 +104,7 @@ try {
 
         foreach ((array)$accountType as $key => $value) {
             if ($value instanceof DateTime) {
-                $logger->log(Logger::INFO, $key . ': ' . $value->format(\DateTime::ISO8601));
+                $logger->log(Logger::INFO, $key . ': ' . $value->format(DATE_ATOM));
             } else {
                 $logger->log(Logger::INFO, $key . ': ' . $value);
             }

@@ -9,17 +9,18 @@ use Override;
 use Seafile\Client\Resource\Account;
 use Seafile\Client\Tests\Functional\FunctionalTestCase;
 use Seafile\Client\Type\Account as AccountType;
+use Seafile\Client\Type\TypeInterface;
 
 /**
  * Account resource functional tests
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class AccountTest extends FunctionalTestCase
 {
     private string $emailAddress = '';
 
-    private ?Account $account;
+    private ?Account $account = null;
 
     /**
      * @throws Exception
@@ -86,13 +87,14 @@ class AccountTest extends FunctionalTestCase
         $this->logger->debug('#################### Get AccountType instance by email address: ' . $this->emailAddress);
         $accountType = $this->account->getByEmail($this->emailAddress);
 
+        // @var AccountType $accountType
         self::assertInstanceOf(AccountType::class, $accountType);
         self::assertSame($this->emailAddress, $accountType->email);
 
         foreach ((array) $accountType as $key => $value) {
             if ($value instanceof DateTime) {
-                $this->logger->debug($key . ': ' . $value->format(DateTime::ISO8601));
-            } else {
+                $this->logger->debug($key . ': ' . $value->format(DATE_ATOM));
+            } elseif (!$value instanceof TypeInterface) {
                 $this->logger->debug($key . ': ' . $value);
             }
         }

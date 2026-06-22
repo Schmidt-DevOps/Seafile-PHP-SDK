@@ -10,7 +10,7 @@ use Seafile\Client\Type\Library as LibraryType;
 /**
  * File resource stub
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class FileResourceStub extends File
 {

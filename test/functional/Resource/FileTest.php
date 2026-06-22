@@ -15,13 +15,11 @@ use Seafile\Client\Type\Library;
 /**
  * File resource functional tests
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class FileTest extends FunctionalTestCase
 {
-    private ?File $file;
-
-    private ?Library $library = null;
+    private ?File $file = null;
 
     /**
      * @throws Exception
@@ -80,13 +78,13 @@ class FileTest extends FunctionalTestCase
 
         $this->logger->debug("#################### Uploading file " . $newFilename);
 
-        $response = $this->file->upload($library, $newFilename, '/');
+        $response = $this->file->upload($library, $newFilename);
         self::assertSame(200, $response->getStatusCode());
 
         // Update file
         $this->logger->debug("#################### Updating file " . $newFilename);
         file_put_contents($newFilename, ' - UPDATED!', FILE_APPEND);
-        $response = $this->file->update($library, $newFilename, '/');
+        $response = $this->file->update($library, $newFilename);
 
         self::assertSame(200, $response->getStatusCode());
 
@@ -156,12 +154,13 @@ class FileTest extends FunctionalTestCase
      */
     public function testRename(): void
     {
-        $this->library = $this->getTestLibraryType();
+        $library = null;
+        $library1 = $this->getTestLibraryType();
         $libId = $_ENV['TEST_LIB_ENCRYPTED_ID'];
         $library = $this->getTestLibraryType();
 
         if ($library->encrypted && isset($cfg->testLibPassword)) {
-            $success = $this->library->decrypt($libId, ['query' => ['password' => $_ENV['TEST_LIB_ENCRYPTED_PASSWORD']]]);
+            $success = $library1->decrypt($libId, ['query' => ['password' => $_ENV['TEST_LIB_ENCRYPTED_PASSWORD']]]);
             self::assertTrue($success);
         }
 

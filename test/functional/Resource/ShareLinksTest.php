@@ -17,11 +17,11 @@ use Seafile\Client\Type\SharedLinkPermissions;
 /**
  * ShareLinks resource functional tests
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class ShareLinksTest extends FunctionalTestCase
 {
-    private ?ShareLinksAlias $shareLinksAlias;
+    private ?ShareLinksAlias $shareLinksAlias = null;
 
     /**
      * @throws Exception
@@ -72,7 +72,7 @@ class ShareLinksTest extends FunctionalTestCase
         }
 
         $this->logger->debug("#################### Uploading file " . $newFilename);
-        $response = $file->upload($lib, $newFilename, '/');
+        $response = $file->upload($lib, $newFilename);
         self::assertSame(200, $response->getStatusCode());
 
         // create share link for a file

@@ -1,6 +1,6 @@
 <?php
 
-use Seafile\Client\Http\Client;
+use GuzzleHttp\Client;
 use Seafile\Client\Resource\Auth;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -21,9 +21,13 @@ if ($functionalTestsCredentialsComplete) {
         [
             'base_uri' => $_ENV['TEST_SERVER'],
             'debug' => false,
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Authorization' => 'Token ' . $_ENV['TEST_SERVER_AUTHORIZATION_TOKEN'],
+            'http_errors' => false,
+            'request.options' => [
+                'verify' => true,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Token ' . $_ENV['TEST_SERVER_AUTHORIZATION_TOKEN'],
+                ],
             ],
         ]
     );
@@ -40,7 +44,7 @@ if ($functionalTestsCredentialsValid) {
 }
 
 // Keep it simple for the time being. Later we'd maybe want to mock FS operations.
-$GLOBALS['BUILD_TMP'] = '/tmp/';
+$GLOBALS['BUILD_TMP'] = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
 
 if (!file_exists($GLOBALS['BUILD_TMP'])) {
     mkdir($GLOBALS['BUILD_TMP']);

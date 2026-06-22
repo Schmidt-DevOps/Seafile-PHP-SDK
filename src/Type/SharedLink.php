@@ -3,90 +3,46 @@
 namespace Seafile\Client\Type;
 
 use DateTime;
-use stdClass;
 
 /**
  * SharedLink type class
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
- *
- * @method SharedLink fromJson(stdClass $jsonResponse)
- * @method SharedLink fromArray(array $fromArray)
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class SharedLink extends Type
 {
-    /**
-     * View count
-     *
-     * @var null|int
-     */
-    public $viewCnt;
+    /** View count */
+    public ?int $viewCnt = null;
 
-    /**
-     * Token
-     *
-     * @var null|string
-     */
-    public $token;
+    /** Token */
+    public ?string $token = null;
 
-    /**
-     * Creation time
-     *
-     * @var null|DateTime
-     */
-    public $ctime;
+    /** Creation time */
+    public ?DateTime $ctime = null;
 
-    /**
-     * Path
-     *
-     * @var null|string
-     */
-    public $path;
+    /** Path */
+    public ?string $path = null;
 
-    /**
-     * Repo ID
-     *
-     * @var null|string
-     */
-    public $repoId;
+    /** Repo ID */
+    public ?string $repoId = null;
 
-    /**
-     * User name
-     *
-     * @var null|string
-     */
-    public $username;
+    /** User name */
+    public ?string $username = null;
 
-    /**
-     * URL
-     *
-     * @var null|string
-     */
-    public $url;
+    /** URL */
+    public ?string $url = null;
 
-    /**
-     * Link, same as URL
-     *
-     * @var null|string
-     */
-    public $link;
+    /** Link, same as URL */
+    public ?string $link = null;
 
-    /**
-     * @var array
-     *
-     * @todo Automatically cast to SharedLinkPermissions type
-     */
-    public $permissions = [];
+    /** @todo Automatically cast to SharedLinkPermissions type */
+    public array $permissions = [];
 
-    /** @var bool */
-    public $isDir = false;
+    public bool $isDir = false;
 
-    /** @var bool */
-    public $isExpired = true;
+    public bool $isExpired = true;
 
-    /** @var string */
-    public $objName = "";
+    public string $objName = "";
 
-    /** @var null|DateTime */
-    public $expireDate;
+    public ?DateTime $expireDate = null;
 }

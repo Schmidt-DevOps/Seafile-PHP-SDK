@@ -8,6 +8,7 @@ use Faker\Generator;
 use Faker\Provider\Internet;
 use Faker\Provider\Lorem;
 use Faker\Provider\Person;
+use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
@@ -15,14 +16,13 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Override;
 use PHPUnit\Framework\TestCase;
-use Seafile\Client\Http\Client;
 use Seafile\Client\Resource\Library;
 use Seafile\Client\Type\Library as LibraryType;
 
 /**
  * Seafile PHP SDK Functional Test Case class
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class FunctionalTestCase extends TestCase
 {

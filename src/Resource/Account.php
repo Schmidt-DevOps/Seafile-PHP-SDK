@@ -11,11 +11,11 @@ use Seafile\Client\Type\TypeInterface;
 /**
  * Handles everything regarding Seafile accounts.
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  */
 class Account extends Resource
 {
-    public const API_VERSION = '2';
+    public const string API_VERSION = '2';
 
     /**
      * List accounts
@@ -98,9 +98,9 @@ class Account extends Resource
     public function create(AccountType $accountType): bool
     {
         // at least one of these fields is required
-        $requirementsMet = !empty($accountType->password)
-            || !empty($accountType->isStaff)
-            || !empty($accountType->isActive);
+        $requirementsMet = null !== $accountType->password && ('' !== $accountType->password && '0' !== $accountType->password)
+            || true === $accountType->isStaff
+            || true === $accountType->isActive;
 
         if (!$requirementsMet) {
             return false;
@@ -127,17 +127,17 @@ class Account extends Resource
      *
      * @param AccountType $accountType AccountType instance with updated data
      *
-     * @throws Exception
+     * @throws Exception|GuzzleException
      */
     public function update(AccountType $accountType): bool
     {
         // at least one of these fields is required
-        $requirementsMet = !empty($accountType->password)
-            || !empty($accountType->isStaff)
-            || !empty($accountType->isActive)
-            || !empty($accountType->name)
-            || !empty($accountType->note)
-            || !empty($accountType->storage);
+        $requirementsMet = null !== $accountType->password && ('' !== $accountType->password && '0' !== $accountType->password)
+            || true === $accountType->isStaff
+            || true === $accountType->isActive
+            || null !== $accountType->name && '' !== $accountType->name && '0' !== $accountType->name
+            || null !== $accountType->note && '' !== $accountType->note && '0' !== $accountType->note
+            || null !== $accountType->storage && (0 !== $accountType->storage);
 
         if (!$requirementsMet) {
             return false;
@@ -210,7 +210,13 @@ class Account extends Resource
      */
     public function removeByEmail(string $email): bool
     {
-        return $this->remove((new AccountType())->fromArray(['email' => $email]));
+        $type = (new AccountType())->fromArray(['email' => $email]);
+
+        if (!$type instanceof AccountType) {
+            throw new Exception('Failed to create AccountType from email');
+        }
+
+        return $this->remove($type);
     }
 
     /**
@@ -224,7 +230,14 @@ class Account extends Resource
      */
     public function remove(AccountType $accountType): bool
     {
-        if (null === $accountType->email || '' === $accountType->email || '0' === $accountType->email) {
+        if (
+            property_exists($accountType, 'email')
+            && (
+                null === $accountType->email
+                || '' === $accountType->email
+                || '0' === $accountType->email
+            )
+        ) {
             return false;
         }
 
@@ -234,6 +247,6 @@ class Account extends Resource
             $accountType->email
         );
 
-        return 200 === $this->client->delete($uri, [])->getStatusCode();
+        return 200 === $this->client->delete($uri)->getStatusCode();
     }
 }

@@ -4,19 +4,21 @@ namespace Seafile\Client\Tests\Unit\Resource;
 
 use DateTime;
 use Exception;
+use GuzzleHttp\Client as SeafileHttpClient;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
-use Seafile\Client\Http\Client as SeafileHttpClient;
 use Seafile\Client\Resource\Avatar as AvatarResource;
+use Seafile\Client\Resource\Resource;
 use Seafile\Client\Tests\Unit\UnitTestCase;
 use Seafile\Client\Type\Avatar;
 use Seafile\Client\Type\Group as GroupType;
 use Seafile\Client\Type\Library as LibraryType;
+use Seafile\Client\Type\TypeInterface;
 
 /**
  * Avatar resource test
  *
- * @see      https://github.com/Schmidt-DevOps/seafile-php-sdk
+ * @see https://github.com/Schmidt-DevOps/seafile-php-sdk
  *
  * @covers    \Seafile\Client\Resource\Avatar
  */
@@ -74,7 +76,7 @@ class AvatarTest extends UnitTestCase
     {
         $baseUri = 'https://example.com';
 
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->getMockBuilder(SeafileHttpClient::class)->getMock();
 
         $library = new LibraryType();
@@ -98,19 +100,19 @@ class AvatarTest extends UnitTestCase
      * @param string $method Method name
      * @param string $baseUri Base URI
      * @param string $resource Resource string
-     * @param GroupType|string $entity Resource entity
+     * @param string|TypeInterface $entity Resource entity
      * @param string $size Avatar size in pixels
      */
-    protected function doGetAvatar(string $method, string $baseUri, string $resource, $entity, string $size): void
+    protected function doGetAvatar(string $method, string $baseUri, string $resource, string|TypeInterface $entity, string $size): void
     {
-        /** @var MockObject|SeafileHttpClient $mockedClient */
+        /** @var MockObject&SeafileHttpClient $mockedClient */
         $mockedClient = $this->createPartialMock(SeafileHttpClient::class, ['get', 'getConfig']);
 
-        $id = ($entity instanceof GroupType ? $entity->id : $entity);
+        $id = (string) ((is_object($entity) && property_exists($entity, 'id')) ? $entity->id : $entity);
 
         $mockedClient->expects(self::any())
             ->method('get')
-            ->with($baseUri . '/api/v' . AvatarResource::API_VERSION . '/avatars/' . $resource . '/' . $id . '/resized/' . $size . '/', [])
+            ->with($baseUri . '/api/v' . Resource::API_VERSION . '/avatars/' . $resource . '/' . $id . '/resized/' . $size . '/', [])
             ->willReturn(
                 new Response(
                     200,
@@ -130,6 +132,6 @@ class AvatarTest extends UnitTestCase
 
         self::assertInstanceOf(Avatar::class, $avatarType);
         self::assertInstanceOf(DateTime::class, $avatarType->mtime);
-        self::assertSame('1970-01-01T00:00:00+0000', $avatarType->mtime->format(DATE_ISO8601));
+        self::assertSame('1970-01-01T00:00:00+00:00', $avatarType->mtime->format(DATE_ATOM));
     }
 }
