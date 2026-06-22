@@ -44,7 +44,7 @@ if ($functionalTestsCredentialsValid) {
 }
 
 // Keep it simple for the time being. Later we'd maybe want to mock FS operations.
-$GLOBALS['BUILD_TMP'] = '/tmp/';
+$GLOBALS['BUILD_TMP'] = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
 
 if (!file_exists($GLOBALS['BUILD_TMP'])) {
     mkdir($GLOBALS['BUILD_TMP']);
