@@ -22,7 +22,7 @@ class UnitTestCase extends TestCase
      *
      * @param object $object instantiated object that we will run method on
      * @param string $methodName Method name to call
-     * @param array<int, (int | Library)>|array<int, string> $parameters params to pass to method
+     * @param array<int, (int|Library)>|array<int, string> $parameters params to pass to method
      *
      * @throws ReflectionException
      *
